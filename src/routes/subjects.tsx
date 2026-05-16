@@ -78,11 +78,25 @@ function SubjectsPage() {
 
                 <div className="mt-5 flex gap-2">
                   <Button asChild size="sm" className="flex-1 gap-1 rounded-full">
-                    <Link to="/">Study <ArrowRight className="h-3.5 w-3.5" /></Link>
+                    <Link to="/subjects/$subjectId" params={{ subjectId: s.id }}>
+                      Open <ArrowRight className="h-3.5 w-3.5" />
+                    </Link>
                   </Button>
-                  <Button size="icon" variant="outline" className="rounded-full"><BookOpen className="h-4 w-4" /></Button>
-                  <Button size="icon" variant="outline" className="rounded-full"><ListChecks className="h-4 w-4" /></Button>
-                  <Button size="icon" variant="outline" className="rounded-full"><FileText className="h-4 w-4" /></Button>
+                  <Button asChild size="icon" variant="outline" className="rounded-full" aria-label="Chapters">
+                    <Link to="/subjects/$subjectId" params={{ subjectId: s.id }} hash="chapters">
+                      <BookOpen className="h-4 w-4" />
+                    </Link>
+                  </Button>
+                  <Button asChild size="icon" variant="outline" className="rounded-full" aria-label="Topics">
+                    <Link to="/subjects/$subjectId" params={{ subjectId: s.id }}>
+                      <ListChecks className="h-4 w-4" />
+                    </Link>
+                  </Button>
+                  <Button asChild size="icon" variant="outline" className="rounded-full" aria-label="MCQs">
+                    <Link to="/subjects/$subjectId" params={{ subjectId: s.id }}>
+                      <FileText className="h-4 w-4" />
+                    </Link>
+                  </Button>
                 </div>
               </div>
             </article>
