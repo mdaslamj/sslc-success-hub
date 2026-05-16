@@ -57,10 +57,10 @@ export const Route = createFileRoute("/")({
 
 function Dashboard() {
   const days = getDaysToExam();
-  const quote = useMemo(
-    () => motivationalQuotes[new Date().getDate() % motivationalQuotes.length],
-    [],
-  );
+  const [quote, setQuote] = useState(motivationalQuotes[0]);
+  useEffect(() => {
+    setQuote(motivationalQuotes[new Date().getDate() % motivationalQuotes.length]);
+  }, []);
   const [tasks, setTasks] = useState(todayTasks);
   const [greet, setGreet] = useState("day");
   useEffect(() => {
