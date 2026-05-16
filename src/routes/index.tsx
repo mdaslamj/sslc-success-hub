@@ -406,6 +406,7 @@ function HeroStat({ icon, label, value }: { icon: React.ReactNode; label: string
 }
 
 function greeting() {
+  if (typeof window === "undefined") return "day";
   const h = new Date().getHours();
   if (h < 12) return "morning";
   if (h < 17) return "afternoon";
