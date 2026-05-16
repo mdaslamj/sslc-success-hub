@@ -30,7 +30,6 @@ import { DashboardLayout } from "@/components/dashboard-layout";
 import { StatCard } from "@/components/widgets/stat-card";
 import { ProgressRing } from "@/components/widgets/progress-ring";
 import { Button } from "@/components/ui/button";
-import { Progress } from "@/components/ui/progress";
 import {
   subjects,
   weeklyStudy,
