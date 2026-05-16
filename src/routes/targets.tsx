@@ -259,7 +259,7 @@ function TargetsPage() {
                   Grade {gradeFor(avgPredicted)}
                 </Badge>
               </div>
-              <div className="rounded-2xl gradient-aurora p-3 text-center text-white">
+              <div className="rounded-2xl gradient-ocean p-3 text-center text-white">
                 <div className="text-[11px] uppercase tracking-widest text-white/80">Target</div>
                 <div className="mt-1 font-display text-3xl font-bold">{overallTarget}%</div>
                 <Badge className="mt-1 bg-white/20 text-white hover:bg-white/20 border-0">
@@ -295,23 +295,23 @@ function TargetsPage() {
           <div className="h-72">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={chartData} barCategoryGap={18}>
-                <CartesianGrid stroke="hsl(var(--border))" strokeOpacity={0.3} vertical={false} />
+                <CartesianGrid stroke="var(--border)" strokeOpacity={0.3} vertical={false} />
                 <XAxis
                   dataKey="name"
-                  tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 12 }}
+                  tick={{ fill: "var(--muted-foreground)", fontSize: 12 }}
                   axisLine={false}
                   tickLine={false}
                 />
                 <YAxis
                   domain={[0, 100]}
-                  tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 12 }}
+                  tick={{ fill: "var(--muted-foreground)", fontSize: 12 }}
                   axisLine={false}
                   tickLine={false}
                 />
                 <Tooltip
                   contentStyle={{
-                    background: "hsl(var(--popover))",
-                    border: "1px solid hsl(var(--border))",
+                    background: "var(--popover)",
+                    border: "1px solid var(--border)",
                     borderRadius: 12,
                     fontSize: 12,
                   }}
@@ -319,11 +319,11 @@ function TargetsPage() {
                 <Legend wrapperStyle={{ fontSize: 12 }} />
                 <ReferenceLine
                   y={overallTarget}
-                  stroke="hsl(var(--brand))"
+                  stroke="var(--brand)"
                   strokeDasharray="4 4"
                   label={{
                     value: `Overall ${overallTarget}%`,
-                    fill: "hsl(var(--brand))",
+                    fill: "var(--brand)",
                     fontSize: 11,
                     position: "right",
                   }}
