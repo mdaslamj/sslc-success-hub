@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   Flame,
   Target,
@@ -62,6 +62,11 @@ function Dashboard() {
     [],
   );
   const [tasks, setTasks] = useState(todayTasks);
+  const [greet, setGreet] = useState("day");
+  useEffect(() => {
+    const h = new Date().getHours();
+    setGreet(h < 12 ? "morning" : h < 17 ? "afternoon" : "evening");
+  }, []);
   const doneCount = tasks.filter((t) => t.done).length;
 
   const radialData = subjects.map((s) => ({
@@ -81,7 +86,7 @@ function Dashboard() {
             <div>
               <div className="flex items-center gap-2 text-xs uppercase tracking-widest text-white/70">
                 <Sparkles className="h-3.5 w-3.5" />
-                <span>Good {greeting()}, Aarav</span>
+                <span>Good {greet}, Aarav</span>
               </div>
               <h1 className="mt-2 font-display text-3xl md:text-4xl font-bold tracking-tight">
                 You're <span className="text-brand-glow">{overallPrepScore}%</span> ready for SSLC.
@@ -406,6 +411,7 @@ function HeroStat({ icon, label, value }: { icon: React.ReactNode; label: string
 }
 
 function greeting() {
+  if (typeof window === "undefined") return "day";
   const h = new Date().getHours();
   if (h < 12) return "morning";
   if (h < 17) return "afternoon";
