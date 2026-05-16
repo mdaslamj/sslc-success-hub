@@ -19,17 +19,15 @@ import {
   RotateCcw,
   Plus,
   Trash2,
-  Flame,
   Trophy,
   CheckCircle2,
   Sparkles,
   Coffee,
   Brain,
-  Target as TargetIcon,
   Clock,
   Star,
 } from "lucide-react";
-import { todayTasks, subjects, achievements as baseAchievements } from "@/lib/mock-data";
+import { todayTasks, subjects } from "@/lib/mock-data";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/planner")({
