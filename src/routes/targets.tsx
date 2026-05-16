@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useMemo, useState } from "react";
+import { type ReactNode, useEffect, useMemo, useState } from "react";
 import { DashboardLayout } from "@/components/dashboard-layout";
 import { ProgressRing } from "@/components/widgets/progress-ring";
 import { subjects as initialSubjects, gradeFor, type Subject } from "@/lib/mock-data";
@@ -61,7 +61,7 @@ function probabilityFor(target: number, predicted: number, mastery: number) {
   return Math.round(Math.max(5, Math.min(98, adj)));
 }
 
-function statusFor(prob: number): { label: string; tone: string; icon: JSX.Element } {
+function statusFor(prob: number): { label: string; tone: string; icon: ReactNode } {
   if (prob >= 80)
     return {
       label: "On track",
