@@ -256,6 +256,11 @@ function ChaptersSection({ chapters, color }: { chapters: ChapterDoc[]; color: s
 
   return (
     <div className="grid gap-3 md:grid-cols-2">
+      {chapters.length === 0 && (
+        <div className="md:col-span-2 rounded-2xl border border-dashed border-border/60 p-10 text-center text-sm text-muted-foreground">
+          No chapters for this subject yet.
+        </div>
+      )}
       {chapters.map((c, i) => {
         const isDone = done.has(c.id);
         const effProgress = isDone ? 100 : c.progress;
