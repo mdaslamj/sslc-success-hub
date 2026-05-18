@@ -1,4 +1,11 @@
 import type { SyllabusImportPayload } from "./types";
+import { KARNATAKA_SSLC_MATH } from "./sslc-math";
+
+// Canonical Karnataka SSLC Mathematics chapters (14, KSEAB/NCERT rationalised).
+// Re-exported from the detailed math preset to keep a single source of truth —
+// avoids duplicate / mis-ordered / deprecated entries (e.g. "Constructions" was
+// dropped in the rationalised syllabus).
+const MATH_SUBJECT = KARNATAKA_SSLC_MATH.subjects[0];
 
 /**
  * Karnataka SSLC (Class 10) syllabus — KSEAB board.
@@ -7,31 +14,7 @@ import type { SyllabusImportPayload } from "./types";
 export const KARNATAKA_SSLC: SyllabusImportPayload = {
   board: "Karnataka SSLC",
   subjects: [
-    {
-      id: "math",
-      name: "Mathematics",
-      nameKn: "ಗಣಿತ",
-      emoji: "📐",
-      color: "oklch(0.6 0.18 250)",
-      target: 95,
-      chapters: [
-        { chapterNumber: 1, chapterName: "Arithmetic Progressions", difficulty: "Medium", estimatedStudyTime: 180, mcqCount: 20 },
-        { chapterNumber: 2, chapterName: "Triangles", difficulty: "Medium", estimatedStudyTime: 240, mcqCount: 25 },
-        { chapterNumber: 3, chapterName: "Pair of Linear Equations in Two Variables", difficulty: "Medium", estimatedStudyTime: 210, mcqCount: 20 },
-        { chapterNumber: 4, chapterName: "Circles", difficulty: "Medium", estimatedStudyTime: 180, mcqCount: 20 },
-        { chapterNumber: 5, chapterName: "Areas Related to Circles", difficulty: "Medium", estimatedStudyTime: 180, mcqCount: 18 },
-        { chapterNumber: 6, chapterName: "Constructions", difficulty: "Medium", estimatedStudyTime: 150, mcqCount: 12 },
-        { chapterNumber: 7, chapterName: "Coordinate Geometry", difficulty: "Medium", estimatedStudyTime: 210, mcqCount: 20 },
-        { chapterNumber: 8, chapterName: "Real Numbers", difficulty: "Easy", estimatedStudyTime: 150, mcqCount: 15 },
-        { chapterNumber: 9, chapterName: "Polynomials", difficulty: "Medium", estimatedStudyTime: 180, mcqCount: 18 },
-        { chapterNumber: 10, chapterName: "Quadratic Equations", difficulty: "Hard", estimatedStudyTime: 240, mcqCount: 25 },
-        { chapterNumber: 11, chapterName: "Introduction to Trigonometry", difficulty: "Medium", estimatedStudyTime: 210, mcqCount: 20 },
-        { chapterNumber: 12, chapterName: "Some Applications of Trigonometry", difficulty: "Hard", estimatedStudyTime: 180, mcqCount: 15 },
-        { chapterNumber: 13, chapterName: "Statistics", difficulty: "Easy", estimatedStudyTime: 180, mcqCount: 20 },
-        { chapterNumber: 14, chapterName: "Probability", difficulty: "Medium", estimatedStudyTime: 150, mcqCount: 15 },
-        { chapterNumber: 15, chapterName: "Surface Areas and Volumes", difficulty: "Hard", estimatedStudyTime: 240, mcqCount: 22 },
-      ],
-    },
+    MATH_SUBJECT,
     {
       id: "science",
       name: "Science",
