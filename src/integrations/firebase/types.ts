@@ -26,6 +26,26 @@ export type ChapterDoc = {
   done: boolean;
   difficulty: "Easy" | "Medium" | "Hard";
   order: number;
+  // Syllabus metadata (optional — set via admin import)
+  chapterName?: string;
+  chapterNumber?: number;
+  textbookUrl?: string;
+  notesUrl?: string;
+  worksheetUrl?: string;
+  videoUrls?: string[];
+  mcqCount?: number;
+  estimatedStudyTime?: number; // minutes
+};
+
+/** Generic study resource (textbook PDF, notes, worksheet, video) for a chapter. */
+export type ResourceDoc = {
+  id: string;
+  subjectId: string;
+  chapterId: string;
+  kind: "textbook" | "notes" | "worksheet" | "video" | "other";
+  title: string;
+  url: string;
+  order?: number;
 };
 
 export type UserDoc = {

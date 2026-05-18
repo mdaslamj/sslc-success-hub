@@ -5,3 +5,4 @@ export * from "../subjects";
 export * from "./chapterProgress";
 export * from "./mcqs";
 export * from "./notes";
+export * from "./syllabus-import";

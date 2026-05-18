@@ -27,4 +27,5 @@ export const COLLECTIONS = {
   CHAPTER_PROGRESS: "chapterProgress",
   MCQS: "mcqs",
   NOTES: "notes",
+  RESOURCES: "resources",
 } as const;
