@@ -6,6 +6,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Upload, CheckCircle2, AlertTriangle, Loader2, FileJson } from "lucide-react";
 import { importSyllabus, parseSyllabusJson } from "@/integrations/firebase/services/syllabus-import";
 import { KARNATAKA_SSLC } from "@/integrations/firebase/syllabus/sslc-karnataka";
+import { KARNATAKA_SSLC_MATH } from "@/integrations/firebase/syllabus/sslc-math";
 
 export const Route = createFileRoute("/admin/import")({
   head: () => ({ meta: [{ title: "Syllabus Import — Admin" }] }),
@@ -26,6 +27,16 @@ function AdminImportPage() {
     try {
       const r = await importSyllabus(KARNATAKA_SSLC);
       setState({ kind: "success", ...r, board: KARNATAKA_SSLC.board });
+    } catch (e) {
+      setState({ kind: "error", message: (e as Error).message });
+    }
+  }
+
+  async function runMathPreset() {
+    setState({ kind: "loading" });
+    try {
+      const r = await importSyllabus(KARNATAKA_SSLC_MATH);
+      setState({ kind: "success", ...r, board: KARNATAKA_SSLC_MATH.board });
     } catch (e) {
       setState({ kind: "error", message: (e as Error).message });
     }
@@ -81,6 +92,38 @@ function AdminImportPage() {
               </Button>
               <Button onClick={loadPreset} variant="outline" className="rounded-full gap-2">
                 <FileJson className="h-4 w-4" /> Load preset as JSON
+              </Button>
+            </div>
+          </div>
+
+          <div className="mt-4 rounded-2xl border border-border/60 bg-muted/30 p-4">
+            <div className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+              Detailed Mathematics preset
+            </div>
+            <p className="mt-1 text-sm">
+              <span className="font-semibold">{KARNATAKA_SSLC_MATH.board}</span> —{" "}
+              {KARNATAKA_SSLC_MATH.subjects[0].chapters.length} chapters with topics,
+              formulas & learning objectives.
+            </p>
+            <div className="mt-3 flex gap-2">
+              <Button
+                onClick={runMathPreset}
+                disabled={state.kind === "loading"}
+                variant="secondary"
+                className="rounded-full"
+              >
+                {state.kind === "loading" ? (
+                  <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Importing…</>
+                ) : (
+                  <>Import Mathematics (detailed)</>
+                )}
+              </Button>
+              <Button
+                onClick={() => setJson(JSON.stringify(KARNATAKA_SSLC_MATH, null, 2))}
+                variant="outline"
+                className="rounded-full gap-2"
+              >
+                <FileJson className="h-4 w-4" /> Load Math JSON
               </Button>
             </div>
           </div>
