@@ -43,9 +43,9 @@ const SubjectsIndexRoute = SubjectsIndexRouteImport.update({
   getParentRoute: () => rootRouteImport,
 } as any)
 const SubjectsSubjectIdRoute = SubjectsSubjectIdRouteImport.update({
-  id: '/$subjectId',
-  path: '/$subjectId',
-  getParentRoute: () => SubjectsRoute,
+  id: '/subjects/$subjectId',
+  path: '/subjects/$subjectId',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const AdminImportRoute = AdminImportRouteImport.update({
   id: '/admin/import',
@@ -117,6 +117,7 @@ export interface RootRouteChildren {
   SeedRoute: typeof SeedRoute
   TargetsRoute: typeof TargetsRoute
   AdminImportRoute: typeof AdminImportRoute
+  SubjectsSubjectIdRoute: typeof SubjectsSubjectIdRoute
   SubjectsIndexRoute: typeof SubjectsIndexRoute
 }
 
@@ -159,10 +160,10 @@ declare module '@tanstack/react-router' {
     }
     '/subjects/$subjectId': {
       id: '/subjects/$subjectId'
-      path: '/$subjectId'
+      path: '/subjects/$subjectId'
       fullPath: '/subjects/$subjectId'
       preLoaderRoute: typeof SubjectsSubjectIdRouteImport
-      parentRoute: typeof SubjectsRoute
+      parentRoute: typeof rootRouteImport
     }
     '/admin/import': {
       id: '/admin/import'
@@ -180,6 +181,7 @@ const rootRouteChildren: RootRouteChildren = {
   SeedRoute: SeedRoute,
   TargetsRoute: TargetsRoute,
   AdminImportRoute: AdminImportRoute,
+  SubjectsSubjectIdRoute: SubjectsSubjectIdRoute,
   SubjectsIndexRoute: SubjectsIndexRoute,
 }
 export const routeTree = rootRouteImport
