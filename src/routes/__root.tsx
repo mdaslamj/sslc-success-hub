@@ -73,14 +73,18 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "VidyaPath — Karnataka SSLC AI Prep Dashboard" },
+      { title: "sslc— Karnataka SSLC AI Prep Dashboard" },
       { name: "description", content: "AI-powered preparation, target tracking, and result prediction for Karnataka SSLC Class 10 board exams." },
       { name: "author", content: "VidyaPath" },
-      { property: "og:title", content: "VidyaPath — Karnataka SSLC AI Prep" },
-      { property: "og:description", content: "Smart study planner, analytics, and result prediction for Class 10 SSLC students." },
+      { property: "og:title", content: "sslc— Karnataka SSLC AI Prep Dashboard" },
+      { property: "og:description", content: "AI-powered preparation, target tracking, and result prediction for Karnataka SSLC Class 10 board exams." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
       { name: "twitter:site", content: "@Lovable" },
+      { name: "twitter:title", content: "sslc— Karnataka SSLC AI Prep Dashboard" },
+      { name: "twitter:description", content: "AI-powered preparation, target tracking, and result prediction for Karnataka SSLC Class 10 board exams." },
+      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/d378c8e3-f66f-4354-afe1-4b5b3fc90d2d" },
+      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/d378c8e3-f66f-4354-afe1-4b5b3fc90d2d" },
     ],
     links: [
       {
