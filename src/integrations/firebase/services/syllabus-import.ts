@@ -1,4 +1,13 @@
-import { doc, setDoc, writeBatch } from "firebase/firestore";
+import {
+  collection,
+  deleteDoc,
+  doc,
+  getDocs,
+  query,
+  setDoc,
+  where,
+  writeBatch,
+} from "firebase/firestore";
 import { COLLECTIONS, db } from "../config";
 import type { SyllabusImportPayload, SyllabusChapterInput } from "../syllabus/types";
 
@@ -20,7 +29,16 @@ export async function importSyllabus(
   let chapterCount = 0;
   let resourceCount = 0;
 
+  // Track ids we are about to write so we can prune anything stale afterwards.
+  const keepChapterIdsBySubject = new Map<string, Set<string>>();
+  const keepResourceIdsBySubject = new Map<string, Set<string>>();
+
   payload.subjects.forEach((s, subjectOrder) => {
+    const keepCh = new Set<string>();
+    const keepRes = new Set<string>();
+    keepChapterIdsBySubject.set(s.id, keepCh);
+    keepResourceIdsBySubject.set(s.id, keepRes);
+
     const subjectRef = doc(db, COLLECTIONS.SUBJECTS, s.id);
     batch.set(
       subjectRef,
@@ -45,6 +63,7 @@ export async function importSyllabus(
 
     s.chapters.forEach((c, i) => {
       const chId = chapterDocId(s.id, c);
+      keepCh.add(chId);
       const chRef = doc(db, COLLECTIONS.CHAPTERS, chId);
       batch.set(
         chRef,
@@ -82,6 +101,7 @@ export async function importSyllabus(
       );
       resources.forEach((r, ri) => {
         const rid = `${chId}_${r.kind}_${ri}`;
+        keepRes.add(rid);
         const rref = doc(db, COLLECTIONS.RESOURCES, rid);
         batch.set(rref, {
           subjectId: s.id,
@@ -97,6 +117,32 @@ export async function importSyllabus(
   });
 
   await batch.commit();
+
+  // Prune stale chapter & resource docs left over from previous imports
+  // (e.g. removed/renumbered chapters). Subjects themselves are not pruned
+  // since multiple presets may co-exist.
+  for (const s of payload.subjects) {
+    const keepCh = keepChapterIdsBySubject.get(s.id) ?? new Set<string>();
+    const keepRes = keepResourceIdsBySubject.get(s.id) ?? new Set<string>();
+
+    const existingChapters = await getDocs(
+      query(collection(db, COLLECTIONS.CHAPTERS), where("subjectId", "==", s.id)),
+    );
+    await Promise.all(
+      existingChapters.docs
+        .filter((d) => !keepCh.has(d.id))
+        .map((d) => deleteDoc(d.ref)),
+    );
+
+    const existingResources = await getDocs(
+      query(collection(db, COLLECTIONS.RESOURCES), where("subjectId", "==", s.id)),
+    );
+    await Promise.all(
+      existingResources.docs
+        .filter((d) => !keepRes.has(d.id))
+        .map((d) => deleteDoc(d.ref)),
+    );
+  }
 
   await setDoc(doc(db, META_COLLECTION, SYLLABUS_DOC), {
     board: payload.board,
