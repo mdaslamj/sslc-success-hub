@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { DashboardLayout } from "@/components/dashboard-layout";
+import { AdminGate } from "@/components/admin-gate";
 import { Button } from "@/components/ui/button";
 import { Database, CheckCircle2, AlertTriangle, Loader2, XCircle } from "lucide-react";
 import { seedFirestore, fetchSeedStatus } from "@/integrations/firebase/seed";
@@ -10,8 +11,16 @@ export const Route = createFileRoute("/seed")({
   head: () => ({
     meta: [{ title: "Seed Firestore — VidyaPath" }],
   }),
-  component: SeedPage,
+  component: GuardedSeedPage,
 });
+
+function GuardedSeedPage() {
+  return (
+    <AdminGate title="Seed Firestore">
+      <SeedPage />
+    </AdminGate>
+  );
+}
 
 function SeedPage() {
   const [state, setState] = useState<
