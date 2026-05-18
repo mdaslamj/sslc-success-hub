@@ -42,3 +42,41 @@ export type ProgressDoc = {
   progress: number;
   updatedAt: number;
 };
+
+/**
+ * Per-user, per-chapter progress. Document id convention: `${userId}_${chapterId}`
+ * so writes are idempotent and reads by user+chapter are O(1).
+ */
+export type ChapterProgressDoc = {
+  id: string;
+  userId: string;
+  subjectId: string;
+  chapterId: string;
+  progress: number; // 0..100
+  done: boolean;
+  lastStudiedAt: number;
+  notes?: string;
+};
+
+/** Future MCQ shape — one document per question, scoped to subject+chapter. */
+export type McqDoc = {
+  id: string;
+  subjectId: string;
+  chapterId?: string;
+  question: string;
+  options: string[];
+  correctIndex: number;
+  explanation?: string;
+  difficulty?: "Easy" | "Medium" | "Hard";
+  order?: number;
+};
+
+/** Future note shape — markdown body keyed by subject+chapter. */
+export type NoteDoc = {
+  id: string;
+  subjectId: string;
+  chapterId?: string;
+  title: string;
+  body: string;
+  updatedAt: number;
+};

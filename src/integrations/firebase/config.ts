@@ -24,4 +24,7 @@ export const COLLECTIONS = {
   CHAPTERS: "chapters",
   USERS: "users",
   PROGRESS: "progress",
+  CHAPTER_PROGRESS: "chapterProgress",
+  MCQS: "mcqs",
+  NOTES: "notes",
 } as const;
