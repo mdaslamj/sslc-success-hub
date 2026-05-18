@@ -1,0 +1,78 @@
+rules_version = '2';
+
+// Firestore Security Rules — VidyaPath
+//
+// Deploy with: firebase deploy --only firestore:rules
+//
+// Model:
+//  - Syllabus content (subjects, chapters, resources, _meta) is public READ,
+//    admin-only WRITE.
+//  - Per-user data (users/{uid}, progress/{uid}/**, notes/{uid}/**) is
+//    readable and writable ONLY by the signed-in owner.
+//  - Admin writes require the caller's auth token to carry a custom claim
+//    `admin: true`. Set this via the Firebase Admin SDK; never trust the
+//    client to self-declare admin status.
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return isSignedIn() && request.auth.token.admin == true;
+    }
+
+    function isOwner(uid) {
+      return isSignedIn() && request.auth.uid == uid;
+    }
+
+    // Public syllabus content — read by anyone, write by admins only.
+    match /subjects/{subjectId} {
+      allow read: if true;
+      allow write: if isAdmin();
+
+      match /chapters/{chapterId} {
+        allow read: if true;
+        allow write: if isAdmin();
+
+        match /resources/{resourceId} {
+          allow read: if true;
+          allow write: if isAdmin();
+        }
+      }
+    }
+
+    match /_meta/{doc} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // Per-user profile.
+    match /users/{uid} {
+      allow read, write: if isOwner(uid);
+    }
+
+    // Per-user progress.
+    match /progress/{uid} {
+      allow read, write: if isOwner(uid);
+      match /{document=**} {
+        allow read, write: if isOwner(uid);
+      }
+    }
+
+    // Per-user notes.
+    match /notes/{uid} {
+      allow read, write: if isOwner(uid);
+      match /{document=**} {
+        allow read, write: if isOwner(uid);
+      }
+    }
+
+    // Default deny.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

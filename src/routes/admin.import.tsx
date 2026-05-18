@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { DashboardLayout } from "@/components/dashboard-layout";
+import { AdminGate } from "@/components/admin-gate";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Upload, CheckCircle2, AlertTriangle, Loader2, FileJson } from "lucide-react";
@@ -10,8 +11,16 @@ import { KARNATAKA_SSLC_MATH } from "@/integrations/firebase/syllabus/sslc-math"
 
 export const Route = createFileRoute("/admin/import")({
   head: () => ({ meta: [{ title: "Syllabus Import — Admin" }] }),
-  component: AdminImportPage,
+  component: GuardedAdminImportPage,
 });
+
+function GuardedAdminImportPage() {
+  return (
+    <AdminGate title="Syllabus Import">
+      <AdminImportPage />
+    </AdminGate>
+  );
+}
 
 function AdminImportPage() {
   const [json, setJson] = useState("");
