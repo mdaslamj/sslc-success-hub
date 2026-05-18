@@ -1,8 +1,10 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useQuery } from "@tanstack/react-query";
 import { DashboardLayout } from "@/components/dashboard-layout";
-import { subjects } from "@/lib/mock-data";
-import { ArrowRight, BookOpen, FileText, ListChecks, Sparkles } from "lucide-react";
+import { ArrowRight, BookOpen, FileText, ListChecks, Sparkles, AlertTriangle, Database } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
+import { fetchSubjects } from "@/integrations/firebase/subjects";
 
 export const Route = createFileRoute("/subjects")({
   head: () => ({
@@ -15,6 +17,11 @@ export const Route = createFileRoute("/subjects")({
 });
 
 function SubjectsPage() {
+  const { data: subjects, isLoading, isError, error, refetch } = useQuery({
+    queryKey: ["subjects"],
+    queryFn: fetchSubjects,
+  });
+
   return (
     <DashboardLayout title="Subjects">
       <div className="mx-auto max-w-7xl">
@@ -22,6 +29,55 @@ function SubjectsPage() {
           <h1 className="font-display text-3xl font-bold tracking-tight">All Subjects</h1>
           <p className="text-sm text-muted-foreground">Karnataka SSLC Class 10 syllabus · 6 subjects</p>
         </header>
+
+        {isLoading && (
+          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {Array.from({ length: 6 }).map((_, i) => (
+              <Skeleton key={i} className="h-[340px] rounded-3xl" />
+            ))}
+          </div>
+        )}
+
+        {isError && (
+          <div className="rounded-3xl border border-destructive/30 bg-destructive/5 p-8">
+            <div className="flex items-start gap-3">
+              <AlertTriangle className="h-6 w-6 text-destructive shrink-0" />
+              <div className="flex-1">
+                <h3 className="font-display text-lg font-semibold text-destructive">
+                  Couldn't load subjects
+                </h3>
+                <p className="mt-1 text-sm text-muted-foreground break-words">
+                  {(error as Error)?.message ?? "Unknown error"}
+                </p>
+                <div className="mt-4 flex gap-2">
+                  <Button onClick={() => refetch()} size="sm" className="rounded-full">
+                    Try again
+                  </Button>
+                  <Button asChild size="sm" variant="outline" className="rounded-full">
+                    <Link to="/seed">
+                      <Database className="mr-1.5 h-3.5 w-3.5" /> Seed Firestore
+                    </Link>
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {!isLoading && !isError && subjects && subjects.length === 0 && (
+          <div className="rounded-3xl border border-dashed border-border/60 p-10 text-center">
+            <Database className="mx-auto h-10 w-10 text-muted-foreground" />
+            <h3 className="mt-3 font-display text-lg font-semibold">No subjects yet</h3>
+            <p className="mt-1 text-sm text-muted-foreground">
+              Run the seeder once to populate Firestore with the SSLC syllabus.
+            </p>
+            <Button asChild className="mt-4 rounded-full">
+              <Link to="/seed">Open seeder</Link>
+            </Button>
+          </div>
+        )}
+
+        {!isLoading && !isError && subjects && subjects.length > 0 && (
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {subjects.map((s) => (
             <article
@@ -58,7 +114,7 @@ function SubjectsPage() {
                 </div>
 
                 <div className="mt-4 grid grid-cols-3 gap-2 text-center">
-                  <Stat label="Chapters" value={`${s.chaptersDone}/${s.chapters}`} />
+                  <Stat label="Chapters" value={`${s.chaptersDone}/${s.chaptersTotal}`} />
                   <Stat label="Mastery" value={`${s.mastery}%`} />
                   <Stat label="Target" value={`${s.target}%`} />
                 </div>
@@ -102,6 +158,7 @@ function SubjectsPage() {
             </article>
           ))}
         </div>
+        )}
 
         <div className="mt-8 rounded-3xl border border-border/60 bg-card p-6 shadow-card">
           <div className="flex items-start gap-3">

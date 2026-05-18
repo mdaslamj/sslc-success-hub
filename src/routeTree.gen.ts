@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as TargetsRouteImport } from './routes/targets'
 import { Route as SubjectsRouteImport } from './routes/subjects'
+import { Route as SeedRouteImport } from './routes/seed'
 import { Route as PlannerRouteImport } from './routes/planner'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as SubjectsSubjectIdRouteImport } from './routes/subjects.$subjectId'
@@ -23,6 +24,11 @@ const TargetsRoute = TargetsRouteImport.update({
 const SubjectsRoute = SubjectsRouteImport.update({
   id: '/subjects',
   path: '/subjects',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SeedRoute = SeedRouteImport.update({
+  id: '/seed',
+  path: '/seed',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PlannerRoute = PlannerRouteImport.update({
@@ -44,6 +50,7 @@ const SubjectsSubjectIdRoute = SubjectsSubjectIdRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/planner': typeof PlannerRoute
+  '/seed': typeof SeedRoute
   '/subjects': typeof SubjectsRouteWithChildren
   '/targets': typeof TargetsRoute
   '/subjects/$subjectId': typeof SubjectsSubjectIdRoute
@@ -51,6 +58,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/planner': typeof PlannerRoute
+  '/seed': typeof SeedRoute
   '/subjects': typeof SubjectsRouteWithChildren
   '/targets': typeof TargetsRoute
   '/subjects/$subjectId': typeof SubjectsSubjectIdRoute
@@ -59,6 +67,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/planner': typeof PlannerRoute
+  '/seed': typeof SeedRoute
   '/subjects': typeof SubjectsRouteWithChildren
   '/targets': typeof TargetsRoute
   '/subjects/$subjectId': typeof SubjectsSubjectIdRoute
@@ -68,15 +77,23 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/planner'
+    | '/seed'
     | '/subjects'
     | '/targets'
     | '/subjects/$subjectId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/planner' | '/subjects' | '/targets' | '/subjects/$subjectId'
+  to:
+    | '/'
+    | '/planner'
+    | '/seed'
+    | '/subjects'
+    | '/targets'
+    | '/subjects/$subjectId'
   id:
     | '__root__'
     | '/'
     | '/planner'
+    | '/seed'
     | '/subjects'
     | '/targets'
     | '/subjects/$subjectId'
@@ -85,6 +102,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   PlannerRoute: typeof PlannerRoute
+  SeedRoute: typeof SeedRoute
   SubjectsRoute: typeof SubjectsRouteWithChildren
   TargetsRoute: typeof TargetsRoute
 }
@@ -103,6 +121,13 @@ declare module '@tanstack/react-router' {
       path: '/subjects'
       fullPath: '/subjects'
       preLoaderRoute: typeof SubjectsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/seed': {
+      id: '/seed'
+      path: '/seed'
+      fullPath: '/seed'
+      preLoaderRoute: typeof SeedRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/planner': {
@@ -144,19 +169,10 @@ const SubjectsRouteWithChildren = SubjectsRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   PlannerRoute: PlannerRoute,
+  SeedRoute: SeedRoute,
   SubjectsRoute: SubjectsRouteWithChildren,
   TargetsRoute: TargetsRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
