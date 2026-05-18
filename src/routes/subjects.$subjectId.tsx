@@ -1,9 +1,11 @@
-import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { useMemo, useState } from "react";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { useEffect, useMemo, useState } from "react";
+import { useQueries } from "@tanstack/react-query";
 import { DashboardLayout } from "@/components/dashboard-layout";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
+import { Skeleton } from "@/components/ui/skeleton";
 import {
   Tabs,
   TabsList,
@@ -26,34 +28,21 @@ import {
   Flame,
   XCircle,
 } from "lucide-react";
-import {
-  subjects,
-  subjectChapters,
-  subjectMCQs,
-  type Chapter,
-  type MCQ,
-} from "@/lib/mock-data";
+import { subjectMCQs, type MCQ } from "@/lib/mock-data";
+import { fetchChapters, fetchSubject } from "@/integrations/firebase/subjects";
+import type { ChapterDoc, SubjectDoc } from "@/integrations/firebase/types";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/subjects/$subjectId")({
-  head: ({ params }) => {
-    const subj = subjects.find((s) => s.id === params.subjectId);
-    const name = subj?.name ?? "Subject";
-    return {
-      meta: [
-        { title: `${name} — VidyaPath` },
-        {
-          name: "description",
-          content: `${name} chapter progress, weak/strong topics and AI practice MCQs for Karnataka SSLC.`,
-        },
-      ],
-    };
-  },
-  loader: ({ params }) => {
-    const subj = subjects.find((s) => s.id === params.subjectId);
-    if (!subj) throw notFound();
-    return { subject: subj };
-  },
+  head: ({ params }) => ({
+    meta: [
+      { title: `${params.subjectId} — VidyaPath` },
+      {
+        name: "description",
+        content: `Chapter progress, weak/strong topics and practice MCQs for Karnataka SSLC.`,
+      },
+    ],
+  }),
   notFoundComponent: () => (
     <DashboardLayout title="Not found">
       <div className="mx-auto max-w-lg py-24 text-center">
@@ -64,12 +53,85 @@ export const Route = createFileRoute("/subjects/$subjectId")({
       </div>
     </DashboardLayout>
   ),
+  errorComponent: ({ error }) => (
+    <DashboardLayout title="Error">
+      <div className="mx-auto max-w-lg py-24 text-center">
+        <AlertTriangle className="mx-auto h-10 w-10 text-destructive" />
+        <h1 className="mt-3 font-display text-2xl font-bold">Couldn't load subject</h1>
+        <p className="mt-1 text-sm text-muted-foreground break-words">{error.message}</p>
+        <Button asChild className="mt-4 rounded-full">
+          <Link to="/subjects">Back to subjects</Link>
+        </Button>
+      </div>
+    </DashboardLayout>
+  ),
   component: SubjectDetailPage,
 });
 
 function SubjectDetailPage() {
-  const { subject } = Route.useLoaderData();
-  const chapters: Chapter[] = subjectChapters[subject.id] ?? [];
+  const { subjectId } = Route.useParams();
+
+  const [subjectQuery, chaptersQuery] = useQueries({
+    queries: [
+      {
+        queryKey: ["subject", subjectId],
+        queryFn: () => fetchSubject(subjectId),
+      },
+      {
+        queryKey: ["chapters", subjectId],
+        queryFn: () => fetchChapters(subjectId),
+      },
+    ],
+  });
+
+  if (subjectQuery.isLoading || chaptersQuery.isLoading) {
+    return (
+      <DashboardLayout title="Loading…">
+        <div className="mx-auto max-w-7xl space-y-6">
+          <Skeleton className="h-40 w-full rounded-3xl" />
+          <Skeleton className="h-10 w-72 rounded-full" />
+          <div className="grid gap-3 md:grid-cols-2">
+            {Array.from({ length: 6 }).map((_, i) => (
+              <Skeleton key={i} className="h-24 rounded-2xl" />
+            ))}
+          </div>
+        </div>
+      </DashboardLayout>
+    );
+  }
+
+  if (subjectQuery.isError || chaptersQuery.isError) {
+    const err = (subjectQuery.error ?? chaptersQuery.error) as Error;
+    return (
+      <DashboardLayout title="Error">
+        <div className="mx-auto max-w-lg py-24 text-center">
+          <AlertTriangle className="mx-auto h-10 w-10 text-destructive" />
+          <h1 className="mt-3 font-display text-2xl font-bold">Couldn't load this subject</h1>
+          <p className="mt-1 text-sm text-muted-foreground break-words">{err?.message}</p>
+          <Button asChild className="mt-4 rounded-full">
+            <Link to="/subjects">Back to subjects</Link>
+          </Button>
+        </div>
+      </DashboardLayout>
+    );
+  }
+
+  const subject = subjectQuery.data as SubjectDoc | null;
+  const chapters: ChapterDoc[] = chaptersQuery.data ?? [];
+
+  if (!subject) {
+    return (
+      <DashboardLayout title="Not found">
+        <div className="mx-auto max-w-lg py-24 text-center">
+          <h1 className="font-display text-2xl font-bold">Subject not found</h1>
+          <Button asChild className="mt-4 rounded-full">
+            <Link to="/subjects">Back to subjects</Link>
+          </Button>
+        </div>
+      </DashboardLayout>
+    );
+  }
+
   const mcqs: MCQ[] = subjectMCQs[subject.id] ?? [];
 
   const doneChapters = chapters.filter((c) => c.done).length;
@@ -170,8 +232,15 @@ function HeaderStat({ label, value }: { label: string; value: string }) {
 
 /* ---------------- Chapters ---------------- */
 
-function ChaptersSection({ chapters, color }: { chapters: Chapter[]; color: string }) {
-  const [done, setDone] = useState(() => new Set(chapters.filter((c) => c.done).map((c) => c.id)));
+function ChaptersSection({ chapters, color }: { chapters: ChapterDoc[]; color: string }) {
+  const [done, setDone] = useState<Set<string>>(
+    () => new Set(chapters.filter((c) => c.done).map((c) => c.id)),
+  );
+
+  // Sync local state when chapters arrive/refresh from Firestore.
+  useEffect(() => {
+    setDone(new Set(chapters.filter((c) => c.done).map((c) => c.id)));
+  }, [chapters]);
 
   function toggle(id: string) {
     setDone((prev) => {
@@ -246,7 +315,7 @@ function ChaptersSection({ chapters, color }: { chapters: Chapter[]; color: stri
   );
 }
 
-function DifficultyBadge({ level }: { level: Chapter["difficulty"] }) {
+function DifficultyBadge({ level }: { level: ChapterDoc["difficulty"] }) {
   const tone =
     level === "Easy"
       ? "bg-success/15 text-success border-success/30"
