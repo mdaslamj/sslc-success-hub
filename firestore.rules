@@ -63,11 +63,26 @@ service cloud.firestore {
     }
 
     // Per-user notes.
-    match /notes/{uid} {
-      allow read, write: if isOwner(uid);
-      match /{document=**} {
-        allow read, write: if isOwner(uid);
-      }
+    // Notes are stored in a flat collection keyed by note id, with a
+    // `userId` field identifying the owner. Reads/writes require the
+    // caller to be the owner of the existing document (for updates/deletes)
+    // and the incoming document (for creates/updates).
+    match /notes/{noteId} {
+      allow read: if isSignedIn() && resource.data.userId == request.auth.uid;
+      allow create: if isSignedIn() && request.resource.data.userId == request.auth.uid;
+      allow update, delete: if isSignedIn()
+        && resource.data.userId == request.auth.uid
+        && request.resource.data.userId == request.auth.uid;
+    }
+
+    // Per-user chapter progress. Flat collection keyed by `${userId}_${chapterId}`
+    // with a `userId` field. Only the owning user may read or write.
+    match /chapterProgress/{docId} {
+      allow read: if isSignedIn() && resource.data.userId == request.auth.uid;
+      allow create: if isSignedIn() && request.resource.data.userId == request.auth.uid;
+      allow update, delete: if isSignedIn()
+        && resource.data.userId == request.auth.uid
+        && request.resource.data.userId == request.auth.uid;
     }
 
     // Default deny.
