@@ -97,6 +97,7 @@ export type McqDoc = {
 /** Future note shape — markdown body keyed by subject+chapter. */
 export type NoteDoc = {
   id: string;
+  userId: string;
   subjectId: string;
   chapterId?: string;
   title: string;
