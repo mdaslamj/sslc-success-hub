@@ -13,6 +13,19 @@ export type SyllabusChapterInput = {
   mcqCount?: number;
   estimatedStudyTime?: number;
   difficulty?: ChapterDoc["difficulty"];
+  /** Key sub-topics inside the chapter — powers weak-topic analysis & revision planner. */
+  importantTopics?: string[];
+  /** Plain-text or LaTeX formulas the student should memorise. */
+  formulas?: ChapterFormula[];
+  /** Bloom's-style learning objectives — fuels AI recommendations later. */
+  learningObjectives?: string[];
+};
+
+/** A single formula entry, kept structured so MCQ/AI generators can reason over it. */
+export type ChapterFormula = {
+  label: string;
+  expression: string; // LaTeX or plain text
+  description?: string;
 };
 
 export type SyllabusSubjectInput = {

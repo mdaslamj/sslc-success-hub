@@ -35,6 +35,9 @@ export type ChapterDoc = {
   videoUrls?: string[];
   mcqCount?: number;
   estimatedStudyTime?: number; // minutes
+  importantTopics?: string[];
+  formulas?: { label: string; expression: string; description?: string }[];
+  learningObjectives?: string[];
 };
 
 /** Generic study resource (textbook PDF, notes, worksheet, video) for a chapter. */
