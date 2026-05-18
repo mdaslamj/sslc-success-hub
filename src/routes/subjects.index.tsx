@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { fetchSubjects } from "@/integrations/firebase/subjects";
 
-export const Route = createFileRoute("/subjects")({
+export const Route = createFileRoute("/subjects/")({
   head: () => ({
     meta: [
       { title: "Subjects — VidyaPath" },

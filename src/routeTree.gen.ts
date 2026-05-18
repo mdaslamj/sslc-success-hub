@@ -10,21 +10,16 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as TargetsRouteImport } from './routes/targets'
-import { Route as SubjectsRouteImport } from './routes/subjects'
 import { Route as SeedRouteImport } from './routes/seed'
 import { Route as PlannerRouteImport } from './routes/planner'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as SubjectsIndexRouteImport } from './routes/subjects.index'
 import { Route as SubjectsSubjectIdRouteImport } from './routes/subjects.$subjectId'
 import { Route as AdminImportRouteImport } from './routes/admin.import'
 
 const TargetsRoute = TargetsRouteImport.update({
   id: '/targets',
   path: '/targets',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const SubjectsRoute = SubjectsRouteImport.update({
-  id: '/subjects',
-  path: '/subjects',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SeedRoute = SeedRouteImport.update({
@@ -42,6 +37,11 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SubjectsIndexRoute = SubjectsIndexRouteImport.update({
+  id: '/subjects/',
+  path: '/subjects/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SubjectsSubjectIdRoute = SubjectsSubjectIdRouteImport.update({
   id: '/$subjectId',
   path: '/$subjectId',
@@ -57,29 +57,29 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/planner': typeof PlannerRoute
   '/seed': typeof SeedRoute
-  '/subjects': typeof SubjectsRouteWithChildren
   '/targets': typeof TargetsRoute
   '/admin/import': typeof AdminImportRoute
   '/subjects/$subjectId': typeof SubjectsSubjectIdRoute
+  '/subjects/': typeof SubjectsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/planner': typeof PlannerRoute
   '/seed': typeof SeedRoute
-  '/subjects': typeof SubjectsRouteWithChildren
   '/targets': typeof TargetsRoute
   '/admin/import': typeof AdminImportRoute
   '/subjects/$subjectId': typeof SubjectsSubjectIdRoute
+  '/subjects': typeof SubjectsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/planner': typeof PlannerRoute
   '/seed': typeof SeedRoute
-  '/subjects': typeof SubjectsRouteWithChildren
   '/targets': typeof TargetsRoute
   '/admin/import': typeof AdminImportRoute
   '/subjects/$subjectId': typeof SubjectsSubjectIdRoute
+  '/subjects/': typeof SubjectsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -87,37 +87,37 @@ export interface FileRouteTypes {
     | '/'
     | '/planner'
     | '/seed'
-    | '/subjects'
     | '/targets'
     | '/admin/import'
     | '/subjects/$subjectId'
+    | '/subjects/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/planner'
     | '/seed'
-    | '/subjects'
     | '/targets'
     | '/admin/import'
     | '/subjects/$subjectId'
+    | '/subjects'
   id:
     | '__root__'
     | '/'
     | '/planner'
     | '/seed'
-    | '/subjects'
     | '/targets'
     | '/admin/import'
     | '/subjects/$subjectId'
+    | '/subjects/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   PlannerRoute: typeof PlannerRoute
   SeedRoute: typeof SeedRoute
-  SubjectsRoute: typeof SubjectsRouteWithChildren
   TargetsRoute: typeof TargetsRoute
   AdminImportRoute: typeof AdminImportRoute
+  SubjectsIndexRoute: typeof SubjectsIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -127,13 +127,6 @@ declare module '@tanstack/react-router' {
       path: '/targets'
       fullPath: '/targets'
       preLoaderRoute: typeof TargetsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/subjects': {
-      id: '/subjects'
-      path: '/subjects'
-      fullPath: '/subjects'
-      preLoaderRoute: typeof SubjectsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/seed': {
@@ -157,6 +150,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/subjects/': {
+      id: '/subjects/'
+      path: '/subjects'
+      fullPath: '/subjects/'
+      preLoaderRoute: typeof SubjectsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/subjects/$subjectId': {
       id: '/subjects/$subjectId'
       path: '/$subjectId'
@@ -174,26 +174,24 @@ declare module '@tanstack/react-router' {
   }
 }
 
-interface SubjectsRouteChildren {
-  SubjectsSubjectIdRoute: typeof SubjectsSubjectIdRoute
-}
-
-const SubjectsRouteChildren: SubjectsRouteChildren = {
-  SubjectsSubjectIdRoute: SubjectsSubjectIdRoute,
-}
-
-const SubjectsRouteWithChildren = SubjectsRoute._addFileChildren(
-  SubjectsRouteChildren,
-)
-
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   PlannerRoute: PlannerRoute,
   SeedRoute: SeedRoute,
-  SubjectsRoute: SubjectsRouteWithChildren,
   TargetsRoute: TargetsRoute,
   AdminImportRoute: AdminImportRoute,
+  SubjectsIndexRoute: SubjectsIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
