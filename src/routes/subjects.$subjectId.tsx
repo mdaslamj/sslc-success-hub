@@ -33,6 +33,7 @@ import { fetchChapters, fetchSubject } from "@/integrations/firebase/subjects";
 import type { ChapterDoc, SubjectDoc } from "@/integrations/firebase/types";
 import { toast } from "sonner";
 import { ChapterResources } from "@/components/chapter-resources";
+import { UploadAnswerButton } from "@/components/answer-upload/upload-answer-button";
 import { Library } from "lucide-react";
 
 export const Route = createFileRoute("/subjects/$subjectId")({
@@ -226,6 +227,20 @@ function SubjectDetailPage() {
 
           {/* PRACTICE */}
           <TabsContent value="practice" className="mt-4">
+            <div className="mb-3 flex flex-wrap items-center justify-between gap-2 rounded-2xl border border-border/60 bg-card p-3">
+              <div className="text-xs text-muted-foreground">
+                Practicing on paper? Upload a photo of your answers.
+              </div>
+              <UploadAnswerButton
+                context={{
+                  type: "chapter",
+                  refId: subject.id,
+                  subjectId: subject.id,
+                  label: `${subject.name} practice`,
+                }}
+                label="Upload answers"
+              />
+            </div>
             {mcqs.length > 0 ? (
               <PracticeQuiz mcqs={mcqs} color={subject.color} />
             ) : (
