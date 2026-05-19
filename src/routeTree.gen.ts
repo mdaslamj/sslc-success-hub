@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as TargetsRouteImport } from './routes/targets'
 import { Route as SeedRouteImport } from './routes/seed'
 import { Route as QuizzesRouteImport } from './routes/quizzes'
+import { Route as PredictionsRouteImport } from './routes/predictions'
 import { Route as PlannerRouteImport } from './routes/planner'
 import { Route as FocusRouteImport } from './routes/focus'
 import { Route as AnalyticsRouteImport } from './routes/analytics'
@@ -35,6 +36,11 @@ const SeedRoute = SeedRouteImport.update({
 const QuizzesRoute = QuizzesRouteImport.update({
   id: '/quizzes',
   path: '/quizzes',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PredictionsRoute = PredictionsRouteImport.update({
+  id: '/predictions',
+  path: '/predictions',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PlannerRoute = PlannerRouteImport.update({
@@ -89,6 +95,7 @@ export interface FileRoutesByFullPath {
   '/analytics': typeof AnalyticsRoute
   '/focus': typeof FocusRoute
   '/planner': typeof PlannerRoute
+  '/predictions': typeof PredictionsRoute
   '/quizzes': typeof QuizzesRoute
   '/seed': typeof SeedRoute
   '/targets': typeof TargetsRoute
@@ -103,6 +110,7 @@ export interface FileRoutesByTo {
   '/analytics': typeof AnalyticsRoute
   '/focus': typeof FocusRoute
   '/planner': typeof PlannerRoute
+  '/predictions': typeof PredictionsRoute
   '/quizzes': typeof QuizzesRoute
   '/seed': typeof SeedRoute
   '/targets': typeof TargetsRoute
@@ -118,6 +126,7 @@ export interface FileRoutesById {
   '/analytics': typeof AnalyticsRoute
   '/focus': typeof FocusRoute
   '/planner': typeof PlannerRoute
+  '/predictions': typeof PredictionsRoute
   '/quizzes': typeof QuizzesRoute
   '/seed': typeof SeedRoute
   '/targets': typeof TargetsRoute
@@ -134,6 +143,7 @@ export interface FileRouteTypes {
     | '/analytics'
     | '/focus'
     | '/planner'
+    | '/predictions'
     | '/quizzes'
     | '/seed'
     | '/targets'
@@ -148,6 +158,7 @@ export interface FileRouteTypes {
     | '/analytics'
     | '/focus'
     | '/planner'
+    | '/predictions'
     | '/quizzes'
     | '/seed'
     | '/targets'
@@ -162,6 +173,7 @@ export interface FileRouteTypes {
     | '/analytics'
     | '/focus'
     | '/planner'
+    | '/predictions'
     | '/quizzes'
     | '/seed'
     | '/targets'
@@ -177,6 +189,7 @@ export interface RootRouteChildren {
   AnalyticsRoute: typeof AnalyticsRoute
   FocusRoute: typeof FocusRoute
   PlannerRoute: typeof PlannerRoute
+  PredictionsRoute: typeof PredictionsRoute
   QuizzesRoute: typeof QuizzesRoute
   SeedRoute: typeof SeedRoute
   TargetsRoute: typeof TargetsRoute
@@ -207,6 +220,13 @@ declare module '@tanstack/react-router' {
       path: '/quizzes'
       fullPath: '/quizzes'
       preLoaderRoute: typeof QuizzesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/predictions': {
+      id: '/predictions'
+      path: '/predictions'
+      fullPath: '/predictions'
+      preLoaderRoute: typeof PredictionsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/planner': {
@@ -281,6 +301,7 @@ const rootRouteChildren: RootRouteChildren = {
   AnalyticsRoute: AnalyticsRoute,
   FocusRoute: FocusRoute,
   PlannerRoute: PlannerRoute,
+  PredictionsRoute: PredictionsRoute,
   QuizzesRoute: QuizzesRoute,
   SeedRoute: SeedRoute,
   TargetsRoute: TargetsRoute,
