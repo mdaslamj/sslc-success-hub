@@ -30,6 +30,7 @@ import {
 import { todayTasks, subjects } from "@/lib/mock-data";
 import { toast } from "sonner";
 import { RevisionPlannerCard, type RevisionPick } from "@/components/revision-planner-card";
+import { useAnalytics } from "@/hooks/use-analytics";
 
 export const Route = createFileRoute("/planner")({
   head: () => ({
@@ -70,6 +71,7 @@ const seedTasks: Task[] = todayTasks.map((t) => ({
 }));
 
 function PlannerPage() {
+  const { logSession } = useAnalytics();
   const [tasks, setTasks] = useState<Task[]>(seedTasks);
   const [newTask, setNewTask] = useState("");
   const [newSubject, setNewSubject] = useState(subjects[0].name);
@@ -352,7 +354,17 @@ function PlannerPage() {
           {/* RIGHT: focus + achievements */}
           <section className="space-y-6">
             <RevisionPlannerCard onAddToPlan={addFromRecommendation} />
-            <FocusTimer onSessionComplete={(min) => setFocusMinutes((m) => m + min)} />
+            <FocusTimer
+              onSessionComplete={(min) => {
+                setFocusMinutes((m) => m + min);
+                logSession({
+                  kind: "focus",
+                  startedAt: Date.now() - min * 60 * 1000,
+                  endedAt: Date.now(),
+                  durationMinutes: min,
+                });
+              }}
+            />
 
             <div className="rounded-3xl border border-border/60 bg-card p-6 shadow-card">
               <div className="mb-4 flex items-center justify-between">
