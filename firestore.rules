@@ -80,6 +80,21 @@ service cloud.firestore {
       allow read, write: if isOwner(uid);
     }
 
+    // Per-user profile (auth + onboarding metadata). Doc id == auth uid.
+    match /userProfiles/{uid} {
+      allow read, write: if isOwner(uid);
+    }
+
+    // Per-user app settings. Doc id == auth uid.
+    match /userSettings/{uid} {
+      allow read, write: if isOwner(uid);
+    }
+
+    // Per-user aggregated stats. Doc id == auth uid.
+    match /userStats/{uid} {
+      allow read, write: if isOwner(uid);
+    }
+
     // Per-user progress.
     match /progress/{uid} {
       allow read, write: if isOwner(uid);
