@@ -43,7 +43,12 @@ function SeedPage() {
       setState({ kind: "success", ...r });
       status.refetch();
     } catch (e) {
-      setState({ kind: "error", message: (e as Error).message });
+      // Log internal details for the admin's browser console only.
+      if (typeof console !== "undefined") console.error("seed failed", e);
+      setState({
+        kind: "error",
+        message: "Seeding failed. Check the browser console for details.",
+      });
     }
   }
 
