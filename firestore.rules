@@ -49,6 +49,25 @@ service cloud.firestore {
       allow write: if isAdmin();
     }
 
+    // Flat syllabus collections actually used by the app code
+    // (see COLLECTIONS in src/integrations/firebase/config.ts).
+    // Public read, admin-only write — same posture as the nested
+    // /subjects/** content above.
+    match /chapters/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /resources/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /mcqs/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
     // Per-user profile.
     match /users/{uid} {
       allow read, write: if isOwner(uid);
