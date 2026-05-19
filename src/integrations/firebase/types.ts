@@ -1180,3 +1180,199 @@ export type WeaknessReportDoc = {
   sampleSize: number;
   updatedAt: number;
 };
+
+// ---------------------------------------------------------------------------
+// Mathematics Intelligence System — Project Aura
+//
+// Chapter-wise academic database that turns Mathematics into the first
+// fully intelligent subject. Backend-only schema; existing UI consumes via
+// hooks and engine dispatch — no page redesigns.
+//
+// Reference data (chapters, questions, model answers, formulas, rubrics,
+// keywords, common mistakes) is public-read / admin-write. Per-user
+// analytics is owner-gated.
+// ---------------------------------------------------------------------------
+
+export type MathQuestionType =
+  | "mcq"
+  | "1mark"
+  | "2mark"
+  | "3mark"
+  | "5mark"
+  | "hots"
+  | "competency";
+
+export type MathDifficulty = "easy" | "medium" | "hard";
+
+export type MathFormulaCategory =
+  | "algebra"
+  | "geometry"
+  | "trigonometry"
+  | "mensuration"
+  | "statistics"
+  | "arithmetic"
+  | "calculus"
+  | "other";
+
+/** Chapter-level academic profile. */
+export type MathChapterDoc = {
+  id: string;
+  subjectId: string; // always "math"
+  chapterNumber: number;
+  title: string;
+  titleKn?: string;
+  /** Conceptual sub-topics that drive weak-topic analysis. */
+  keyConcepts: string[];
+  /** References into `mathFormulas`. */
+  formulaIds: string[];
+  /** Historical share of board marks (0..100). */
+  boardWeight: number;
+  difficultyMix: { easy: number; medium: number; hard: number; hots: number };
+  /** Estimated chapter study time, in minutes. */
+  estimatedStudyTime: number;
+  /** Mastery % above which the chapter is considered "owned". */
+  masteryThreshold: number;
+  /** Chapters that should be studied first. */
+  prerequisites: string[];
+  updatedAt: number;
+};
+
+/** Per-question intelligent metadata. */
+export type MathQuestionMetadata = {
+  /** Times this question (or a near variant) appeared in board exams. */
+  boardFrequency: number;
+  /** True when boardFrequency >= 2 OR explicitly flagged by curriculum team. */
+  isRepeatedBoardQ: boolean;
+  /** Years the question was last seen on the board paper. */
+  lastAppearedYears: number[];
+  /** Curriculum-flagged "must-do" question. */
+  isImportant: boolean;
+  /** References into `mathCommonMistakes`. */
+  commonMistakeIds: string[];
+  /** Expected solving time in seconds. Drives speed analysis. */
+  estimatedSolvingTime: number;
+};
+
+export type MathQuestionDoc = {
+  id: string;
+  chapterId: string;
+  subjectId: string; // always "math"
+  questionType: MathQuestionType;
+  marks: number;
+  difficulty: MathDifficulty;
+  statement: string;
+  statementKn?: string;
+  /** MCQ options (when questionType === "mcq"). */
+  options?: string[];
+  /** 0-based index of the correct option. */
+  correctOption?: number;
+  /** Formulas the student must apply. */
+  requiredFormulaIds: string[];
+  /** References into `mathKeywords`. */
+  keywordIds: string[];
+  /** Override rubric; otherwise the questionType default applies. */
+  rubricId?: string;
+  metadata: MathQuestionMetadata;
+  /** Free-form provenance ("KSEEB 2023", "NCERT exemplar Q12"). */
+  source?: string;
+  tags?: string[];
+  updatedAt: number;
+};
+
+/** Stepwise model solution; one doc per `MathQuestionDoc`. */
+export type MathModelAnswerDoc = {
+  id: string; // == questionId
+  questionId: string;
+  chapterId: string;
+  steps: {
+    order: number;
+    text: string;
+    /** Formula referenced in this step. */
+    formulaId?: string;
+    /** Marks awarded for completing this step (used by rubric grader). */
+    marks: number;
+  }[];
+  finalAnswer: string;
+  /** Other valid methods the student may have used. */
+  alternativeMethods?: { label: string; steps: string[] }[];
+  totalMarks: number;
+  updatedAt: number;
+};
+
+/** Central formula registry — searchable across chapters. */
+export type MathFormulaDoc = {
+  id: string;
+  /** Chapters this formula is canonical for. */
+  chapterIds: string[];
+  label: string;
+  /** LaTeX-friendly expression. */
+  expression: string;
+  description?: string;
+  category: MathFormulaCategory;
+  /** Tips on common usage (e.g. unit caveats, sign rules). */
+  commonUsageNotes?: string;
+  updatedAt: number;
+};
+
+/** Marking rubric for math answers. Per question-type by default. */
+export type MathRubricDoc = {
+  id: string;
+  questionType: MathQuestionType;
+  totalMarks: number;
+  criteria: {
+    /** "formula", "substitution", "calculation", "units", "final" ... */
+    key: string;
+    label: string;
+    marks: number;
+    /** Required for full marks. Affects partial-credit logic. */
+    required: boolean;
+    /** Keyword hints fed to the grader. */
+    keywords?: string[];
+  }[];
+  updatedAt: number;
+};
+
+/** Concept/keyword tag powering OCR + AI grading matches. */
+export type MathKeywordDoc = {
+  id: string;
+  term: string;
+  synonyms: string[];
+  chapterIds: string[];
+  /** 0..1 — relative importance when matched. */
+  weight: number;
+  updatedAt: number;
+};
+
+/** Catalog of typical student errors per chapter/concept. */
+export type MathCommonMistakeDoc = {
+  id: string;
+  chapterId: string;
+  title: string;
+  description: string;
+  /** Patterns/phrases in OCR text that signal this mistake. */
+  triggerKeywords: string[];
+  /** What the student should do instead. */
+  correction: string;
+  updatedAt: number;
+};
+
+/** Per-user, per-chapter rollup. Doc id: `${userId}_${chapterId}`. */
+export type MathChapterAnalyticsDoc = {
+  id: string;
+  userId: string;
+  chapterId: string;
+  /** 0..100. */
+  mastery: number;
+  /** Per-formula accuracy ledger. */
+  formulaAccuracy: Record<string, { attempts: number; correct: number }>;
+  /** avgSolveTime / estimatedSolvingTime (1.0 = on pace, >1 = slower). */
+  speedIndex: number;
+  weakConcepts: string[];
+  strongConcepts: string[];
+  /** Per question-type performance. */
+  questionTypeStats: Record<
+    MathQuestionType,
+    { attempts: number; avgScore: number }
+  >;
+  lastUpdated: number;
+};
