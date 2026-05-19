@@ -70,22 +70,22 @@ function QuizzesPage() {
         <StatCard
           label="Quizzes Taken"
           value={stats.attempts.toString()}
-          icon={Brain}
+          icon={<Brain className="h-5 w-5" />}
         />
         <StatCard
           label="Avg Accuracy"
           value={`${stats.averageScore}%`}
-          icon={Target}
+          icon={<Target className="h-5 w-5" />}
         />
         <StatCard
           label="Best Score"
           value={`${stats.bestAccuracy}%`}
-          icon={Trophy}
+          icon={<Trophy className="h-5 w-5" />}
         />
         <StatCard
           label="Perfect Scores"
           value={stats.perfectScores.toString()}
-          icon={Sparkles}
+          icon={<Sparkles className="h-5 w-5" />}
         />
       </div>
 
