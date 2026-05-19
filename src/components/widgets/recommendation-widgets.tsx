@@ -62,6 +62,7 @@ const KIND_ICON: Record<RecommendationKind, React.ReactNode> = {
   streak_guard: <Sparkles className="h-3.5 w-3.5" />,
   consistency: <TrendingUp className="h-3.5 w-3.5" />,
   subject_difficulty: <Brain className="h-3.5 w-3.5" />,
+  resource: <BookOpen className="h-3.5 w-3.5" />,
 };
 
 function RecommendationRow({

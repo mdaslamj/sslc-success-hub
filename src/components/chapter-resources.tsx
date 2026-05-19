@@ -1,10 +1,12 @@
 import { useQueries } from "@tanstack/react-query";
+import { Link } from "@tanstack/react-router";
 import {
   BookOpen,
   ExternalLink,
   FileText,
   GraduationCap,
   Languages,
+  Library,
   Lightbulb,
   ListChecks,
   PlayCircle,
@@ -177,6 +179,26 @@ export function ChapterResources({ chapter }: { chapter: ChapterDoc }) {
 
   return (
     <div className="space-y-4">
+      {/* Shortcut to the centralized library, scoped to this chapter. */}
+      <Link
+        to="/resources"
+        search={
+          {
+            subjectId: chapter.subjectId,
+            chapterId: chapter.id,
+          } as never
+        }
+        className="group flex items-center justify-between gap-2 rounded-2xl border border-border/60 bg-card p-3 text-sm shadow-sm transition hover:border-brand/40 hover:bg-brand/5"
+      >
+        <span className="flex items-center gap-2">
+          <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-brand/10 text-brand">
+            <Library className="h-4 w-4" />
+          </span>
+          <span className="font-medium">View all in library</span>
+        </span>
+        <ExternalLink className="h-3.5 w-3.5 text-muted-foreground group-hover:text-brand" />
+      </Link>
+
       {/* Summary */}
       {summary && (
         <section className="rounded-2xl border border-border/60 bg-card p-4">

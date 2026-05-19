@@ -280,6 +280,21 @@ service cloud.firestore {
       allow write: if isAdmin();
     }
 
+    // Centralized library — public read, admin-only write.
+    match /libraryResources/{docId} {
+      allow read: if true;
+      // Anyone signed-in may bump the view counter; admins may write any field.
+      allow update: if isAdmin()
+        || (isSignedIn()
+            && request.resource.data.diff(resource.data).changedKeys().hasOnly(["views"]));
+      allow create, delete: if isAdmin();
+    }
+
+    match /libraryCategories/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
     // Default deny.
     match /{document=**} {
       allow read, write: if false;
