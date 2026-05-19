@@ -117,6 +117,22 @@ service cloud.firestore {
       allow read, write: if isOwner(uid);
     }
 
+    // GPT/Gemini Semantic Reasoning Layer — per-user subcollections
+    // under users/{uid}. Owner read/write only. Public chapter reads
+    // and admin seeding rules remain unchanged.
+    match /users/{uid}/aiTutoringSessions/{sessionId} {
+      allow read, write: if isOwner(uid);
+    }
+    match /users/{uid}/semanticEvaluations/{evaluationId} {
+      allow read, write: if isOwner(uid);
+    }
+    match /users/{uid}/hintHistory/{hintId} {
+      allow read, write: if isOwner(uid);
+    }
+    match /users/{uid}/reasoningFeedback/{feedbackId} {
+      allow read, write: if isOwner(uid);
+    }
+
     // Per-user profile (auth + onboarding metadata). Doc id == auth uid.
     match /userProfiles/{uid} {
       allow read, write: if isOwner(uid);
