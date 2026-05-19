@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as TargetsRouteImport } from './routes/targets'
 import { Route as SeedRouteImport } from './routes/seed'
+import { Route as QuizzesRouteImport } from './routes/quizzes'
 import { Route as PlannerRouteImport } from './routes/planner'
 import { Route as FocusRouteImport } from './routes/focus'
 import { Route as AnalyticsRouteImport } from './routes/analytics'
@@ -18,6 +19,7 @@ import { Route as AchievementsRouteImport } from './routes/achievements'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as SubjectsIndexRouteImport } from './routes/subjects.index'
 import { Route as SubjectsSubjectIdRouteImport } from './routes/subjects.$subjectId'
+import { Route as QuizQuizIdRouteImport } from './routes/quiz.$quizId'
 import { Route as AdminImportRouteImport } from './routes/admin.import'
 
 const TargetsRoute = TargetsRouteImport.update({
@@ -28,6 +30,11 @@ const TargetsRoute = TargetsRouteImport.update({
 const SeedRoute = SeedRouteImport.update({
   id: '/seed',
   path: '/seed',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const QuizzesRoute = QuizzesRouteImport.update({
+  id: '/quizzes',
+  path: '/quizzes',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PlannerRoute = PlannerRouteImport.update({
@@ -65,6 +72,11 @@ const SubjectsSubjectIdRoute = SubjectsSubjectIdRouteImport.update({
   path: '/subjects/$subjectId',
   getParentRoute: () => rootRouteImport,
 } as any)
+const QuizQuizIdRoute = QuizQuizIdRouteImport.update({
+  id: '/quiz/$quizId',
+  path: '/quiz/$quizId',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminImportRoute = AdminImportRouteImport.update({
   id: '/admin/import',
   path: '/admin/import',
@@ -77,9 +89,11 @@ export interface FileRoutesByFullPath {
   '/analytics': typeof AnalyticsRoute
   '/focus': typeof FocusRoute
   '/planner': typeof PlannerRoute
+  '/quizzes': typeof QuizzesRoute
   '/seed': typeof SeedRoute
   '/targets': typeof TargetsRoute
   '/admin/import': typeof AdminImportRoute
+  '/quiz/$quizId': typeof QuizQuizIdRoute
   '/subjects/$subjectId': typeof SubjectsSubjectIdRoute
   '/subjects/': typeof SubjectsIndexRoute
 }
@@ -89,9 +103,11 @@ export interface FileRoutesByTo {
   '/analytics': typeof AnalyticsRoute
   '/focus': typeof FocusRoute
   '/planner': typeof PlannerRoute
+  '/quizzes': typeof QuizzesRoute
   '/seed': typeof SeedRoute
   '/targets': typeof TargetsRoute
   '/admin/import': typeof AdminImportRoute
+  '/quiz/$quizId': typeof QuizQuizIdRoute
   '/subjects/$subjectId': typeof SubjectsSubjectIdRoute
   '/subjects': typeof SubjectsIndexRoute
 }
@@ -102,9 +118,11 @@ export interface FileRoutesById {
   '/analytics': typeof AnalyticsRoute
   '/focus': typeof FocusRoute
   '/planner': typeof PlannerRoute
+  '/quizzes': typeof QuizzesRoute
   '/seed': typeof SeedRoute
   '/targets': typeof TargetsRoute
   '/admin/import': typeof AdminImportRoute
+  '/quiz/$quizId': typeof QuizQuizIdRoute
   '/subjects/$subjectId': typeof SubjectsSubjectIdRoute
   '/subjects/': typeof SubjectsIndexRoute
 }
@@ -116,9 +134,11 @@ export interface FileRouteTypes {
     | '/analytics'
     | '/focus'
     | '/planner'
+    | '/quizzes'
     | '/seed'
     | '/targets'
     | '/admin/import'
+    | '/quiz/$quizId'
     | '/subjects/$subjectId'
     | '/subjects/'
   fileRoutesByTo: FileRoutesByTo
@@ -128,9 +148,11 @@ export interface FileRouteTypes {
     | '/analytics'
     | '/focus'
     | '/planner'
+    | '/quizzes'
     | '/seed'
     | '/targets'
     | '/admin/import'
+    | '/quiz/$quizId'
     | '/subjects/$subjectId'
     | '/subjects'
   id:
@@ -140,9 +162,11 @@ export interface FileRouteTypes {
     | '/analytics'
     | '/focus'
     | '/planner'
+    | '/quizzes'
     | '/seed'
     | '/targets'
     | '/admin/import'
+    | '/quiz/$quizId'
     | '/subjects/$subjectId'
     | '/subjects/'
   fileRoutesById: FileRoutesById
@@ -153,9 +177,11 @@ export interface RootRouteChildren {
   AnalyticsRoute: typeof AnalyticsRoute
   FocusRoute: typeof FocusRoute
   PlannerRoute: typeof PlannerRoute
+  QuizzesRoute: typeof QuizzesRoute
   SeedRoute: typeof SeedRoute
   TargetsRoute: typeof TargetsRoute
   AdminImportRoute: typeof AdminImportRoute
+  QuizQuizIdRoute: typeof QuizQuizIdRoute
   SubjectsSubjectIdRoute: typeof SubjectsSubjectIdRoute
   SubjectsIndexRoute: typeof SubjectsIndexRoute
 }
@@ -174,6 +200,13 @@ declare module '@tanstack/react-router' {
       path: '/seed'
       fullPath: '/seed'
       preLoaderRoute: typeof SeedRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/quizzes': {
+      id: '/quizzes'
+      path: '/quizzes'
+      fullPath: '/quizzes'
+      preLoaderRoute: typeof QuizzesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/planner': {
@@ -225,6 +258,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SubjectsSubjectIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/quiz/$quizId': {
+      id: '/quiz/$quizId'
+      path: '/quiz/$quizId'
+      fullPath: '/quiz/$quizId'
+      preLoaderRoute: typeof QuizQuizIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/import': {
       id: '/admin/import'
       path: '/admin/import'
@@ -241,9 +281,11 @@ const rootRouteChildren: RootRouteChildren = {
   AnalyticsRoute: AnalyticsRoute,
   FocusRoute: FocusRoute,
   PlannerRoute: PlannerRoute,
+  QuizzesRoute: QuizzesRoute,
   SeedRoute: SeedRoute,
   TargetsRoute: TargetsRoute,
   AdminImportRoute: AdminImportRoute,
+  QuizQuizIdRoute: QuizQuizIdRoute,
   SubjectsSubjectIdRoute: SubjectsSubjectIdRoute,
   SubjectsIndexRoute: SubjectsIndexRoute,
 }
