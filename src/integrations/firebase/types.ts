@@ -1026,3 +1026,157 @@ export type UserStatsDoc = {
   lastActiveAt: number;
   updatedAt: number;
 };
+
+// ---------------------------------------------------------------------------
+// AI evaluation pipeline for handwritten answers
+//
+// Architecture notes:
+//  - One `EvaluationDoc` per `AnswerAttemptDoc`. Per-question/per-image
+//    breakdowns live inside `perQuestion[]` so a single doc renders the whole
+//    summary screen without extra reads.
+//  - `ModelAnswerDoc` and `EvaluationRubricDoc` are admin-curated reference
+//    data — public read, admin write. They feed the grading prompt (and a
+//    future rubric editor) but never store student PII.
+//  - `WeaknessReportDoc` is a rolling roll-up keyed by user+subject (and
+//    optional chapter) so the analytics + recommendations engines can read a
+//    single doc to know what to drill next.
+//  - Wire-compatible with a future GPT/Gemini grading call: today the
+//    service layer fills these shapes with a heuristic placeholder so the
+//    UI is fully exercised. Swapping in real LLM output only touches the
+//    `runEvaluation` function.
+// ---------------------------------------------------------------------------
+
+export type EvaluationState =
+  | "pending"
+  | "evaluating"
+  | "evaluated"
+  | "review_required"
+  | "error";
+
+/** Curated model/expected answer for a specific question. Admin-managed. */
+export type ModelAnswerDoc = {
+  id: string;
+  subjectId: string;
+  chapterId?: string;
+  /** Free-form question id (e.g. quiz qid, exam qid, "ch3-q5"). */
+  questionId: string;
+  questionText?: string;
+  /** Canonical answer text used as the grading reference. */
+  answerText: string;
+  /** Mark allocation for this question. */
+  maxScore: number;
+  /** Required keywords/concepts. Drives keyword-detection scoring. */
+  keywords: string[];
+  /** Step-marking outline — each step awards a portion of maxScore. */
+  steps?: { label: string; marks: number; keywords?: string[] }[];
+  language?: "en" | "kn" | "bilingual";
+  /** Optional rubric override; otherwise the subject/board default applies. */
+  rubricId?: string;
+  updatedAt: number;
+};
+
+/** Reusable marking rubric (board-style). Admin-managed. */
+export type EvaluationRubricDoc = {
+  id: string;
+  name: string;
+  /** "Karnataka SSLC", "CBSE", "custom", etc. */
+  board?: string;
+  subjectId?: string;
+  /** Weighted criteria; weights should sum to 1.0. */
+  criteria: {
+    key: string;
+    label: string;
+    weight: number;
+    description?: string;
+  }[];
+  /** Default presentation-marks ceiling (handwriting / neatness / diagrams). */
+  presentationMaxPct?: number;
+  updatedAt: number;
+};
+
+export type EvaluationSeverity = "low" | "medium" | "high";
+
+export type EvaluationPerQuestion = {
+  questionId?: string;
+  /** Source image id this question was extracted from (if known). */
+  imageId?: string;
+  questionText?: string;
+  studentAnswer: string;
+  score: number;
+  maxScore: number;
+  /** Rubric criterion -> score (0..weight). */
+  rubric: {
+    key: string;
+    label: string;
+    weight: number;
+    score: number;
+    comment?: string;
+  }[];
+  /** Keywords from the model answer that were detected in the student text. */
+  matchedKeywords: string[];
+  /** Keywords/concepts the student missed. */
+  missingKeywords: string[];
+  strengths: string[];
+  mistakes: string[];
+  missingPoints: string[];
+  presentationFeedback?: string;
+  conceptualFeedback?: string;
+  improvementSuggestions: string[];
+};
+
+/** One evaluation per AnswerAttemptDoc. Doc id == attemptId. */
+export type EvaluationDoc = {
+  id: string; // == attemptId
+  attemptId: string;
+  userId: string;
+  subjectId?: string;
+  chapterId?: string;
+  state: EvaluationState;
+  /** Aggregate marks. */
+  totalScore: number;
+  maxScore: number;
+  percentage: number;
+  /** Top-level summary text rendered above the breakdown. */
+  summary?: string;
+  /** Roll-up of strengths/mistakes across all questions. */
+  strengths: string[];
+  mistakes: string[];
+  missingPoints: string[];
+  improvementSuggestions: string[];
+  presentationFeedback?: string;
+  conceptualFeedback?: string;
+  /** Detected weak concepts — feeds WeaknessReportDoc + recommendations. */
+  weakConcepts: { topic: string; severity: EvaluationSeverity }[];
+  perQuestion: EvaluationPerQuestion[];
+  /** Provider hint for future telemetry ("heuristic" today). */
+  engine: "heuristic" | "gpt" | "gemini" | "manual";
+  rubricId?: string;
+  error?: string;
+  createdAt: number;
+  updatedAt: number;
+};
+
+/**
+ * Per-user rolling weakness report. Doc id convention:
+ *   `${userId}_${subjectId}`  (chapter-wide rollup) or
+ *   `${userId}_${subjectId}_${chapterId}`  (chapter-specific).
+ * The recommendation/analytics engines read this instead of scanning every
+ * evaluation.
+ */
+export type WeaknessReportDoc = {
+  id: string;
+  userId: string;
+  subjectId: string;
+  chapterId?: string;
+  /** Topic -> aggregated frequency + worst severity seen. */
+  topics: {
+    topic: string;
+    occurrences: number;
+    severity: EvaluationSeverity;
+    lastSeenAt: number;
+  }[];
+  /** Rolling average score on this subject/chapter from handwritten answers. */
+  avgPercentage: number;
+  sampleSize: number;
+  updatedAt: number;
+};
