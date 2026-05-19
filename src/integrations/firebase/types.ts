@@ -1376,3 +1376,50 @@ export type MathChapterAnalyticsDoc = {
   >;
   lastUpdated: number;
 };
+
+// ---------------------------------------------------------------------------
+// Math academic data — admin import drafts
+// ---------------------------------------------------------------------------
+
+export type MathImportSource = "json" | "csv" | "manual" | "seed";
+export type MathImportStatus = "pending" | "approved" | "rejected";
+
+export type MathImportIssue = {
+  level: "error" | "warning";
+  message: string;
+  /** Optional pointer into the payload (e.g. "questions[3].marks"). */
+  path?: string;
+};
+
+export type MathImportCounts = {
+  chapters: number;
+  questions: number;
+  modelAnswers: number;
+  formulas: number;
+  rubrics: number;
+  keywords: number;
+  commonMistakes: number;
+};
+
+export type MathImportPayload = {
+  chapters?: MathChapterDoc[];
+  questions?: MathQuestionDoc[];
+  modelAnswers?: MathModelAnswerDoc[];
+  formulas?: MathFormulaDoc[];
+  rubrics?: MathRubricDoc[];
+  keywords?: MathKeywordDoc[];
+  commonMistakes?: MathCommonMistakeDoc[];
+};
+
+export type MathImportDraftDoc = {
+  id: string;
+  createdAt: number;
+  createdBy?: string;
+  source: MathImportSource;
+  status: MathImportStatus;
+  payload: MathImportPayload;
+  counts: MathImportCounts;
+  validationIssues: MathImportIssue[];
+  notes?: string;
+  publishedAt?: number;
+};

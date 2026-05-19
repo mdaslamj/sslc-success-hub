@@ -383,6 +383,12 @@ service cloud.firestore {
         && request.resource.data.userId == request.auth.uid;
     }
 
+    // Math academic data import drafts — admin-only read/write. Lets reviewers
+    // approve queued imports before they hit live student-facing collections.
+    match /mathImportDrafts/{docId} {
+      allow read, write: if isAdmin();
+    }
+
     // Default deny.
     match /{document=**} {
       allow read, write: if false;
