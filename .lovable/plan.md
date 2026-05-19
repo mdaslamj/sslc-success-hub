@@ -1,51 +1,37 @@
-# One-tap "Add to Today's Plan" from Textbooks
+## Problem
 
-Add a button next to each chapter on `/textbooks` that creates a planner task for today (kind: `study`, source: `user`) pointing at that chapter + textbook URL. No new collections, no engine changes.
+On `/resources?subjectId=math&chapterId=m1` the page shows "No resources match these filters yet" and there is nothing to open. The chapter PDFs are seeded, but they never match the chapter the user clicked.
 
-## What gets built
+### Root cause
 
-### 1. Tiny helper — `addUserPlannerTask`
-`src/lib/planner-store.ts` already exposes `writePlannerTasks` (local-first, same store the planner reads from). Add a small helper next to it:
+Two different seeders write chapters with **different ID schemes**:
 
-```ts
-addUserPlannerTask({
-  userId, dayKey, subjectId, chapterId, title,
-  durationMinutes, kind: "study", url?,
-}) : PlannerTaskDoc
-```
+| Seeder | Route | Chapter doc IDs |
+|---|---|---|
+| `seedFirestore()` (uses `mock-data.subjectChapters`) | `/seed` | `m1`, `m2`, …, `s1`, `ss1`, `e1`, `k1`, `h1` |
+| `importSyllabus()` (KARNATAKA_SSLC) | `/admin/import` | `math_ch01`, `science_ch01`, `social_ch01` |
 
-It builds a `PlannerTaskDoc` (id = `user_${dayKey}_${chapterId}_${ts}`, `source: "user"`, `priority: 60`, `xp: 20`, status `pending`, `reasons: ["Added from Textbooks"]`) and appends via `writePlannerTasks`. The chapter URL is stashed in a new optional `link?: string` field on `PlannerTaskDoc` so the planner page can show an "Open textbook ↗" affordance.
+The app on this device was populated via `/seed`, so Firestore has chapters with IDs `m1`, `s1`, `ss1`… But `src/lib/ktbs-textbook-seed.ts` hard-codes `chapterId: math_ch01` etc. → every textbook resource is orphaned, and `/resources?chapterId=m1` correctly returns zero matches.
 
-### 2. Textbooks row — add button
-On `/textbooks` each chapter row currently shows `[Open]`. Add a second button:
+`src/components/chapter-resources.tsx` passes `chapter.id` (the real Firestore doc id) into the `<Link to="/resources">`, so the link itself is correct. The only fix needed is on the seed side.
 
-```text
-Ch 1. Real Numbers    [+ Add to today]  [Open ↗]
-```
+## Fix
 
-Clicking it:
-- Calls `addUserPlannerTask` with today's `dayKey`, subject/chapter ids, chapter title, `durationMinutes: 35`, and the textbook URL
-- Shows a `sonner` toast: "Added to today's plan" with a "View planner" action that navigates to `/planner`
-- Disables briefly + flips icon to a check for ~1.5s
-- If a user-added task for the same chapter already exists today, the toast says "Already on today's plan" and skips the insert (dedupe on `subjectId + chapterId + dayKey + source=user`)
+Update `src/lib/ktbs-textbook-seed.ts` so each chapter entry emits resources for **both** ID schemes — the mock seed (`m{n}`, `s{n}`, `ss{n}`) and the syllabus importer (`math_ch01`, …). That way the textbook library works regardless of which seeder the user ran.
 
-Button stays visible even when no textbook URL is linked — students can still plan the chapter.
+Concretely:
 
-### 3. Planner page — render the link
-`src/routes/planner.tsx` already lists tasks. When a task has `link`, show a small "📘 Open" anchor next to the title. No layout redesign.
+- Add a subject config: `{ subjectId: "math", chapterIds: (n) => ["m" + n, "math_ch" + pad(n)] }`, same for `science` → `["s" + n, "science_ch" + pad(n)]` and `social` → `["ss" + n, "social_ch" + pad(n)]`.
+- For each chapter + language, generate one `LibraryResourceDoc` per `chapterIds[]` variant, with deterministic ids like `ktbs_math_m1_en` and `ktbs_math_math_ch01_en` so the upsert stays idempotent.
+- No changes to the seeding flow, no new collections, no schema changes. Re-running "Seed KTBS textbooks" on `/admin/import` will populate both variants.
 
-## Files
+## After the change
 
-**Edited (3):**
-- `src/integrations/firebase/types.ts` — add optional `link?: string` to `PlannerTaskDoc`
-- `src/lib/planner-store.ts` — export `addUserPlannerTask` helper (~25 lines)
-- `src/routes/textbooks.tsx` — add the "Add to today" button + toast
-- `src/routes/planner.tsx` — render `task.link` when present (small edit; will read file first)
-
-No new files. No new Firestore collections. No engine changes. ~50 lines of new logic total.
+- User goes to `/admin/import` and clicks **Seed KTBS textbooks** again (one click).
+- Clicking a chapter from the subject page now lands on `/resources?subjectId=math&chapterId=m1` with the matching NCERT/KTBS PDF row, with **Open** and **Add to today** buttons working as before.
+- `/textbooks` continues to work unchanged (it filters by `subjectId` only).
 
 ## Out of scope
 
-- No "Add to a specific date" picker (always today). A follow-up can wrap it in a small popover if needed.
-- No reordering or auto-regenerating the AI plan — the user-added task simply appears alongside engine-generated ones.
-- No backend persistence beyond the existing local-first planner store.
+- Reconciling the two seeders into a single canonical chapter set (separate cleanup).
+- Adding per-chapter Kannada PDFs (KTBS doesn't expose them; we still link to the subject contents page).
