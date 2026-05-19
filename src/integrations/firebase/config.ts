@@ -39,4 +39,6 @@ export const COLLECTIONS = {
   STUDY_PLANS: "studyPlans",
   PLANNER_TASKS: "plannerTasks",
   REVISION_SCHEDULES: "revisionSchedules",
+  RECOMMENDATIONS: "recommendations",
+  AI_INSIGHTS: "aiInsights",
 } as const;
