@@ -1,35 +1,41 @@
-# Fix `/subjects/math/$chapterId` stuck on Loading
+## Goal
 
-## Root cause
+Polish the Math ChapterView so it loads cleanly, recovers from "not seeded" by triggering an actual one-click seed, stays guest-safe, and matches the rest of the design system. Most pieces from the previous turn are already in place — this round closes the remaining gaps.
 
-`MathChapterHub` renders the skeleton whenever `chapter` or `mastery` is missing, with no branch for "chapter doc not found" or "query errored". On the live preview:
+## Current state (verified)
 
-- `fetchMathChapter("m1")` returns `null` because the Math intelligence collections have never been seeded in Firestore. Result: `chapter === null` → infinite skeleton.
-- The guest viewer is not signed in, so `useCurrentUserId()` returns a local id. The analytics query is enabled, Firestore rules reject it (`mathChapterAnalytics` requires `isSignedIn()`), the query goes to `isError`, but the loading guard ignores errors.
+- `useChapterMastery` already gates per-user analytics/evals/mocks behind `authedUserId` and returns `isChapterLoading`, `isChapterMissing`, `isAuthenticated`. ✅
+- `/subjects/math/$chapterId` already renders a skeleton only while `isChapterLoading`, an empty state when missing, and a "Sign in to track mastery" badge for guests. ✅
+- Firestore rules already make `mathChapters` (+ siblings) public read / admin write, and `mathChapterAnalytics`, `evaluations`, etc. owner-gated. ✅
+- `importMathFromSeed()` in `services/math-import.ts` already writes `SSLC_MATH_CHAPTERS` (Arithmetic Progressions, Triangles, Quadratic Equations) plus formulas/questions/etc. into Firestore, gated by Firestore admin rules + `AdminGate`. ✅
 
-## Changes
+## Gaps to fix
 
-### 1. `src/hooks/use-math-mastery.ts`
-- Only enable the per-user queries (analytics, evaluations, mock results) when the user is actually authenticated (use `useAuthOptional().user?.uid` directly instead of the local-fallback id). This stops `permission-denied` spam on the guest path.
-- Expose a separate `isChapterLoading` (just the chapter doc) alongside `isLoading`, and an `isChapterMissing` flag (`chapterQ.isSuccess && chapterQ.data == null`).
-- Still build `mastery` from whatever signals are available; for guests it just collapses to a zero-signal baseline instead of `null`.
-
-### 2. `src/routes/subjects.math.$chapterId.tsx`
-- Replace the single `if (isLoading || !chapter || !mastery)` branch with three explicit states:
-  - **Loading** — only while the chapter doc is still fetching.
-  - **Not found** — when `isChapterMissing` is true: render a friendly empty state with a "Seed Math data" hint linking to `/admin/import` and a Back to Math button. (Reuse the existing `notFoundComponent` markup.)
-  - **Loaded** — render the hub. Mastery is always non-null now.
-- Keep `errorComponent` for hard failures; surface analytics errors inline in the Improve tab instead of blocking the page.
-
-### 3. (Optional, same file) Sign-in nudge
-- In the intelligence header, if the viewer is anonymous, show a small "Sign in to track mastery" badge instead of zeroed stats. No new routes.
+1. **One-click seed from the empty state.** Today the "Seed Math data" button only links to `/admin/import`. Wire it to actually call a seeding flow.
+2. **Math-only seed helper.** Add `seedMathData()` wrapper in `services/math-import.ts` that calls `importMathFromSeed()` and returns counts — explicit, named entry point matching the brief.
+3. **Empty-state UX.** When the user clicks Seed:
+   - If not admin-unlocked → route to `/admin/import` (existing AdminGate handles auth).
+   - If admin-unlocked → call `seedMathData()` inline, toast success, then `queryClient.invalidateQueries({ queryKey: ["math"] })` so the page re-renders with the seeded chapter.
+   - Show inline spinner + disabled state while seeding.
+4. **Navigation polish.** Add a small breadcrumb row above the intelligence header: `Dashboard › Math › {chapter.title}` using `<Link>` to `/` and `/subjects/math`. Replaces the standalone "All Math chapters" back button. Keep the existing route path (`/subjects/math`, not `/math` — that route doesn't exist and changing it would touch app structure).
+5. **Design-token pass on empty state + guest badge.** Use `border-border/60 bg-card`, `rounded-3xl` container, `text-warning` icon, same type scale as other empty cards (e.g. analytics empty state). Mobile-first: max-w-sm on phone, padded.
+6. **`useAllChapterMastery` cleanup.** Drop the now-unused `useCurrentUserId()` call.
 
 ## Out of scope
-- No schema or rules changes.
-- No new data — admin still seeds via the existing `/admin/import` panel.
-- No changes to other subjects or to the Math chapter list page.
+
+- No new routes, no schema changes, no Firestore rules changes (already correct).
+- No redesign of the hub tabs or intelligence header.
+- No change to admin import panel itself.
+
+## Files to touch
+
+- `src/integrations/firebase/services/math-import.ts` — export `seedMathData()` wrapper.
+- `src/routes/subjects.math.$chapterId.tsx` — wire empty-state Seed button to `seedMathData` mutation + AdminGate fallback; add breadcrumb; tighten empty-state styling.
+- `src/hooks/use-math-mastery.ts` — remove unused `useCurrentUserId` import in `useAllChapterMastery`.
 
 ## Verification
-- Visit `/subjects/math/m1` as a guest with empty Firestore → "Chapter not found" empty state appears (no infinite skeleton).
-- Seed math via `/admin/import` → page renders with real chapter + zero-signal mastery for guests.
-- Sign in → analytics query runs, mastery reflects real signals.
+
+- Visit `/subjects/math/math_ap` with empty Firestore as guest → see empty state + "Sign in to track mastery" badge + working Back/Seed buttons.
+- As admin (unlocked), click "Seed Math data" → toast + page re-renders with chapter content; subsequent reload skips skeleton flash.
+- As signed-in non-admin → click routes to `/admin/import`.
+- Resize preview to 360px width → header, breadcrumb, empty state and stat grid wrap cleanly.
