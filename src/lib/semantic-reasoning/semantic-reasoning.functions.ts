@@ -1,5 +1,6 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
+import { createRemoteJWKSet, jwtVerify } from "jose";
 
 /**
  * Server-only call to the Lovable AI Gateway (OpenAI-compatible /chat/completions).
@@ -12,6 +13,30 @@ import { z } from "zod";
 
 const GATEWAY_URL = "https://ai.gateway.lovable.dev/v1/chat/completions";
 const DEFAULT_MODEL = "google/gemini-2.5-flash";
+
+/**
+ * Firebase ID token verification. Prevents unauthenticated callers from
+ * draining the project's LOVABLE_API_KEY credits by hitting this server
+ * function directly. Verifies the JWT signature against Google's
+ * securetoken JWKS, plus issuer/audience claims tied to the Firebase
+ * project ID.
+ */
+const FIREBASE_PROJECT_ID = "c-success-hub";
+const FIREBASE_ISSUER = `https://securetoken.google.com/${FIREBASE_PROJECT_ID}`;
+const FIREBASE_JWKS = createRemoteJWKSet(
+  new URL(
+    "https://www.googleapis.com/service_accounts/v1/jwk/securetoken@system.gserviceaccount.com",
+  ),
+);
+
+async function verifyFirebaseIdToken(idToken: string): Promise<string> {
+  const { payload } = await jwtVerify(idToken, FIREBASE_JWKS, {
+    issuer: FIREBASE_ISSUER,
+    audience: FIREBASE_PROJECT_ID,
+  });
+  if (!payload.sub) throw new Error("Token missing subject");
+  return payload.sub;
+}
 
 /**
  * Server-side response cache + dedup. Keyed by FNV-1a hash of the full
@@ -62,6 +87,7 @@ const MessageSchema = z.object({
 });
 
 const InputSchema = z.object({
+  idToken: z.string().min(20).max(8000),
   model: z.string().min(1).max(128).optional(),
   systemPrompt: z.string().min(1).max(8000),
   grounding: z.string().max(20000).optional(),
@@ -83,6 +109,14 @@ export type SemanticReasoningResult = {
 export const runSemanticReasoning = createServerFn({ method: "POST" })
   .inputValidator((input) => InputSchema.parse(input))
   .handler(async ({ data }): Promise<SemanticReasoningResult> => {
+    // Auth gate — reject anonymous callers before spending credits.
+    try {
+      await verifyFirebaseIdToken(data.idToken);
+    } catch (err) {
+      const message = err instanceof Error ? err.message : "Invalid token";
+      return { ok: false, status: 401, error: `Unauthorized: ${message}` };
+    }
+
     const apiKey = process.env.LOVABLE_API_KEY;
     if (!apiKey) {
       return { ok: false, status: 500, error: "LOVABLE_API_KEY not configured" };
