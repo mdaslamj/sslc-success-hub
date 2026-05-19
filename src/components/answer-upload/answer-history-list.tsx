@@ -1,21 +1,24 @@
-import { useState } from "react";
 import { format } from "date-fns";
-import { Eye, FileImage, Loader2, Trash2 } from "lucide-react";
+import { Link } from "@tanstack/react-router";
+import {
+  CheckCircle2,
+  FileImage,
+  Loader2,
+  ScanLine,
+  Sparkles,
+  Trash2,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import { useAnswerHistory, useAttemptImages } from "@/hooks/use-answer-history";
-import type { AnswerAttemptDoc } from "@/integrations/firebase/types";
+import { useAnswerHistory } from "@/hooks/use-answer-history";
+import type {
+  AnswerAttemptDoc,
+  AnswerProcessingState,
+} from "@/integrations/firebase/types";
 
 export function AnswerHistoryList() {
   const { attempts, loading, error, remove } = useAnswerHistory();
-  const [viewing, setViewing] = useState<AnswerAttemptDoc | null>(null);
 
   if (loading && attempts.length === 0) {
     return (
@@ -37,8 +40,7 @@ export function AnswerHistoryList() {
   }
 
   return (
-    <>
-      <ul className="space-y-2">
+    <ul className="space-y-2">
         {attempts.map((a) => (
           <li key={a.id}>
             <Card className="flex items-center gap-3 p-3">
@@ -50,9 +52,7 @@ export function AnswerHistoryList() {
                   <Badge variant="secondary" className="capitalize">
                     {a.context.type}
                   </Badge>
-                  <Badge variant="outline" className="capitalize">
-                    {a.status}
-                  </Badge>
+                  <StateBadge state={a.processingState ?? "uploaded"} />
                   <span className="text-xs text-muted-foreground">
                     {a.imageCount} page{a.imageCount === 1 ? "" : "s"}
                   </span>
@@ -62,8 +62,13 @@ export function AnswerHistoryList() {
                   {a.context.label ? ` · ${a.context.label}` : ""}
                 </p>
               </div>
-              <Button size="icon" variant="ghost" onClick={() => setViewing(a)}>
-                <Eye className="h-4 w-4" />
+              <Button asChild size="sm" variant="outline">
+                <Link
+                  to="/answer-uploads/$attemptId"
+                  params={{ attemptId: a.id }}
+                >
+                  Review
+                </Link>
               </Button>
               <Button
                 size="icon"
@@ -77,50 +82,41 @@ export function AnswerHistoryList() {
             </Card>
           </li>
         ))}
-      </ul>
-
-      <Dialog open={!!viewing} onOpenChange={(o) => !o && setViewing(null)}>
-        <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
-          <DialogHeader>
-            <DialogTitle>Uploaded answers</DialogTitle>
-          </DialogHeader>
-          {viewing && <AttemptPreview attemptId={viewing.id} />}
-        </DialogContent>
-      </Dialog>
-    </>
+    </ul>
   );
 }
 
-function AttemptPreview({ attemptId }: { attemptId: string }) {
-  const { images, loading } = useAttemptImages(attemptId);
-  if (loading) {
-    return (
-      <div className="flex items-center gap-2 text-sm text-muted-foreground">
-        <Loader2 className="h-4 w-4 animate-spin" /> Loading images…
-      </div>
-    );
+function StateBadge({ state }: { state: AnswerProcessingState }) {
+  switch (state) {
+    case "processing":
+      return (
+        <Badge className="gap-1">
+          <Loader2 className="h-3 w-3 animate-spin" /> Scanning
+        </Badge>
+      );
+    case "review_required":
+      return (
+        <Badge variant="outline" className="gap-1">
+          <ScanLine className="h-3 w-3" /> Review required
+        </Badge>
+      );
+    case "ready_for_evaluation":
+      return (
+        <Badge className="gap-1">
+          <Sparkles className="h-3 w-3" /> Ready
+        </Badge>
+      );
+    case "evaluated":
+      return (
+        <Badge className="gap-1">
+          <CheckCircle2 className="h-3 w-3" /> Evaluated
+        </Badge>
+      );
+    default:
+      return (
+        <Badge variant="secondary" className="capitalize">
+          uploaded
+        </Badge>
+      );
   }
-  if (images.length === 0) {
-    return <p className="text-sm text-muted-foreground">No images stored.</p>;
-  }
-  return (
-    <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-      {images.map((img, i) => (
-        <a
-          key={img.id}
-          href={img.downloadUrl}
-          target="_blank"
-          rel="noreferrer"
-          className="block overflow-hidden rounded-lg border bg-muted"
-        >
-          <img
-            src={img.downloadUrl}
-            alt={`Page ${i + 1}`}
-            className="h-auto w-full object-contain"
-            loading="lazy"
-          />
-        </a>
-      ))}
-    </div>
-  );
 }

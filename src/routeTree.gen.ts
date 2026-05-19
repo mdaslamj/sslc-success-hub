@@ -29,6 +29,7 @@ import { Route as SubjectsSubjectIdRouteImport } from './routes/subjects.$subjec
 import { Route as QuizQuizIdRouteImport } from './routes/quiz.$quizId'
 import { Route as ExamsExamIdRouteImport } from './routes/exams.$examId'
 import { Route as ExamResultsAttemptIdRouteImport } from './routes/exam-results.$attemptId'
+import { Route as AnswerUploadsAttemptIdRouteImport } from './routes/answer-uploads.$attemptId'
 import { Route as AdminImportRouteImport } from './routes/admin.import'
 
 const TargetsRoute = TargetsRouteImport.update({
@@ -131,6 +132,11 @@ const ExamResultsAttemptIdRoute = ExamResultsAttemptIdRouteImport.update({
   path: '/exam-results/$attemptId',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AnswerUploadsAttemptIdRoute = AnswerUploadsAttemptIdRouteImport.update({
+  id: '/$attemptId',
+  path: '/$attemptId',
+  getParentRoute: () => AnswerUploadsRoute,
+} as any)
 const AdminImportRoute = AdminImportRouteImport.update({
   id: '/admin/import',
   path: '/admin/import',
@@ -141,7 +147,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/achievements': typeof AchievementsRoute
   '/analytics': typeof AnalyticsRoute
-  '/answer-uploads': typeof AnswerUploadsRoute
+  '/answer-uploads': typeof AnswerUploadsRouteWithChildren
   '/exams': typeof ExamsRouteWithChildren
   '/focus': typeof FocusRoute
   '/forgot-password': typeof ForgotPasswordRoute
@@ -154,6 +160,7 @@ export interface FileRoutesByFullPath {
   '/seed': typeof SeedRoute
   '/targets': typeof TargetsRoute
   '/admin/import': typeof AdminImportRoute
+  '/answer-uploads/$attemptId': typeof AnswerUploadsAttemptIdRoute
   '/exam-results/$attemptId': typeof ExamResultsAttemptIdRoute
   '/exams/$examId': typeof ExamsExamIdRoute
   '/quiz/$quizId': typeof QuizQuizIdRoute
@@ -164,7 +171,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/achievements': typeof AchievementsRoute
   '/analytics': typeof AnalyticsRoute
-  '/answer-uploads': typeof AnswerUploadsRoute
+  '/answer-uploads': typeof AnswerUploadsRouteWithChildren
   '/exams': typeof ExamsRouteWithChildren
   '/focus': typeof FocusRoute
   '/forgot-password': typeof ForgotPasswordRoute
@@ -177,6 +184,7 @@ export interface FileRoutesByTo {
   '/seed': typeof SeedRoute
   '/targets': typeof TargetsRoute
   '/admin/import': typeof AdminImportRoute
+  '/answer-uploads/$attemptId': typeof AnswerUploadsAttemptIdRoute
   '/exam-results/$attemptId': typeof ExamResultsAttemptIdRoute
   '/exams/$examId': typeof ExamsExamIdRoute
   '/quiz/$quizId': typeof QuizQuizIdRoute
@@ -188,7 +196,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/achievements': typeof AchievementsRoute
   '/analytics': typeof AnalyticsRoute
-  '/answer-uploads': typeof AnswerUploadsRoute
+  '/answer-uploads': typeof AnswerUploadsRouteWithChildren
   '/exams': typeof ExamsRouteWithChildren
   '/focus': typeof FocusRoute
   '/forgot-password': typeof ForgotPasswordRoute
@@ -201,6 +209,7 @@ export interface FileRoutesById {
   '/seed': typeof SeedRoute
   '/targets': typeof TargetsRoute
   '/admin/import': typeof AdminImportRoute
+  '/answer-uploads/$attemptId': typeof AnswerUploadsAttemptIdRoute
   '/exam-results/$attemptId': typeof ExamResultsAttemptIdRoute
   '/exams/$examId': typeof ExamsExamIdRoute
   '/quiz/$quizId': typeof QuizQuizIdRoute
@@ -226,6 +235,7 @@ export interface FileRouteTypes {
     | '/seed'
     | '/targets'
     | '/admin/import'
+    | '/answer-uploads/$attemptId'
     | '/exam-results/$attemptId'
     | '/exams/$examId'
     | '/quiz/$quizId'
@@ -249,6 +259,7 @@ export interface FileRouteTypes {
     | '/seed'
     | '/targets'
     | '/admin/import'
+    | '/answer-uploads/$attemptId'
     | '/exam-results/$attemptId'
     | '/exams/$examId'
     | '/quiz/$quizId'
@@ -272,6 +283,7 @@ export interface FileRouteTypes {
     | '/seed'
     | '/targets'
     | '/admin/import'
+    | '/answer-uploads/$attemptId'
     | '/exam-results/$attemptId'
     | '/exams/$examId'
     | '/quiz/$quizId'
@@ -283,7 +295,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AchievementsRoute: typeof AchievementsRoute
   AnalyticsRoute: typeof AnalyticsRoute
-  AnswerUploadsRoute: typeof AnswerUploadsRoute
+  AnswerUploadsRoute: typeof AnswerUploadsRouteWithChildren
   ExamsRoute: typeof ExamsRouteWithChildren
   FocusRoute: typeof FocusRoute
   ForgotPasswordRoute: typeof ForgotPasswordRoute
@@ -444,6 +456,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ExamResultsAttemptIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/answer-uploads/$attemptId': {
+      id: '/answer-uploads/$attemptId'
+      path: '/$attemptId'
+      fullPath: '/answer-uploads/$attemptId'
+      preLoaderRoute: typeof AnswerUploadsAttemptIdRouteImport
+      parentRoute: typeof AnswerUploadsRoute
+    }
     '/admin/import': {
       id: '/admin/import'
       path: '/admin/import'
@@ -453,6 +472,18 @@ declare module '@tanstack/react-router' {
     }
   }
 }
+
+interface AnswerUploadsRouteChildren {
+  AnswerUploadsAttemptIdRoute: typeof AnswerUploadsAttemptIdRoute
+}
+
+const AnswerUploadsRouteChildren: AnswerUploadsRouteChildren = {
+  AnswerUploadsAttemptIdRoute: AnswerUploadsAttemptIdRoute,
+}
+
+const AnswerUploadsRouteWithChildren = AnswerUploadsRoute._addFileChildren(
+  AnswerUploadsRouteChildren,
+)
 
 interface ExamsRouteChildren {
   ExamsExamIdRoute: typeof ExamsExamIdRoute
@@ -468,7 +499,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AchievementsRoute: AchievementsRoute,
   AnalyticsRoute: AnalyticsRoute,
-  AnswerUploadsRoute: AnswerUploadsRoute,
+  AnswerUploadsRoute: AnswerUploadsRouteWithChildren,
   ExamsRoute: ExamsRouteWithChildren,
   FocusRoute: FocusRoute,
   ForgotPasswordRoute: ForgotPasswordRoute,
