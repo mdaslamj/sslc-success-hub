@@ -11,6 +11,7 @@ import type {
 } from "@/integrations/firebase/types";
 import { difficultyForProfile, selectDifficulty } from "./difficulty";
 import { scoreInterventionPriority, type PriorityInput } from "./priority";
+import { intervalForConfidence } from "./memory-decay";
 
 /* ----------------------------- helpers ----------------------------- */
 
@@ -101,13 +102,11 @@ export function buildRemediationSession(args: {
 /* --------------------------- revision queue --------------------------- */
 
 /**
- * Pick a re-surface date using SM-2-style spacing keyed on confidence.
- * Lower confidence → sooner; higher confidence → later.
+ * Pick a re-surface date using the 1/3/7/14/30 adaptive interval ladder
+ * keyed on confidence. Lower confidence → sooner; higher confidence → later.
  */
 export function nextRevisionDate(confidence: number, now = Date.now()): number {
-  const days =
-    confidence < 40 ? 1 : confidence < 60 ? 2 : confidence < 75 ? 4 : confidence < 90 ? 7 : 14;
-  return now + days * DAY;
+  return now + intervalForConfidence(confidence) * DAY;
 }
 
 export function buildRevisionQueueEntry(args: {
@@ -118,15 +117,20 @@ export function buildRevisionQueueEntry(args: {
 }): RevisionQueueDoc {
   const { userId, profile, priorityScore, reason } = args;
   const now = Date.now();
+  const interval = intervalForConfidence(profile.confidenceScore);
   return {
     id: `rq_${profile.chapterId}`,
     userId,
     chapterId: profile.chapterId,
     subjectId: profile.subjectId,
     priority: priorityScore,
-    scheduledDate: nextRevisionDate(profile.confidenceScore, now),
+    scheduledDate: now + interval * DAY,
     status: "pending",
     reason,
+    lastPracticed: now,
+    confidenceScore: profile.confidenceScore,
+    confidenceDecay: 0,
+    interval,
     createdAt: now,
     updatedAt: now,
   };
