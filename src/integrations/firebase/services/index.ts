@@ -35,3 +35,8 @@ export * from "./math-keywords";
 export * from "./math-common-mistakes";
 export * from "./math-chapter-analytics";
 export * from "./math-import";
+// Weakness Diagnosis & Adaptive Remediation Engine
+export * from "./performance-records";
+export * from "./weakness-profiles";
+export * from "./remediation-plans";
+export * from "./chapter-intelligence";
