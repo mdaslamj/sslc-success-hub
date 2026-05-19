@@ -33,6 +33,8 @@ import { fetchChapters, fetchSubject } from "@/integrations/firebase/subjects";
 import type { ChapterDoc, SubjectDoc } from "@/integrations/firebase/types";
 import { toast } from "sonner";
 import { ChapterResources } from "@/components/chapter-resources";
+import { useAllChapterMastery } from "@/hooks/use-math-mastery";
+import { tierFor } from "@/lib/math-intelligence/mastery-tiers";
 import { UploadAnswerButton } from "@/components/answer-upload/upload-answer-button";
 import { Library } from "lucide-react";
 
@@ -208,7 +210,11 @@ function SubjectDetailPage() {
 
           {/* CHAPTERS */}
           <TabsContent value="chapters" className="mt-4">
-            <ChaptersSection chapters={chapters} color={subject.color} />
+            <ChaptersSection
+              chapters={chapters}
+              color={subject.color}
+              subjectId={subject.id}
+            />
           </TabsContent>
 
           {/* RESOURCES */}
@@ -318,7 +324,17 @@ function ResourcesSection({ chapters }: { chapters: ChapterDoc[] }) {
 
 /* ---------------- Chapters ---------------- */
 
-function ChaptersSection({ chapters, color }: { chapters: ChapterDoc[]; color: string }) {
+function ChaptersSection({
+  chapters,
+  color,
+  subjectId,
+}: {
+  chapters: ChapterDoc[];
+  color: string;
+  subjectId: string;
+}) {
+  const isMath = subjectId === "math";
+  const { masteryById } = useAllChapterMastery();
   const [done, setDone] = useState<Set<string>>(
     () => new Set(chapters.filter((c) => c.done).map((c) => c.id)),
   );
@@ -350,6 +366,8 @@ function ChaptersSection({ chapters, color }: { chapters: ChapterDoc[]; color: s
       {chapters.map((c, i) => {
         const isDone = done.has(c.id);
         const effProgress = isDone ? 100 : c.progress;
+        const mathMastery = isMath ? masteryById.get(c.id) : undefined;
+        const tier = mathMastery ? tierFor(mathMastery.mastery) : null;
         return (
           <div
             key={c.id}
@@ -375,6 +393,20 @@ function ChaptersSection({ chapters, color }: { chapters: ChapterDoc[]; color: s
                 <div className="flex items-center gap-2 text-[11px] text-muted-foreground">
                   Chapter {i + 1}
                   <DifficultyBadge level={c.difficulty} />
+                  {tier && (
+                    <Badge
+                      variant="outline"
+                      className={`h-4 rounded-full border-transparent px-1.5 text-[9px] ${tier.bg} ${tier.tone}`}
+                    >
+                      {tier.label}
+                    </Badge>
+                  )}
+                  {mathMastery && mathMastery.weakConcepts.length > 0 && (
+                    <span
+                      title={`Weak: ${mathMastery.weakConcepts.join(", ")}`}
+                      className="inline-block h-1.5 w-1.5 rounded-full bg-destructive"
+                    />
+                  )}
                 </div>
                 <div
                   className={`font-display font-semibold ${
@@ -397,6 +429,28 @@ function ChaptersSection({ chapters, color }: { chapters: ChapterDoc[]; color: s
                     {effProgress}%
                   </span>
                 </div>
+                {isMath && (
+                  <div className="mt-3 flex items-center justify-between gap-3 text-[11px] text-muted-foreground">
+                    <span>
+                      {mathMastery
+                        ? `Mastery ${Math.round(mathMastery.mastery)}% · ${mathMastery.predictedMarks}m predicted`
+                        : "No mastery data yet"}
+                    </span>
+                    <Button
+                      asChild
+                      size="sm"
+                      variant="ghost"
+                      className="h-6 rounded-full px-2 text-[11px]"
+                    >
+                      <Link
+                        to="/subjects/math/$chapterId"
+                        params={{ chapterId: c.id }}
+                      >
+                        Open <ArrowRight className="ml-0.5 h-3 w-3" />
+                      </Link>
+                    </Button>
+                  </div>
+                )}
               </div>
             </div>
           </div>
