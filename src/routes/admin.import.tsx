@@ -21,6 +21,7 @@ import {
   KTBS_TEXTBOOK_SUBJECTS,
 } from "@/lib/ktbs-textbook-seed";
 import type { LibraryResourceDoc } from "@/integrations/firebase/types";
+import { MathImportPanel } from "@/components/admin/math-import-panel";
 
 export const Route = createFileRoute("/admin/import")({
   head: () => ({ meta: [{ title: "Syllabus Import — Admin" }] }),
@@ -342,6 +343,8 @@ function AdminImportPage() {
             </div>
           )}
         </div>
+
+        <MathImportPanel />
       </div>
     </DashboardLayout>
   );
