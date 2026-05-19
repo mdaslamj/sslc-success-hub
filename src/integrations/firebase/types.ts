@@ -312,6 +312,143 @@ export type QuizAttemptDoc = {
 };
 
 // ---------------------------------------------------------------------------
+// Mock exams (full subject, chapter test, mixed, previous-year pattern)
+// ---------------------------------------------------------------------------
+
+/**
+ * Exam kind drives selection rules, weighting and result framing.
+ *   - full      : full-subject mock exam (board-pattern, single subject)
+ *   - chapter   : chapter-scoped test (short, focused practice)
+ *   - mixed     : multi-subject mixed paper (cross-subject revision)
+ *   - previous  : previous-year board pattern simulation
+ */
+export type MockExamKind = "full" | "chapter" | "mixed" | "previous";
+
+/** One question slot, inlined for attempt-snapshot stability. */
+export type MockExamQuestionRef = {
+  mcqId: string;
+  subjectId: string;
+  chapterId?: string;
+  topic?: string;
+  question: string;
+  options: string[];
+  correctIndex: number;
+  explanation?: string;
+  marks: number;
+  difficulty?: "Easy" | "Medium" | "Hard";
+};
+
+/**
+ * Catalog mock exam definition. Public-read, admin-write. Negative marking
+ * is expressed as a fraction of `marks` deducted per wrong answer (0 = off).
+ */
+export type MockExamDoc = {
+  id: string;
+  kind: MockExamKind;
+  title: string;
+  description?: string;
+  /** Primary subject (empty for `mixed`). */
+  subjectId?: string;
+  /** Optional chapter scope (used by `chapter`). */
+  chapterId?: string;
+  /** Subjects included — used by mixed / full. */
+  subjects: string[];
+  /** Year tag for previous-year papers, e.g. "2024". */
+  year?: string;
+  durationSeconds: number;
+  totalMarks: number;
+  /** 0 = no negative marking, e.g. 0.25 = -1/4 marks per wrong answer. */
+  negativeMarkingFactor: number;
+  questions: MockExamQuestionRef[];
+  /** Optional ordering for catalog listing. */
+  order?: number;
+  /** Future flag for AI-generated / adaptive papers. */
+  source?: "system" | "ai" | "user";
+  createdAt: number;
+};
+
+/** One answered question inside an exam attempt. */
+export type MockExamAnswer = {
+  mcqId: string;
+  selectedIndex: number | null;
+  marked: boolean;
+  correct: boolean | null; // null when not graded yet (in-progress)
+  /** Marks earned for this question (post-negative-marking). */
+  marksEarned: number;
+  timeMs?: number;
+};
+
+export type MockExamAttemptStatus = "in_progress" | "submitted" | "abandoned";
+
+/**
+ * Per-user exam attempt. Owner-gated. Persisted during the exam so the
+ * student can resume on another device; finalized on submit / auto-submit.
+ */
+export type MockExamAttemptDoc = {
+  id: string;
+  userId: string;
+  examId: string;
+  kind: MockExamKind;
+  status: MockExamAttemptStatus;
+  startedAt: number;
+  /** Server-side soft deadline (startedAt + durationSeconds*1000). */
+  deadlineAt: number;
+  endedAt?: number;
+  durationSeconds: number;
+  /** Snapshot of every answer slot — same length as exam.questions. */
+  answers: MockExamAnswer[];
+  /** Last viewed question index (for resume). */
+  cursor: number;
+  updatedAt: number;
+};
+
+/**
+ * Final result rollup for analytics. Written once on submit. Separate from
+ * the attempt so the attempt stays a thin progress record and result reads
+ * are cheap on the analytics page.
+ */
+export type MockExamResultDoc = {
+  id: string;
+  userId: string;
+  attemptId: string;
+  examId: string;
+  kind: MockExamKind;
+  endedAt: number;
+  dayKey: string;
+  /** Raw marks earned (post negative-marking). */
+  marksScored: number;
+  totalMarks: number;
+  /** marksScored / totalMarks, 0..100. */
+  percentage: number;
+  /** correct / total, 0..100. */
+  accuracy: number;
+  /** answered / total, 0..100. */
+  completion: number;
+  /** Total seconds the student spent. */
+  durationSeconds: number;
+  /** Per-subject performance. */
+  bySubject: Record<
+    string,
+    {
+      correct: number;
+      total: number;
+      marksScored: number;
+      totalMarks: number;
+      accuracy: number; // 0..100
+    }
+  >;
+  /** Per-topic correct/total rollup — drives "weak areas". */
+  byTopic: Record<string, { correct: number; total: number }>;
+  /** Topics where accuracy < 50%. */
+  weakAreas: string[];
+  /** Avg seconds per question. */
+  avgTimePerQuestion: number;
+  /** Heuristic predicted board score (0..100). */
+  predictedBoardScore: number;
+  xpAwarded: number;
+};
+
+// ---------------------------------------------------------------------------
 // Smart planner & revision engine
 // ---------------------------------------------------------------------------
 

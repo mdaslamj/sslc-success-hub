@@ -57,4 +57,7 @@ export const COLLECTIONS = {
   USER_PROFILES: "userProfiles",
   USER_SETTINGS: "userSettings",
   USER_STATS: "userStats",
+  MOCK_EXAMS: "mockExams",
+  EXAM_ATTEMPTS: "examAttempts",
+  EXAM_RESULTS: "examResults",
 } as const;

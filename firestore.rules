@@ -234,6 +234,30 @@ service cloud.firestore {
         && request.resource.data.userId == request.auth.uid;
     }
 
+    // Mock exam catalog — public read, admin-only write.
+    match /mockExams/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // Per-user exam attempts (in-progress + finished). Owner-gated.
+    match /examAttempts/{docId} {
+      allow read: if isSignedIn() && resource.data.userId == request.auth.uid;
+      allow create: if isSignedIn() && request.resource.data.userId == request.auth.uid;
+      allow update, delete: if isSignedIn()
+        && resource.data.userId == request.auth.uid
+        && request.resource.data.userId == request.auth.uid;
+    }
+
+    // Per-user exam result rollups (analytics snapshot). Owner-gated.
+    match /examResults/{docId} {
+      allow read: if isSignedIn() && resource.data.userId == request.auth.uid;
+      allow create: if isSignedIn() && request.resource.data.userId == request.auth.uid;
+      allow update, delete: if isSignedIn()
+        && resource.data.userId == request.auth.uid
+        && request.resource.data.userId == request.auth.uid;
+    }
+
     // Default deny.
     match /{document=**} {
       allow read, write: if false;
