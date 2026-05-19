@@ -65,4 +65,8 @@ export const COLLECTIONS = {
   CHAPTER_RESOURCES: "chapterResources",
   TEXTBOOK_LINKS: "textbookLinks",
   CHAPTER_NOTES: "chapterNotes",
+  // Centralized digital library — top-level resources (textbooks, PYQs,
+  // formula sheets, etc.) that may or may not be tied to a specific chapter.
+  LIBRARY_RESOURCES: "libraryResources",
+  LIBRARY_CATEGORIES: "libraryCategories",
 } as const;
