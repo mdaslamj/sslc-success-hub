@@ -104,3 +104,86 @@ export type NoteDoc = {
   body: string;
   updatedAt: number;
 };
+
+// ---------------------------------------------------------------------------
+// Analytics & progress tracking
+// ---------------------------------------------------------------------------
+
+/**
+ * Aggregate per-user progress snapshot. One doc per user, id = userId.
+ * Updated incrementally by analytics aggregator. Source of truth for the
+ * dashboard's "at-a-glance" stats so we never recompute from raw events
+ * on every page load.
+ */
+export type UserProgressDoc = {
+  id: string; // == userId
+  userId: string;
+  totalChaptersCompleted: number;
+  totalStudyMinutes: number;
+  totalFocusSessions: number;
+  currentStreak: number;
+  longestStreak: number;
+  lastStudiedAt: number | null;
+  /** Per-subject roll-up: subjectId -> { completion %, chapters done, minutes }. */
+  subjects: Record<
+    string,
+    {
+      chaptersDone: number;
+      chaptersTotal: number;
+      completion: number; // 0..100
+      minutes: number;
+    }
+  >;
+  updatedAt: number;
+};
+
+/**
+ * A single study session — either a focus-timer block or a chapter study
+ * interval. One doc per session. Flat collection keyed by docId, owner-gated.
+ */
+export type StudySessionDoc = {
+  id: string;
+  userId: string;
+  subjectId?: string;
+  chapterId?: string;
+  kind: "focus" | "chapter" | "revision" | "mcq";
+  /** Epoch ms. */
+  startedAt: number;
+  /** Epoch ms. */
+  endedAt: number;
+  durationMinutes: number;
+  /** Local YYYY-MM-DD — denormalized for cheap day-bucket queries. */
+  dayKey: string;
+  notes?: string;
+};
+
+/**
+ * Unlocked achievement / badge. Owner-gated. Reserved for future
+ * gamification + leaderboard.
+ */
+export type AchievementDoc = {
+  id: string;
+  userId: string;
+  code: string; // stable identifier, e.g. "streak_7", "first_chapter"
+  title: string;
+  description?: string;
+  unlockedAt: number;
+  icon?: string;
+};
+
+/**
+ * Pre-computed daily analytics rollup. One doc per (userId, dayKey).
+ * Powers weekly/monthly charts without scanning every session.
+ * Doc id convention: `${userId}_${dayKey}`.
+ */
+export type AnalyticsDailyDoc = {
+  id: string;
+  userId: string;
+  dayKey: string; // YYYY-MM-DD
+  studyMinutes: number;
+  focusSessions: number;
+  chaptersCompleted: number;
+  /** Per-subject minute breakdown for the day. */
+  bySubject: Record<string, number>;
+  updatedAt: number;
+};

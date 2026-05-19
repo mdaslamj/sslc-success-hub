@@ -6,3 +6,7 @@ export * from "./chapterProgress";
 export * from "./mcqs";
 export * from "./notes";
 export * from "./syllabus-import";
+export * from "./user-progress";
+export * from "./study-sessions";
+export * from "./achievements";
+export * from "./analytics";
