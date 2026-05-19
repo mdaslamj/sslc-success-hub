@@ -8,13 +8,15 @@ import {
 } from "@/integrations/firebase/services";
 import { aggregateChapterMastery } from "@/lib/math-intelligence/mastery-aggregator";
 import { useCurrentUserId } from "./use-current-user";
+import { useAuthOptional } from "@/contexts/auth-context";
 
 /**
  * Per-chapter aggregated mastery — used by the Math Chapter Hub.
  * Combines quiz analytics, mock exam math performance and OCR evaluations.
  */
 export function useChapterMastery(chapterId: string | undefined) {
-  const userId = useCurrentUserId();
+  const authCtx = useAuthOptional();
+  const authedUserId = authCtx?.user?.uid ?? null;
   const queries = useQueries({
     queries: [
       {
@@ -23,26 +25,28 @@ export function useChapterMastery(chapterId: string | undefined) {
         enabled: !!chapterId,
       },
       {
-        queryKey: ["math", "analytics", userId, chapterId],
-        queryFn: () => fetchMathChapterAnalytics(userId, chapterId!),
-        enabled: !!chapterId && !!userId,
+        queryKey: ["math", "analytics", authedUserId, chapterId],
+        queryFn: () => fetchMathChapterAnalytics(authedUserId!, chapterId!),
+        enabled: !!chapterId && !!authedUserId,
       },
       {
-        queryKey: ["evaluations", userId],
-        queryFn: () => fetchUserEvaluations(userId, 50),
-        enabled: !!userId,
+        queryKey: ["evaluations", authedUserId],
+        queryFn: () => fetchUserEvaluations(authedUserId!, 50),
+        enabled: !!authedUserId,
       },
       {
-        queryKey: ["mockResults", userId],
-        queryFn: () => fetchRecentExamResults(userId, 10),
-        enabled: !!userId,
+        queryKey: ["mockResults", authedUserId],
+        queryFn: () => fetchRecentExamResults(authedUserId!, 10),
+        enabled: !!authedUserId,
       },
     ],
   });
 
   const [chapterQ, analyticsQ, evalsQ, mocksQ] = queries;
-  const isLoading = queries.some((q) => q.isLoading);
-  const isError = queries.some((q) => q.isError);
+  const isChapterLoading = chapterQ.isLoading;
+  const isChapterMissing = chapterQ.isSuccess && chapterQ.data == null;
+  const isLoading = isChapterLoading;
+  const isError = chapterQ.isError;
 
   const chapter = chapterQ.data ?? null;
   const mastery = chapter
@@ -54,7 +58,15 @@ export function useChapterMastery(chapterId: string | undefined) {
       })
     : null;
 
-  return { chapter, mastery, isLoading, isError };
+  return {
+    chapter,
+    mastery,
+    isLoading,
+    isChapterLoading,
+    isChapterMissing,
+    isError,
+    isAuthenticated: !!authedUserId,
+  };
 }
 
 /**
@@ -63,7 +75,10 @@ export function useChapterMastery(chapterId: string | undefined) {
  * react-query so callers stay declarative.
  */
 export function useAllChapterMastery() {
+  const authCtx = useAuthOptional();
+  const authedUserId = authCtx?.user?.uid ?? null;
   const userId = useCurrentUserId();
+  void userId;
 
   const chaptersQ = useQuery({
     queryKey: ["math", "chapters"],
@@ -71,22 +86,22 @@ export function useAllChapterMastery() {
     staleTime: 5 * 60 * 1000,
   });
   const evalsQ = useQuery({
-    queryKey: ["evaluations", userId],
-    queryFn: () => fetchUserEvaluations(userId, 100),
-    enabled: !!userId,
+    queryKey: ["evaluations", authedUserId],
+    queryFn: () => fetchUserEvaluations(authedUserId!, 100),
+    enabled: !!authedUserId,
   });
   const mocksQ = useQuery({
-    queryKey: ["mockResults", userId],
-    queryFn: () => fetchRecentExamResults(userId, 10),
-    enabled: !!userId,
+    queryKey: ["mockResults", authedUserId],
+    queryFn: () => fetchRecentExamResults(authedUserId!, 10),
+    enabled: !!authedUserId,
   });
 
   const chapters = chaptersQ.data ?? [];
   const analyticsQs = useQueries({
     queries: chapters.map((c) => ({
-      queryKey: ["math", "analytics", userId, c.id],
-      queryFn: () => fetchMathChapterAnalytics(userId, c.id),
-      enabled: !!userId,
+      queryKey: ["math", "analytics", authedUserId, c.id],
+      queryFn: () => fetchMathChapterAnalytics(authedUserId!, c.id),
+      enabled: !!authedUserId,
     })),
   });
 
