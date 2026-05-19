@@ -41,4 +41,9 @@ export const XP_REWARDS = {
   streakDay: 10,
   streakMilestoneBonus: 50, // applied on top of unlock XP at milestones
   studyHour: 40,
+  // Quiz engine — reused by quiz-engine.computeXp.
+  mcqCorrect: 5,
+  quizCompleted: 30,
+  quizPerfectBonus: 80,
+  quizHighAccuracyBonus: 40, // accuracy >= 90% but not perfect
 } as const;
