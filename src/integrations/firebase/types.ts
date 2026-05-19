@@ -1665,6 +1665,14 @@ export type RevisionQueueDoc = {
   scheduledDate: number;
   status: RevisionQueueStatus;
   reason?: InterventionTriggerKey;
+  /** Spaced-repetition / memory-decay fields. */
+  lastPracticed?: number;
+  lastMistake?: number;
+  confidenceScore?: number;
+  /** 0..1 — fraction of confidence lost since last practice. */
+  confidenceDecay?: number;
+  /** Days until next scheduled review. */
+  interval?: number;
   createdAt: number;
   updatedAt: number;
 };
@@ -1692,6 +1700,28 @@ export type RemediationSessionDoc = {
     confidenceDelta?: number;
     notes?: string;
   };
+  createdAt: number;
+  updatedAt: number;
+};
+
+/**
+ * Per-chapter memory-decay tracking. Doc id == chapterId, lives under
+ * users/{uid}/memoryTracking/{chapterId}. Owner-gated.
+ */
+export type MemoryTrackingDoc = {
+  id: string; // == chapterId
+  userId: string;
+  chapterId: string;
+  subjectId: string;
+  lastPracticed: number;
+  lastMistake?: number | null;
+  /** 0..1 — fraction of confidence lost since lastPracticed. */
+  confidenceDecay: number;
+  /** Days until next scheduled review (1/3/7/14/30). */
+  nextInterval: number;
+  marksAtRisk: number;
+  /** Latest confidence snapshot, 0..100. */
+  confidenceScore?: number;
   createdAt: number;
   updatedAt: number;
 };
