@@ -11,7 +11,7 @@ import {
 } from "@/integrations/firebase/services";
 import { useLibraryResources } from "@/hooks/use-resources";
 import { incrementLibraryResourceViews } from "@/integrations/firebase/services/library-resources";
-import type { LibraryLanguage } from "@/integrations/firebase/types";
+import type { LibraryLanguage, LibraryResourceDoc } from "@/integrations/firebase/types";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/textbooks")({
@@ -57,7 +57,7 @@ function TextbooksPage() {
   });
 
   const byChapter = useMemo(() => {
-    const map = new Map<string, (typeof resourcesQuery.data extends Array<infer R> ? R : never)>();
+    const map = new Map<string, LibraryResourceDoc>();
     for (const r of resourcesQuery.data ?? []) {
       if (r.chapterId) map.set(r.chapterId, r);
     }
