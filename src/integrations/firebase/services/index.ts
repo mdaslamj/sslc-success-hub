@@ -25,3 +25,12 @@ export * from "./syllabus-content";
 export * from "./library-resources";
 export * from "./answer-uploads";
 export * from "./evaluations";
+// Mathematics Intelligence System
+export * from "./math-chapters";
+export * from "./math-questions";
+export * from "./math-model-answers";
+export * from "./math-formulas";
+export * from "./math-rubrics";
+export * from "./math-keywords";
+export * from "./math-common-mistakes";
+export * from "./math-chapter-analytics";
