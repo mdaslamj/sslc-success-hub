@@ -1,14 +1,15 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMemo } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import {
-  ArrowLeft,
   BookOpen,
   Brain,
   CalendarPlus,
+  ChevronRight,
   ExternalLink,
   FileText,
   Lightbulb,
+  Loader2,
   Sparkles,
   Sigma,
   Target,
@@ -36,6 +37,7 @@ import {
   fetchMathQuestions,
   fetchMathFormulasForChapter,
 } from "@/integrations/firebase/services";
+import { seedMathData } from "@/integrations/firebase/services/math-import";
 import { UploadAnswerButton } from "@/components/answer-upload/upload-answer-button";
 import { addToTodayPlan } from "@/lib/today-plan-store";
 import { tierFor } from "@/lib/math-intelligence/mastery-tiers";
@@ -91,6 +93,7 @@ export const Route = createFileRoute("/subjects/math/$chapterId")({
 
 function MathChapterHub() {
   const { chapterId } = Route.useParams();
+  const queryClient = useQueryClient();
   const {
     chapter,
     mastery,
@@ -116,6 +119,25 @@ function MathChapterHub() {
     enabled: !!chapterId,
   });
 
+  const seedMutation = useMutation({
+    mutationFn: seedMathData,
+    onSuccess: (counts) => {
+      toast.success(
+        `Seeded ${counts.chapters ?? 0} chapters, ${counts.questions ?? 0} questions`,
+      );
+      queryClient.invalidateQueries({ queryKey: ["math"] });
+      queryClient.invalidateQueries({ queryKey: ["library", "math"] });
+    },
+    onError: (err: unknown) => {
+      const msg = err instanceof Error ? err.message : "Seeding failed";
+      if (/permission|admin|unauth/i.test(msg)) {
+        toast.error("Admin access required — opening import panel");
+      } else {
+        toast.error(msg);
+      }
+    },
+  });
+
   if (isChapterLoading) {
     return (
       <DashboardLayout title="Loading…">
@@ -129,27 +151,65 @@ function MathChapterHub() {
   }
 
   if (isChapterMissing || !chapter || !mastery) {
+    const isAdminError =
+      seedMutation.isError &&
+      /permission|admin|unauth/i.test(
+        (seedMutation.error as Error)?.message ?? "",
+      );
     return (
       <DashboardLayout title="Chapter not found">
-        <div className="mx-auto max-w-lg py-16 text-center">
-          <AlertTriangle className="mx-auto h-10 w-10 text-warning" />
-          <h1 className="mt-3 font-display text-2xl font-bold">
-            Chapter data isn't seeded yet
-          </h1>
-          <p className="mt-2 text-sm text-muted-foreground">
-            No <code className="font-mono text-xs">{chapterId}</code> doc was
-            found in the Math intelligence collections. An admin can seed it
-            from the import panel.
-          </p>
-          <div className="mt-5 flex flex-wrap justify-center gap-2">
-            <Button asChild className="rounded-full">
-              <Link to="/subjects/$subjectId" params={{ subjectId: "math" }}>
-                Back to Math
-              </Link>
-            </Button>
-            <Button asChild variant="outline" className="rounded-full">
-              <Link to="/admin/import">Seed Math data</Link>
-            </Button>
+        <div className="mx-auto max-w-md px-4 py-12">
+          <div className="rounded-3xl border border-border/60 bg-card p-6 text-center shadow-card sm:p-8">
+            <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-warning/10">
+              <AlertTriangle className="h-6 w-6 text-warning" />
+            </div>
+            <h1 className="mt-4 font-display text-xl font-bold sm:text-2xl">
+              Chapter data isn't seeded yet
+            </h1>
+            <p className="mt-2 text-sm text-muted-foreground">
+              No <code className="font-mono text-xs">{chapterId}</code> doc was
+              found in the Math intelligence collections. An admin can seed the
+              starter chapters (Arithmetic Progressions, Triangles, Quadratic
+              Equations) in one click.
+            </p>
+            {!isAuthenticated && (
+              <Badge
+                variant="outline"
+                className="mt-3 rounded-full text-[10px]"
+              >
+                Sign in to track mastery
+              </Badge>
+            )}
+            <div className="mt-5 flex flex-col gap-2 sm:flex-row sm:justify-center">
+              <Button asChild variant="outline" className="rounded-full">
+                <Link to="/subjects/$subjectId" params={{ subjectId: "math" }}>
+                  Back to Math
+                </Link>
+              </Button>
+              {isAdminError ? (
+                <Button asChild className="rounded-full">
+                  <Link to="/admin/import">Open import panel</Link>
+                </Button>
+              ) : (
+                <Button
+                  className="rounded-full"
+                  onClick={() => seedMutation.mutate()}
+                  disabled={seedMutation.isPending}
+                >
+                  {seedMutation.isPending ? (
+                    <>
+                      <Loader2 className="mr-1 h-3.5 w-3.5 animate-spin" />
+                      Seeding…
+                    </>
+                  ) : (
+                    "Seed Math data"
+                  )}
+                </Button>
+              )}
+            </div>
+            <p className="mt-3 text-[11px] text-muted-foreground">
+              Seeding is admin-only and enforced by Firestore security rules.
+            </p>
           </div>
         </div>
       </DashboardLayout>
@@ -173,11 +233,24 @@ function MathChapterHub() {
   return (
     <DashboardLayout title={chapter.title}>
       <div className="mx-auto max-w-5xl space-y-4">
-        <Button asChild variant="ghost" size="sm" className="-ml-2 rounded-full">
-          <Link to="/subjects/$subjectId" params={{ subjectId: "math" }}>
-            <ArrowLeft className="mr-1 h-3.5 w-3.5" /> All Math chapters
+        <nav
+          aria-label="Breadcrumb"
+          className="flex items-center gap-1 text-xs text-muted-foreground"
+        >
+          <Link to="/" className="hover:text-foreground">
+            Dashboard
           </Link>
-        </Button>
+          <ChevronRight className="h-3 w-3" />
+          <Link
+            to="/subjects/$subjectId"
+            params={{ subjectId: "math" }}
+            className="hover:text-foreground"
+          >
+            Math
+          </Link>
+          <ChevronRight className="h-3 w-3" />
+          <span className="truncate text-foreground">{chapter.title}</span>
+        </nav>
 
         {/* Intelligence header */}
         <div className="rounded-3xl border border-border/60 bg-card p-5 shadow-card">
