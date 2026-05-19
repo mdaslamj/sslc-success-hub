@@ -845,8 +845,16 @@ export type UserProfileDoc = {
   preferredLanguage: PreferredLanguage;
   weakSubjects: string[]; // subject ids
   studyGoals: string[];
+  /** Optional emoji avatar selected by the student. */
+  avatarEmoji?: string;
+  /** Daily study commitment in minutes — used by planner + recommendations. */
+  dailyStudyGoalMinutes?: number;
+  /** ISO date (YYYY-MM-DD) of the board exam — drives countdown + AI urgency. */
+  examTargetDate?: string;
   /** Reserved for future roles (parent, teacher, admin). */
   role: "student" | "parent" | "teacher" | "admin";
+  /** Reserved for future parent/teacher linkage. */
+  linkedAccounts?: { parents?: string[]; teachers?: string[] };
   createdAt: number;
   updatedAt: number;
 };
@@ -857,10 +865,33 @@ export type UserSettingsDoc = {
   notifications: {
     revisionReminders: boolean;
     dailyDigest: boolean;
+    achievementAlerts?: boolean;
+    plannerAlerts?: boolean;
   };
   studyWindow: {
     dailyMinutesTarget: number;
     preferredStartHour: number; // 0..23
+  };
+  /** Local time strings (HH:mm) for scheduled reminders. */
+  reminders?: {
+    studyReminderTime?: string;   // e.g. "18:00"
+    revisionReminderTime?: string;
+  };
+  /** Focus / Pomodoro timer preferences. */
+  focusTimer?: {
+    focusMinutes: number;
+    shortBreakMinutes: number;
+    longBreakMinutes: number;
+    longBreakEvery: number; // every N focus sessions
+    autoStartBreaks: boolean;
+    soundEnabled: boolean;
+  };
+  /** AI assistant personalization. */
+  aiAssistant?: {
+    enabled: boolean;
+    tone: "friendly" | "concise" | "coach";
+    dailyTips: boolean;
+    languageHint?: PreferredLanguage;
   };
   theme: "system" | "light" | "dark";
   updatedAt: number;
