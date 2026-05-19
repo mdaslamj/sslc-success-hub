@@ -252,6 +252,63 @@ function AdminImportPage() {
   ]
 }`}</pre>
         </div>
+
+        <div className="rounded-3xl border border-border/60 bg-card p-8 shadow-card">
+          <h2 className="font-display text-xl font-bold">Library Resources</h2>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Seed default categories and starter resources, or bulk-import a
+            custom JSON array of library items.
+          </p>
+
+          <div className="mt-4 flex flex-wrap gap-2">
+            <Button
+              onClick={seedLibraryDefaults}
+              disabled={libState.kind === "loading"}
+              className="rounded-full"
+            >
+              {libState.kind === "loading" ? (
+                <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Seeding…</>
+              ) : (
+                <>Seed default library</>
+              )}
+            </Button>
+          </div>
+
+          <div className="mt-6">
+            <label className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+              Custom library JSON (array of LibraryResourceDoc)
+            </label>
+            <Textarea
+              value={libraryJson}
+              onChange={(e) => setLibraryJson(e.target.value)}
+              placeholder='[{ "id": "...", "title": "...", "category": "textbook", "language": "en", "tags": [], "isFeatured": false, "isOfficial": true, "url": "..." }]'
+              className="mt-2 min-h-[200px] font-mono text-xs"
+            />
+            <Button
+              onClick={runLibraryJson}
+              disabled={libState.kind === "loading" || !libraryJson.trim()}
+              variant="secondary"
+              className="mt-3 rounded-full"
+            >
+              Import library JSON
+            </Button>
+          </div>
+
+          {libState.kind === "success" && (
+            <div className="mt-6 flex items-start gap-2 rounded-2xl border border-success/30 bg-success/5 p-4 text-sm">
+              <CheckCircle2 className="h-5 w-5 text-success shrink-0" />
+              <p className="font-semibold text-success">{libState.message}</p>
+            </div>
+          )}
+          {libState.kind === "error" && (
+            <div className="mt-6 flex items-start gap-2 rounded-2xl border border-destructive/30 bg-destructive/5 p-4 text-sm">
+              <AlertTriangle className="h-5 w-5 text-destructive shrink-0" />
+              <p className="font-semibold text-destructive break-all">
+                {libState.message}
+              </p>
+            </div>
+          )}
+        </div>
       </div>
     </DashboardLayout>
   );
