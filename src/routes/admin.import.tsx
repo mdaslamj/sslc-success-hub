@@ -16,6 +16,10 @@ import {
   DEFAULT_LIBRARY_CATEGORIES,
   STARTER_LIBRARY_RESOURCES,
 } from "@/lib/resource-seed";
+import {
+  KTBS_TEXTBOOK_SEED,
+  KTBS_TEXTBOOK_SUBJECTS,
+} from "@/lib/ktbs-textbook-seed";
 import type { LibraryResourceDoc } from "@/integrations/firebase/types";
 
 export const Route = createFileRoute("/admin/import")({
@@ -86,6 +90,19 @@ function AdminImportPage() {
       setLibState({
         kind: "success",
         message: `Seeded ${cats} categories and ${res} starter resources.`,
+      });
+    } catch (e) {
+      setLibState({ kind: "error", message: (e as Error).message });
+    }
+  }
+
+  async function seedKtbsTextbooks() {
+    setLibState({ kind: "loading" });
+    try {
+      const n = await bulkUpsertLibraryResources(KTBS_TEXTBOOK_SEED);
+      setLibState({
+        kind: "success",
+        message: `Seeded ${n} KTBS textbook chapter links.`,
       });
     } catch (e) {
       setLibState({ kind: "error", message: (e as Error).message });
@@ -270,6 +287,22 @@ function AdminImportPage() {
                 <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Seeding…</>
               ) : (
                 <>Seed default library</>
+              )}
+            </Button>
+            <Button
+              onClick={seedKtbsTextbooks}
+              disabled={libState.kind === "loading"}
+              variant="secondary"
+              className="rounded-full"
+            >
+              {libState.kind === "loading" ? (
+                <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Seeding…</>
+              ) : (
+                <>
+                  Seed KTBS textbooks (
+                  {KTBS_TEXTBOOK_SUBJECTS.reduce((n, s) => n + s.chapters, 0)} chapters
+                  )
+                </>
               )}
             </Button>
           </div>

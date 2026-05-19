@@ -12,6 +12,7 @@ import {
   HelpCircle,
   FlaskConical,
   Library,
+  BookMarked,
   LogOut,
   LogIn,
   PenSquare,
@@ -43,6 +44,7 @@ const main = [
 const study = [
   { title: "Study Planner", url: "/planner", icon: CalendarClock },
   { title: "Mock Exams", url: "/exams", icon: FlaskConical },
+  { title: "Textbooks", url: "/textbooks", icon: BookMarked },
   { title: "Resources", url: "/resources", icon: Library },
   { title: "My Answers", url: "/answer-uploads", icon: PenSquare },
   { title: "Analytics", url: "/analytics", icon: LineChart },
