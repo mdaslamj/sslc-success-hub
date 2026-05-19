@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
+import { auth } from "@/integrations/firebase/config";
 import {
   appendTutoringTurns,
   closeTutoringSession,
@@ -33,6 +34,12 @@ import {
   tutorSystemPrompt,
 } from "@/lib/semantic-reasoning";
 import { useCurrentUserId } from "./use-current-user";
+
+async function requireIdToken(): Promise<string> {
+  const u = auth.currentUser;
+  if (!u) throw new Error("Not signed in");
+  return u.getIdToken();
+}
 
 /* --------------------------- adaptive tutoring --------------------------- */
 
@@ -82,8 +89,10 @@ export function useAskTutor() {
         })),
         { role: "user" as const, content: vars.studentMessage },
       ];
+      const idToken = await requireIdToken();
       const result = await run({
         data: {
+          idToken,
           model: vars.model,
           systemPrompt: tutorSystemPrompt(vars.level),
           grounding: groundingText,
@@ -187,8 +196,10 @@ export function useRequestHint() {
       model?: string;
     }) => {
       if (!userId) throw new Error("Not signed in");
+      const idToken = await requireIdToken();
       const result = await run({
         data: {
+          idToken,
           model: vars.model,
           systemPrompt: hintSystemPrompt(vars.level),
           grounding: buildGroundingPrompt(vars.grounding),
@@ -280,8 +291,10 @@ export function useEvaluateAnswerSemantically() {
         ...vars.grounding,
         ocrStudentAnswer: vars.grounding.ocrStudentAnswer ?? vars.studentAnswer,
       });
+      const idToken = await requireIdToken();
       const result = await run({
         data: {
+          idToken,
           model: vars.model,
           systemPrompt: SEMANTIC_EVAL_SYSTEM,
           grounding: groundingText,
