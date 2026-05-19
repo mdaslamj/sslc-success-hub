@@ -7,7 +7,6 @@ import {
   fetchUserEvaluations,
 } from "@/integrations/firebase/services";
 import { aggregateChapterMastery } from "@/lib/math-intelligence/mastery-aggregator";
-import { useCurrentUserId } from "./use-current-user";
 import { useAuthOptional } from "@/contexts/auth-context";
 
 /**
@@ -77,8 +76,6 @@ export function useChapterMastery(chapterId: string | undefined) {
 export function useAllChapterMastery() {
   const authCtx = useAuthOptional();
   const authedUserId = authCtx?.user?.uid ?? null;
-  const userId = useCurrentUserId();
-  void userId;
 
   const chaptersQ = useQuery({
     queryKey: ["math", "chapters"],
