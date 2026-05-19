@@ -296,8 +296,21 @@ function PlannerPage() {
                       >
                         {t.task}
                       </div>
-                      <div className="text-[11px] text-muted-foreground">
-                        {t.subject} · {t.time}
+                      <div className="flex items-center gap-2 text-[11px] text-muted-foreground">
+                        <span>
+                          {t.subject} · {t.time}
+                        </span>
+                        {t.link && (
+                          <a
+                            href={t.link}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            onClick={(e) => e.stopPropagation()}
+                            className="inline-flex items-center gap-0.5 rounded-full bg-brand/10 px-2 py-0.5 text-[10px] font-medium text-brand hover:bg-brand/20"
+                          >
+                            📘 Open <ExternalLink className="h-2.5 w-2.5" />
+                          </a>
+                        )}
                       </div>
                     </div>
                     <Button
