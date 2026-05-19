@@ -182,7 +182,12 @@ export function ChapterResources({ chapter }: { chapter: ChapterDoc }) {
       {/* Shortcut to the centralized library, scoped to this chapter. */}
       <Link
         to="/resources"
-        search={{ subjectId: chapter.subjectId, chapterId: chapter.id }}
+        search={
+          {
+            subjectId: chapter.subjectId,
+            chapterId: chapter.id,
+          } as never
+        }
         className="group flex items-center justify-between gap-2 rounded-2xl border border-border/60 bg-card p-3 text-sm shadow-sm transition hover:border-brand/40 hover:bg-brand/5"
       >
         <span className="flex items-center gap-2">
