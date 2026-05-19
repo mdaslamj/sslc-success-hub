@@ -29,6 +29,7 @@ import {
 } from "lucide-react";
 import { todayTasks, subjects } from "@/lib/mock-data";
 import { toast } from "sonner";
+import { RevisionPlannerCard, type RevisionPick } from "@/components/revision-planner-card";
 
 export const Route = createFileRoute("/planner")({
   head: () => ({
@@ -138,6 +139,24 @@ function PlannerPage() {
 
   function removeTask(id: number) {
     setTasks((prev) => prev.filter((t) => t.id !== id));
+  }
+
+  function addFromRecommendation(pick: RevisionPick) {
+    const id = Math.max(0, ...tasks.map((t) => t.id)) + 1;
+    setTasks((prev) => [
+      ...prev,
+      {
+        id,
+        subject: pick.subjectName,
+        task: `Revise — ${pick.topic}`,
+        time: `${pick.minutes} min`,
+        durationMin: pick.minutes,
+        done: false,
+      },
+    ]);
+    toast.success("Added to today's plan", {
+      description: `${pick.subjectName} · ${pick.minutes} min`,
+    });
   }
 
   // Achievements (live)
@@ -332,6 +351,7 @@ function PlannerPage() {
 
           {/* RIGHT: focus + achievements */}
           <section className="space-y-6">
+            <RevisionPlannerCard onAddToPlan={addFromRecommendation} />
             <FocusTimer onSessionComplete={(min) => setFocusMinutes((m) => m + min)} />
 
             <div className="rounded-3xl border border-border/60 bg-card p-6 shadow-card">
