@@ -1423,3 +1423,148 @@ export type MathImportDraftDoc = {
   notes?: string;
   publishedAt?: number;
 };
+
+// ---------------------------------------------------------------------------
+// Weakness Diagnosis & Adaptive Remediation Engine
+// ---------------------------------------------------------------------------
+
+/** Source of a single performance record. Drives weight + diagnosis rules. */
+export type PerformanceRecordType =
+  | "quiz"
+  | "mock"
+  | "ocr"
+  | "rubric"
+  | "formula"
+  | "speed";
+
+/** One raw performance observation. Append-only ledger. */
+export type PerformanceRecordDoc = {
+  id: string;
+  userId: string;
+  type: PerformanceRecordType;
+  subjectId: string;
+  chapterId: string;
+  /** Normalized 0..100. */
+  score: number;
+  maxScore?: number;
+  /** 0..1 — per-formula recall accuracy when type === "formula". */
+  formulaAccuracy?: number;
+  /** seconds per question; lower = faster. */
+  solvingSpeed?: number;
+  attempts?: number;
+  /** Free-form metadata for the source event. */
+  metadata?: Record<string, string | number | boolean>;
+  createdAt: number;
+};
+
+/** Layered weakness taxonomy (Bloom + behavioural). */
+export type WeaknessLayer =
+  | "conceptual"
+  | "procedural"
+  | "computational"
+  | "presentation"
+  | "behavioural";
+
+/** Catalogue of named repeated mistakes the engine can detect. */
+export type RepeatedMistakeKey =
+  | "signError"
+  | "skippedSteps"
+  | "formulaMisuse"
+  | "calculationMistake"
+  | "weakIdentity";
+
+export type RepeatedMistakeStats = Record<RepeatedMistakeKey, number>;
+
+export type MasteryTrendPoint = {
+  /** epoch ms — bucket start. */
+  at: number;
+  mastery: number; // 0..100
+};
+
+/**
+ * Rolling per-chapter weakness profile. Doc id == chapterId, lives under
+ * users/{uid}/weaknesses/{chapterId}. Owner-gated.
+ */
+export type WeaknessProfileDoc = {
+  id: string; // == chapterId
+  userId: string;
+  chapterId: string;
+  subjectId: string;
+  /** Severity per layer, 0..100. */
+  weaknessLayers: Record<WeaknessLayer, number>;
+  repeatedMistakes: RepeatedMistakeStats;
+  /** 0..100. Higher = more confident the student has mastered the chapter. */
+  confidenceScore: number;
+  masteryTrend: MasteryTrendPoint[];
+  /** Estimated marks the student could lose on board if no remediation. */
+  marksAtRisk: number;
+  /** Free-form weak concept tags pulled from question metadata + OCR. */
+  weakConcepts: string[];
+  lastUpdated: number;
+};
+
+export type RemediationStatus = "pending" | "in_progress" | "completed" | "dismissed";
+
+export type RemediationAction = {
+  kind:
+    | "targeted_revision"
+    | "formula_drill"
+    | "easier_practice"
+    | "chapter_recommendation"
+    | "board_priority_revision";
+  title: string;
+  description: string;
+  /** Optional link into the app, e.g. `/subjects/math/<chapterId>`. */
+  route?: string;
+  /** Optional related ids (formulaId, questionId, chapterId). */
+  refIds?: string[];
+  /** 1..5; higher = more urgent. */
+  priority: number;
+  estimatedMinutes?: number;
+};
+
+export type RemediationRecommendations = {
+  targetedRevision: RemediationAction[];
+  formulaDrills: RemediationAction[];
+  easierPractice: RemediationAction[];
+  chapterRecommendations: RemediationAction[];
+  boardPriorityRevision: RemediationAction[];
+};
+
+/** Lives under users/{uid}/remediation/{planId}. */
+export type RemediationPlanDoc = {
+  id: string;
+  userId: string;
+  chapterId: string;
+  subjectId: string;
+  recommendations: RemediationRecommendations;
+  status: RemediationStatus;
+  /** Snapshot of weakness state when the plan was generated. */
+  triggerSnapshot?: {
+    confidenceScore: number;
+    marksAtRisk: number;
+    topLayer: WeaknessLayer;
+  };
+  createdAt: number;
+  updatedAt: number;
+};
+
+/**
+ * Cohort-level chapter intelligence. Lives at chapters/{chapterId}/intelligence/summary.
+ * Public read, admin write — aggregated nightly.
+ */
+export type ChapterIntelligenceDoc = {
+  id: string; // == "summary"
+  chapterId: string;
+  subjectId: string;
+  weakConcepts: string[];
+  /** Cohort average confidence. */
+  confidenceScore: number;
+  masteryTrends: MasteryTrendPoint[];
+  marksAtRiskAnalysis: {
+    averageMarksAtRisk: number;
+    highRiskStudents: number;
+    totalStudents: number;
+  };
+  updatedAt: number;
+};

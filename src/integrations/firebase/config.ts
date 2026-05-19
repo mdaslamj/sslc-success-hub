@@ -92,3 +92,16 @@ export const COLLECTIONS = {
   MATH_CHAPTER_ANALYTICS: "mathChapterAnalytics",
   MATH_IMPORT_DRAFTS: "mathImportDrafts",
 } as const;
+
+// Weakness Diagnosis & Adaptive Remediation Engine
+// Subcollection paths (stored as templates; do not use directly with doc()):
+//   users/{uid}/performance/{recordId}
+//   users/{uid}/weaknesses/{chapterId}
+//   users/{uid}/remediation/{planId}
+//   chapters/{chapterId}/intelligence/summary
+export const DIAGNOSIS_SUBCOLLECTIONS = {
+  PERFORMANCE: "performance",
+  WEAKNESSES: "weaknesses",
+  REMEDIATION: "remediation",
+  CHAPTER_INTELLIGENCE: "intelligence",
+} as const;
