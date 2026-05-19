@@ -81,4 +81,13 @@ export const COLLECTIONS = {
   MODEL_ANSWERS: "modelAnswers",
   EVALUATION_RUBRICS: "evaluationRubrics",
   WEAKNESS_REPORTS: "weaknessReports",
+  // Mathematics Intelligence System — chapter-wise academic intelligence.
+  MATH_CHAPTERS: "mathChapters",
+  MATH_QUESTIONS: "mathQuestions",
+  MATH_MODEL_ANSWERS: "mathModelAnswers",
+  MATH_FORMULAS: "mathFormulas",
+  MATH_RUBRICS: "mathRubrics",
+  MATH_KEYWORDS: "mathKeywords",
+  MATH_COMMON_MISTAKES: "mathCommonMistakes",
+  MATH_CHAPTER_ANALYTICS: "mathChapterAnalytics",
 } as const;
