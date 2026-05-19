@@ -1,7 +1,15 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { BookOpen, ExternalLink, Loader2, Library as LibraryIcon } from "lucide-react";
+import {
+  BookOpen,
+  ExternalLink,
+  Loader2,
+  Library as LibraryIcon,
+  CalendarPlus,
+  Check,
+} from "lucide-react";
+import { toast } from "sonner";
 import { DashboardLayout } from "@/components/dashboard-layout";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -11,7 +19,13 @@ import {
 } from "@/integrations/firebase/services";
 import { useLibraryResources } from "@/hooks/use-resources";
 import { incrementLibraryResourceViews } from "@/integrations/firebase/services/library-resources";
-import type { LibraryLanguage, LibraryResourceDoc } from "@/integrations/firebase/types";
+import type {
+  LibraryLanguage,
+  LibraryResourceDoc,
+  SubjectDoc,
+  ChapterDoc,
+} from "@/integrations/firebase/types";
+import { addToTodayPlan, hasTaskWithTitle } from "@/lib/today-plan-store";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/textbooks")({
@@ -29,8 +43,10 @@ export const Route = createFileRoute("/textbooks")({
 });
 
 function TextbooksPage() {
+  const navigate = useNavigate();
   const [language, setLanguage] = useState<LibraryLanguage>("en");
   const [subjectId, setSubjectId] = useState<string | undefined>(undefined);
+  const [justAdded, setJustAdded] = useState<Record<string, boolean>>({});
 
   const subjectsQuery = useQuery({
     queryKey: ["subjects"],
@@ -63,6 +79,41 @@ function TextbooksPage() {
     }
     return map;
   }, [resourcesQuery.data]);
+
+  const activeSubject: SubjectDoc | undefined = subjectsQuery.data?.find(
+    (s) => s.id === activeSubjectId,
+  );
+
+  function handleAddToPlan(ch: ChapterDoc, resource?: LibraryResourceDoc) {
+    const subjectName = activeSubject?.name ?? ch.subjectId;
+    const title = `Study — ${
+      ch.chapterNumber ? `Ch ${ch.chapterNumber}. ` : ""
+    }${ch.title}`;
+    const added = addToTodayPlan({
+      subject: subjectName,
+      task: title,
+      durationMin: ch.estimatedStudyTime && ch.estimatedStudyTime > 0
+        ? Math.min(60, ch.estimatedStudyTime)
+        : 35,
+      link: resource?.url,
+    });
+    if (!added) {
+      toast("Already on today's plan", { description: title });
+      return;
+    }
+    setJustAdded((s) => ({ ...s, [ch.id]: true }));
+    setTimeout(
+      () => setJustAdded((s) => ({ ...s, [ch.id]: false })),
+      1600,
+    );
+    toast.success("Added to today's plan", {
+      description: subjectName,
+      action: {
+        label: "View planner",
+        onClick: () => navigate({ to: "/planner" }),
+      },
+    });
+  }
 
   return (
     <DashboardLayout title="Textbooks">
@@ -140,12 +191,18 @@ function TextbooksPage() {
             <ul className="divide-y divide-border/60">
               {chaptersQuery.data!.map((ch) => {
                 const resource = byChapter.get(ch.id);
+                const isAdded = justAdded[ch.id];
+                const alreadyOnPlan = hasTaskWithTitle(
+                  `Study — ${
+                    ch.chapterNumber ? `Ch ${ch.chapterNumber}. ` : ""
+                  }${ch.title}`,
+                );
                 return (
                   <li
                     key={ch.id}
-                    className="flex items-center justify-between gap-3 px-3 py-3 sm:px-4"
+                    className="flex flex-col gap-2 px-3 py-3 sm:flex-row sm:items-center sm:justify-between sm:px-4"
                   >
-                    <div className="min-w-0 flex items-start gap-3">
+                    <div className="min-w-0 flex items-start gap-3 flex-1">
                       <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-muted/40 text-muted-foreground">
                         <BookOpen className="h-4 w-4" />
                       </div>
@@ -162,6 +219,25 @@ function TextbooksPage() {
                       </div>
                     </div>
                     <div className="flex shrink-0 items-center gap-2">
+                      <Button
+                        size="sm"
+                        variant={isAdded || alreadyOnPlan ? "secondary" : "outline"}
+                        className="rounded-full gap-1.5"
+                        onClick={() => handleAddToPlan(ch, resource)}
+                        disabled={isAdded}
+                      >
+                        {isAdded || alreadyOnPlan ? (
+                          <>
+                            <Check className="h-3.5 w-3.5" />
+                            <span className="hidden sm:inline">On plan</span>
+                          </>
+                        ) : (
+                          <>
+                            <CalendarPlus className="h-3.5 w-3.5" />
+                            <span className="hidden sm:inline">Add to today</span>
+                          </>
+                        )}
+                      </Button>
                       {resource?.url ? (
                         <a
                           href={resource.url}
