@@ -458,7 +458,8 @@ function dedupeBySubjectKind<T extends Candidate & { priority: number }>(
 }
 
 function estimateXp(kind: PlannerTaskKind, minutes: number): number {
-  const base = Math.round(minutes / 5) * XP_REWARDS.focusFiveMinutes;
+  // 1 XP per planned minute as a baseline; quiz/revision get a small kicker.
+  const base = Math.max(5, minutes);
   if (kind === "revision") return base + 5;
   if (kind === "quiz") return base + XP_REWARDS.quizCompleted;
   return base;
