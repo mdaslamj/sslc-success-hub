@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as TextbooksRouteImport } from './routes/textbooks'
 import { Route as TargetsRouteImport } from './routes/targets'
 import { Route as SeedRouteImport } from './routes/seed'
 import { Route as ResourcesRouteImport } from './routes/resources'
@@ -32,6 +33,11 @@ import { Route as ExamResultsAttemptIdRouteImport } from './routes/exam-results.
 import { Route as AnswerUploadsAttemptIdRouteImport } from './routes/answer-uploads.$attemptId'
 import { Route as AdminImportRouteImport } from './routes/admin.import'
 
+const TextbooksRoute = TextbooksRouteImport.update({
+  id: '/textbooks',
+  path: '/textbooks',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TargetsRoute = TargetsRouteImport.update({
   id: '/targets',
   path: '/targets',
@@ -159,6 +165,7 @@ export interface FileRoutesByFullPath {
   '/resources': typeof ResourcesRoute
   '/seed': typeof SeedRoute
   '/targets': typeof TargetsRoute
+  '/textbooks': typeof TextbooksRoute
   '/admin/import': typeof AdminImportRoute
   '/answer-uploads/$attemptId': typeof AnswerUploadsAttemptIdRoute
   '/exam-results/$attemptId': typeof ExamResultsAttemptIdRoute
@@ -183,6 +190,7 @@ export interface FileRoutesByTo {
   '/resources': typeof ResourcesRoute
   '/seed': typeof SeedRoute
   '/targets': typeof TargetsRoute
+  '/textbooks': typeof TextbooksRoute
   '/admin/import': typeof AdminImportRoute
   '/answer-uploads/$attemptId': typeof AnswerUploadsAttemptIdRoute
   '/exam-results/$attemptId': typeof ExamResultsAttemptIdRoute
@@ -208,6 +216,7 @@ export interface FileRoutesById {
   '/resources': typeof ResourcesRoute
   '/seed': typeof SeedRoute
   '/targets': typeof TargetsRoute
+  '/textbooks': typeof TextbooksRoute
   '/admin/import': typeof AdminImportRoute
   '/answer-uploads/$attemptId': typeof AnswerUploadsAttemptIdRoute
   '/exam-results/$attemptId': typeof ExamResultsAttemptIdRoute
@@ -234,6 +243,7 @@ export interface FileRouteTypes {
     | '/resources'
     | '/seed'
     | '/targets'
+    | '/textbooks'
     | '/admin/import'
     | '/answer-uploads/$attemptId'
     | '/exam-results/$attemptId'
@@ -258,6 +268,7 @@ export interface FileRouteTypes {
     | '/resources'
     | '/seed'
     | '/targets'
+    | '/textbooks'
     | '/admin/import'
     | '/answer-uploads/$attemptId'
     | '/exam-results/$attemptId'
@@ -282,6 +293,7 @@ export interface FileRouteTypes {
     | '/resources'
     | '/seed'
     | '/targets'
+    | '/textbooks'
     | '/admin/import'
     | '/answer-uploads/$attemptId'
     | '/exam-results/$attemptId'
@@ -307,6 +319,7 @@ export interface RootRouteChildren {
   ResourcesRoute: typeof ResourcesRoute
   SeedRoute: typeof SeedRoute
   TargetsRoute: typeof TargetsRoute
+  TextbooksRoute: typeof TextbooksRoute
   AdminImportRoute: typeof AdminImportRoute
   ExamResultsAttemptIdRoute: typeof ExamResultsAttemptIdRoute
   QuizQuizIdRoute: typeof QuizQuizIdRoute
@@ -316,6 +329,13 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/textbooks': {
+      id: '/textbooks'
+      path: '/textbooks'
+      fullPath: '/textbooks'
+      preLoaderRoute: typeof TextbooksRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/targets': {
       id: '/targets'
       path: '/targets'
@@ -511,6 +531,7 @@ const rootRouteChildren: RootRouteChildren = {
   ResourcesRoute: ResourcesRoute,
   SeedRoute: SeedRoute,
   TargetsRoute: TargetsRoute,
+  TextbooksRoute: TextbooksRoute,
   AdminImportRoute: AdminImportRoute,
   ExamResultsAttemptIdRoute: ExamResultsAttemptIdRoute,
   QuizQuizIdRoute: QuizQuizIdRoute,
@@ -520,3 +541,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
