@@ -13,3 +13,5 @@ export * from "./speed-analyzer";
 export * from "./mistake-detector";
 export * from "./rubric-grader";
 export * from "./tutor-context";
+export * from "./mastery-aggregator";
+export * from "./mastery-tiers";

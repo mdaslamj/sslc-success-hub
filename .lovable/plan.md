@@ -1,37 +1,71 @@
-## Problem
+# Mathematics: One Connected Learning System
 
-On `/resources?subjectId=math&chapterId=m1` the page shows "No resources match these filters yet" and there is nothing to open. The chapter PDFs are seeded, but they never match the chapter the user clicked.
+Goal: turn the scattered Math pieces (chapters, textbooks, formulas, PYQs, mock tests, OCR evaluation, analytics) into a single chapter-centric workflow. No structural redesign — reuse existing routes, stores, and Firestore collections.
 
-### Root cause
+## What the user will see
 
-Two different seeders write chapters with **different ID schemes**:
+A new **Math Chapter Hub** page at `/subjects/math/$chapterId` with 5 tabs, matching the existing minimal mobile-friendly style:
 
-| Seeder | Route | Chapter doc IDs |
-|---|---|---|
-| `seedFirestore()` (uses `mock-data.subjectChapters`) | `/seed` | `m1`, `m2`, …, `s1`, `ss1`, `e1`, `k1`, `h1` |
-| `importSyllabus()` (KARNATAKA_SSLC) | `/admin/import` | `math_ch01`, `science_ch01`, `social_ch01` |
+```text
+[ Learn ] [ Practice ] [ Test ] [ Evaluate ] [ Improve ]
+```
 
-The app on this device was populated via `/seed`, so Firestore has chapters with IDs `m1`, `s1`, `ss1`… But `src/lib/ktbs-textbook-seed.ts` hard-codes `chapterId: math_ch01` etc. → every textbook resource is orphaned, and `/resources?chapterId=m1` correctly returns zero matches.
+- **Learn** — KTBS + NCERT textbook links (from `library_resources`, filtered by `chapterId`), formula sheet for the chapter, key concepts.
+- **Practice** — PYQs and MCQs for the chapter (from `math_questions` + existing MCQ bank), with one-tap "Add to today's plan".
+- **Test** — Launch a chapter-scoped mock test built via existing `mock-test-builder.ts`.
+- **Evaluate** — Upload handwritten answers → existing OCR + rubric grader pipeline; shows last evaluation.
+- **Improve** — Real weak/strong concepts, formula accuracy, speed index, recommended next actions (from `math_chapter_analytics` + `revision-recommender.ts`).
 
-`src/components/chapter-resources.tsx` passes `chapter.id` (the real Firestore doc id) into the `<Link to="/resources">`, so the link itself is correct. The only fix needed is on the seed side.
+Header strip on every tab shows live **chapter intelligence**:
 
-## Fix
+```text
+Mastery 62%   Board freq ★★★★☆   Difficulty Medium   Predicted weight 8 marks
+```
 
-Update `src/lib/ktbs-textbook-seed.ts` so each chapter entry emits resources for **both** ID schemes — the mock seed (`m{n}`, `s{n}`, `ss{n}`) and the syllabus importer (`math_ch01`, …). That way the textbook library works regardless of which seeder the user ran.
+The existing `/subjects/math` chapter list gets a small upgrade: each chapter row shows mastery %, predicted weightage, and a weak-concept dot if detected. Clicking a chapter goes to the new hub.
 
-Concretely:
+## Chapter intelligence
 
-- Add a subject config: `{ subjectId: "math", chapterIds: (n) => ["m" + n, "math_ch" + pad(n)] }`, same for `science` → `["s" + n, "science_ch" + pad(n)]` and `social` → `["ss" + n, "social_ch" + pad(n)]`.
-- For each chapter + language, generate one `LibraryResourceDoc` per `chapterIds[]` variant, with deterministic ids like `ktbs_math_m1_en` and `ktbs_math_math_ch01_en` so the upsert stays idempotent.
-- No changes to the seeding flow, no new collections, no schema changes. Re-running "Seed KTBS textbooks" on `/admin/import` will populate both variants.
+Read from `math_chapters` doc (`boardFrequency`, `difficulty`, `predictedWeightage` already in schema) + computed `mastery` from `math_chapter_analytics`. No new collections.
 
-## After the change
+## Real analytics (replaces placeholders)
 
-- User goes to `/admin/import` and clicks **Seed KTBS textbooks** again (one click).
-- Clicking a chapter from the subject page now lands on `/resources?subjectId=math&chapterId=m1` with the matching NCERT/KTBS PDF row, with **Open** and **Add to today** buttons working as before.
-- `/textbooks` continues to work unchanged (it filters by `subjectId` only).
+A new pure helper `src/lib/math-intelligence/mastery-aggregator.ts` computes per-chapter mastery as a weighted blend of signals already in the DB:
+
+- 40% `math_chapter_analytics.mastery` (quiz + MCQ attempts via `applyAttempt`)
+- 25% mock-exam chapter score (from existing `mock_exam_attempts`, filtered by `chapterId` tags on questions)
+- 25% OCR evaluation average (from `answer_uploads` / `evaluations` joined by `chapterId`)
+- 10% formula accuracy from `formulaAccuracy` map
+
+Output: `{ mastery, breakdown, weakConcepts, strongConcepts, lastUpdated }`. Same shape used by the Improve tab, the chapter list, and the prediction engine.
+
+## Prediction engine hookup
+
+`/predictions` route already exists. Feed it the aggregator output so per-chapter predicted-weightage × (1 − mastery) drives the "focus next" ranking. No UI rewrite — just swap the data source from mock to aggregator.
+
+## Mastery progression
+
+Add 5 named tiers derived from mastery %: Novice (0–20) · Learner (20–40) · Practitioner (40–60) · Proficient (60–80) · Mastered (80–100). Rendered as a thin progress bar + label in the chapter hub header and chapter list. Pure presentational helper in `src/lib/math-intelligence/mastery-tiers.ts`.
+
+## Files
+
+New
+- `src/routes/subjects.math.$chapterId.tsx` — the 5-tab hub
+- `src/lib/math-intelligence/mastery-aggregator.ts`
+- `src/lib/math-intelligence/mastery-tiers.ts`
+- `src/hooks/use-math-mastery.ts` — react-query wrapper around the aggregator
+
+Edited
+- `src/routes/subjects.$subjectId.tsx` — math-specific row enrichments (mastery %, weak dot, tier badge) when `subjectId === "math"`; route to the new hub on click
+- `src/routes/predictions.tsx` — swap mock ranking for aggregator-driven ranking (math only)
+- `src/integrations/firebase/services/index.ts` — export aggregator query if needed
+
+Untouched
+- Firestore schema, auth, sidebar, planner, textbooks page, all non-math subjects.
 
 ## Out of scope
 
-- Reconciling the two seeders into a single canonical chapter set (separate cleanup).
-- Adding per-chapter Kannada PDFs (KTBS doesn't expose them; we still link to the subject contents page).
+- New collections or migrations
+- Redesigning the global sidebar or dashboard
+- Non-math subjects (same patterns can be applied later)
+- AI tutor chat UI (existing tutor-context helper is wired into the Improve tab's "Ask AI" button but no new chat surface is built)
