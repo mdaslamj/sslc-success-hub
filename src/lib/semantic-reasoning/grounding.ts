@@ -73,22 +73,32 @@ export function buildGroundingPrompt(p: GroundingPayload): string {
   if (p.chapterIntelligence) {
     const ci = p.chapterIntelligence;
     lines.push("\n## Cohort signals");
-    if (ci.avgAccuracy != null)
-      lines.push(`Average cohort accuracy: ${(ci.avgAccuracy * 100).toFixed(0)}%`);
-    if (ci.weakSubtopics?.length)
-      lines.push(`Frequently weak subtopics: ${ci.weakSubtopics.join(", ")}`);
+    if (ci.confidenceScore != null)
+      lines.push(`Cohort confidence: ${Math.round(ci.confidenceScore)}/100`);
+    if (ci.weakConcepts?.length)
+      lines.push(`Frequently weak concepts: ${ci.weakConcepts.join(", ")}`);
+    if (ci.marksAtRiskAnalysis)
+      lines.push(
+        `Cohort marks-at-risk avg: ${ci.marksAtRiskAnalysis.averageMarksAtRisk}`,
+      );
   }
   if (p.weakness) {
     lines.push("\n## This student's weakness profile (private)");
-    if (p.weakness.dominantLayer)
-      lines.push(`Dominant weakness layer: ${p.weakness.dominantLayer}`);
-    if (p.weakness.repeatedMistakes?.length)
-      lines.push(
-        `Repeated mistakes: ${p.weakness.repeatedMistakes
-          .slice(0, 5)
-          .map((m) => m.label)
-          .join(", ")}`,
-      );
+    const layers = Object.entries(p.weakness.weaknessLayers ?? {})
+      .sort((a, b) => Number(b[1]) - Number(a[1]))
+      .slice(0, 3)
+      .map(([k, v]) => `${k}:${Math.round(Number(v))}`)
+      .join(", ");
+    if (layers) lines.push(`Top weakness layers: ${layers}`);
+    const mistakes = Object.entries(p.weakness.repeatedMistakes ?? {})
+      .filter(([, v]) => Number(v) > 0)
+      .sort((a, b) => Number(b[1]) - Number(a[1]))
+      .slice(0, 5)
+      .map(([k, v]) => `${k}(${v})`)
+      .join(", ");
+    if (mistakes) lines.push(`Repeated mistakes: ${mistakes}`);
+    lines.push(`Confidence: ${Math.round(p.weakness.confidenceScore)}/100`);
+    lines.push(`Marks at risk: ${p.weakness.marksAtRisk}`);
   }
   if (p.memory) {
     lines.push("\n## Memory / retention snapshot");
