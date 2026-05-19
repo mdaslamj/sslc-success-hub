@@ -70,7 +70,8 @@ export function useMockExam(exam: MockExamDoc) {
     setAttempt(a);
     setPhase("running");
     // Best-effort Firestore mirror (non-blocking).
-    void startExamAttempt({ ...a, id: undefined as unknown as string } as never)
+    const { id: _localId, ...attemptInput } = a;
+    void startExamAttempt(attemptInput)
       .then((doc) => {
         // Swap in the Firestore id so future saves patch the right doc.
         const next = { ...a, id: doc.id };
