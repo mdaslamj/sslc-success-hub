@@ -8,6 +8,15 @@ import { Upload, CheckCircle2, AlertTriangle, Loader2, FileJson } from "lucide-r
 import { importSyllabus, parseSyllabusJson } from "@/integrations/firebase/services/syllabus-import";
 import { KARNATAKA_SSLC } from "@/integrations/firebase/syllabus/sslc-karnataka";
 import { KARNATAKA_SSLC_MATH } from "@/integrations/firebase/syllabus/sslc-math";
+import {
+  bulkUpsertLibraryCategories,
+  bulkUpsertLibraryResources,
+} from "@/integrations/firebase/services/library-resources";
+import {
+  DEFAULT_LIBRARY_CATEGORIES,
+  STARTER_LIBRARY_RESOURCES,
+} from "@/lib/resource-seed";
+import type { LibraryResourceDoc } from "@/integrations/firebase/types";
 
 export const Route = createFileRoute("/admin/import")({
   head: () => ({ meta: [{ title: "Syllabus Import — Admin" }] }),
@@ -28,6 +37,13 @@ function AdminImportPage() {
     | { kind: "idle" }
     | { kind: "loading" }
     | { kind: "success"; subjects: number; chapters: number; resources: number; board: string }
+    | { kind: "error"; message: string }
+  >({ kind: "idle" });
+  const [libraryJson, setLibraryJson] = useState("");
+  const [libState, setLibState] = useState<
+    | { kind: "idle" }
+    | { kind: "loading" }
+    | { kind: "success"; message: string }
     | { kind: "error"; message: string }
   >({ kind: "idle" });
 
@@ -59,6 +75,33 @@ function AdminImportPage() {
       setState({ kind: "success", ...r, board: payload.board });
     } catch (e) {
       setState({ kind: "error", message: (e as Error).message });
+    }
+  }
+
+  async function seedLibraryDefaults() {
+    setLibState({ kind: "loading" });
+    try {
+      const cats = await bulkUpsertLibraryCategories(DEFAULT_LIBRARY_CATEGORIES);
+      const res = await bulkUpsertLibraryResources(STARTER_LIBRARY_RESOURCES);
+      setLibState({
+        kind: "success",
+        message: `Seeded ${cats} categories and ${res} starter resources.`,
+      });
+    } catch (e) {
+      setLibState({ kind: "error", message: (e as Error).message });
+    }
+  }
+
+  async function runLibraryJson() {
+    setLibState({ kind: "loading" });
+    try {
+      const parsed = JSON.parse(libraryJson) as LibraryResourceDoc[];
+      if (!Array.isArray(parsed))
+        throw new Error("Expected an array of library resources.");
+      const n = await bulkUpsertLibraryResources(parsed);
+      setLibState({ kind: "success", message: `Imported ${n} resources.` });
+    } catch (e) {
+      setLibState({ kind: "error", message: (e as Error).message });
     }
   }
 
