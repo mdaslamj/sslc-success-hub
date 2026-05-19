@@ -341,7 +341,8 @@ function Dashboard() {
         </section>
 
         {/* Subject readiness bars */}
-        <section className="rounded-2xl border border-border/60 bg-card p-6 shadow-card">
+        <section className="grid gap-6 lg:grid-cols-[1fr_20rem]">
+          <div className="rounded-2xl border border-border/60 bg-card p-6 shadow-card">
           <div className="mb-5 flex items-center justify-between">
             <div>
               <h3 className="font-display text-lg font-semibold">Subject-wise Readiness</h3>
@@ -393,6 +394,8 @@ function Dashboard() {
               </div>
             ))}
           </div>
+          </div>
+          <MockExamWidget />
         </section>
       </div>
     </DashboardLayout>
