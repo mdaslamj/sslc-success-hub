@@ -77,13 +77,26 @@ const SOCIAL_CHAPTERS: ChapterSeed[] = [
   { number: 5, name: "Freedom Movement", kn: KTBS_KANNADA_SSLC_SOCIAL },
 ];
 
+/**
+ * Each subject has TWO possible chapter-doc id schemes in Firestore, depending
+ * on which seeder the user ran:
+ *   - `/seed` (mock-data based) → short prefixes: m1, s1, ss1
+ *   - `/admin/import` (syllabus importer) → math_ch01, science_ch01, social_ch01
+ * We emit a resource doc per variant so the textbook library works regardless.
+ */
+const SUBJECT_ID_VARIANTS: Record<string, (n: number) => string[]> = {
+  math: (n) => [`m${n}`, `math_ch${String(n).padStart(2, "0")}`],
+  science: (n) => [`s${n}`, `science_ch${String(n).padStart(2, "0")}`],
+  social: (n) => [`ss${n}`, `social_ch${String(n).padStart(2, "0")}`],
+};
+
 function entry(
   subjectId: string,
   ch: ChapterSeed,
+  chapterId: string,
   language: "en" | "kn",
   url: string,
 ): LibraryResourceDoc {
-  const chapterId = `${subjectId}_ch${String(ch.number).padStart(2, "0")}`;
   return {
     id: `ktbs_${subjectId}_${chapterId}_${language}`,
     title: `Ch ${ch.number}. ${ch.name}`,
@@ -107,10 +120,15 @@ function buildSubjectSeed(
   subjectId: string,
   chapters: ChapterSeed[],
 ): LibraryResourceDoc[] {
+  const variants = SUBJECT_ID_VARIANTS[subjectId] ?? ((n: number) => [
+    `${subjectId}_ch${String(n).padStart(2, "0")}`,
+  ]);
   const out: LibraryResourceDoc[] = [];
   for (const ch of chapters) {
-    if (ch.en) out.push(entry(subjectId, ch, "en", ch.en));
-    if (ch.kn) out.push(entry(subjectId, ch, "kn", ch.kn));
+    for (const chapterId of variants(ch.number)) {
+      if (ch.en) out.push(entry(subjectId, ch, chapterId, "en", ch.en));
+      if (ch.kn) out.push(entry(subjectId, ch, chapterId, "kn", ch.kn));
+    }
   }
   return out;
 }
