@@ -91,7 +91,13 @@ export const Route = createFileRoute("/subjects/math/$chapterId")({
 
 function MathChapterHub() {
   const { chapterId } = Route.useParams();
-  const { chapter, mastery, isLoading } = useChapterMastery(chapterId);
+  const {
+    chapter,
+    mastery,
+    isChapterLoading,
+    isChapterMissing,
+    isAuthenticated,
+  } = useChapterMastery(chapterId);
 
   const formulasQ = useQuery({
     queryKey: ["math", "formulas", "chapter", chapterId],
@@ -110,13 +116,41 @@ function MathChapterHub() {
     enabled: !!chapterId,
   });
 
-  if (isLoading || !chapter || !mastery) {
+  if (isChapterLoading) {
     return (
       <DashboardLayout title="Loading…">
         <div className="mx-auto max-w-5xl space-y-4">
           <Skeleton className="h-32 w-full rounded-3xl" />
           <Skeleton className="h-10 w-72 rounded-full" />
           <Skeleton className="h-64 w-full rounded-2xl" />
+        </div>
+      </DashboardLayout>
+    );
+  }
+
+  if (isChapterMissing || !chapter || !mastery) {
+    return (
+      <DashboardLayout title="Chapter not found">
+        <div className="mx-auto max-w-lg py-16 text-center">
+          <AlertTriangle className="mx-auto h-10 w-10 text-warning" />
+          <h1 className="mt-3 font-display text-2xl font-bold">
+            Chapter data isn't seeded yet
+          </h1>
+          <p className="mt-2 text-sm text-muted-foreground">
+            No <code className="font-mono text-xs">{chapterId}</code> doc was
+            found in the Math intelligence collections. An admin can seed it
+            from the import panel.
+          </p>
+          <div className="mt-5 flex flex-wrap justify-center gap-2">
+            <Button asChild className="rounded-full">
+              <Link to="/subjects/$subjectId" params={{ subjectId: "math" }}>
+                Back to Math
+              </Link>
+            </Button>
+            <Button asChild variant="outline" className="rounded-full">
+              <Link to="/admin/import">Seed Math data</Link>
+            </Button>
+          </div>
         </div>
       </DashboardLayout>
     );
@@ -163,6 +197,14 @@ function MathChapterHub() {
               </h1>
               {chapter.titleKn && (
                 <p className="text-sm text-muted-foreground">{chapter.titleKn}</p>
+              )}
+              {!isAuthenticated && (
+                <Badge
+                  variant="outline"
+                  className="mt-2 rounded-full text-[10px]"
+                >
+                  Sign in to track mastery
+                </Badge>
               )}
             </div>
             <div className="grid grid-cols-2 gap-2 sm:grid-cols-4 sm:gap-3">
