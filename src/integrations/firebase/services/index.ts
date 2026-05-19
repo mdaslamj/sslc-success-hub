@@ -40,3 +40,8 @@ export * from "./performance-records";
 export * from "./weakness-profiles";
 export * from "./remediation-plans";
 export * from "./chapter-intelligence";
+// Adaptive Study Planner & Intervention Engine
+export * from "./intervention-plans";
+export * from "./adaptive-schedules";
+export * from "./revision-queue";
+export * from "./remediation-sessions";

@@ -1568,3 +1568,130 @@ export type ChapterIntelligenceDoc = {
   };
   updatedAt: number;
 };
+
+/* ===================================================================== *
+ * Adaptive Study Planner & Intervention Engine
+ * ===================================================================== */
+
+export type DifficultyLevel = "easier" | "medium" | "board";
+
+export type InterventionTriggerKey =
+  | "repeatedSignError"
+  | "skippedSteps"
+  | "formulaMisuse"
+  | "lowConfidence"
+  | "highMarksAtRisk"
+  | "confidenceDecline"
+  | "boardPriorityWeak";
+
+export type InterventionStatus =
+  | "pending"
+  | "active"
+  | "completed"
+  | "dismissed";
+
+/** Lives under users/{uid}/interventionPlans/{planId}. */
+export type InterventionPlanDoc = {
+  id: string;
+  userId: string;
+  chapterId: string;
+  subjectId: string;
+  /** 0..100 — higher = more urgent. */
+  priorityScore: number;
+  triggers: InterventionTriggerKey[];
+  /** Snapshot used to derive priority (for transparency / debugging). */
+  scoring?: {
+    weaknessWeight: number;
+    boardWeight: number;
+    mistakeSeverity: number;
+    confidenceDecline: number;
+    examProximity: number;
+    marksAtRisk: number;
+  };
+  difficultyLevel: DifficultyLevel;
+  status: InterventionStatus;
+  createdAt: number;
+  updatedAt: number;
+};
+
+export type AdaptiveTask = {
+  id: string;
+  chapterId: string;
+  subjectId: string;
+  kind:
+    | "targeted_revision"
+    | "formula_drill"
+    | "recovery_practice"
+    | "board_priority_practice"
+    | "revision";
+  title: string;
+  description?: string;
+  difficultyLevel: DifficultyLevel;
+  estimatedMinutes: number;
+  priority: number; // 1..5
+  route?: string;
+  status: "pending" | "done" | "skipped";
+};
+
+/** Lives under users/{uid}/adaptiveSchedules/{scheduleId}. */
+export type AdaptiveScheduleDoc = {
+  id: string;
+  userId: string;
+  /** ISO day key (YYYY-MM-DD) the schedule is anchored to. */
+  dayKey: string;
+  /** ISO week key (YYYY-Www) — for the weekly view. */
+  weekKey: string;
+  dailyTasks: AdaptiveTask[];
+  weeklyTasks: AdaptiveTask[];
+  /** Dominant difficulty for the day. */
+  difficultyLevel: DifficultyLevel;
+  /** Average confidence across the targeted chapters, 0..100. */
+  confidenceScore: number;
+  createdAt: number;
+  updatedAt: number;
+};
+
+export type RevisionQueueStatus = "pending" | "done" | "skipped";
+
+/** Lives under users/{uid}/revisionQueue/{queueId}. */
+export type RevisionQueueDoc = {
+  id: string;
+  userId: string;
+  chapterId: string;
+  subjectId: string;
+  /** 0..100. */
+  priority: number;
+  /** epoch ms — when this card should resurface. */
+  scheduledDate: number;
+  status: RevisionQueueStatus;
+  reason?: InterventionTriggerKey;
+  createdAt: number;
+  updatedAt: number;
+};
+
+export type RemediationSessionType =
+  | "formulaDrill"
+  | "targetedRevision"
+  | "recoveryPractice"
+  | "boardPriorityPractice";
+
+/** Lives under users/{uid}/remediationSessions/{sessionId}. */
+export type RemediationSessionDoc = {
+  id: string;
+  userId: string;
+  chapterId: string;
+  subjectId: string;
+  type: RemediationSessionType;
+  difficultyLevel: DifficultyLevel;
+  estimatedMinutes: number;
+  scheduledAt: number;
+  completedAt?: number | null;
+  /** Optional outcome — captured when the session is closed. */
+  outcome?: {
+    score?: number;
+    confidenceDelta?: number;
+    notes?: string;
+  };
+  createdAt: number;
+  updatedAt: number;
+};
