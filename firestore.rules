@@ -343,6 +343,46 @@ service cloud.firestore {
       allow write: if isAdmin();
     }
 
+    // Mathematics Intelligence System — reference data is public read,
+    // admin-only write. Per-user analytics is owner-gated.
+    match /mathChapters/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    match /mathQuestions/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    match /mathModelAnswers/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    match /mathFormulas/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    match /mathRubrics/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    match /mathKeywords/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    match /mathCommonMistakes/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // Per-user, per-chapter math analytics. Doc id: `${userId}_${chapterId}`.
+    match /mathChapterAnalytics/{docId} {
+      allow read: if isSignedIn() && resource.data.userId == request.auth.uid;
+      allow create: if isSignedIn() && request.resource.data.userId == request.auth.uid;
+      allow update, delete: if isSignedIn()
+        && resource.data.userId == request.auth.uid
+        && request.resource.data.userId == request.auth.uid;
+    }
+
     // Default deny.
     match /{document=**} {
       allow read, write: if false;
