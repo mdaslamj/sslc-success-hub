@@ -210,9 +210,6 @@ export function useScheduleRemediationSession() {
   return useMutation({
     mutationFn: async (input: {
       profile: WeaknessProfileDoc;
-      triggers: PriorityInput extends infer T ? never : never;
-    } | {
-      profile: WeaknessProfileDoc;
       triggers: ReturnType<typeof scoreInterventionPriority>["triggers"];
       scheduledAt?: number;
     }) => {
