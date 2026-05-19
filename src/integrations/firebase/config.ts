@@ -124,3 +124,10 @@ export const SEMANTIC_SUBCOLLECTIONS = {
   HINT_HISTORY: "hintHistory",
   REASONING_FEEDBACK: "reasoningFeedback",
 } as const;
+
+// Board Readiness Prediction + Exam Simulation Engine
+// Per-user subcollections under users/{uid}.
+export const BOARD_READINESS_SUBCOLLECTIONS = {
+  EXAM_SIMULATIONS: "examSimulations",
+  BOARD_READINESS: "boardReadiness",
+} as const;

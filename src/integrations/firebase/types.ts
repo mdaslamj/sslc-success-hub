@@ -1876,3 +1876,126 @@ export type ReasoningFeedbackDoc = {
   model: string;
   createdAt: number;
 };
+
+/* ============================================================
+ * Board Readiness Prediction + Exam Simulation Engine
+ * ============================================================
+ * Mock SSLC board exam simulations and a Board Readiness Index
+ * (0..100) computed from retention, reasoning quality, tutoring
+ * continuity, weakness diagnosis, and recent performance.
+ */
+
+export type SimulationStatus = "draft" | "in_progress" | "completed" | "abandoned";
+
+/** Per-section breakdown of a simulated mock board exam. */
+export type ExamSimulationSection = {
+  chapterId: string;
+  chapterTitle?: string;
+  questionIds: string[];
+  difficultyLevel: DifficultyLevel;
+  /** Board-weightage assigned share of the total marks. */
+  marksAllocated: number;
+  marksScored?: number;
+};
+
+/** Lives under users/{uid}/examSimulations/{simulationId}. */
+export type ExamSimulationDoc = {
+  id: string;
+  userId: string;
+  /** Chapters included with their per-chapter marks weightage. */
+  chaptersIncluded: Array<{
+    chapterId: string;
+    weightage: number; // 0..1
+    marksAtRisk?: number;
+  }>;
+  sections?: ExamSimulationSection[];
+  /** Overall paper difficulty. Adaptive progression: easier → medium → board. */
+  difficultyLevel: DifficultyLevel;
+  /** Duration in minutes (e.g. 180 for a full SSLC paper). */
+  duration: number;
+  startedAt?: number;
+  submittedAt?: number;
+  status: SimulationStatus;
+  totalMarks: number;
+  marksScored?: number;
+  /** Rubric-based grading scores per section / per question. */
+  rubricScores?: Array<{
+    questionId: string;
+    rubricId?: string;
+    score: number;
+    maxScore: number;
+    breakdown?: Record<string, number>;
+  }>;
+  /** Semantic reasoning feedback bundled into the result. */
+  semanticFeedback?: Array<{
+    questionId: string;
+    verdict?: SemanticVerdict;
+    summary: string;
+    suggestions?: string[];
+  }>;
+  /** Retention snapshot used while building / grading the simulation. */
+  retentionSnapshot?: Array<{
+    chapterId: string;
+    retentionScore: number;
+    band?: "ok" | "reminder" | "remediation" | "recovery";
+  }>;
+  /** Readiness score (0..100) computed at submission time. */
+  readinessScore?: number;
+  /** Recommended remediation actions after grading. */
+  recommendations?: Array<{
+    kind: "revision" | "drill" | "intervention" | "tutoring";
+    chapterId?: string;
+    label: string;
+  }>;
+  createdAt: number;
+  updatedAt: number;
+};
+
+export type ReadinessBand = "ready" | "reminder" | "remediation" | "recovery";
+
+/** Per-chapter readiness contribution snapshot. */
+export type ChapterReadinessContribution = {
+  chapterId: string;
+  retentionScore: number;
+  reasoningQuality: number; // 0..100
+  weaknessSeverity: number; // 0..1 (higher = weaker)
+  recentPerformance: number; // 0..100
+  marksAtRisk: number;
+  weightage: number; // 0..1
+};
+
+/** Lives under users/{uid}/boardReadiness/{readinessId}. */
+export type BoardReadinessDoc = {
+  id: string;
+  userId: string;
+  /** Overall Board Readiness Index, 0..100. */
+  readinessScore: number;
+  band: ReadinessBand;
+  /** Weighted aggregate factors that produced the score (each 0..100). */
+  contributingFactors: {
+    memory: number;
+    reasoning: number;
+    continuity: number;
+    weaknesses: number;
+    recentPerformance: number;
+  };
+  /** Optional per-chapter breakdown. */
+  chapters?: ChapterReadinessContribution[];
+  /** When this prediction was computed. */
+  predictionDate: number;
+  /** Adaptive recommendations driven by the readiness band. */
+  recommendations: Array<{
+    kind:
+      | "revision_reminder"
+      | "remediation_plan"
+      | "intensive_recovery"
+      | "simulation";
+    label: string;
+    chapterId?: string;
+    route?: string;
+  }>;
+  /** Linked simulation that triggered this snapshot, if any. */
+  sourceSimulationId?: string;
+  createdAt: number;
+  updatedAt: number;
+};

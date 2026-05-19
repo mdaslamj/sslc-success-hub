@@ -51,3 +51,6 @@ export * from "./ai-tutoring-sessions";
 export * from "./semantic-evaluations";
 export * from "./hint-history";
 export * from "./reasoning-feedback";
+// Board Readiness Prediction + Exam Simulation Engine
+export * from "./exam-simulations";
+export * from "./board-readiness";
