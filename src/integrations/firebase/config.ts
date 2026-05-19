@@ -28,4 +28,8 @@ export const COLLECTIONS = {
   MCQS: "mcqs",
   NOTES: "notes",
   RESOURCES: "resources",
+  USER_PROGRESS: "userProgress",
+  STUDY_SESSIONS: "studySessions",
+  ACHIEVEMENTS: "achievements",
+  ANALYTICS: "analytics",
 } as const;
