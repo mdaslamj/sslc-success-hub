@@ -14,6 +14,7 @@ import { Route as SeedRouteImport } from './routes/seed'
 import { Route as QuizzesRouteImport } from './routes/quizzes'
 import { Route as PredictionsRouteImport } from './routes/predictions'
 import { Route as PlannerRouteImport } from './routes/planner'
+import { Route as LoginRouteImport } from './routes/login'
 import { Route as FocusRouteImport } from './routes/focus'
 import { Route as AnalyticsRouteImport } from './routes/analytics'
 import { Route as AchievementsRouteImport } from './routes/achievements'
@@ -46,6 +47,11 @@ const PredictionsRoute = PredictionsRouteImport.update({
 const PlannerRoute = PlannerRouteImport.update({
   id: '/planner',
   path: '/planner',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
 const FocusRoute = FocusRouteImport.update({
@@ -94,6 +100,7 @@ export interface FileRoutesByFullPath {
   '/achievements': typeof AchievementsRoute
   '/analytics': typeof AnalyticsRoute
   '/focus': typeof FocusRoute
+  '/login': typeof LoginRoute
   '/planner': typeof PlannerRoute
   '/predictions': typeof PredictionsRoute
   '/quizzes': typeof QuizzesRoute
@@ -109,6 +116,7 @@ export interface FileRoutesByTo {
   '/achievements': typeof AchievementsRoute
   '/analytics': typeof AnalyticsRoute
   '/focus': typeof FocusRoute
+  '/login': typeof LoginRoute
   '/planner': typeof PlannerRoute
   '/predictions': typeof PredictionsRoute
   '/quizzes': typeof QuizzesRoute
@@ -125,6 +133,7 @@ export interface FileRoutesById {
   '/achievements': typeof AchievementsRoute
   '/analytics': typeof AnalyticsRoute
   '/focus': typeof FocusRoute
+  '/login': typeof LoginRoute
   '/planner': typeof PlannerRoute
   '/predictions': typeof PredictionsRoute
   '/quizzes': typeof QuizzesRoute
@@ -142,6 +151,7 @@ export interface FileRouteTypes {
     | '/achievements'
     | '/analytics'
     | '/focus'
+    | '/login'
     | '/planner'
     | '/predictions'
     | '/quizzes'
@@ -157,6 +167,7 @@ export interface FileRouteTypes {
     | '/achievements'
     | '/analytics'
     | '/focus'
+    | '/login'
     | '/planner'
     | '/predictions'
     | '/quizzes'
@@ -172,6 +183,7 @@ export interface FileRouteTypes {
     | '/achievements'
     | '/analytics'
     | '/focus'
+    | '/login'
     | '/planner'
     | '/predictions'
     | '/quizzes'
@@ -188,6 +200,7 @@ export interface RootRouteChildren {
   AchievementsRoute: typeof AchievementsRoute
   AnalyticsRoute: typeof AnalyticsRoute
   FocusRoute: typeof FocusRoute
+  LoginRoute: typeof LoginRoute
   PlannerRoute: typeof PlannerRoute
   PredictionsRoute: typeof PredictionsRoute
   QuizzesRoute: typeof QuizzesRoute
@@ -234,6 +247,13 @@ declare module '@tanstack/react-router' {
       path: '/planner'
       fullPath: '/planner'
       preLoaderRoute: typeof PlannerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/focus': {
@@ -300,6 +320,7 @@ const rootRouteChildren: RootRouteChildren = {
   AchievementsRoute: AchievementsRoute,
   AnalyticsRoute: AnalyticsRoute,
   FocusRoute: FocusRoute,
+  LoginRoute: LoginRoute,
   PlannerRoute: PlannerRoute,
   PredictionsRoute: PredictionsRoute,
   QuizzesRoute: QuizzesRoute,
@@ -313,3 +334,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
