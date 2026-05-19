@@ -17,7 +17,7 @@ function pickMixed(n: number, seed: number) {
 
 const now = Date.now();
 
-export const SEED_MOCK_EXAMS: MockExamDoc[] = [
+const RAW: MockExamDoc[] = [
   {
     id: "mock_math_full_01",
     kind: "full",
@@ -98,7 +98,9 @@ export const SEED_MOCK_EXAMS: MockExamDoc[] = [
     source: "system",
     createdAt: now,
   },
-].map((e) => ({
+];
+
+export const SEED_MOCK_EXAMS: MockExamDoc[] = RAW.map((e) => ({
   ...e,
   totalMarks: e.questions.reduce((s, q) => s + q.marks, 0),
 }));
