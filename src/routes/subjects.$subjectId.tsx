@@ -30,7 +30,8 @@ import {
 } from "lucide-react";
 import { subjectMCQs, type MCQ } from "@/lib/mock-data";
 import { fetchChapters, fetchSubject } from "@/integrations/firebase/subjects";
-import type { ChapterDoc, SubjectDoc } from "@/integrations/firebase/types";
+import type { ChapterDoc, SubjectDoc, MathChapterDoc } from "@/integrations/firebase/types";
+import { fetchMathChapters } from "@/integrations/firebase/services";
 import { toast } from "sonner";
 import { ChapterResources } from "@/components/chapter-resources";
 import { useAllChapterMastery } from "@/hooks/use-math-mastery";
@@ -82,7 +83,7 @@ export const Route = createFileRoute("/subjects/$subjectId")({
 function SubjectDetailPage() {
   const { subjectId } = Route.useParams();
 
-  const [subjectQuery, chaptersQuery] = useQueries({
+  const [subjectQuery, chaptersQuery, mathChaptersQuery] = useQueries({
     queries: [
       {
         queryKey: ["subject", subjectId],
@@ -91,6 +92,12 @@ function SubjectDetailPage() {
       {
         queryKey: ["chapters", subjectId],
         queryFn: () => fetchChapters(subjectId),
+      },
+      {
+        queryKey: ["math", "chapters"],
+        queryFn: fetchMathChapters,
+        enabled: subjectId === "math",
+        staleTime: 5 * 60 * 1000,
       },
     ],
   });
@@ -131,7 +138,33 @@ function SubjectDetailPage() {
   }
 
   const subject = subjectQuery.data as SubjectDoc | null;
-  const chapters: ChapterDoc[] = chaptersQuery.data ?? [];
+  const rawChapters: ChapterDoc[] = chaptersQuery.data ?? [];
+  const mathChapters = (mathChaptersQuery.data ?? []) as MathChapterDoc[];
+  // For the Math subject, prefer the math-intelligence chapters so that the
+  // chapter list's IDs match the Firestore docs that
+  // /subjects/math/$chapterId reads from. Falls back to the generic chapters
+  // when math intelligence has not been seeded yet.
+  const chapters: ChapterDoc[] =
+    subjectId === "math" && mathChapters.length > 0
+      ? mathChapters.map((c, i) => ({
+          id: c.id,
+          subjectId: "math",
+          title: c.title,
+          titleKn: c.titleKn,
+          progress: 0,
+          done: false,
+          difficulty:
+            c.difficultyMix.hard + c.difficultyMix.hots >= 50
+              ? "Hard"
+              : c.difficultyMix.easy >= 50
+                ? "Easy"
+                : "Medium",
+          order: c.chapterNumber ?? i,
+          chapterNumber: c.chapterNumber,
+          estimatedStudyTime: c.estimatedStudyTime,
+          importantTopics: c.keyConcepts,
+        }))
+      : rawChapters;
 
   if (!subject) {
     return (
