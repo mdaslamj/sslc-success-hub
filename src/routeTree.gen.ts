@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as TargetsRouteImport } from './routes/targets'
 import { Route as SeedRouteImport } from './routes/seed'
+import { Route as ResourcesRouteImport } from './routes/resources'
 import { Route as QuizzesRouteImport } from './routes/quizzes'
 import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as PredictionsRouteImport } from './routes/predictions'
@@ -37,6 +38,11 @@ const TargetsRoute = TargetsRouteImport.update({
 const SeedRoute = SeedRouteImport.update({
   id: '/seed',
   path: '/seed',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ResourcesRoute = ResourcesRouteImport.update({
+  id: '/resources',
+  path: '/resources',
   getParentRoute: () => rootRouteImport,
 } as any)
 const QuizzesRoute = QuizzesRouteImport.update({
@@ -137,6 +143,7 @@ export interface FileRoutesByFullPath {
   '/predictions': typeof PredictionsRoute
   '/profile': typeof ProfileRoute
   '/quizzes': typeof QuizzesRoute
+  '/resources': typeof ResourcesRoute
   '/seed': typeof SeedRoute
   '/targets': typeof TargetsRoute
   '/admin/import': typeof AdminImportRoute
@@ -158,6 +165,7 @@ export interface FileRoutesByTo {
   '/predictions': typeof PredictionsRoute
   '/profile': typeof ProfileRoute
   '/quizzes': typeof QuizzesRoute
+  '/resources': typeof ResourcesRoute
   '/seed': typeof SeedRoute
   '/targets': typeof TargetsRoute
   '/admin/import': typeof AdminImportRoute
@@ -180,6 +188,7 @@ export interface FileRoutesById {
   '/predictions': typeof PredictionsRoute
   '/profile': typeof ProfileRoute
   '/quizzes': typeof QuizzesRoute
+  '/resources': typeof ResourcesRoute
   '/seed': typeof SeedRoute
   '/targets': typeof TargetsRoute
   '/admin/import': typeof AdminImportRoute
@@ -203,6 +212,7 @@ export interface FileRouteTypes {
     | '/predictions'
     | '/profile'
     | '/quizzes'
+    | '/resources'
     | '/seed'
     | '/targets'
     | '/admin/import'
@@ -224,6 +234,7 @@ export interface FileRouteTypes {
     | '/predictions'
     | '/profile'
     | '/quizzes'
+    | '/resources'
     | '/seed'
     | '/targets'
     | '/admin/import'
@@ -245,6 +256,7 @@ export interface FileRouteTypes {
     | '/predictions'
     | '/profile'
     | '/quizzes'
+    | '/resources'
     | '/seed'
     | '/targets'
     | '/admin/import'
@@ -267,6 +279,7 @@ export interface RootRouteChildren {
   PredictionsRoute: typeof PredictionsRoute
   ProfileRoute: typeof ProfileRoute
   QuizzesRoute: typeof QuizzesRoute
+  ResourcesRoute: typeof ResourcesRoute
   SeedRoute: typeof SeedRoute
   TargetsRoute: typeof TargetsRoute
   AdminImportRoute: typeof AdminImportRoute
@@ -290,6 +303,13 @@ declare module '@tanstack/react-router' {
       path: '/seed'
       fullPath: '/seed'
       preLoaderRoute: typeof SeedRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/resources': {
+      id: '/resources'
+      path: '/resources'
+      fullPath: '/resources'
+      preLoaderRoute: typeof ResourcesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/quizzes': {
@@ -436,6 +456,7 @@ const rootRouteChildren: RootRouteChildren = {
   PredictionsRoute: PredictionsRoute,
   ProfileRoute: ProfileRoute,
   QuizzesRoute: QuizzesRoute,
+  ResourcesRoute: ResourcesRoute,
   SeedRoute: SeedRoute,
   TargetsRoute: TargetsRoute,
   AdminImportRoute: AdminImportRoute,
@@ -447,3 +468,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}

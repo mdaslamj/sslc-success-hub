@@ -11,6 +11,7 @@ import {
   GraduationCap,
   HelpCircle,
   FlaskConical,
+  Library,
   LogOut,
   LogIn,
   User as UserIcon,
@@ -41,6 +42,7 @@ const main = [
 const study = [
   { title: "Study Planner", url: "/planner", icon: CalendarClock },
   { title: "Mock Exams", url: "/exams", icon: FlaskConical },
+  { title: "Resources", url: "/resources", icon: Library },
   { title: "Analytics", url: "/analytics", icon: LineChart },
   { title: "Focus Timer", url: "/focus", icon: Timer },
   { title: "Quizzes", url: "/quizzes", icon: HelpCircle },
