@@ -33,10 +33,9 @@ import {
 import { useChapterMastery } from "@/hooks/use-math-mastery";
 import {
   fetchLibraryResources,
-  fetchMathChapterFormulas,
   fetchMathQuestions,
+  fetchMathFormulasForChapter,
 } from "@/integrations/firebase/services";
-import { fetchMathFormulasForChapter } from "@/integrations/firebase/services";
 import { UploadAnswerButton } from "@/components/answer-upload/upload-answer-button";
 import { addToTodayPlan } from "@/lib/today-plan-store";
 import { tierFor } from "@/lib/math-intelligence/mastery-tiers";
@@ -124,14 +123,11 @@ function MathChapterHub() {
   }
 
   const tier = tierFor(mastery.mastery);
-  const ktbs = (resourcesQ.data ?? []).filter(
-    (r) => r.category === "ktbs_textbook",
-  );
-  const ncert = (resourcesQ.data ?? []).filter(
-    (r) => r.category === "ncert_textbook",
-  );
-  const otherResources = (resourcesQ.data ?? []).filter(
-    (r) => r.category !== "ktbs_textbook" && r.category !== "ncert_textbook",
+  const all = resourcesQ.data ?? [];
+  const ktbs = all.filter((r) => r.tags?.includes("ktbs"));
+  const ncert = all.filter((r) => r.tags?.includes("ncert"));
+  const otherResources = all.filter(
+    (r) => !r.tags?.includes("ktbs") && !r.tags?.includes("ncert"),
   );
 
   const pyqs = (questionsQ.data ?? []).filter(
