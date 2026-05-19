@@ -14,6 +14,7 @@ import {
   Library,
   LogOut,
   LogIn,
+  PenSquare,
   User as UserIcon,
 } from "lucide-react";
 import { toast } from "sonner";
@@ -43,6 +44,7 @@ const study = [
   { title: "Study Planner", url: "/planner", icon: CalendarClock },
   { title: "Mock Exams", url: "/exams", icon: FlaskConical },
   { title: "Resources", url: "/resources", icon: Library },
+  { title: "My Answers", url: "/answer-uploads", icon: PenSquare },
   { title: "Analytics", url: "/analytics", icon: LineChart },
   { title: "Focus Timer", url: "/focus", icon: Timer },
   { title: "Quizzes", url: "/quizzes", icon: HelpCircle },

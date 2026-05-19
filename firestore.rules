@@ -295,6 +295,24 @@ service cloud.firestore {
       allow write: if isAdmin();
     }
 
+    // Handwritten answer uploads — per-image record. Owner-gated by `userId`.
+    match /answerUploads/{docId} {
+      allow read: if isSignedIn() && resource.data.userId == request.auth.uid;
+      allow create: if isSignedIn() && request.resource.data.userId == request.auth.uid;
+      allow update, delete: if isSignedIn()
+        && resource.data.userId == request.auth.uid
+        && request.resource.data.userId == request.auth.uid;
+    }
+
+    // Handwritten answer submission session — owner-gated by `userId`.
+    match /answerAttempts/{docId} {
+      allow read: if isSignedIn() && resource.data.userId == request.auth.uid;
+      allow create: if isSignedIn() && request.resource.data.userId == request.auth.uid;
+      allow update, delete: if isSignedIn()
+        && resource.data.userId == request.auth.uid
+        && request.resource.data.userId == request.auth.uid;
+    }
+
     // Default deny.
     match /{document=**} {
       allow read, write: if false;
