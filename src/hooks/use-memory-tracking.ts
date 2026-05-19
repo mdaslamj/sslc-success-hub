@@ -19,14 +19,21 @@ import { useCurrentUserId } from "./use-current-user";
 
 /* ----------------------------- memory tracking ---------------------------- */
 
-export function useMemoryTracking(chapterId?: string) {
+export function useMemoryTracking(chapterId: string) {
   const userId = useCurrentUserId();
   return useQuery({
-    queryKey: ["adaptive", "memory", userId, chapterId ?? "all"],
-    queryFn: () =>
-      chapterId
-        ? fetchMemoryTracking(userId!, chapterId)
-        : fetchAllMemoryTracking(userId!),
+    queryKey: ["adaptive", "memory", userId, chapterId],
+    queryFn: () => fetchMemoryTracking(userId!, chapterId),
+    enabled: !!userId && !!chapterId,
+    staleTime: 60 * 1000,
+  });
+}
+
+export function useAllMemoryTracking() {
+  const userId = useCurrentUserId();
+  return useQuery({
+    queryKey: ["adaptive", "memory", userId, "all"],
+    queryFn: () => fetchAllMemoryTracking(userId!),
     enabled: !!userId,
     staleTime: 60 * 1000,
   });
