@@ -1,11 +1,18 @@
 import { ReactNode } from "react";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/app-sidebar";
-import { Bell, Search, Sparkles } from "lucide-react";
+import { Bell, Search, Sparkles, LogIn } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { Link } from "@tanstack/react-router";
+import { useAuth } from "@/contexts/auth-context";
 
 export function DashboardLayout({ children, title }: { children: ReactNode; title?: string }) {
+  const { user, profile } = useAuth();
+  const initial = (profile?.studentName || profile?.displayName || user?.displayName || user?.email || "S")
+    .trim()
+    .charAt(0)
+    .toUpperCase();
   return (
     <SidebarProvider style={{ ["--sidebar-width" as never]: "16rem" } as React.CSSProperties}>
       <div className="flex min-h-[100dvh] w-full bg-background">
@@ -35,9 +42,26 @@ export function DashboardLayout({ children, title }: { children: ReactNode; titl
               <Bell className="h-4 w-4" />
               <span className="absolute right-2 top-2 h-1.5 w-1.5 rounded-full bg-destructive" />
             </Button>
-            <div className="h-9 w-9 shrink-0 rounded-full gradient-brand flex items-center justify-center text-sm font-semibold text-brand-foreground shadow-glow">
-              A
-            </div>
+            {user ? (
+              <Link
+                to="/profile"
+                className="h-9 w-9 shrink-0 rounded-full gradient-brand flex items-center justify-center text-sm font-semibold text-brand-foreground shadow-glow transition-transform hover:scale-105 active:scale-95"
+                aria-label="Profile"
+              >
+                {initial}
+              </Link>
+            ) : (
+              <Button
+                asChild
+                size="sm"
+                className="h-9 gap-1.5 rounded-full px-3 sm:px-4 gradient-brand text-brand-foreground shadow-glow hover:opacity-90 hover:scale-[1.02] active:scale-95 transition-all"
+              >
+                <Link to="/login">
+                  <LogIn className="h-4 w-4" />
+                  <span>Sign in</span>
+                </Link>
+              </Button>
+            )}
           </header>
           <main className="flex-1 min-w-0 p-3 sm:p-4 md:p-6 lg:p-8 pb-[max(env(safe-area-inset-bottom),1rem)]">{children}</main>
         </div>
