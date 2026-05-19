@@ -53,18 +53,24 @@ export const Route = createFileRoute("/subjects/$subjectId")({
       </div>
     </DashboardLayout>
   ),
-  errorComponent: ({ error }) => (
-    <DashboardLayout title="Error">
-      <div className="mx-auto max-w-lg py-24 text-center">
-        <AlertTriangle className="mx-auto h-10 w-10 text-destructive" />
-        <h1 className="mt-3 font-display text-2xl font-bold">Couldn't load subject</h1>
-        <p className="mt-1 text-sm text-muted-foreground break-words">{error.message}</p>
-        <Button asChild className="mt-4 rounded-full">
-          <Link to="/subjects">Back to subjects</Link>
-        </Button>
-      </div>
-    </DashboardLayout>
-  ),
+  errorComponent: ({ error }) => {
+    // Log internal details to the console only — never render raw SDK errors.
+    if (typeof console !== "undefined") console.error("subject load failed", error);
+    return (
+      <DashboardLayout title="Error">
+        <div className="mx-auto max-w-lg py-24 text-center">
+          <AlertTriangle className="mx-auto h-10 w-10 text-destructive" />
+          <h1 className="mt-3 font-display text-2xl font-bold">Couldn't load subject</h1>
+          <p className="mt-1 text-sm text-muted-foreground break-words">
+            Unable to load this subject. Please try again later.
+          </p>
+          <Button asChild className="mt-4 rounded-full">
+            <Link to="/subjects">Back to subjects</Link>
+          </Button>
+        </div>
+      </DashboardLayout>
+    );
+  },
   component: SubjectDetailPage,
 });
 
