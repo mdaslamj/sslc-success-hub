@@ -138,6 +138,14 @@ function SignInForm({
         required
         minLength={6}
       />
+      <div className="flex justify-end">
+        <Link
+          to="/forgot-password"
+          className="text-xs font-medium text-muted-foreground hover:text-foreground underline"
+        >
+          Forgot password?
+        </Link>
+      </div>
       <Button type="submit" className="w-full rounded-xl" disabled={busy}>
         {busy ? "Signing in…" : "Sign in"}
       </Button>
