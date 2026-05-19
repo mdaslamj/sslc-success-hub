@@ -17,3 +17,5 @@ export * from "./quiz-attempts";
 export * from "./study-plans";
 export * from "./planner-tasks";
 export * from "./revision-schedules";
+export * from "./recommendations";
+export * from "./ai-insights";
