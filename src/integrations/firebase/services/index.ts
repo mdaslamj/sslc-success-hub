@@ -46,3 +46,8 @@ export * from "./adaptive-schedules";
 export * from "./revision-queue";
 export * from "./remediation-sessions";
 export * from "./memory-tracking";
+// GPT/Gemini Semantic Reasoning Layer
+export * from "./ai-tutoring-sessions";
+export * from "./semantic-evaluations";
+export * from "./hint-history";
+export * from "./reasoning-feedback";

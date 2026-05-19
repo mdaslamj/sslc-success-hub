@@ -1741,3 +1741,138 @@ export type MemoryTrackingDoc = {
   createdAt: number;
   updatedAt: number;
 };
+
+/* ============================================================
+ * GPT/Gemini Semantic Reasoning Layer
+ * ============================================================
+ * LLM enhancements that wrap (never replace) deterministic
+ * rubric / formula / step / final-answer evaluation.
+ */
+
+export type TutoringExplanationLevel =
+  | "beginner"
+  | "intermediate"
+  | "board"
+  | "kannada_friendly";
+
+export type TutoringTurnRole = "student" | "tutor" | "system";
+
+export type TutoringTurn = {
+  role: TutoringTurnRole;
+  text: string;
+  /** Optional reference to a hint level used in this turn. */
+  hintLevel?: HintLevel;
+  createdAt: number;
+};
+
+/** Lives under users/{uid}/aiTutoringSessions/{sessionId}. */
+export type AiTutoringSessionDoc = {
+  id: string;
+  userId: string;
+  chapterId: string;
+  subjectId: string;
+  questionId?: string;
+  level: TutoringExplanationLevel;
+  /** Model id used at the gateway (e.g. "google/gemini-2.5-flash"). */
+  model: string;
+  turns: TutoringTurn[];
+  /** Snapshot of the grounding payload sent on the first turn. */
+  groundingRefs?: {
+    chapterId: string;
+    formulaIds?: string[];
+    rubricId?: string;
+    keywordIds?: string[];
+    weaknessChapterIds?: string[];
+    memoryChapterIds?: string[];
+  };
+  status: "open" | "closed";
+  createdAt: number;
+  updatedAt: number;
+};
+
+export type SemanticVerdict =
+  | "equivalent"
+  | "alternate_method"
+  | "partially_correct"
+  | "incorrect";
+
+/** Lives under users/{uid}/semanticEvaluations/{evaluationId}.
+ *
+ *  Stores the LLM's semantic judgement that *complements* the deterministic
+ *  rubric/formula/step/final-answer engines. The deterministic score is the
+ *  source of truth — this layer adds reasoning equivalence, alternate-method
+ *  detection, and natural-language feedback.
+ */
+export type SemanticEvaluationDoc = {
+  id: string;
+  userId: string;
+  chapterId: string;
+  subjectId: string;
+  questionId: string;
+  /** Reference back to the deterministic evaluation, when available. */
+  evaluationId?: string;
+  /** Reference back to an OCR upload, when applicable. */
+  attemptId?: string;
+  verdict: SemanticVerdict;
+  /** 0..100 — model confidence in the verdict. */
+  confidence: number;
+  /** Detected alternate-but-valid method, if any. */
+  alternateMethod?: string;
+  /** Plain-language reasoning summary, safe to render in UI. */
+  reasoningSummary: string;
+  /** Specific mistake interpretations from the LLM. */
+  mistakeInterpretations?: Array<{
+    label: string;
+    explanation: string;
+    severity: "low" | "medium" | "high";
+  }>;
+  /** Natural-language feedback shown to the student. */
+  feedback: string;
+  model: string;
+  createdAt: number;
+  updatedAt: number;
+};
+
+export type HintLevel = "nudge" | "guided_step" | "full_explanation";
+
+/** Lives under users/{uid}/hintHistory/{hintId}. */
+export type HintHistoryDoc = {
+  id: string;
+  userId: string;
+  chapterId: string;
+  subjectId: string;
+  questionId: string;
+  sessionId?: string;
+  level: HintLevel;
+  text: string;
+  /** Whether the student opened the hint (vs. just generated it). */
+  revealed: boolean;
+  model: string;
+  createdAt: number;
+};
+
+export type ReasoningFeedbackKind =
+  | "conceptual"
+  | "procedural"
+  | "presentation"
+  | "encouragement";
+
+/** Lives under users/{uid}/reasoningFeedback/{feedbackId}. */
+export type ReasoningFeedbackDoc = {
+  id: string;
+  userId: string;
+  chapterId: string;
+  subjectId: string;
+  questionId?: string;
+  evaluationId?: string;
+  kind: ReasoningFeedbackKind;
+  message: string;
+  /** Optional actionable next step (links to remediation/plan). */
+  nextStep?: {
+    kind: "revision" | "drill" | "watch" | "read";
+    label: string;
+    route?: string;
+  };
+  model: string;
+  createdAt: number;
+};
