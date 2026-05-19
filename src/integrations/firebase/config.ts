@@ -115,3 +115,12 @@ export const ADAPTIVE_SUBCOLLECTIONS = {
   REMEDIATION_SESSIONS: "remediationSessions",
   MEMORY_TRACKING: "memoryTracking",
 } as const;
+
+// GPT/Gemini Semantic Reasoning Layer
+// All four live as subcollections under users/{uid}.
+export const SEMANTIC_SUBCOLLECTIONS = {
+  AI_TUTORING_SESSIONS: "aiTutoringSessions",
+  SEMANTIC_EVALUATIONS: "semanticEvaluations",
+  HINT_HISTORY: "hintHistory",
+  REASONING_FEEDBACK: "reasoningFeedback",
+} as const;
