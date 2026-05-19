@@ -683,7 +683,8 @@ export type RecommendationKind =
   | "focus_boost"
   | "streak_guard"
   | "consistency"
-  | "subject_difficulty";
+  | "subject_difficulty"
+  | "resource";
 
 /** Where the recommendation came from. `rule` today; `ai` reserved for
  *  the future generative tutor / adaptive learning path engine. */
