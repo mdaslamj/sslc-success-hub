@@ -122,18 +122,7 @@ function SidebarFooterUser() {
   const { user, profile, signOut } = useAuth();
 
   if (!user) {
-    return (
-      <Button
-        asChild
-        size="sm"
-        variant="outline"
-        className="w-full rounded-xl gap-2 group-data-[collapsible=icon]:hidden"
-      >
-        <Link to="/login">
-          <LogIn className="h-4 w-4" /> Sign in
-        </Link>
-      </Button>
-    );
+    return null;
   }
 
   const name = profile?.studentName || profile?.displayName || user.displayName || "Student";
