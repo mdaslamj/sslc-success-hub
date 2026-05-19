@@ -10,6 +10,18 @@ export type SyllabusChapterInput = {
   notesUrl?: string;
   worksheetUrl?: string;
   videoUrls?: string[];
+  /** Previous-year question paper link(s). */
+  pyqUrls?: string[];
+  /** Revision notes / cheat-sheet link(s). */
+  revisionUrls?: string[];
+  /** Kannada-medium explanation note link(s). */
+  kannadaNotesUrl?: string;
+  /** Plain-text/markdown chapter summary (<= ~2KB). */
+  summary?: string;
+  summaryKn?: string;
+  /** Optional textbook publisher metadata. */
+  textbookPublisher?: string;
+  textbookEdition?: string;
   mcqCount?: number;
   estimatedStudyTime?: number;
   difficulty?: ChapterDoc["difficulty"];

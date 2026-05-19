@@ -258,6 +258,28 @@ service cloud.firestore {
         && request.resource.data.userId == request.auth.uid;
     }
 
+    // Structured academic content — public read, admin-only write.
+    // Stores lightweight metadata + external links (no embedded PDFs).
+    match /syllabusContent/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /chapterResources/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /textbookLinks/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /chapterNotes/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
     // Default deny.
     match /{document=**} {
       allow read, write: if false;
