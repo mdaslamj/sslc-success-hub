@@ -588,10 +588,7 @@ function TestTab({
       </p>
       <div className="mt-4 flex flex-wrap gap-2">
         <Button asChild className="rounded-full gap-1.5">
-          <Link
-            to="/exams"
-            search={{ chapterId, subjectId: "math" } as never}
-          >
+          <Link to="/exams">
             <Target className="h-3.5 w-3.5" /> Open mock exam library
           </Link>
         </Button>
