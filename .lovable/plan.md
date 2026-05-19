@@ -1,75 +1,51 @@
-# KTBS Textbook Link Library
+# One-tap "Add to Today's Plan" from Textbooks
 
-Reuse the existing `libraryResources` collection (already supports `category`, `subjectId`, `chapterId`, `url`, `language`). No new schema, no new backend logic — just seed KTBS URLs and add a focused browsing page.
-
-## Scope
-
-- Browse KTBS textbooks by **Subject → Chapter**
-- Open chapter PDFs directly via stored KTBS URLs (new tab)
-- English + Kannada medium toggle
-- Mobile-first, lightweight — no redesign of existing pages
+Add a button next to each chapter on `/textbooks` that creates a planner task for today (kind: `study`, source: `user`) pointing at that chapter + textbook URL. No new collections, no engine changes.
 
 ## What gets built
 
-### 1. Seed data (low credit cost)
-`src/lib/ktbs-textbook-seed.ts` — a static array of `LibraryResourceDoc` entries with:
-- `category: "textbook"`
-- `resourceType: "pdf"`
-- `isOfficial: true`, `tags: ["ktbs", "sslc"]`
-- `subjectId`, `chapterId` (matching existing chapters)
-- `url` → KTBS public PDF link
-- `language: "en" | "kn"`
+### 1. Tiny helper — `addUserPlannerTask`
+`src/lib/planner-store.ts` already exposes `writePlannerTasks` (local-first, same store the planner reads from). Add a small helper next to it:
 
-Seeded for SSLC Class 10 subjects already in the app (Math, Science, Social, English, Kannada, Hindi). One entry per chapter per medium. URLs sourced from https://ktbs.kar.nic.in.
-
-A one-time admin seed action exposed at `/admin/import` (existing route) calls `bulkUpsertLibraryResources(KTBS_SEED)`.
-
-### 2. Browsing UI
-`src/routes/textbooks.tsx` — a new dedicated page:
-
-```text
-┌─────────────────────────────────────────┐
-│ KTBS Textbooks       [English | Kannada]│
-├─────────────────────────────────────────┤
-│ Subject pills: [Math][Science][Social].. │
-├─────────────────────────────────────────┤
-│ Chapter 1 — Real Numbers      [Open ↗] │
-│ Chapter 2 — Polynomials       [Open ↗] │
-│ Chapter 3 — Pair of Linear …  [Open ↗] │
-└─────────────────────────────────────────┘
+```ts
+addUserPlannerTask({
+  userId, dayKey, subjectId, chapterId, title,
+  durationMinutes, kind: "study", url?,
+}) : PlannerTaskDoc
 ```
 
-- Uses existing `useLibraryResources({ category: "textbook", subjectId, language })`
-- Groups results by `chapterId`, sorts by chapter number (joined with `fetchChapters`)
-- Each row = chapter name + "Open" button that opens `url` in a new tab and fires `incrementLibraryResourceViews(id)`
-- Empty state: "No textbook linked yet for this chapter."
+It builds a `PlannerTaskDoc` (id = `user_${dayKey}_${chapterId}_${ts}`, `source: "user"`, `priority: 60`, `xp: 20`, status `pending`, `reasons: ["Added from Textbooks"]`) and appends via `writePlannerTasks`. The chapter URL is stashed in a new optional `link?: string` field on `PlannerTaskDoc` so the planner page can show an "Open textbook ↗" affordance.
 
-### 3. Nav entry
-Add **Textbooks** item to `src/components/app-sidebar.tsx` (BookOpen icon) linking to `/textbooks`. No other UI changes.
+### 2. Textbooks row — add button
+On `/textbooks` each chapter row currently shows `[Open]`. Add a second button:
 
-### 4. Light integration (optional, zero risk)
-On `subjects.$subjectId.tsx`, surface a small "📘 Open KTBS textbook" link per chapter when a matching `libraryResources` entry exists. Reuses the same query — no new fetch path.
+```text
+Ch 1. Real Numbers    [+ Add to today]  [Open ↗]
+```
 
-## Out of scope (to keep credits low)
+Clicking it:
+- Calls `addUserPlannerTask` with today's `dayKey`, subject/chapter ids, chapter title, `durationMinutes: 35`, and the textbook URL
+- Shows a `sonner` toast: "Added to today's plan" with a "View planner" action that navigates to `/planner`
+- Disables briefly + flips icon to a check for ~1.5s
+- If a user-added task for the same chapter already exists today, the toast says "Already on today's plan" and skips the insert (dedupe on `subjectId + chapterId + dayKey + source=user`)
 
-- No in-app PDF viewer — links open KTBS URLs in a new tab (KTBS PDFs are public)
-- No upload UI — textbooks are URL-only
-- No new Firestore collections, types, services, or hooks
-- No redesign of `/resources` page (it already lists textbooks alongside other categories; this new page is a focused subset)
+Button stays visible even when no textbook URL is linked — students can still plan the chapter.
+
+### 3. Planner page — render the link
+`src/routes/planner.tsx` already lists tasks. When a task has `link`, show a small "📘 Open" anchor next to the title. No layout redesign.
 
 ## Files
 
-**New (3):**
-- `src/lib/ktbs-textbook-seed.ts`
-- `src/routes/textbooks.tsx`
-- `src/components/textbooks/chapter-link-row.tsx` (small presentational)
+**Edited (3):**
+- `src/integrations/firebase/types.ts` — add optional `link?: string` to `PlannerTaskDoc`
+- `src/lib/planner-store.ts` — export `addUserPlannerTask` helper (~25 lines)
+- `src/routes/textbooks.tsx` — add the "Add to today" button + toast
+- `src/routes/planner.tsx` — render `task.link` when present (small edit; will read file first)
 
-**Edited (2):**
-- `src/components/app-sidebar.tsx` (1 nav item)
-- `src/routes/admin.import.tsx` (1 button to seed KTBS links)
+No new files. No new Firestore collections. No engine changes. ~50 lines of new logic total.
 
-## Credit-saving notes
+## Out of scope
 
-- Reuses all existing services/types — no new architecture
-- Seed file is plain data — I'll start with **Math (15 chapters × 2 media = 30 entries)** as a sample, then you can paste URLs for other subjects yourself, or ask me to add them in a follow-up message
-- If you already have a CSV/spreadsheet of KTBS URLs, share it and I'll convert it into the seed file in one cheap message
+- No "Add to a specific date" picker (always today). A follow-up can wrap it in a small popover if needed.
+- No reordering or auto-regenerating the AI plan — the user-added task simply appears alongside engine-generated ones.
+- No backend persistence beyond the existing local-first planner store.
