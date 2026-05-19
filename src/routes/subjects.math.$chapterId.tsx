@@ -1,14 +1,16 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMemo } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   ArrowLeft,
   BookOpen,
   Brain,
   CalendarPlus,
+  ChevronRight,
   ExternalLink,
   FileText,
   Lightbulb,
+  Loader2,
   Sparkles,
   Sigma,
   Target,
@@ -36,6 +38,7 @@ import {
   fetchMathQuestions,
   fetchMathFormulasForChapter,
 } from "@/integrations/firebase/services";
+import { seedMathData } from "@/integrations/firebase/services/math-import";
 import { UploadAnswerButton } from "@/components/answer-upload/upload-answer-button";
 import { addToTodayPlan } from "@/lib/today-plan-store";
 import { tierFor } from "@/lib/math-intelligence/mastery-tiers";
