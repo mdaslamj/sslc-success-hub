@@ -235,6 +235,85 @@ export type LibraryCategoryDoc = {
   order: number;
 };
 
+// ---------------------------------------------------------------------------
+// Handwritten answer uploads
+// ---------------------------------------------------------------------------
+
+export type AnswerAttemptContextType = "quiz" | "mock" | "chapter" | "freeform";
+
+export type AnswerAttemptContext = {
+  type: AnswerAttemptContextType;
+  /** Quiz id, mock-exam id, chapter id, etc. Optional for freeform. */
+  refId?: string;
+  subjectId?: string;
+  chapterId?: string;
+  /** Optional human-readable label cached for history rendering. */
+  label?: string;
+};
+
+export type AnswerPreprocessing = {
+  rotation: 0 | 90 | 180 | 270;
+  brightness: number; // 1 = neutral, range 0.5..1.5
+  contrast: number; // 1 = neutral, range 0.5..1.5
+  cropped: boolean;
+  autoEnhanced: boolean;
+};
+
+export type AnswerOcrStatus = "pending" | "queued" | "done" | "skipped" | "error";
+export type AnswerEvaluationStatus = "pending" | "queued" | "done" | "skipped" | "error";
+
+/** One uploaded image (typically a single page of handwritten answer). */
+export type AnswerUploadDoc = {
+  id: string;
+  userId: string;
+  attemptId: string;
+  questionId?: string;
+  /** Firebase Storage path. */
+  storagePath: string;
+  downloadUrl: string;
+  thumbnailUrl?: string;
+  width: number;
+  height: number;
+  sizeBytes: number;
+  mimeType: string;
+  preprocessing: AnswerPreprocessing;
+  /** OCR pipeline (future). */
+  ocr: { status: AnswerOcrStatus; text?: string; confidence?: number; updatedAt?: number };
+  /** Per-image AI evaluation (future). */
+  evaluation: {
+    status: AnswerEvaluationStatus;
+    score?: number;
+    maxScore?: number;
+    rubric?: { criterion: string; weight: number; score: number; comment?: string }[];
+    feedback?: string;
+    updatedAt?: number;
+  };
+  order: number;
+  createdAt: number;
+};
+
+/** One submission session — wraps 1..N uploaded images. */
+export type AnswerAttemptDoc = {
+  id: string;
+  userId: string;
+  context: AnswerAttemptContext;
+  imageIds: string[];
+  imageCount: number;
+  notes?: string;
+  status: "draft" | "submitted" | "evaluated";
+  /** Aggregate AI evaluation (future, set once rubric grading runs). */
+  aiEvaluation?: {
+    totalScore: number;
+    maxScore: number;
+    summary?: string;
+    breakdown?: { questionId?: string; score: number; maxScore: number; feedback?: string }[];
+    updatedAt: number;
+  };
+  createdAt: number;
+  updatedAt: number;
+  submittedAt?: number;
+};
+
 export type ProgressDoc = {
   userId: string;
   subjectId: string;

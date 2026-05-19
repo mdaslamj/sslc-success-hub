@@ -1,0 +1,26 @@
+rules_version = '2';
+
+// Firebase Storage rules — VidyaPath
+//
+// Handwritten answer uploads live under:
+//   answer-uploads/{userId}/{attemptId}/{imageId}.jpg
+// Only the owning user can read or write their folder. Files are capped at
+// 8 MB and must declare an image/* content type to keep abuse cheap.
+
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    match /answer-uploads/{userId}/{attemptId}/{imageId} {
+      allow read: if request.auth != null && request.auth.uid == userId;
+      allow write: if request.auth != null
+        && request.auth.uid == userId
+        && request.resource.size < 8 * 1024 * 1024
+        && request.resource.contentType.matches('image/.*');
+    }
+
+    // Default deny.
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}

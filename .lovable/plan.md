@@ -1,107 +1,77 @@
-## Resources Hub — Plan
+## Handwritten Answer Upload System
 
-A centralized digital academic library accessible from the sidebar. Built on top of the existing `chapterResources` / `textbookLinks` / `chapterNotes` collections (already in `config.ts`) plus one new `resources` collection for top-level items that aren't tied to a single chapter (e.g. full textbooks, board papers, formula sheets).
+Build a scalable answer-upload feature using Firebase Storage + Firestore, integrated into quizzes, mock exams, and chapter practice without redesigning the app.
 
-### 1. Sidebar
-Add **Resources** entry in the **Study** group of `src/components/app-sidebar.tsx`, icon `Library` (lucide), route `/resources`.
+### Data Model (Firestore)
 
-### 2. Routes
-- `src/routes/resources.tsx` — main library page (list + filters + category tabs)
-- `src/routes/resources.$resourceId.tsx` — optional detail view (defer if external link only — open in new tab instead)
+**`answerUploads`** — one doc per uploaded image
+- `id`, `userId`, `attemptId` (FK → answerAttempts), `questionId` (optional)
+- `storagePath`, `downloadUrl`, `thumbnailUrl?`
+- `width`, `height`, `sizeBytes`, `mimeType`
+- `preprocessing`: `{ rotation, brightness, contrast, cropped }`
+- `ocr`: `{ status: "pending"|"done"|"skipped", text?, confidence? }` (future)
+- `evaluation`: `{ status, score?, rubric?, feedback? }` (future)
+- `createdAt`
 
-### 3. Data model
-**New collection `resources`** (top-level items, chapter-optional):
-```
-ResourceDoc {
-  id, title, titleKn?,            // Kannada title
-  description?, descriptionKn?,
-  category: ResourceCategory,     // textbook | pyq | notes | worksheet | video | formula | qbank | revision
-  subjectId?, chapterId?,         // both optional → enables subject-wide / global resources
-  resourceType: ResourceKind,     // reuse existing ResourceKind enum
-  url?,                           // external link (preferred)
-  pdfPath?,                       // optional Firebase Storage path
-  thumbnailUrl?, icon?,
-  language: "en" | "kn" | "bilingual",
-  tags: string[],
-  isFeatured: boolean,            // for quick-access cards
-  isOfficial: boolean,            // Karnataka board / NCERT
-  year?: number,                  // for PYQs / board papers
-  createdAt, updatedAt, createdBy
-}
-```
-**New collection `resourceCategories`** (admin-curated category metadata: label, labelKn, icon, order, description). Seeded with the 8 categories above.
+**`answerAttempts`** — one doc per submission session
+- `id`, `userId`, `context: { type: "quiz"|"mock"|"chapter", refId, subjectId?, chapterId? }`
+- `imageIds: string[]`, `notes?`
+- `status: "draft"|"submitted"|"evaluated"`
+- `aiEvaluation?: { totalScore, maxScore, breakdown[] }` (future)
+- `createdAt`, `submittedAt?`
 
-Add both to `COLLECTIONS` in `src/integrations/firebase/config.ts`.
+### Firebase Storage
 
-### 4. Service layer
-`src/integrations/firebase/services/resources.ts`:
-- `fetchResources({ category?, subjectId?, chapterId?, language?, featured?, year? })`
-- `fetchFeaturedResources(limit)`
-- `fetchResourceCategories()`
-- `upsertResource`, `bulkUpsertResources`
-- `incrementResourceViews(id)` (lightweight usage tracking)
+- Bucket path: `answer-uploads/{userId}/{attemptId}/{imageId}.jpg`
+- Storage rules: only owner can read/write own folder
 
-Export from `src/integrations/firebase/services/index.ts`.
+### Components
 
-### 5. UI — `/resources` page
+- `src/components/answer-upload/AnswerUploadDialog.tsx` — main modal (camera + gallery, multi-image)
+- `src/components/answer-upload/ImageEditor.tsx` — crop/rotate/brightness using canvas (no heavy deps)
+- `src/components/answer-upload/UploadButton.tsx` — reusable trigger button
+- `src/components/answer-upload/AnswerUploadHistory.tsx` — list past attempts
 
-```text
-┌─────────────────────────────────────────────┐
-│  Resources                                  │
-│  Search ▢   Subject ▼   Chapter ▼   Lang ▼  │
-├─────────────────────────────────────────────┤
-│  Quick access                                │
-│  [Karnataka Textbooks] [Board Papers]        │
-│  [Formula Bank]        [Important PDFs]      │
-├─────────────────────────────────────────────┤
-│  Tabs: All | Textbooks | PYQs | Notes |     │
-│        Worksheets | Videos | Formulas |      │
-│        Question Banks | Revision             │
-├─────────────────────────────────────────────┤
-│  Grid of resource cards (icon, title,        │
-│  subject chip, language chip, open ↗)        │
-└─────────────────────────────────────────────┘
-```
-Mobile: filters collapse into a Sheet; tabs become a horizontal scroll row; grid becomes 1-col.
+### Services / Hooks
 
-Components:
-- `src/components/resources/resource-card.tsx` — compact card, opens external URL in new tab or downloads PDF
-- `src/components/resources/resource-filters.tsx` — subject/chapter/language/year selects, responsive
-- `src/components/resources/quick-access.tsx` — featured shortcuts
+- `src/integrations/firebase/services/answer-uploads.ts` — CRUD for both collections + Storage upload
+- `src/hooks/use-answer-upload.ts` — upload state, progress, preprocessing pipeline
+- `src/hooks/use-answer-history.ts` — fetch user's past attempts
 
-### 6. Integrations (lightweight, no redesign)
-- **Chapters**: existing `ChapterResources` component (`src/components/chapter-resources.tsx`) gains a "View all in library" link → `/resources?subjectId=X&chapterId=Y`.
-- **Quizzes**: in quiz result screen, suggest matching `revision` / `notes` resources via `fetchResources({ chapterId, category: 'notes' })`.
-- **Planner**: when creating a task for a chapter, attach resource links (read-only display).
-- **AI recommendations**: extend `recommendation-engine.ts` to emit a `resource` recommendation kind pointing to a resource id (data only, surfaced in existing recommendation widget — no new widget).
+### Integration Points (non-invasive)
 
-### 7. Admin import
-Extend `src/routes/admin.import.tsx` with a "Resources" tab accepting JSON array of `ResourceDoc`. Reuses existing admin gate.
+- Add `<UploadButton context={{type:"quiz", refId}} />` in:
+  - `src/routes/quiz.$quizId.tsx` (after submit screen)
+  - `src/routes/exams.$examId.tsx` (per-question and final)
+  - `src/routes/subjects.$subjectId.tsx` (chapter practice block)
+- New route `src/routes/answer-uploads.tsx` — full history page
+- Sidebar link "My Answers"
 
-### 8. Security (`firestore.rules`)
-- `resources`, `resourceCategories`: public read, admin-only write (mirrors existing pattern for `chapterResources`).
+### Image Preprocessing
 
-### 9. Out of scope
-- No PDF upload UI in this pass (schema supports `pdfPath`, but uploads come later when Storage is wired).
-- No app redesign, no new design tokens.
-- No PYQ engine / frequency scoring (deferred to later PYQ system).
-- No detail route — external links open in new tab.
+Use HTML5 Canvas (no external libs):
+- Rotate: 90°/180°/270° via canvas transform
+- Crop: draggable rect overlay, output cropped canvas
+- Brightness/contrast: per-pixel filter via `ctx.filter = "brightness() contrast()"`
+- Auto-enhance: combined brightness +10%, contrast +15%
 
-### Files to create
-- `src/routes/resources.tsx`
-- `src/components/resources/resource-card.tsx`
-- `src/components/resources/resource-filters.tsx`
-- `src/components/resources/quick-access.tsx`
-- `src/integrations/firebase/services/resources.ts`
-- `src/hooks/use-resources.ts`
-- `src/lib/resource-seed.ts` (default categories + a few Karnataka textbook entries)
+Re-encode as JPEG quality 0.85 before upload to keep size small.
 
-### Files to edit
-- `src/components/app-sidebar.tsx` (add Resources entry)
-- `src/integrations/firebase/config.ts` (RESOURCES, RESOURCE_CATEGORIES constants)
-- `src/integrations/firebase/types.ts` (`ResourceDoc`, `ResourceCategoryDoc`, `ResourceCategory` enum)
-- `src/integrations/firebase/services/index.ts` (re-export)
-- `src/components/chapter-resources.tsx` ("View all" link)
-- `src/routes/admin.import.tsx` (Resources import tab)
-- `src/lib/recommendation-engine.ts` (resource recommendation kind)
-- `firestore.rules` (rules for new collections)
+### Future-Ready Architecture
+
+- `ocr` and `evaluation` fields on `answerUploads` start as `{status:"pending"}`
+- `aiEvaluation` on `answerAttempts` left null
+- Service layer exposes `triggerOcr(uploadId)` and `triggerEvaluation(attemptId)` stubs that just mark status — wired later to Lovable AI Gateway with vision-capable models (gemini-2.5-pro / gpt-5)
+- Rubric schema reserved: `{ criterion, weight, score, comment }[]`
+
+### Firestore Rules
+
+Add to `firestore.rules`:
+- `answerUploads/{id}` and `answerAttempts/{id}`: read/write only if `request.auth.uid == resource.data.userId`
+
+### Out of scope (this round)
+
+- Actual OCR/AI evaluation calls
+- PDF export
+- Teacher/parent review UI
+- No redesign of existing screens — additions only

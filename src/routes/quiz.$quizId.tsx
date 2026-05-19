@@ -16,6 +16,7 @@ import { cn } from "@/lib/utils";
 import { useQuiz } from "@/hooks/use-quiz";
 import { readCachedQuiz } from "@/lib/quiz-store";
 import type { QuizDoc } from "@/integrations/firebase/types";
+import { UploadAnswerButton } from "@/components/answer-upload/upload-answer-button";
 
 export const Route = createFileRoute("/quiz/$quizId")({
   head: () => ({
@@ -235,6 +236,21 @@ function Review({
               </p>
             </div>
           )}
+          <div className="mt-4 flex flex-wrap items-center gap-2 border-t border-border/60 pt-4">
+            <p className="text-xs text-muted-foreground">
+              Wrote your answers on paper?
+            </p>
+            <UploadAnswerButton
+              context={{
+                type: "quiz",
+                refId: quiz.id,
+                subjectId: quiz.subjectId,
+                chapterId: quiz.chapterId,
+                label: quiz.title,
+              }}
+              label="Upload handwritten answers"
+            />
+          </div>
         </div>
 
         <ol className="mt-6 space-y-3">
