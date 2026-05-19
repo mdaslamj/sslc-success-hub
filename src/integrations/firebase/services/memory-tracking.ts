@@ -44,3 +44,31 @@ export async function saveMemoryTracking(t: MemoryTrackingDoc): Promise<void> {
     { merge: true },
   );
 }
+
+/**
+ * Patch the retention fields of a memoryTracking doc without overwriting
+ * unrelated columns. Creates the doc if missing.
+ */
+export async function updateRetentionScore(
+  userId: string,
+  chapterId: string,
+  patch: Pick<
+    MemoryTrackingDoc,
+    "retentionScore" | "retentionInputs" | "retentionBand"
+  > & { subjectId?: string },
+): Promise<void> {
+  await setDoc(
+    mtDoc(userId, chapterId),
+    {
+      id: chapterId,
+      userId,
+      chapterId,
+      ...(patch.subjectId ? { subjectId: patch.subjectId } : {}),
+      retentionScore: patch.retentionScore,
+      retentionInputs: patch.retentionInputs,
+      retentionBand: patch.retentionBand,
+      updatedAt: Date.now(),
+    },
+    { merge: true },
+  );
+}
