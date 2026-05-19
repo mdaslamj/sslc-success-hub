@@ -47,7 +47,7 @@ function SubjectsPage() {
                   Couldn't load subjects
                 </h3>
                 <p className="mt-1 text-sm text-muted-foreground break-words">
-                  {(error as Error)?.message ?? "Unknown error"}
+                  Unable to load data. Please try again later.
                 </p>
                 <div className="mt-4 flex gap-2">
                   <Button onClick={() => refetch()} size="sm" className="rounded-full">
