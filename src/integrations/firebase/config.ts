@@ -31,5 +31,7 @@ export const COLLECTIONS = {
   USER_PROGRESS: "userProgress",
   STUDY_SESSIONS: "studySessions",
   ACHIEVEMENTS: "achievements",
+  USER_ACHIEVEMENTS: "userAchievements",
+  STREAKS: "streaks",
   ANALYTICS: "analytics",
 } as const;

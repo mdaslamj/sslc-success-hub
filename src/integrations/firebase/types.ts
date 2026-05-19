@@ -172,6 +172,35 @@ export type AchievementDoc = {
 };
 
 /**
+ * Per-user unlocked achievement record. Doc id convention: `${userId}_${code}`.
+ * Separate from the public `achievements` catalog so leaderboards can scan
+ * unlocks without exposing the catalog definitions.
+ */
+export type UserAchievementDoc = {
+  id: string;
+  userId: string;
+  code: string;
+  unlockedAt: number;
+  xpAwarded: number;
+  /** Snapshot of the metric that triggered the unlock (e.g. streak length). */
+  snapshot?: Record<string, number | string>;
+};
+
+/**
+ * Per-user streak ledger. One doc per user, id = userId. Updated by the
+ * achievements engine on every session log so future cron jobs / leaderboards
+ * can read streaks without recomputing from session history.
+ */
+export type StreakDoc = {
+  id: string; // == userId
+  userId: string;
+  current: number;
+  longest: number;
+  lastDayKey: string | null; // YYYY-MM-DD
+  updatedAt: number;
+};
+
+/**
  * Pre-computed daily analytics rollup. One doc per (userId, dayKey).
  * Powers weekly/monthly charts without scanning every session.
  * Doc id convention: `${userId}_${dayKey}`.
