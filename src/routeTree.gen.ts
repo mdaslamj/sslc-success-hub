@@ -18,12 +18,15 @@ import { Route as PlannerRouteImport } from './routes/planner'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
 import { Route as FocusRouteImport } from './routes/focus'
+import { Route as ExamsRouteImport } from './routes/exams'
 import { Route as AnalyticsRouteImport } from './routes/analytics'
 import { Route as AchievementsRouteImport } from './routes/achievements'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as SubjectsIndexRouteImport } from './routes/subjects.index'
 import { Route as SubjectsSubjectIdRouteImport } from './routes/subjects.$subjectId'
 import { Route as QuizQuizIdRouteImport } from './routes/quiz.$quizId'
+import { Route as ExamsExamIdRouteImport } from './routes/exams.$examId'
+import { Route as ExamResultsAttemptIdRouteImport } from './routes/exam-results.$attemptId'
 import { Route as AdminImportRouteImport } from './routes/admin.import'
 
 const TargetsRoute = TargetsRouteImport.update({
@@ -71,6 +74,11 @@ const FocusRoute = FocusRouteImport.update({
   path: '/focus',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ExamsRoute = ExamsRouteImport.update({
+  id: '/exams',
+  path: '/exams',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AnalyticsRoute = AnalyticsRouteImport.update({
   id: '/analytics',
   path: '/analytics',
@@ -101,6 +109,16 @@ const QuizQuizIdRoute = QuizQuizIdRouteImport.update({
   path: '/quiz/$quizId',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ExamsExamIdRoute = ExamsExamIdRouteImport.update({
+  id: '/$examId',
+  path: '/$examId',
+  getParentRoute: () => ExamsRoute,
+} as any)
+const ExamResultsAttemptIdRoute = ExamResultsAttemptIdRouteImport.update({
+  id: '/exam-results/$attemptId',
+  path: '/exam-results/$attemptId',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminImportRoute = AdminImportRouteImport.update({
   id: '/admin/import',
   path: '/admin/import',
@@ -111,6 +129,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/achievements': typeof AchievementsRoute
   '/analytics': typeof AnalyticsRoute
+  '/exams': typeof ExamsRouteWithChildren
   '/focus': typeof FocusRoute
   '/forgot-password': typeof ForgotPasswordRoute
   '/login': typeof LoginRoute
@@ -121,6 +140,8 @@ export interface FileRoutesByFullPath {
   '/seed': typeof SeedRoute
   '/targets': typeof TargetsRoute
   '/admin/import': typeof AdminImportRoute
+  '/exam-results/$attemptId': typeof ExamResultsAttemptIdRoute
+  '/exams/$examId': typeof ExamsExamIdRoute
   '/quiz/$quizId': typeof QuizQuizIdRoute
   '/subjects/$subjectId': typeof SubjectsSubjectIdRoute
   '/subjects/': typeof SubjectsIndexRoute
@@ -129,6 +150,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/achievements': typeof AchievementsRoute
   '/analytics': typeof AnalyticsRoute
+  '/exams': typeof ExamsRouteWithChildren
   '/focus': typeof FocusRoute
   '/forgot-password': typeof ForgotPasswordRoute
   '/login': typeof LoginRoute
@@ -139,6 +161,8 @@ export interface FileRoutesByTo {
   '/seed': typeof SeedRoute
   '/targets': typeof TargetsRoute
   '/admin/import': typeof AdminImportRoute
+  '/exam-results/$attemptId': typeof ExamResultsAttemptIdRoute
+  '/exams/$examId': typeof ExamsExamIdRoute
   '/quiz/$quizId': typeof QuizQuizIdRoute
   '/subjects/$subjectId': typeof SubjectsSubjectIdRoute
   '/subjects': typeof SubjectsIndexRoute
@@ -148,6 +172,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/achievements': typeof AchievementsRoute
   '/analytics': typeof AnalyticsRoute
+  '/exams': typeof ExamsRouteWithChildren
   '/focus': typeof FocusRoute
   '/forgot-password': typeof ForgotPasswordRoute
   '/login': typeof LoginRoute
@@ -158,6 +183,8 @@ export interface FileRoutesById {
   '/seed': typeof SeedRoute
   '/targets': typeof TargetsRoute
   '/admin/import': typeof AdminImportRoute
+  '/exam-results/$attemptId': typeof ExamResultsAttemptIdRoute
+  '/exams/$examId': typeof ExamsExamIdRoute
   '/quiz/$quizId': typeof QuizQuizIdRoute
   '/subjects/$subjectId': typeof SubjectsSubjectIdRoute
   '/subjects/': typeof SubjectsIndexRoute
@@ -168,6 +195,7 @@ export interface FileRouteTypes {
     | '/'
     | '/achievements'
     | '/analytics'
+    | '/exams'
     | '/focus'
     | '/forgot-password'
     | '/login'
@@ -178,6 +206,8 @@ export interface FileRouteTypes {
     | '/seed'
     | '/targets'
     | '/admin/import'
+    | '/exam-results/$attemptId'
+    | '/exams/$examId'
     | '/quiz/$quizId'
     | '/subjects/$subjectId'
     | '/subjects/'
@@ -186,6 +216,7 @@ export interface FileRouteTypes {
     | '/'
     | '/achievements'
     | '/analytics'
+    | '/exams'
     | '/focus'
     | '/forgot-password'
     | '/login'
@@ -196,6 +227,8 @@ export interface FileRouteTypes {
     | '/seed'
     | '/targets'
     | '/admin/import'
+    | '/exam-results/$attemptId'
+    | '/exams/$examId'
     | '/quiz/$quizId'
     | '/subjects/$subjectId'
     | '/subjects'
@@ -204,6 +237,7 @@ export interface FileRouteTypes {
     | '/'
     | '/achievements'
     | '/analytics'
+    | '/exams'
     | '/focus'
     | '/forgot-password'
     | '/login'
@@ -214,6 +248,8 @@ export interface FileRouteTypes {
     | '/seed'
     | '/targets'
     | '/admin/import'
+    | '/exam-results/$attemptId'
+    | '/exams/$examId'
     | '/quiz/$quizId'
     | '/subjects/$subjectId'
     | '/subjects/'
@@ -223,6 +259,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AchievementsRoute: typeof AchievementsRoute
   AnalyticsRoute: typeof AnalyticsRoute
+  ExamsRoute: typeof ExamsRouteWithChildren
   FocusRoute: typeof FocusRoute
   ForgotPasswordRoute: typeof ForgotPasswordRoute
   LoginRoute: typeof LoginRoute
@@ -233,6 +270,7 @@ export interface RootRouteChildren {
   SeedRoute: typeof SeedRoute
   TargetsRoute: typeof TargetsRoute
   AdminImportRoute: typeof AdminImportRoute
+  ExamResultsAttemptIdRoute: typeof ExamResultsAttemptIdRoute
   QuizQuizIdRoute: typeof QuizQuizIdRoute
   SubjectsSubjectIdRoute: typeof SubjectsSubjectIdRoute
   SubjectsIndexRoute: typeof SubjectsIndexRoute
@@ -303,6 +341,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof FocusRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/exams': {
+      id: '/exams'
+      path: '/exams'
+      fullPath: '/exams'
+      preLoaderRoute: typeof ExamsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/analytics': {
       id: '/analytics'
       path: '/analytics'
@@ -345,6 +390,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof QuizQuizIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/exams/$examId': {
+      id: '/exams/$examId'
+      path: '/$examId'
+      fullPath: '/exams/$examId'
+      preLoaderRoute: typeof ExamsExamIdRouteImport
+      parentRoute: typeof ExamsRoute
+    }
+    '/exam-results/$attemptId': {
+      id: '/exam-results/$attemptId'
+      path: '/exam-results/$attemptId'
+      fullPath: '/exam-results/$attemptId'
+      preLoaderRoute: typeof ExamResultsAttemptIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/import': {
       id: '/admin/import'
       path: '/admin/import'
@@ -355,10 +414,21 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface ExamsRouteChildren {
+  ExamsExamIdRoute: typeof ExamsExamIdRoute
+}
+
+const ExamsRouteChildren: ExamsRouteChildren = {
+  ExamsExamIdRoute: ExamsExamIdRoute,
+}
+
+const ExamsRouteWithChildren = ExamsRoute._addFileChildren(ExamsRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AchievementsRoute: AchievementsRoute,
   AnalyticsRoute: AnalyticsRoute,
+  ExamsRoute: ExamsRouteWithChildren,
   FocusRoute: FocusRoute,
   ForgotPasswordRoute: ForgotPasswordRoute,
   LoginRoute: LoginRoute,
@@ -369,6 +439,7 @@ const rootRouteChildren: RootRouteChildren = {
   SeedRoute: SeedRoute,
   TargetsRoute: TargetsRoute,
   AdminImportRoute: AdminImportRoute,
+  ExamResultsAttemptIdRoute: ExamResultsAttemptIdRoute,
   QuizQuizIdRoute: QuizQuizIdRoute,
   SubjectsSubjectIdRoute: SubjectsSubjectIdRoute,
   SubjectsIndexRoute: SubjectsIndexRoute,
