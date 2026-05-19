@@ -22,6 +22,7 @@ import {
   GoogleAuthProvider,
   createUserWithEmailAndPassword,
   onAuthStateChanged,
+  sendPasswordResetEmail,
   signInWithEmailAndPassword,
   signInWithPopup,
   signOut as fbSignOut,
@@ -47,6 +48,7 @@ export type AuthContextValue = {
   ) => Promise<void>;
   signInWithGoogle: () => Promise<void>;
   signOut: () => Promise<void>;
+  sendPasswordReset: (email: string) => Promise<void>;
   refreshProfile: () => Promise<void>;
 };
 
@@ -115,6 +117,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     await fbSignOut(auth);
   }, []);
 
+  const sendPasswordReset = useCallback(async (email: string) => {
+    await sendPasswordResetEmail(auth, email, {
+      url:
+        typeof window !== "undefined"
+          ? `${window.location.origin}/login`
+          : "https://sscl-guru-ai.lovable.app/login",
+    });
+  }, []);
+
   const value = useMemo<AuthContextValue>(
     () => ({
       user,
@@ -124,6 +135,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       signUpWithEmail,
       signInWithGoogle,
       signOut,
+      sendPasswordReset,
       refreshProfile,
     }),
     [
@@ -134,6 +146,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       signUpWithEmail,
       signInWithGoogle,
       signOut,
+      sendPasswordReset,
       refreshProfile,
     ],
   );
