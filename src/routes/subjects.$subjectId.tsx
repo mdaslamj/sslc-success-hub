@@ -108,12 +108,15 @@ function SubjectDetailPage() {
 
   if (subjectQuery.isError || chaptersQuery.isError) {
     const err = (subjectQuery.error ?? chaptersQuery.error) as Error;
+    console.error("subject inline load failed", err);
     return (
       <DashboardLayout title="Error">
         <div className="mx-auto max-w-lg py-24 text-center">
           <AlertTriangle className="mx-auto h-10 w-10 text-destructive" />
           <h1 className="mt-3 font-display text-2xl font-bold">Couldn't load this subject</h1>
-          <p className="mt-1 text-sm text-muted-foreground break-words">{err?.message}</p>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Unable to load this subject. Please try again later.
+          </p>
           <Button asChild className="mt-4 rounded-full">
             <Link to="/subjects">Back to subjects</Link>
           </Button>
