@@ -49,9 +49,17 @@ export type RetentionInputs = {
  *   quiz performance    25%
  *   OCR quality         10%
  */
+export type RetentionSnapshot = {
+  intervalAdherence: number;
+  recentMistakes: number;
+  quizAccuracy: number;
+  ocrQuality: number;
+  confidenceDecay: number;
+};
+
 export function computeRetentionScore(args: RetentionInputs): {
   retentionScore: number;
-  inputs: Required<Omit<RetentionInputs, "now" | "lastPracticed" | "intervalDays">>;
+  inputs: RetentionSnapshot;
   band: RetentionBand;
 } {
   const now = args.now ?? Date.now();
