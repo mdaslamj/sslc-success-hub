@@ -133,6 +133,16 @@ service cloud.firestore {
       allow read, write: if isOwner(uid);
     }
 
+    // Board Readiness Prediction + Exam Simulation Engine —
+    // per-user subcollections under users/{uid}. Owner read/write only.
+    // Public chapter reads and admin seeding rules remain unchanged.
+    match /users/{uid}/examSimulations/{simulationId} {
+      allow read, write: if isOwner(uid);
+    }
+    match /users/{uid}/boardReadiness/{readinessId} {
+      allow read, write: if isOwner(uid);
+    }
+
     // Per-user profile (auth + onboarding metadata). Doc id == auth uid.
     match /userProfiles/{uid} {
       allow read, write: if isOwner(uid);
