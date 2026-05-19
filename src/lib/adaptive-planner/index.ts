@@ -8,3 +8,4 @@
 export * from "./priority";
 export * from "./difficulty";
 export * from "./plan-builder";
+export * from "./memory-decay";
