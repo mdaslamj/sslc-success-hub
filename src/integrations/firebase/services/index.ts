@@ -10,3 +10,5 @@ export * from "./user-progress";
 export * from "./study-sessions";
 export * from "./achievements";
 export * from "./analytics";
+export * from "./user-achievements";
+export * from "./streaks";
