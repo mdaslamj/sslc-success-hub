@@ -262,6 +262,21 @@ export type AnswerPreprocessing = {
 export type AnswerOcrStatus = "pending" | "queued" | "done" | "skipped" | "error";
 export type AnswerEvaluationStatus = "pending" | "queued" | "done" | "skipped" | "error";
 
+/** Per-image review lifecycle for the human-correction step that gates AI grading. */
+export type AnswerReviewStatus = "not_required" | "pending" | "in_review" | "approved";
+
+/**
+ * Attempt-level processing state — drives history UI (scanning animation,
+ * "ready for evaluation" badge, etc.). Independent from per-image OCR status
+ * so a multi-page attempt can show a single coherent state.
+ */
+export type AnswerProcessingState =
+  | "uploaded"
+  | "processing"
+  | "review_required"
+  | "ready_for_evaluation"
+  | "evaluated";
+
 /** One uploaded image (typically a single page of handwritten answer). */
 export type AnswerUploadDoc = {
   id: string;
@@ -277,8 +292,27 @@ export type AnswerUploadDoc = {
   sizeBytes: number;
   mimeType: string;
   preprocessing: AnswerPreprocessing;
-  /** OCR pipeline (future). */
-  ocr: { status: AnswerOcrStatus; text?: string; confidence?: number; updatedAt?: number };
+  /**
+   * OCR pipeline. `extractedText` is the raw model output; `correctedText`
+   * is the student-edited version that AI grading should consume. Keeping
+   * both lets us train / audit the OCR layer later.
+   */
+  ocr: {
+    status: AnswerOcrStatus;
+    extractedText?: string;
+    correctedText?: string;
+    /** 0..1, surfaced as a confidence indicator pill. */
+    confidence?: number;
+    /** Detected language hint — reserved for future bilingual OCR. */
+    language?: string;
+    /** Bounding-box / word-level data slot — reserved for future heatmap. */
+    words?: { text: string; confidence: number }[];
+    /** Per-image review status; gates AI evaluation. */
+    reviewStatus?: AnswerReviewStatus;
+    /** Last error message if status === "error". */
+    error?: string;
+    updatedAt?: number;
+  };
   /** Per-image AI evaluation (future). */
   evaluation: {
     status: AnswerEvaluationStatus;
@@ -301,6 +335,8 @@ export type AnswerAttemptDoc = {
   imageCount: number;
   notes?: string;
   status: "draft" | "submitted" | "evaluated";
+  /** Coarse processing state shown in history + review UIs. */
+  processingState?: AnswerProcessingState;
   /** Aggregate AI evaluation (future, set once rubric grading runs). */
   aiEvaluation?: {
     totalScore: number;

@@ -3,8 +3,9 @@ import {
   attachImageToAttempt,
   createAnswerAttempt,
   finalizeAnswerAttempt,
-  triggerEvaluation,
-  triggerOcr,
+  recomputeAttemptState,
+  runOcrExtraction,
+  setAttemptProcessingState,
   uploadAnswerImage,
 } from "@/integrations/firebase/services/answer-uploads";
 import type {
@@ -65,16 +66,30 @@ export function useAnswerUpload(context: AnswerAttemptContext) {
           });
           await attachImageToAttempt(attempt.id, up.id);
           uploads.push(up);
-          if (opts.queueAi !== false) {
-            // Fire-and-forget — never block the submit flow.
-            triggerOcr(up.id).catch(() => {});
-            triggerEvaluation(up.id).catch(() => {});
-          }
           setProgress({ total: staged.length, done: i + 1 });
         }
         await finalizeAnswerAttempt(attempt.id, { notes: opts.notes });
+        // Kick off OCR for every page. Fire-and-forget so the submit
+        // flow returns immediately; the review screen will poll for results.
+        if (opts.queueAi !== false) {
+          await setAttemptProcessingState(attempt.id, "processing");
+          void (async () => {
+            for (const up of uploads) {
+              await runOcrExtraction(up).catch(() => {});
+            }
+            await recomputeAttemptState(attempt.id).catch(() => {});
+          })();
+        } else {
+          await setAttemptProcessingState(attempt.id, "uploaded");
+        }
         return {
-          attempt: { ...attempt, imageIds: uploads.map((u) => u.id), imageCount: uploads.length, status: "submitted" },
+          attempt: {
+            ...attempt,
+            imageIds: uploads.map((u) => u.id),
+            imageCount: uploads.length,
+            status: "submitted",
+            processingState: opts.queueAi === false ? "uploaded" : "processing",
+          },
           uploads,
         };
       } catch (e) {
