@@ -12,3 +12,5 @@ export * from "./achievements";
 export * from "./analytics";
 export * from "./user-achievements";
 export * from "./streaks";
+export * from "./quizzes";
+export * from "./quiz-attempts";
