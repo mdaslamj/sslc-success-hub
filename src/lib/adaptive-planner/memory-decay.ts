@@ -6,6 +6,100 @@ import type {
 
 const DAY = 24 * 60 * 60 * 1000;
 
+/* ------------------------- retention confidence -------------------------- */
+
+export type RetentionBand = "ok" | "reminder" | "remediation" | "recovery";
+
+/** Threshold bands for intervention triggers. */
+export const RETENTION_THRESHOLDS = {
+  reminder: 70,
+  remediation: 50,
+  recovery: 30,
+} as const;
+
+export function retentionBand(score: number): RetentionBand {
+  if (score < RETENTION_THRESHOLDS.recovery) return "recovery";
+  if (score < RETENTION_THRESHOLDS.remediation) return "remediation";
+  if (score < RETENTION_THRESHOLDS.reminder) return "reminder";
+  return "ok";
+}
+
+export type RetentionInputs = {
+  /** ms since last practice. */
+  lastPracticed: number;
+  /** Scheduled interval in days (1/3/7/14/30). */
+  intervalDays: number;
+  /** Mistakes recorded in trailing window (default 14d). */
+  recentMistakes?: number;
+  /** 0..1 — fraction of quiz / mock items correct, trailing window. */
+  quizAccuracy?: number;
+  /** 0..1 — average OCR confidence on recent answer uploads. */
+  ocrQuality?: number;
+  /** Precomputed decay; defaults to computeConfidenceDecay(...). */
+  confidenceDecay?: number;
+  now?: number;
+};
+
+/**
+ * Compute composite retention confidence (0..100). Higher = better retention.
+ * Weights:
+ *   interval adherence  25%
+ *   confidence decay    20% (inverted)
+ *   recent mistakes     20% (inverted)
+ *   quiz performance    25%
+ *   OCR quality         10%
+ */
+export function computeRetentionScore(args: RetentionInputs): {
+  retentionScore: number;
+  inputs: Required<Omit<RetentionInputs, "now" | "lastPracticed" | "intervalDays">>;
+  band: RetentionBand;
+} {
+  const now = args.now ?? Date.now();
+  const elapsedDays = Math.max(0, (now - args.lastPracticed) / DAY);
+  const interval = Math.max(1, args.intervalDays);
+
+  // 1 when reviewed on schedule, decays linearly to 0 when 2× overdue.
+  const intervalAdherence = Math.max(
+    0,
+    Math.min(1, 1 - Math.max(0, elapsedDays - interval) / interval),
+  );
+
+  const confidenceDecay =
+    args.confidenceDecay ??
+    computeConfidenceDecay(args.lastPracticed, interval, now);
+
+  const recentMistakes = Math.max(0, args.recentMistakes ?? 0);
+  // 1 when no mistakes, drops 0.2 per mistake, floor 0.
+  const mistakeComponent = Math.max(0, 1 - recentMistakes * 0.2);
+
+  const quizAccuracy = clamp01(args.quizAccuracy ?? 0.6);
+  const ocrQuality = clamp01(args.ocrQuality ?? 0.7);
+
+  const score =
+    intervalAdherence * 25 +
+    (1 - confidenceDecay) * 20 +
+    mistakeComponent * 20 +
+    quizAccuracy * 25 +
+    ocrQuality * 10;
+
+  const retentionScore = +Math.min(100, Math.max(0, score)).toFixed(1);
+  return {
+    retentionScore,
+    band: retentionBand(retentionScore),
+    inputs: {
+      intervalAdherence: +intervalAdherence.toFixed(3),
+      recentMistakes,
+      quizAccuracy: +quizAccuracy.toFixed(3),
+      ocrQuality: +ocrQuality.toFixed(3),
+      confidenceDecay: +confidenceDecay.toFixed(3),
+    },
+  };
+}
+
+function clamp01(n: number) {
+  return Math.min(1, Math.max(0, n));
+}
+
 /** Adaptive interval ladder (days). */
 export const INTERVAL_LADDER = [1, 3, 7, 14, 30] as const;
 export type IntervalDays = (typeof INTERVAL_LADDER)[number];
@@ -117,6 +211,12 @@ export function buildMemoryTracking(args: {
   lastPracticed?: number;
   lastMistake?: number | null;
   previous?: MemoryTrackingDoc | null;
+  /** Optional retention signals — folded into retentionScore. */
+  retention?: {
+    recentMistakes?: number;
+    quizAccuracy?: number;
+    ocrQuality?: number;
+  };
   now?: number;
 }): MemoryTrackingDoc {
   const { userId, profile, previous, now = Date.now() } = args;
@@ -124,6 +224,18 @@ export function buildMemoryTracking(args: {
   const lastMistake = args.lastMistake ?? previous?.lastMistake ?? null;
   const nextInterval = intervalForConfidence(profile.confidenceScore);
   const confidenceDecay = computeConfidenceDecay(lastPracticed, nextInterval, now);
+  const retention = computeRetentionScore({
+    lastPracticed,
+    intervalDays: nextInterval,
+    confidenceDecay,
+    recentMistakes:
+      args.retention?.recentMistakes ?? previous?.retentionInputs?.recentMistakes ?? 0,
+    quizAccuracy:
+      args.retention?.quizAccuracy ?? previous?.retentionInputs?.quizAccuracy,
+    ocrQuality:
+      args.retention?.ocrQuality ?? previous?.retentionInputs?.ocrQuality,
+    now,
+  });
   return {
     id: profile.chapterId,
     userId,
@@ -135,6 +247,9 @@ export function buildMemoryTracking(args: {
     nextInterval,
     marksAtRisk: profile.marksAtRisk,
     confidenceScore: profile.confidenceScore,
+    retentionScore: retention.retentionScore,
+    retentionInputs: retention.inputs,
+    retentionBand: retention.band,
     createdAt: previous?.createdAt ?? now,
     updatedAt: now,
   };
