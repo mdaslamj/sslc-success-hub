@@ -163,6 +163,78 @@ export type ChapterNoteDoc = {
   updatedAt: number;
 };
 
+// ---------------------------------------------------------------------------
+// Library — centralized academic resource hub
+// ---------------------------------------------------------------------------
+
+/**
+ * High-level category for the digital library. Distinct from `ResourceKind`
+ * (used by per-chapter resources) so the library can group by curricular
+ * purpose rather than just file type.
+ */
+export type LibraryCategory =
+  | "textbook"
+  | "pyq"
+  | "notes"
+  | "worksheet"
+  | "video"
+  | "formula"
+  | "qbank"
+  | "revision";
+
+export type LibraryLanguage = "en" | "kn" | "bilingual";
+
+/**
+ * One library item. Either `subjectId` and/or `chapterId` may be omitted to
+ * represent subject-wide or globally useful resources (e.g. full textbook,
+ * full board paper). Public-read, admin-write.
+ */
+export type LibraryResourceDoc = {
+  id: string;
+  title: string;
+  titleKn?: string;
+  description?: string;
+  descriptionKn?: string;
+  category: LibraryCategory;
+  /** Optional finer-grained type (reuses ResourceKind enum). */
+  resourceType?: ResourceKind;
+  subjectId?: string;
+  chapterId?: string;
+  /** External URL (preferred). */
+  url?: string;
+  /** Optional Firebase Storage path when a PDF is uploaded. */
+  pdfPath?: string;
+  thumbnailUrl?: string;
+  /** Free-form icon hint (lucide icon name). UI falls back to category icon. */
+  icon?: string;
+  language: LibraryLanguage;
+  tags: string[];
+  /** Surfaced in the quick-access strip on /resources. */
+  isFeatured: boolean;
+  /** True for official KTBS / NCERT / board material. */
+  isOfficial: boolean;
+  /** Year for PYQs / board papers. */
+  year?: number;
+  /** Lightweight popularity signal. */
+  views?: number;
+  createdAt: number;
+  updatedAt: number;
+  createdBy?: string;
+};
+
+/**
+ * Curated category metadata. Admin-managed; renders the tab strip and the
+ * empty-state copy on the library page.
+ */
+export type LibraryCategoryDoc = {
+  id: LibraryCategory;
+  label: string;
+  labelKn?: string;
+  description?: string;
+  icon?: string;
+  order: number;
+};
+
 export type ProgressDoc = {
   userId: string;
   subjectId: string;
