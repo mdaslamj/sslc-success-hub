@@ -17,6 +17,7 @@ import {
   QuickAccess,
   type QuickAccessAction,
 } from "@/components/resources/quick-access";
+import { OfficialPortals } from "@/components/resources/official-portals";
 import {
   useLibraryCategories,
   useLibraryResources,
@@ -140,6 +141,10 @@ function ResourcesPage() {
 
         <section>
           <QuickAccess onSelect={handleQuickAccess} />
+        </section>
+
+        <section>
+          <OfficialPortals />
         </section>
 
         <section>
