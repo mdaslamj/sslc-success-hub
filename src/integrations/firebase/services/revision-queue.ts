@@ -1,6 +1,7 @@
 import {
   collection,
   doc,
+  getDoc,
   getDocs,
   limit as qLimit,
   orderBy,
@@ -53,4 +54,38 @@ export async function setRevisionQueueStatus(
   status: RevisionQueueStatus,
 ): Promise<void> {
   await updateDoc(qDoc(userId, queueId), { status, updatedAt: Date.now() });
+}
+
+export async function fetchRevisionQueueItem(
+  userId: string,
+  queueId: string,
+): Promise<RevisionQueueDoc | null> {
+  const snap = await getDoc(qDoc(userId, queueId));
+  return snap.exists()
+    ? ({ id: snap.id, ...(snap.data() as Omit<RevisionQueueDoc, "id">) })
+    : null;
+}
+
+/**
+ * Patch the dynamic priority / decay fields of a queue card. Pass only the
+ * fields you want to overwrite — `updatedAt` is bumped automatically.
+ */
+export async function updateRevisionQueueCard(
+  userId: string,
+  queueId: string,
+  patch: Partial<
+    Pick<
+      RevisionQueueDoc,
+      | "priority"
+      | "scheduledDate"
+      | "lastPracticed"
+      | "lastMistake"
+      | "confidenceScore"
+      | "confidenceDecay"
+      | "interval"
+      | "status"
+    >
+  >,
+): Promise<void> {
+  await updateDoc(qDoc(userId, queueId), { ...patch, updatedAt: Date.now() });
 }

@@ -45,3 +45,4 @@ export * from "./intervention-plans";
 export * from "./adaptive-schedules";
 export * from "./revision-queue";
 export * from "./remediation-sessions";
+export * from "./memory-tracking";

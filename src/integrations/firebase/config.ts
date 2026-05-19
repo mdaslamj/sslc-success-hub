@@ -113,4 +113,5 @@ export const ADAPTIVE_SUBCOLLECTIONS = {
   ADAPTIVE_SCHEDULES: "adaptiveSchedules",
   REVISION_QUEUE: "revisionQueue",
   REMEDIATION_SESSIONS: "remediationSessions",
+  MEMORY_TRACKING: "memoryTracking",
 } as const;

@@ -113,6 +113,9 @@ service cloud.firestore {
     match /users/{uid}/remediationSessions/{sessionId} {
       allow read, write: if isOwner(uid);
     }
+    match /users/{uid}/memoryTracking/{chapterId} {
+      allow read, write: if isOwner(uid);
+    }
 
     // Per-user profile (auth + onboarding metadata). Doc id == auth uid.
     match /userProfiles/{uid} {
