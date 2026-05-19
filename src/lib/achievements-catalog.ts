@@ -18,7 +18,8 @@ export type AchievementCategory =
   | "focus"
   | "hours"
   | "mastery"
-  | "consistency";
+  | "consistency"
+  | "quiz";
 
 export type AchievementInput = {
   streak: { current: number; longest: number };
@@ -28,6 +29,13 @@ export type AchievementInput = {
   totalStudyMinutes: number;
   bySubject: { id: string; name: string; completion: number; minutes: number }[];
   weekly: { dayKey: string; minutes: number }[];
+  /** Optional quiz roll-up — absent for legacy callers, treated as zeros. */
+  quizzes?: {
+    attempts: number;
+    bestAccuracy: number; // 0..100
+    perfectScores: number;
+    averageScore: number; // 0..100
+  };
 };
 
 export type AchievementDefinition = {
@@ -151,6 +159,44 @@ function consistencyDef(days: number, xp: number): AchievementDefinition {
   };
 }
 
+function quizCountDef(n: number, xp: number, title: string): AchievementDefinition {
+  return {
+    code: `quiz_count_${n}`,
+    title,
+    description: `Complete ${n} quiz${n === 1 ? "" : "zes"}.`,
+    category: "quiz",
+    icon: n >= 25 ? "🏅" : n >= 10 ? "📝" : "🧩",
+    xp,
+    evaluate: (i) => {
+      const attempts = i.quizzes?.attempts ?? 0;
+      return {
+        progress: ratio(attempts, n),
+        earned: attempts >= n,
+        snapshot: { attempts },
+      };
+    },
+  };
+}
+
+function quizAccuracyDef(pct: number, xp: number, title: string): AchievementDefinition {
+  return {
+    code: `quiz_accuracy_${pct}`,
+    title,
+    description: `Score at least ${pct}% accuracy on a quiz.`,
+    category: "quiz",
+    icon: pct >= 100 ? "💯" : "🎯",
+    xp,
+    evaluate: (i) => {
+      const best = i.quizzes?.bestAccuracy ?? 0;
+      return {
+        progress: ratio(best, pct),
+        earned: best >= pct,
+        snapshot: { bestAccuracy: best },
+      };
+    },
+  };
+}
+
 export const ACHIEVEMENT_CATALOG: AchievementDefinition[] = [
   // Streaks
   streakDef(3, 60),
@@ -179,6 +225,12 @@ export const ACHIEVEMENT_CATALOG: AchievementDefinition[] = [
   consistencyDef(3, 100),
   consistencyDef(5, 200),
   consistencyDef(7, 400),
+  // Quizzes
+  quizCountDef(1, 50, "Quiz Rookie"),
+  quizCountDef(10, 200, "Quiz Regular"),
+  quizCountDef(25, 500, "Quiz Veteran"),
+  quizAccuracyDef(80, 150, "Sharp Shooter"),
+  quizAccuracyDef(100, 400, "Perfect Score"),
 ];
 
 export function findAchievement(code: string): AchievementDefinition | undefined {

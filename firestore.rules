@@ -68,6 +68,13 @@ service cloud.firestore {
       allow write: if isAdmin();
     }
 
+    // Quiz definitions — public read, admin-only write. Same posture as the
+    // mcqs catalog above.
+    match /quizzes/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
     // Per-user profile.
     match /users/{uid} {
       allow read, write: if isOwner(uid);
@@ -150,6 +157,16 @@ service cloud.firestore {
 
     // Daily analytics rollup. Doc id convention: `${userId}_${dayKey}`.
     match /analytics/{docId} {
+      allow read: if isSignedIn() && resource.data.userId == request.auth.uid;
+      allow create: if isSignedIn() && request.resource.data.userId == request.auth.uid;
+      allow update, delete: if isSignedIn()
+        && resource.data.userId == request.auth.uid
+        && request.resource.data.userId == request.auth.uid;
+    }
+
+    // Per-user quiz attempts. Owner-gated by `userId` field. Reads scope
+    // server-side leaderboards (future) via collectionGroup queries.
+    match /quizAttempts/{docId} {
       allow read: if isSignedIn() && resource.data.userId == request.auth.uid;
       allow create: if isSignedIn() && request.resource.data.userId == request.auth.uid;
       allow update, delete: if isSignedIn()

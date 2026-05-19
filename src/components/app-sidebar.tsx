@@ -9,6 +9,7 @@ import {
   Timer,
   Trophy,
   GraduationCap,
+  HelpCircle,
 } from "lucide-react";
 import {
   Sidebar,
@@ -34,6 +35,7 @@ const study = [
   { title: "Study Planner", url: "/planner", icon: CalendarClock },
   { title: "Analytics", url: "/analytics", icon: LineChart },
   { title: "Focus Timer", url: "/focus", icon: Timer },
+  { title: "Quizzes", url: "/quizzes", icon: HelpCircle },
   { title: "Achievements", url: "/achievements", icon: Trophy },
 ];
 

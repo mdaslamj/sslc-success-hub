@@ -13,6 +13,7 @@ import {
 import { XP_REWARDS, levelFromXp, type LevelInfo } from "@/lib/xp";
 import type { UserAchievementDoc } from "@/integrations/firebase/types";
 import { useAnalytics } from "./use-analytics";
+import { useQuizStats } from "./use-quiz-stats";
 
 export type AchievementStatus = {
   def: AchievementDefinition;
@@ -49,6 +50,7 @@ export type AchievementsSnapshot = {
  */
 export function useAchievements(): AchievementsSnapshot {
   const a = useAnalytics();
+  const quizStats = useQuizStats();
   const [unlocked, setUnlocked] = useState<UserAchievementDoc[]>([]);
   const [recentUnlocks, setRecentUnlocks] = useState<UserAchievementDoc[]>([]);
   const seenRef = useRef<Set<string>>(new Set());
@@ -103,6 +105,12 @@ export function useAchievements(): AchievementsSnapshot {
         minutes: s.minutes,
       })),
       weekly: a.weekly.map((w) => ({ dayKey: w.dayKey, minutes: w.minutes })),
+      quizzes: {
+        attempts: quizStats.attempts,
+        bestAccuracy: quizStats.bestAccuracy,
+        perfectScores: quizStats.perfectScores,
+        averageScore: quizStats.averageScore,
+      },
     };
     const fresh: UserAchievementDoc[] = [];
     for (const def of ACHIEVEMENT_CATALOG) {
@@ -134,6 +142,10 @@ export function useAchievements(): AchievementsSnapshot {
     a.totalStudyMinutes,
     a.bySubject,
     a.weekly,
+    quizStats.attempts,
+    quizStats.bestAccuracy,
+    quizStats.perfectScores,
+    quizStats.averageScore,
   ]);
 
   const statuses = useMemo<AchievementStatus[]>(() => {
@@ -151,6 +163,12 @@ export function useAchievements(): AchievementsSnapshot {
         minutes: s.minutes,
       })),
       weekly: a.weekly.map((w) => ({ dayKey: w.dayKey, minutes: w.minutes })),
+      quizzes: {
+        attempts: quizStats.attempts,
+        bestAccuracy: quizStats.bestAccuracy,
+        perfectScores: quizStats.perfectScores,
+        averageScore: quizStats.averageScore,
+      },
     };
     return ACHIEVEMENT_CATALOG.map((def) => {
       const u = unlockedByCode.get(def.code);
@@ -163,7 +181,7 @@ export function useAchievements(): AchievementsSnapshot {
         xpAwarded: u?.xpAwarded,
       };
     });
-  }, [unlocked, a]);
+  }, [unlocked, a, quizStats]);
 
   // XP = unlock rewards + engagement multipliers.
   const xp = useMemo(() => {
@@ -173,13 +191,19 @@ export function useAchievements(): AchievementsSnapshot {
       a.completedChapters * XP_REWARDS.chapterCompleted +
       Math.floor(a.totalStudyHours) * XP_REWARDS.studyHour +
       a.streak.current * XP_REWARDS.streakDay;
-    return unlockXp + engagementXp;
+    // Quiz XP — already computed per-attempt by the engine.
+    const quizXp = quizStats.attemptsList.reduce(
+      (sum, q) => sum + (q.xpAwarded ?? 0),
+      0,
+    );
+    return unlockXp + engagementXp + quizXp;
   }, [
     unlocked,
     a.focusSessions,
     a.completedChapters,
     a.totalStudyHours,
     a.streak.current,
+    quizStats.attemptsList,
   ]);
 
   return {

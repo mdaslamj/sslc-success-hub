@@ -92,6 +92,8 @@ export type McqDoc = {
   explanation?: string;
   difficulty?: "Easy" | "Medium" | "Hard";
   order?: number;
+  /** Free-form topic tag — drives weak-topic analytics. */
+  topic?: string;
 };
 
 /** Future note shape — markdown body keyed by subject+chapter. */
@@ -215,4 +217,96 @@ export type AnalyticsDailyDoc = {
   /** Per-subject minute breakdown for the day. */
   bySubject: Record<string, number>;
   updatedAt: number;
+};
+
+// ---------------------------------------------------------------------------
+// Quiz engine
+// ---------------------------------------------------------------------------
+
+/**
+ * Quiz mode. The engine treats all modes uniformly today; future modes plug
+ * in extra question-selection / scoring rules without changing the schema.
+ *   - practice  : untimed, answer-review, no XP cap
+ *   - timed     : countdown, auto-submit on expiry
+ *   - mock      : full subject mock exam, weighted scoring (future)
+ *   - adaptive  : difficulty adjusts per-answer (future)
+ *   - ai        : questions generated on-demand by AI gateway (future)
+ */
+export type QuizMode = "practice" | "timed" | "mock" | "adaptive" | "ai";
+
+/**
+ * One question slot inside a quiz. We inline the question payload so an
+ * attempt is self-contained — no fan-out reads at play time, and historical
+ * attempts stay readable even if the underlying MCQ doc is edited later.
+ */
+export type QuizQuestionRef = {
+  mcqId: string;
+  question: string;
+  options: string[];
+  correctIndex: number;
+  explanation?: string;
+  topic?: string;
+  difficulty?: "Easy" | "Medium" | "Hard";
+};
+
+/**
+ * Canonical quiz definition. Public-read, admin-write. Generated quizzes
+ * (AI / adaptive) set `source` accordingly so analytics can split organic
+ * vs system attempts.
+ */
+export type QuizDoc = {
+  id: string;
+  subjectId: string;
+  chapterId?: string;
+  title: string;
+  description?: string;
+  mode: QuizMode;
+  /** Seconds; 0 = untimed. */
+  durationSeconds: number;
+  questions: QuizQuestionRef[];
+  difficulty?: "Easy" | "Medium" | "Hard" | "Mixed";
+  source?: "system" | "user" | "ai";
+  /** Optional ordering for catalog listing. */
+  order?: number;
+  createdAt: number;
+};
+
+/** A single answered question inside an attempt. */
+export type QuizAnswer = {
+  mcqId: string;
+  selectedIndex: number | null;
+  correct: boolean;
+  topic?: string;
+  /** Wall-clock ms the user spent on this question. */
+  timeMs?: number;
+};
+
+/**
+ * Per-user quiz attempt. Owner-gated. Used as the source of truth for
+ * accuracy, average score, weak topics, and XP awarded from quizzes.
+ */
+export type QuizAttemptDoc = {
+  id: string;
+  userId: string;
+  quizId: string;
+  subjectId: string;
+  chapterId?: string;
+  mode: QuizMode;
+  startedAt: number;
+  endedAt: number;
+  /** Wall-clock seconds elapsed (pause-aware). */
+  durationSeconds: number;
+  /** Number answered correctly. */
+  score: number;
+  total: number;
+  /** correct / total, 0..100. */
+  accuracy: number;
+  /** answered / total, 0..100. */
+  completion: number;
+  /** Topics where the user answered incorrectly (dedup'd). */
+  weakTopics: string[];
+  answers: QuizAnswer[];
+  xpAwarded: number;
+  /** Local YYYY-MM-DD — denormalized for cheap day-bucket queries. */
+  dayKey: string;
 };
