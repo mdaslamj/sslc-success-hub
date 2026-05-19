@@ -29,6 +29,7 @@ import {
 import { DashboardLayout } from "@/components/dashboard-layout";
 import { StatCard } from "@/components/widgets/stat-card";
 import { ProgressRing } from "@/components/widgets/progress-ring";
+import { MockExamWidget } from "@/components/widgets/mock-exam-widget";
 import { Button } from "@/components/ui/button";
 import {
   subjects,
