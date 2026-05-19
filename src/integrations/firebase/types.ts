@@ -424,3 +424,90 @@ export type RevisionScheduleDoc = {
   createdAt: number;
   updatedAt: number;
 };
+
+// ---------------------------------------------------------------------------
+// AI recommendation engine
+// ---------------------------------------------------------------------------
+
+/**
+ * Why a recommendation surfaced. Drives icons, sorting, and downstream
+ * analytics. New rule modules just add a new kind here.
+ */
+export type RecommendationKind =
+  | "next_chapter"
+  | "revision_due"
+  | "weak_topic"
+  | "quiz_suggestion"
+  | "focus_boost"
+  | "streak_guard"
+  | "consistency"
+  | "subject_difficulty";
+
+/** Where the recommendation came from. `rule` today; `ai` reserved for
+ *  the future generative tutor / adaptive learning path engine. */
+export type RecommendationSource = "rule" | "ai" | "hybrid";
+
+export type RecommendationStatus = "active" | "dismissed" | "acted" | "expired";
+
+/**
+ * One actionable nudge for the learner. Doc id is deterministic so
+ * regenerations are idempotent: `${userId}_${kind}_${targetKey}`.
+ */
+export type RecommendationDoc = {
+  id: string;
+  userId: string;
+  kind: RecommendationKind;
+  source: RecommendationSource;
+  title: string;
+  body: string;
+  /** 0..100 — drives ranking + UI emphasis. */
+  score: number;
+  /** Human-readable chips ("Accuracy 48%", "3d overdue"). */
+  reasons: string[];
+  /** Suggested CTA — UI maps `route` to a TanStack `<Link to>`. */
+  cta?: {
+    label: string;
+    route?: string;
+    params?: Record<string, string>;
+  };
+  subjectId?: string;
+  chapterId?: string;
+  topic?: string;
+  /** Snapshot of the signals that produced the score (for explainability). */
+  signals?: Record<string, number | string>;
+  status: RecommendationStatus;
+  createdAt: number;
+  /** Epoch ms; engine drops recs whose `expiresAt` has passed. */
+  expiresAt?: number | null;
+  actedAt?: number | null;
+  dismissedAt?: number | null;
+};
+
+/**
+ * Coarse insight roll-up for the learner — feeds the dashboard "AI Insights"
+ * card and the future generative tutor's context window. One doc per
+ * (userId, periodKey).
+ */
+export type AiInsightDoc = {
+  id: string;
+  userId: string;
+  /** YYYY-MM-DD for daily, YYYY-Www for weekly. */
+  periodKey: string;
+  scope: "daily" | "weekly";
+  headline: string;
+  bullets: string[];
+  metrics: {
+    accuracy: number;
+    completionPercent: number;
+    studyMinutes: number;
+    focusSessions: number;
+    streak: number;
+    revisionBacklog: number;
+    weakSubjectCount: number;
+  };
+  /** Predicted score band — reserved for the predictive-scoring module. */
+  predictedScoreBand?: "low" | "mid" | "high";
+  source: RecommendationSource;
+  createdAt: number;
+  updatedAt: number;
+};

@@ -201,6 +201,24 @@ service cloud.firestore {
         && request.resource.data.userId == request.auth.uid;
     }
 
+    // Per-user AI recommendations. Owner-gated by `userId` field.
+    match /recommendations/{docId} {
+      allow read: if isSignedIn() && resource.data.userId == request.auth.uid;
+      allow create: if isSignedIn() && request.resource.data.userId == request.auth.uid;
+      allow update, delete: if isSignedIn()
+        && resource.data.userId == request.auth.uid
+        && request.resource.data.userId == request.auth.uid;
+    }
+
+    // Per-user AI insight rollups. Doc id: `${userId}_${scope}_${periodKey}`.
+    match /aiInsights/{docId} {
+      allow read: if isSignedIn() && resource.data.userId == request.auth.uid;
+      allow create: if isSignedIn() && request.resource.data.userId == request.auth.uid;
+      allow update, delete: if isSignedIn()
+        && resource.data.userId == request.auth.uid
+        && request.resource.data.userId == request.auth.uid;
+    }
+
     // Default deny.
     match /{document=**} {
       allow read, write: if false;
