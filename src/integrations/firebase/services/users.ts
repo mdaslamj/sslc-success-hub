@@ -105,8 +105,27 @@ export function defaultUserProfile(input: {
 export function defaultUserSettings(uid: string): UserSettingsDoc {
   return {
     uid,
-    notifications: { revisionReminders: true, dailyDigest: true },
+    notifications: {
+      revisionReminders: true,
+      dailyDigest: true,
+      achievementAlerts: true,
+      plannerAlerts: true,
+    },
     studyWindow: { dailyMinutesTarget: 90, preferredStartHour: 18 },
+    reminders: { studyReminderTime: "18:00", revisionReminderTime: "20:30" },
+    focusTimer: {
+      focusMinutes: 25,
+      shortBreakMinutes: 5,
+      longBreakMinutes: 15,
+      longBreakEvery: 4,
+      autoStartBreaks: false,
+      soundEnabled: true,
+    },
+    aiAssistant: {
+      enabled: true,
+      tone: "friendly",
+      dailyTips: true,
+    },
     theme: "system",
     updatedAt: Date.now(),
   };
