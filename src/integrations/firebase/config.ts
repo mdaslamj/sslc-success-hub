@@ -90,4 +90,5 @@ export const COLLECTIONS = {
   MATH_KEYWORDS: "mathKeywords",
   MATH_COMMON_MISTAKES: "mathCommonMistakes",
   MATH_CHAPTER_ANALYTICS: "mathChapterAnalytics",
+  MATH_IMPORT_DRAFTS: "mathImportDrafts",
 } as const;
