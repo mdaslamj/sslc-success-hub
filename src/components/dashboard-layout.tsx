@@ -58,7 +58,7 @@ export function DashboardLayout({ children, title }: { children: ReactNode; titl
               >
                 <Link to="/login">
                   <LogIn className="h-4 w-4" />
-                  <span className="hidden xs:inline sm:inline">Sign in</span>
+                  <span>Sign in</span>
                 </Link>
               </Button>
             )}
