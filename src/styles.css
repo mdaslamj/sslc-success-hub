@@ -217,3 +217,27 @@
     animation: shimmer 2.5s infinite;
   }
 }
+
+/* Mobile-first base improvements */
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+body {
+  -webkit-tap-highlight-color: transparent;
+  overflow-x: hidden;
+  overscroll-behavior-y: contain;
+}
+/* Prevent iOS zoom on focused inputs (must be >=16px) */
+@media (max-width: 640px) {
+  input, select, textarea {
+    font-size: 16px;
+  }
+}
+/* Touch-friendly tap targets on coarse pointers */
+@media (pointer: coarse) {
+  button, [role="button"], a {
+    touch-action: manipulation;
+  }
+}
