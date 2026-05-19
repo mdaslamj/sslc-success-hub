@@ -310,3 +310,117 @@ export type QuizAttemptDoc = {
   /** Local YYYY-MM-DD — denormalized for cheap day-bucket queries. */
   dayKey: string;
 };
+
+// ---------------------------------------------------------------------------
+// Smart planner & revision engine
+// ---------------------------------------------------------------------------
+
+/**
+ * Source that produced a planner task. `system` = deterministic engine
+ * output, `revision` = surfaced by the spaced-repetition queue, `user` =
+ * manually added, `ai` = future LLM-generated.
+ */
+export type PlannerSource = "system" | "revision" | "user" | "ai";
+
+/** Kind of work a task represents — drives icons, XP, and analytics splits. */
+export type PlannerTaskKind =
+  | "study"      // read / learn new chapter
+  | "revision"   // revisit a previously studied chapter
+  | "quiz"       // attempt an MCQ / quiz set
+  | "focus"      // pure focus-timer block
+  | "practice";  // worksheet / past-paper
+
+export type PlannerTaskStatus = "pending" | "in_progress" | "done" | "skipped";
+
+/**
+ * One actionable item on a study plan. Owner-gated. Keyed by `id`; the
+ * containing plan is referenced by `planId` + `dayKey` for cheap range reads.
+ */
+export type PlannerTaskDoc = {
+  id: string;
+  userId: string;
+  planId: string;
+  /** Local YYYY-MM-DD the task is scheduled for. */
+  dayKey: string;
+  /** Optional clock label, e.g. "07:30". */
+  startsAt?: string;
+  kind: PlannerTaskKind;
+  source: PlannerSource;
+  title: string;
+  subjectId?: string;
+  chapterId?: string;
+  /** Free-form topic / focus area (drives weak-topic linking). */
+  topic?: string;
+  /** Planned block length in minutes. */
+  durationMinutes: number;
+  status: PlannerTaskStatus;
+  /** Engine-assigned 0..100 — used to rank / auto-trim a busy day. */
+  priority: number;
+  /** Human-readable chips ("weak topic", "due for revision", …). */
+  reasons?: string[];
+  /** XP awarded on completion. */
+  xp?: number;
+  createdAt: number;
+  completedAt?: number | null;
+};
+
+/**
+ * A generated study plan. One doc per (userId, scope, periodKey). For daily
+ * plans the id convention is `${userId}_d_${dayKey}`; weekly is
+ * `${userId}_w_${isoWeekKey}` — keeps writes idempotent and reads O(1).
+ */
+export type StudyPlanDoc = {
+  id: string;
+  userId: string;
+  scope: "daily" | "weekly";
+  /** YYYY-MM-DD for daily, YYYY-Www for weekly. */
+  periodKey: string;
+  /** Total target study minutes for the period. */
+  targetMinutes: number;
+  /** Sum of task minutes the user has marked done. */
+  doneMinutes: number;
+  taskIds: string[];
+  /** Why this plan looks the way it does (engine explanation). */
+  rationale: string[];
+  /** Snapshot of inputs that produced the plan (for re-generation diffs). */
+  signals: {
+    weakSubjectIds: string[];
+    overdueRevisions: number;
+    streak: number;
+    averageQuizAccuracy: number;
+    availableMinutes: number;
+    examCountdownDays?: number | null;
+  };
+  source: PlannerSource;
+  createdAt: number;
+  updatedAt: number;
+};
+
+/**
+ * Spaced-repetition card. One doc per (userId, chapterId). Uses a lightweight
+ * SM-2 derivative — `ease` adjusts on each review, `intervalDays` schedules
+ * the next revisit, `dueAt` is the next time the card surfaces in the queue.
+ * Future "adaptive" mode can swap the algorithm without changing the doc.
+ */
+export type RevisionScheduleDoc = {
+  id: string; // `${userId}_${chapterId}`
+  userId: string;
+  subjectId: string;
+  chapterId: string;
+  chapterTitle?: string;
+  /** Number of completed reviews. */
+  reps: number;
+  /** SM-2 ease factor; clamped to [1.3, 3.0]. */
+  ease: number;
+  /** Days until next review after last completion. */
+  intervalDays: number;
+  /** Epoch ms — when this card should next surface. */
+  dueAt: number;
+  lastReviewedAt: number | null;
+  /** Last quality rating, 0 (forgot) → 5 (perfect). */
+  lastQuality?: number;
+  /** Lapse count — chapters with many lapses are "weak". */
+  lapses: number;
+  createdAt: number;
+  updatedAt: number;
+};
