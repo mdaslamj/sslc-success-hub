@@ -1,5 +1,11 @@
 import { initializeApp, getApps, getApp, type FirebaseApp } from "firebase/app";
 import { getFirestore, type Firestore } from "firebase/firestore";
+import {
+  getAuth,
+  setPersistence,
+  browserLocalPersistence,
+  type Auth,
+} from "firebase/auth";
 
 // Firebase web config — these values are publishable (safe in client code).
 // Security is enforced via Firestore Security Rules in the Firebase Console.
@@ -17,6 +23,13 @@ export const firebaseApp: FirebaseApp = getApps().length
   : initializeApp(firebaseConfig);
 
 export const db: Firestore = getFirestore(firebaseApp);
+
+// Firebase Auth — persistent sessions across reloads & tabs.
+export const auth: Auth = getAuth(firebaseApp);
+if (typeof window !== "undefined") {
+  // Fire-and-forget; failures fall back to in-memory persistence.
+  setPersistence(auth, browserLocalPersistence).catch(() => {});
+}
 
 // Collection name constants — single source of truth.
 export const COLLECTIONS = {
@@ -41,4 +54,7 @@ export const COLLECTIONS = {
   REVISION_SCHEDULES: "revisionSchedules",
   RECOMMENDATIONS: "recommendations",
   AI_INSIGHTS: "aiInsights",
+  USER_PROFILES: "userProfiles",
+  USER_SETTINGS: "userSettings",
+  USER_STATS: "userStats",
 } as const;

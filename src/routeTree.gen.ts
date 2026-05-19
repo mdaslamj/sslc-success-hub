@@ -12,8 +12,10 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as TargetsRouteImport } from './routes/targets'
 import { Route as SeedRouteImport } from './routes/seed'
 import { Route as QuizzesRouteImport } from './routes/quizzes'
+import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as PredictionsRouteImport } from './routes/predictions'
 import { Route as PlannerRouteImport } from './routes/planner'
+import { Route as LoginRouteImport } from './routes/login'
 import { Route as FocusRouteImport } from './routes/focus'
 import { Route as AnalyticsRouteImport } from './routes/analytics'
 import { Route as AchievementsRouteImport } from './routes/achievements'
@@ -38,6 +40,11 @@ const QuizzesRoute = QuizzesRouteImport.update({
   path: '/quizzes',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ProfileRoute = ProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PredictionsRoute = PredictionsRouteImport.update({
   id: '/predictions',
   path: '/predictions',
@@ -46,6 +53,11 @@ const PredictionsRoute = PredictionsRouteImport.update({
 const PlannerRoute = PlannerRouteImport.update({
   id: '/planner',
   path: '/planner',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
 const FocusRoute = FocusRouteImport.update({
@@ -94,8 +106,10 @@ export interface FileRoutesByFullPath {
   '/achievements': typeof AchievementsRoute
   '/analytics': typeof AnalyticsRoute
   '/focus': typeof FocusRoute
+  '/login': typeof LoginRoute
   '/planner': typeof PlannerRoute
   '/predictions': typeof PredictionsRoute
+  '/profile': typeof ProfileRoute
   '/quizzes': typeof QuizzesRoute
   '/seed': typeof SeedRoute
   '/targets': typeof TargetsRoute
@@ -109,8 +123,10 @@ export interface FileRoutesByTo {
   '/achievements': typeof AchievementsRoute
   '/analytics': typeof AnalyticsRoute
   '/focus': typeof FocusRoute
+  '/login': typeof LoginRoute
   '/planner': typeof PlannerRoute
   '/predictions': typeof PredictionsRoute
+  '/profile': typeof ProfileRoute
   '/quizzes': typeof QuizzesRoute
   '/seed': typeof SeedRoute
   '/targets': typeof TargetsRoute
@@ -125,8 +141,10 @@ export interface FileRoutesById {
   '/achievements': typeof AchievementsRoute
   '/analytics': typeof AnalyticsRoute
   '/focus': typeof FocusRoute
+  '/login': typeof LoginRoute
   '/planner': typeof PlannerRoute
   '/predictions': typeof PredictionsRoute
+  '/profile': typeof ProfileRoute
   '/quizzes': typeof QuizzesRoute
   '/seed': typeof SeedRoute
   '/targets': typeof TargetsRoute
@@ -142,8 +160,10 @@ export interface FileRouteTypes {
     | '/achievements'
     | '/analytics'
     | '/focus'
+    | '/login'
     | '/planner'
     | '/predictions'
+    | '/profile'
     | '/quizzes'
     | '/seed'
     | '/targets'
@@ -157,8 +177,10 @@ export interface FileRouteTypes {
     | '/achievements'
     | '/analytics'
     | '/focus'
+    | '/login'
     | '/planner'
     | '/predictions'
+    | '/profile'
     | '/quizzes'
     | '/seed'
     | '/targets'
@@ -172,8 +194,10 @@ export interface FileRouteTypes {
     | '/achievements'
     | '/analytics'
     | '/focus'
+    | '/login'
     | '/planner'
     | '/predictions'
+    | '/profile'
     | '/quizzes'
     | '/seed'
     | '/targets'
@@ -188,8 +212,10 @@ export interface RootRouteChildren {
   AchievementsRoute: typeof AchievementsRoute
   AnalyticsRoute: typeof AnalyticsRoute
   FocusRoute: typeof FocusRoute
+  LoginRoute: typeof LoginRoute
   PlannerRoute: typeof PlannerRoute
   PredictionsRoute: typeof PredictionsRoute
+  ProfileRoute: typeof ProfileRoute
   QuizzesRoute: typeof QuizzesRoute
   SeedRoute: typeof SeedRoute
   TargetsRoute: typeof TargetsRoute
@@ -222,6 +248,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof QuizzesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/profile': {
+      id: '/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof ProfileRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/predictions': {
       id: '/predictions'
       path: '/predictions'
@@ -234,6 +267,13 @@ declare module '@tanstack/react-router' {
       path: '/planner'
       fullPath: '/planner'
       preLoaderRoute: typeof PlannerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/focus': {
@@ -300,8 +340,10 @@ const rootRouteChildren: RootRouteChildren = {
   AchievementsRoute: AchievementsRoute,
   AnalyticsRoute: AnalyticsRoute,
   FocusRoute: FocusRoute,
+  LoginRoute: LoginRoute,
   PlannerRoute: PlannerRoute,
   PredictionsRoute: PredictionsRoute,
+  ProfileRoute: ProfileRoute,
   QuizzesRoute: QuizzesRoute,
   SeedRoute: SeedRoute,
   TargetsRoute: TargetsRoute,

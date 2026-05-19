@@ -511,3 +511,57 @@ export type AiInsightDoc = {
   createdAt: number;
   updatedAt: number;
 };
+
+// ---------------------------------------------------------------------------
+// Authentication & profile
+// ---------------------------------------------------------------------------
+
+export type PreferredLanguage = "en" | "kn" | "bilingual";
+
+/** Per-user profile. Doc id == auth uid. */
+export type UserProfileDoc = {
+  uid: string;
+  displayName: string;
+  email: string;
+  photoURL?: string | null;
+  studentName: string;
+  classLevel: string; // e.g. "10", "9"
+  targetScore: number; // 0..100
+  preferredLanguage: PreferredLanguage;
+  weakSubjects: string[]; // subject ids
+  studyGoals: string[];
+  /** Reserved for future roles (parent, teacher, admin). */
+  role: "student" | "parent" | "teacher" | "admin";
+  createdAt: number;
+  updatedAt: number;
+};
+
+/** Per-user app settings. Doc id == auth uid. */
+export type UserSettingsDoc = {
+  uid: string;
+  notifications: {
+    revisionReminders: boolean;
+    dailyDigest: boolean;
+  };
+  studyWindow: {
+    dailyMinutesTarget: number;
+    preferredStartHour: number; // 0..23
+  };
+  theme: "system" | "light" | "dark";
+  updatedAt: number;
+};
+
+/** Aggregated per-user stats snapshot. Doc id == auth uid. */
+export type UserStatsDoc = {
+  uid: string;
+  totalXp: number;
+  studyMinutes: number;
+  quizzesTaken: number;
+  averageAccuracy: number;
+  currentStreak: number;
+  longestStreak: number;
+  chaptersCompleted: number;
+  achievementsUnlocked: number;
+  lastActiveAt: number;
+  updatedAt: number;
+};

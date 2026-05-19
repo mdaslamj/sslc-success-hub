@@ -1,4 +1,4 @@
-import { Link, useRouterState } from "@tanstack/react-router";
+import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
 import {
   LayoutDashboard,
   BookOpen,
@@ -10,7 +10,13 @@ import {
   Trophy,
   GraduationCap,
   HelpCircle,
+  LogOut,
+  LogIn,
+  User as UserIcon,
 } from "lucide-react";
+import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
+import { useAuth } from "@/contexts/auth-context";
 import {
   Sidebar,
   SidebarContent,
@@ -101,12 +107,59 @@ export function AppSidebar() {
       </SidebarContent>
 
       <SidebarFooter className="border-t border-sidebar-border/50 p-3">
-        <div className="group-data-[collapsible=icon]:hidden rounded-xl p-3 bg-sidebar-accent/40">
-          <div className="text-xs text-sidebar-foreground/60">Logged in as</div>
-          <div className="font-medium text-sidebar-foreground">Aarav Hegde</div>
-          <div className="text-[11px] text-sidebar-foreground/50 mt-1">Class 10 · Section A</div>
-        </div>
+        <SidebarFooterUser />
       </SidebarFooter>
     </Sidebar>
+  );
+}
+
+function SidebarFooterUser() {
+  const navigate = useNavigate();
+  const { user, profile, signOut } = useAuth();
+
+  if (!user) {
+    return (
+      <Button
+        asChild
+        size="sm"
+        variant="outline"
+        className="w-full rounded-xl gap-2 group-data-[collapsible=icon]:hidden"
+      >
+        <Link to="/login">
+          <LogIn className="h-4 w-4" /> Sign in
+        </Link>
+      </Button>
+    );
+  }
+
+  const name = profile?.studentName || profile?.displayName || user.displayName || "Student";
+  const sub = profile ? `Class ${profile.classLevel} · Target ${profile.targetScore}%` : user.email;
+
+  return (
+    <div className="group-data-[collapsible=icon]:hidden rounded-xl p-3 bg-sidebar-accent/40">
+      <Link to="/profile" className="flex items-center gap-2 group">
+        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-sidebar-primary/20 text-sidebar-foreground shrink-0">
+          <UserIcon className="h-4 w-4" />
+        </div>
+        <div className="min-w-0">
+          <div className="font-medium text-sidebar-foreground truncate group-hover:underline">
+            {name}
+          </div>
+          <div className="text-[11px] text-sidebar-foreground/60 truncate">{sub}</div>
+        </div>
+      </Link>
+      <Button
+        size="sm"
+        variant="ghost"
+        className="mt-2 w-full justify-start gap-2 text-sidebar-foreground/80 hover:text-sidebar-foreground"
+        onClick={async () => {
+          await signOut();
+          toast.success("Signed out");
+          navigate({ to: "/login" });
+        }}
+      >
+        <LogOut className="h-4 w-4" /> Sign out
+      </Button>
+    </div>
   );
 }
