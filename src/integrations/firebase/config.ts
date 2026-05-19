@@ -105,3 +105,12 @@ export const DIAGNOSIS_SUBCOLLECTIONS = {
   REMEDIATION: "remediation",
   CHAPTER_INTELLIGENCE: "intelligence",
 } as const;
+
+// Adaptive Study Planner & Intervention Engine
+// All four live as subcollections under users/{uid}.
+export const ADAPTIVE_SUBCOLLECTIONS = {
+  INTERVENTION_PLANS: "interventionPlans",
+  ADAPTIVE_SCHEDULES: "adaptiveSchedules",
+  REVISION_QUEUE: "revisionQueue",
+  REMEDIATION_SESSIONS: "remediationSessions",
+} as const;
