@@ -1722,6 +1722,22 @@ export type MemoryTrackingDoc = {
   marksAtRisk: number;
   /** Latest confidence snapshot, 0..100. */
   confidenceScore?: number;
+  /**
+   * Composite retention confidence (0..100). Blends interval adherence,
+   * recent mistakes, confidence decay, quiz performance, and OCR quality.
+   * Drives revision urgency, marks-at-risk, and intervention thresholds.
+   */
+  retentionScore?: number;
+  /** Snapshot of the inputs that produced the latest retentionScore. */
+  retentionInputs?: {
+    intervalAdherence?: number; // 0..1
+    recentMistakes?: number; // count in trailing window
+    quizAccuracy?: number; // 0..1
+    ocrQuality?: number; // 0..1
+    confidenceDecay?: number; // 0..1
+  };
+  /** Last threshold band crossed: "ok" | "reminder" | "remediation" | "recovery". */
+  retentionBand?: "ok" | "reminder" | "remediation" | "recovery";
   createdAt: number;
   updatedAt: number;
 };
