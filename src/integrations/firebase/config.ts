@@ -76,4 +76,9 @@ export const COLLECTIONS = {
   // Handwritten answer uploads (scan/photo of student's written answers).
   ANSWER_UPLOADS: "answerUploads",
   ANSWER_ATTEMPTS: "answerAttempts",
+  // AI evaluation pipeline (post-OCR) for handwritten answers.
+  EVALUATIONS: "evaluations",
+  MODEL_ANSWERS: "modelAnswers",
+  EVALUATION_RUBRICS: "evaluationRubrics",
+  WEAKNESS_REPORTS: "weaknessReports",
 } as const;
