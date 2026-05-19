@@ -20,3 +20,4 @@ export * from "./revision-schedules";
 export * from "./recommendations";
 export * from "./ai-insights";
 export * from "./users";
+export * from "./mock-exams";
