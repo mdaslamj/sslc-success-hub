@@ -32,6 +32,8 @@ import { subjectMCQs, type MCQ } from "@/lib/mock-data";
 import { fetchChapters, fetchSubject } from "@/integrations/firebase/subjects";
 import type { ChapterDoc, SubjectDoc } from "@/integrations/firebase/types";
 import { toast } from "sonner";
+import { ChapterResources } from "@/components/chapter-resources";
+import { Library } from "lucide-react";
 
 export const Route = createFileRoute("/subjects/$subjectId")({
   head: ({ params }) => ({
@@ -192,6 +194,9 @@ function SubjectDetailPage() {
             <TabsTrigger value="chapters" className="rounded-full gap-1.5">
               <BookOpen className="h-3.5 w-3.5" /> Chapters
             </TabsTrigger>
+            <TabsTrigger value="resources" className="rounded-full gap-1.5">
+              <Library className="h-3.5 w-3.5" /> Resources
+            </TabsTrigger>
             <TabsTrigger value="topics" className="rounded-full gap-1.5">
               <Sparkles className="h-3.5 w-3.5" /> Topics
             </TabsTrigger>
@@ -203,6 +208,11 @@ function SubjectDetailPage() {
           {/* CHAPTERS */}
           <TabsContent value="chapters" className="mt-4">
             <ChaptersSection chapters={chapters} color={subject.color} />
+          </TabsContent>
+
+          {/* RESOURCES */}
+          <TabsContent value="resources" className="mt-4">
+            <ResourcesSection chapters={chapters} />
           </TabsContent>
 
           {/* TOPICS */}
