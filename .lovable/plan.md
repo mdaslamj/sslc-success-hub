@@ -1,120 +1,35 @@
-# Mathematics Academic Data Import & Population
+# Fix `/subjects/math/$chapterId` stuck on Loading
 
-Goal: make `/admin/import` the single place to load all Mathematics academic data into Firestore (questions, model answers, formulas, rubrics, keywords, common mistakes, PYQs/board papers). Student-facing UI stays unchanged — only admin tooling and back-end helpers are added.
+## Root cause
 
-## What already exists (reuse, don't rebuild)
+`MathChapterHub` renders the skeleton whenever `chapter` or `mastery` is missing, with no branch for "chapter doc not found" or "query errored". On the live preview:
 
-- Firestore types & collections: `mathChapters`, `mathQuestions`, `mathModelAnswers`, `mathFormulas`, `mathRubrics`, `mathKeywords`, `mathCommonMistakes` (all in `src/integrations/firebase/config.ts` + `types.ts`).
-- Per-doc upsert helpers in `src/integrations/firebase/services/math-*.ts`.
-- A fully-populated 3-chapter seed bundle in `src/integrations/firebase/syllabus/sslc-math-intelligence.ts`.
-- Admin-gated `/admin/import` route with JSON-upload pattern (syllabus + library).
+- `fetchMathChapter("m1")` returns `null` because the Math intelligence collections have never been seeded in Firestore. Result: `chapter === null` → infinite skeleton.
+- The guest viewer is not signed in, so `useCurrentUserId()` returns a local id. The analytics query is enabled, Firestore rules reject it (`mathChapterAnalytics` requires `isSignedIn()`), the query goes to `isError`, but the loading guard ignores errors.
 
-What's missing is the bulk/CSV pipeline, auto-tagging, validation, manual entry, and a draft→publish gate.
+## Changes
 
-## What to build
+### 1. `src/hooks/use-math-mastery.ts`
+- Only enable the per-user queries (analytics, evaluations, mock results) when the user is actually authenticated (use `useAuthOptional().user?.uid` directly instead of the local-fallback id). This stops `permission-denied` spam on the guest path.
+- Expose a separate `isChapterLoading` (just the chapter doc) alongside `isLoading`, and an `isChapterMissing` flag (`chapterQ.isSuccess && chapterQ.data == null`).
+- Still build `mastery` from whatever signals are available; for guests it just collapses to a zero-signal baseline instead of `null`.
 
-### 1. Bulk math import service
+### 2. `src/routes/subjects.math.$chapterId.tsx`
+- Replace the single `if (isLoading || !chapter || !mastery)` branch with three explicit states:
+  - **Loading** — only while the chapter doc is still fetching.
+  - **Not found** — when `isChapterMissing` is true: render a friendly empty state with a "Seed Math data" hint linking to `/admin/import` and a Back to Math button. (Reuse the existing `notFoundComponent` markup.)
+  - **Loaded** — render the hub. Mastery is always non-null now.
+- Keep `errorComponent` for hard failures; surface analytics errors inline in the Improve tab instead of blocking the page.
 
-New `src/integrations/firebase/services/math-import.ts`:
-
-- `MathImportPayload` — single typed envelope:
-  ```ts
-  { chapters?, questions?, modelAnswers?, formulas?, rubrics?, keywords?, commonMistakes? }
-  ```
-- `parseMathImportJson(text)` — validates with zod, returns the typed payload + `issues[]`.
-- `parseMathImportCsv(text, kind)` — CSV → rows for one kind at a time (`questions`, `formulas`, `modelAnswers`, `keywords`, `commonMistakes`). Header-driven, tolerant of missing optional columns. Pipe-separated cells for arrays (`tags`, `lastAppearedYears`, `options`).
-- `validateMathImport(payload)` — pure function returning `{ errors, warnings }`:
-  - chapter ids referenced by questions/formulas exist (either in payload or already in DB; pass an existing-id set in)
-  - MCQ has `options` + `correctOption` in range
-  - `marks` consistent with `questionType` default rubric (warning)
-  - duplicate ids inside the payload (error)
-- `applyAutoTags(payload)` — pure: sets `metadata.isRepeatedBoardQ` if `boardFrequency >= 2`, appends `tags`:
-  - `repeated-board` (freq ≥ 2)
-  - `competency` (questionType `competency`)
-  - `hots` (questionType `hots`)
-  - `important-formula` (any `requiredFormulaIds` flagged in formulas list as `category` important / `tags` include `must-know`)
-- `importMath(payload, { dryRun })` — batched writes via `writeBatch` (chunks of 400), idempotent (uses doc ids). Returns counts per collection.
-- `importMathFromSeed()` — wrapper that calls `importMath(SSLC_MATH_INTELLIGENCE)` using the existing seed bundle (the bundle is already exported; today nothing in the UI runs it).
-
-### 2. Admin UI — new "Mathematics" section in `/admin/import`
-
-Reuse existing card styling. Add one card with internal tabs (Tabs from `@/components/ui/tabs`):
-
-```text
-[ Seed ] [ JSON ] [ CSV ] [ Manual ] [ Review ]
-```
-
-- **Seed** — one-click "Import Mathematics intelligence preset" (calls `importMathFromSeed`). Shows counts on success.
-- **JSON** — paste `MathImportPayload` JSON or upload a `.json` file (`<input type="file">`). Runs `parseMathImportJson` + `validateMathImport`; renders the issues list; "Save as draft" / "Publish" buttons.
-- **CSV** — kind selector (`questions | formulas | keywords | commonMistakes | modelAnswers`) + textarea / file upload. Renders parsed row count and a preview table (first 5). Same validate → draft → publish flow.
-- **Manual** — small form for a single question (chapter, type, marks, difficulty, statement, options, correctOption, boardFrequency, source). Same validate pipeline; submits as a 1-item payload.
-- **Review** — list of pending drafts (see §3) with Approve / Reject / Edit-JSON / Delete.
-
-All tabs feed the same `validate → preview → publish` pipeline so behavior is consistent.
-
-### 3. Draft → publish workflow (no extra collection design churn)
-
-New Firestore collection `mathImportDrafts`:
-```ts
-type MathImportDraftDoc = {
-  id: string; createdAt: number; createdBy: string;
-  source: "json" | "csv" | "manual" | "seed";
-  status: "pending" | "approved" | "rejected";
-  payload: MathImportPayload;
-  counts: { questions: number; formulas: number; ... };
-  validationIssues: { level: "error" | "warning"; message: string }[];
-  notes?: string;
-};
-```
-- "Save as draft" writes here. "Publish" runs `importMath(payload)` and flips status to `approved` (or deletes — config-flag, default keep for audit).
-- Admin-only RLS via existing `admin-gate` pattern; rule: `request.auth.token.admin == true` (matches current admin gate).
-
-Drafts let the import be reviewed/edited before touching live student-facing collections — that is the only behavior change to existing data flow.
-
-### 4. Auto-tagging at import time
-
-Applied inside `importMath` (after `applyAutoTags`), so manual/JSON/CSV/seed all get consistent tags. No new tag collection — tags live on `MathQuestionDoc.tags` and `metadata.isRepeatedBoardQ`, already in schema.
-
-### 5. Wire-up with downstream systems (already in place — verify only)
-
-No new code needed; confirm imports flow through:
-- Mock exams → `mock-test-builder.ts` already pulls from `mathQuestions`.
-- Analytics & mastery → `math-chapter-analytics.ts` + `mastery-aggregator.ts` already read `mathQuestions` results.
-- Predictions → `rankChaptersByImpact()` already reads `mathChapters.boardWeight`.
-- AI evaluation → `rubric-grader.ts` already reads `mathRubrics` + `mathModelAnswers` + `mathKeywords`.
-- Chapter hub → `/subjects/math/$chapterId` already reads all of the above.
-
-So importing data via this pipeline automatically lights up exams, analytics, predictions, evaluation, and the chapter hub. No student UI changes.
-
-## Files
-
-New
-- `src/integrations/firebase/services/math-import.ts` — payload type, parsers, validator, auto-tagger, batched importer, drafts CRUD.
-- `src/components/admin/math-import-panel.tsx` — the tabbed panel mounted inside `admin.import.tsx`.
-
-Edited
-- `src/routes/admin.import.tsx` — add `<MathImportPanel />` card under the existing two cards.
-- `src/integrations/firebase/services/index.ts` — re-export the new service.
-- `firestore.rules` — add admin-only rule for `mathImportDrafts`.
-
-Untouched
-- All student-facing routes, the math chapter hub, schema for the seven math collections, syllabus/library importers.
-
-## CSV header contracts (for `parseMathImportCsv`)
-
-```text
-questions:        id,chapterId,questionType,marks,difficulty,statement,options,correctOption,requiredFormulaIds,keywordIds,rubricId,boardFrequency,lastAppearedYears,isImportant,commonMistakeIds,estimatedSolvingTime,source,tags
-formulas:         id,chapterIds,label,expression,description,category,commonUsageNotes
-modelAnswers:     questionId,chapterId,finalAnswer,totalMarks,steps   (steps = JSON inline)
-keywords:         id,term,synonyms,chapterIds,weight
-commonMistakes:   id,chapterId,title,description,triggerKeywords,correction
-```
-
-Array cells use `|` as separator. Booleans accept `true/false/1/0`. Unknown columns are ignored with a warning.
+### 3. (Optional, same file) Sign-in nudge
+- In the intelligence header, if the viewer is anonymous, show a small "Sign in to track mastery" badge instead of zeroed stats. No new routes.
 
 ## Out of scope
+- No schema or rules changes.
+- No new data — admin still seeds via the existing `/admin/import` panel.
+- No changes to other subjects or to the Math chapter list page.
 
-- No new student-facing UI.
-- No changes to non-math import flows.
-- No background Cloud Functions — all writes happen client-side under the admin gate, same as today's syllabus import.
-- No XLSX upload (CSV covers spreadsheet exports).
+## Verification
+- Visit `/subjects/math/m1` as a guest with empty Firestore → "Chapter not found" empty state appears (no infinite skeleton).
+- Seed math via `/admin/import` → page renders with real chapter + zero-signal mastery for guests.
+- Sign in → analytics query runs, mastery reflects real signals.
