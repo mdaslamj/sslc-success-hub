@@ -13,6 +13,49 @@ import { z } from "zod";
 const GATEWAY_URL = "https://ai.gateway.lovable.dev/v1/chat/completions";
 const DEFAULT_MODEL = "google/gemini-2.5-flash";
 
+/**
+ * Server-side response cache + dedup. Keyed by FNV-1a hash of the full
+ * request body. Cuts duplicate token spend and gives instant replies when
+ * the same prompt is retried within TTL. Bounded to MAX_ENTRIES (LRU-ish
+ * FIFO eviction). All in-memory; resets on cold start.
+ */
+const CACHE_TTL_MS = 10 * 60 * 1000;
+const CACHE_MAX = 200;
+type CacheEntry = { value: SemanticReasoningResult; expiresAt: number };
+const responseCache = new Map<string, CacheEntry>();
+const inflight = new Map<string, Promise<SemanticReasoningResult>>();
+
+function fnv1a(input: string): string {
+  let h = 0x811c9dc5;
+  for (let i = 0; i < input.length; i++) {
+    h ^= input.charCodeAt(i);
+    h = (h * 0x01000193) >>> 0;
+  }
+  return h.toString(16);
+}
+
+function cacheKey(parts: unknown): string {
+  return fnv1a(JSON.stringify(parts));
+}
+
+function getCached(key: string): SemanticReasoningResult | undefined {
+  const hit = responseCache.get(key);
+  if (!hit) return undefined;
+  if (Date.now() > hit.expiresAt) {
+    responseCache.delete(key);
+    return undefined;
+  }
+  return hit.value;
+}
+
+function setCached(key: string, value: SemanticReasoningResult) {
+  responseCache.set(key, { value, expiresAt: Date.now() + CACHE_TTL_MS });
+  if (responseCache.size > CACHE_MAX) {
+    const first = responseCache.keys().next().value;
+    if (first) responseCache.delete(first);
+  }
+}
+
 const MessageSchema = z.object({
   role: z.enum(["system", "user", "assistant"]),
   content: z.string().min(1).max(20000),
@@ -54,6 +97,20 @@ export const runSemanticReasoning = createServerFn({ method: "POST" })
       ...data.messages,
     ];
 
+    // Cache + dedup: hash the fully-resolved request so identical prompts
+    // share results and don't burn tokens twice.
+    const key = cacheKey({
+      model,
+      messages,
+      responseFormat: data.responseFormat,
+      temperature: data.temperature,
+    });
+    const cached = getCached(key);
+    if (cached) return cached;
+    const existing = inflight.get(key);
+    if (existing) return existing;
+
+    const run = async (): Promise<SemanticReasoningResult> => {
     let res: Response;
     try {
       res = await fetch(GATEWAY_URL, {
@@ -105,4 +162,14 @@ export const runSemanticReasoning = createServerFn({ method: "POST" })
     };
     const content = json.choices?.[0]?.message?.content ?? "";
     return { ok: true, model, content };
+    };
+
+    const promise = run()
+      .then((result) => {
+        if (result.ok) setCached(key, result);
+        return result;
+      })
+      .finally(() => inflight.delete(key));
+    inflight.set(key, promise);
+    return promise;
   });
