@@ -43,8 +43,6 @@ export function reasoningQualityFromEvaluations(
         return 60;
       case "incorrect":
         return 25;
-      case "off_topic":
-        return 15;
       default:
         return 50;
     }
@@ -87,12 +85,17 @@ export function weaknessStrengthScore(
   profiles: WeaknessProfileDoc[],
 ): number {
   if (!profiles.length) return 70;
-  const sev = profiles.reduce(
-    (acc, p) => acc + clamp01(p.overallSeverity ?? 0.4),
-    0,
-  );
-  const avg = sev / profiles.length;
-  return clamp(100 - avg * 100);
+  // Use confidenceScore (0..100, higher = stronger) directly; fall back
+  // to inverted weaknessLayer average when missing.
+  const total = profiles.reduce((acc, p) => {
+    if (typeof p.confidenceScore === "number") return acc + p.confidenceScore;
+    const layers = Object.values(p.weaknessLayers ?? {});
+    const layerAvg = layers.length
+      ? layers.reduce((a, b) => a + b, 0) / layers.length
+      : 40;
+    return acc + clamp(100 - layerAvg);
+  }, 0);
+  return clamp(total / profiles.length);
 }
 
 export type ReadinessInputs = {
@@ -139,6 +142,10 @@ export function computeBoardReadiness(
   ).map(([chapterId, weightage]) => {
     const mem = args.memory.find((m) => m.chapterId === chapterId);
     const wk = args.weaknesses.find((w) => w.chapterId === chapterId);
+    const wkLayers = wk ? Object.values(wk.weaknessLayers ?? {}) : [];
+    const wkSeverity = wkLayers.length
+      ? clamp01(wkLayers.reduce((a, b) => a + b, 0) / wkLayers.length / 100)
+      : 0.4;
     const evalsForChapter = args.semanticEvaluations.filter(
       (e) => e.chapterId === chapterId,
     );
@@ -146,7 +153,7 @@ export function computeBoardReadiness(
       chapterId,
       retentionScore: clamp(mem?.retentionScore ?? 60),
       reasoningQuality: reasoningQualityFromEvaluations(evalsForChapter),
-      weaknessSeverity: clamp01(wk?.overallSeverity ?? 0.4),
+      weaknessSeverity: wkSeverity,
       recentPerformance,
       marksAtRisk: mem?.marksAtRisk ?? 0,
       weightage,
