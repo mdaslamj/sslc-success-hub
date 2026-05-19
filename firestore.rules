@@ -122,13 +122,30 @@ service cloud.firestore {
         && request.resource.data.userId == request.auth.uid;
     }
 
-    // Unlocked achievements. Doc id convention: `${userId}_${code}`.
+    // Public achievement catalog (definition docs: title, description, xp).
+    // Read by anyone (used to render locked badges before sign-in too);
+    // write only by admins via the Firebase Admin SDK.
     match /achievements/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // Per-user unlocked achievements. Doc id: `${userId}_${code}`.
+    match /userAchievements/{docId} {
       allow read: if isSignedIn() && resource.data.userId == request.auth.uid;
       allow create: if isSignedIn() && request.resource.data.userId == request.auth.uid;
       allow update, delete: if isSignedIn()
         && resource.data.userId == request.auth.uid
         && request.resource.data.userId == request.auth.uid;
+    }
+
+    // Per-user streak ledger. Doc id == userId.
+    match /streaks/{uid} {
+      allow read: if isOwner(uid);
+      allow create: if isOwner(uid) && request.resource.data.userId == uid;
+      allow update, delete: if isOwner(uid)
+        && resource.data.userId == uid
+        && request.resource.data.userId == uid;
     }
 
     // Daily analytics rollup. Doc id convention: `${userId}_${dayKey}`.
