@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Brain, TrendingUp, Target, ArrowLeft } from "lucide-react";
+import { Brain, TrendingUp, Target, ArrowLeft, ArrowRight, Sigma } from "lucide-react";
 import { DashboardLayout } from "@/components/dashboard-layout";
 import { StatCard } from "@/components/widgets/stat-card";
 import { Button } from "@/components/ui/button";
@@ -15,6 +15,11 @@ import {
   targetPercentage,
   gradeFor,
 } from "@/lib/mock-data";
+import { useAllChapterMastery } from "@/hooks/use-math-mastery";
+import { rankChaptersByImpact } from "@/lib/math-intelligence/mastery-aggregator";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { tierFor } from "@/lib/math-intelligence/mastery-tiers";
 
 export const Route = createFileRoute("/predictions")({
   head: () => ({
@@ -32,6 +37,9 @@ export const Route = createFileRoute("/predictions")({
 
 function PredictionsPage() {
   const gap = targetPercentage - predictedPercentage;
+  const { chapters, masteryById, isLoading } = useAllChapterMastery();
+  const mathRanking = rankChaptersByImpact(chapters, masteryById).slice(0, 6);
+  const totalAtRisk = mathRanking.reduce((s, r) => s + r.marksAtRisk, 0);
   return (
     <DashboardLayout title="AI Prediction">
       <div className="mx-auto max-w-7xl space-y-6">
@@ -89,6 +97,91 @@ function PredictionsPage() {
 
         <section>
           <RecommendationsWidget limit={8} />
+        </section>
+
+        <section className="rounded-2xl border border-border/60 bg-card p-6 shadow-card">
+          <div className="flex items-center justify-between gap-3">
+            <div>
+              <h3 className="font-display text-lg font-semibold flex items-center gap-2">
+                <Sigma className="h-4 w-4 text-brand" /> Math focus ranking
+              </h3>
+              <p className="text-xs text-muted-foreground">
+                Chapters with the most predicted marks still at risk — driven
+                by your real quiz, mock-exam and OCR evaluation data.
+              </p>
+            </div>
+            <div className="text-right">
+              <div className="text-[10px] uppercase tracking-widest text-muted-foreground">
+                Marks at risk
+              </div>
+              <div className="font-display text-xl font-bold">
+                {Math.round(totalAtRisk)}
+              </div>
+            </div>
+          </div>
+          {isLoading && mathRanking.length === 0 ? (
+            <p className="mt-4 text-sm text-muted-foreground">
+              Loading chapter intelligence…
+            </p>
+          ) : mathRanking.length === 0 ? (
+            <p className="mt-4 text-sm text-muted-foreground">
+              No math chapters indexed yet. Seed the math syllabus from{" "}
+              <Link to="/admin/import" className="underline">
+                /admin/import
+              </Link>
+              .
+            </p>
+          ) : (
+            <ul className="mt-4 space-y-2">
+              {mathRanking.map(({ chapter, mastery, marksAtRisk }) => {
+                const tier = tierFor(mastery.mastery);
+                return (
+                  <li
+                    key={chapter.id}
+                    className="rounded-xl border border-border/60 bg-background/60 p-3"
+                  >
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="min-w-0">
+                        <div className="flex items-center gap-2 text-[11px] text-muted-foreground">
+                          Ch {chapter.chapterNumber}
+                          <Badge
+                            variant="outline"
+                            className={`rounded-full border-transparent ${tier.bg} ${tier.tone}`}
+                          >
+                            {tier.label}
+                          </Badge>
+                          <span>· {chapter.boardWeight}% board weight</span>
+                        </div>
+                        <div className="truncate font-display font-semibold">
+                          {chapter.title}
+                        </div>
+                        <div className="mt-1 text-[11px] text-muted-foreground">
+                          Mastery {Math.round(mastery.mastery)}% ·{" "}
+                          {mastery.predictedMarks}m predicted ·{" "}
+                          <span className="text-destructive">
+                            {marksAtRisk}m at risk
+                          </span>
+                        </div>
+                      </div>
+                      <Button
+                        asChild
+                        size="sm"
+                        variant="outline"
+                        className="h-7 shrink-0 rounded-full text-[11px]"
+                      >
+                        <Link
+                          to="/subjects/math/$chapterId"
+                          params={{ chapterId: chapter.id }}
+                        >
+                          Open <ArrowRight className="ml-0.5 h-3 w-3" />
+                        </Link>
+                      </Button>
+                    </div>
+                  </li>
+                );
+              })}
+            </ul>
+          )}
         </section>
 
         <section className="rounded-2xl border border-border/60 bg-card p-6 shadow-card">
