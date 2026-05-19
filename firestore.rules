@@ -313,6 +313,36 @@ service cloud.firestore {
         && request.resource.data.userId == request.auth.uid;
     }
 
+    // AI evaluation of handwritten answers — owner-gated by `userId` field.
+    // Doc id == attemptId for O(1) lookup from the review screen.
+    match /evaluations/{docId} {
+      allow read: if isSignedIn() && resource.data.userId == request.auth.uid;
+      allow create: if isSignedIn() && request.resource.data.userId == request.auth.uid;
+      allow update, delete: if isSignedIn()
+        && resource.data.userId == request.auth.uid
+        && request.resource.data.userId == request.auth.uid;
+    }
+
+    // Per-user rolling weakness rollup. Doc id: `${userId}_${subjectId}[_${chapterId}]`.
+    match /weaknessReports/{docId} {
+      allow read: if isSignedIn() && resource.data.userId == request.auth.uid;
+      allow create: if isSignedIn() && request.resource.data.userId == request.auth.uid;
+      allow update, delete: if isSignedIn()
+        && resource.data.userId == request.auth.uid
+        && request.resource.data.userId == request.auth.uid;
+    }
+
+    // Curated reference data — public read, admin-only write.
+    match /modelAnswers/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /evaluationRubrics/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
     // Default deny.
     match /{document=**} {
       allow read, write: if false;

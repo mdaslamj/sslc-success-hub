@@ -24,3 +24,4 @@ export * from "./mock-exams";
 export * from "./syllabus-content";
 export * from "./library-resources";
 export * from "./answer-uploads";
+export * from "./evaluations";

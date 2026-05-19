@@ -34,6 +34,8 @@ import type {
   AnswerUploadDoc,
 } from "@/integrations/firebase/types";
 import { cn } from "@/lib/utils";
+import { EvaluationPanel } from "@/components/answer-upload/evaluation-panel";
+import { useEvaluation } from "@/hooks/use-evaluation";
 
 export const Route = createFileRoute("/answer-uploads/$attemptId")({
   head: () => ({
@@ -141,6 +143,16 @@ function ReviewPage() {
     [images],
   );
 
+  const readyForEvaluation =
+    images.length > 0 && approvedCount === images.length;
+  const {
+    evaluation,
+    loading: evalLoading,
+    running: evalRunning,
+    error: evalError,
+    evaluate,
+  } = useEvaluation(attemptId);
+
   if (loading) {
     return (
       <DashboardLayout>
@@ -210,6 +222,15 @@ function ReviewPage() {
             />
           </div>
         )}
+
+        <EvaluationPanel
+          evaluation={evaluation}
+          loading={evalLoading}
+          running={evalRunning}
+          error={evalError}
+          ready={readyForEvaluation}
+          onEvaluate={evaluate}
+        />
       </div>
     </DashboardLayout>
   );
