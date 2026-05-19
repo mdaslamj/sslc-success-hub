@@ -17,7 +17,6 @@ import {
 } from "@/lib/mock-data";
 import { useAllChapterMastery } from "@/hooks/use-math-mastery";
 import { rankChaptersByImpact } from "@/lib/math-intelligence/mastery-aggregator";
-import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { tierFor } from "@/lib/math-intelligence/mastery-tiers";
 
