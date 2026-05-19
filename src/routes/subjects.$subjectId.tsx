@@ -32,6 +32,8 @@ import { subjectMCQs, type MCQ } from "@/lib/mock-data";
 import { fetchChapters, fetchSubject } from "@/integrations/firebase/subjects";
 import type { ChapterDoc, SubjectDoc } from "@/integrations/firebase/types";
 import { toast } from "sonner";
+import { ChapterResources } from "@/components/chapter-resources";
+import { Library } from "lucide-react";
 
 export const Route = createFileRoute("/subjects/$subjectId")({
   head: ({ params }) => ({
@@ -192,6 +194,9 @@ function SubjectDetailPage() {
             <TabsTrigger value="chapters" className="rounded-full gap-1.5">
               <BookOpen className="h-3.5 w-3.5" /> Chapters
             </TabsTrigger>
+            <TabsTrigger value="resources" className="rounded-full gap-1.5">
+              <Library className="h-3.5 w-3.5" /> Resources
+            </TabsTrigger>
             <TabsTrigger value="topics" className="rounded-full gap-1.5">
               <Sparkles className="h-3.5 w-3.5" /> Topics
             </TabsTrigger>
@@ -203,6 +208,11 @@ function SubjectDetailPage() {
           {/* CHAPTERS */}
           <TabsContent value="chapters" className="mt-4">
             <ChaptersSection chapters={chapters} color={subject.color} />
+          </TabsContent>
+
+          {/* RESOURCES */}
+          <TabsContent value="resources" className="mt-4">
+            <ResourcesSection chapters={chapters} />
           </TabsContent>
 
           {/* TOPICS */}
@@ -235,6 +245,58 @@ function HeaderStat({ label, value }: { label: string; value: string }) {
     <div className="rounded-2xl bg-white/15 p-2 text-center backdrop-blur">
       <div className="text-[10px] uppercase tracking-widest text-white/70">{label}</div>
       <div className="font-display text-lg font-bold">{value}</div>
+    </div>
+  );
+}
+
+/* ---------------- Resources ---------------- */
+
+function ResourcesSection({ chapters }: { chapters: ChapterDoc[] }) {
+  const [selectedId, setSelectedId] = useState<string | null>(
+    chapters[0]?.id ?? null,
+  );
+
+  if (chapters.length === 0) {
+    return (
+      <div className="rounded-2xl border border-dashed border-border/60 p-10 text-center text-sm text-muted-foreground">
+        No chapters available.
+      </div>
+    );
+  }
+
+  const selected = chapters.find((c) => c.id === selectedId) ?? chapters[0];
+
+  return (
+    <div className="grid gap-4 md:grid-cols-[220px_1fr]">
+      {/* Chapter picker */}
+      <div className="rounded-2xl border border-border/60 bg-card p-2 md:max-h-[640px] md:overflow-y-auto">
+        <ul className="space-y-1">
+          {chapters.map((c, i) => {
+            const active = selected.id === c.id;
+            return (
+              <li key={c.id}>
+                <button
+                  onClick={() => setSelectedId(c.id)}
+                  className={`flex w-full items-center gap-2 rounded-xl px-3 py-2 text-left text-sm transition ${
+                    active
+                      ? "bg-brand/10 text-foreground"
+                      : "hover:bg-muted/50 text-muted-foreground"
+                  }`}
+                >
+                  <span className="shrink-0 font-mono text-[11px] text-muted-foreground">
+                    {String(c.chapterNumber ?? i + 1).padStart(2, "0")}
+                  </span>
+                  <span className="min-w-0 truncate">{c.title}</span>
+                </button>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+
+      <div className="min-w-0">
+        <ChapterResources chapter={selected} />
+      </div>
     </div>
   );
 }

@@ -45,17 +45,122 @@ export type ResourceDoc = {
   id: string;
   subjectId: string;
   chapterId: string;
-  kind: "textbook" | "notes" | "worksheet" | "video" | "other";
+  kind: ResourceKind;
   title: string;
   url: string;
   order?: number;
 };
+
+/**
+ * Canonical resource kinds. Drives icons, grouping in the ChapterResources
+ * UI, and downstream filtering (e.g. AI tutor "find me PYQs for X").
+ */
+export type ResourceKind =
+  | "textbook"
+  | "notes"
+  | "worksheet"
+  | "video"
+  | "pyq"        // previous year question paper
+  | "revision"   // revision notes / cheat-sheets
+  | "kannada"    // Kannada-medium explanation notes
+  | "other";
 
 export type UserDoc = {
   uid: string;
   displayName?: string;
   email?: string;
   createdAt: number;
+};
+
+// ---------------------------------------------------------------------------
+// Structured academic content (hybrid metadata + external links)
+// ---------------------------------------------------------------------------
+
+/**
+ * Per-chapter syllabus content document. Lightweight metadata only — no
+ * embedded PDFs. Doc id == chapterId so reads are O(1) and writes are
+ * idempotent. Public-read, admin-write.
+ */
+export type SyllabusContentDoc = {
+  id: string; // == chapterId
+  subjectId: string;
+  chapterId: string;
+  chapterNumber: number;
+  chapterName: string;
+  chapterNameKn?: string;
+  /** Plain-text or markdown summary. Keep <= ~2KB to stay cheap. */
+  summary?: string;
+  summaryKn?: string;
+  importantTopics: string[];
+  formulas: { label: string; expression: string; description?: string }[];
+  learningObjectives: string[];
+  /** Free-form board/standard, e.g. "Karnataka SSLC". */
+  board?: string;
+  updatedAt: number;
+};
+
+/**
+ * One link/resource attached to a chapter. Flat collection keyed by
+ * deterministic id `${chapterId}__${kind}__${idx}`. Public-read,
+ * admin-write. Mirrors `ResourceDoc` but lives in its own collection so
+ * the legacy `resources` collection can stay untouched.
+ */
+export type ChapterResourceDoc = {
+  id: string;
+  subjectId: string;
+  chapterId: string;
+  kind: ResourceKind;
+  title: string;
+  /** External URL (preferred). */
+  url: string;
+  /** Optional language tag, e.g. "en", "kn". */
+  language?: string;
+  /** Optional storage path when the file is uploaded (rare; custom notes). */
+  storagePath?: string;
+  /** Free-form tags so AI tutor can filter (e.g. ["pyq","2024"]). */
+  tags?: string[];
+  order?: number;
+  createdAt: number;
+};
+
+/**
+ * Official textbook link per chapter. Separate collection so the UI can
+ * promote the canonical book without scanning the full resource list.
+ * Doc id == chapterId.
+ */
+export type TextbookLinkDoc = {
+  id: string; // == chapterId
+  subjectId: string;
+  chapterId: string;
+  /** "NCERT", "KTBS" (Karnataka Textbook Society), etc. */
+  publisher?: string;
+  edition?: string;
+  language?: string;
+  title: string;
+  url: string;
+  pageStart?: number;
+  pageEnd?: number;
+  updatedAt: number;
+};
+
+/**
+ * Curated chapter notes (markdown body OR external URL). Doc id == chapterId.
+ * Public-read for the official curated copy. Per-user personal notes still
+ * live in the existing `notes` collection (owner-gated).
+ */
+export type ChapterNoteDoc = {
+  id: string; // == chapterId
+  subjectId: string;
+  chapterId: string;
+  title: string;
+  /** Inline markdown body for short notes. */
+  body?: string;
+  /** External URL (PDF / web page) for longer notes. */
+  url?: string;
+  language?: string;
+  /** Optional storage path if uploaded via admin. */
+  storagePath?: string;
+  updatedAt: number;
 };
 
 export type ProgressDoc = {

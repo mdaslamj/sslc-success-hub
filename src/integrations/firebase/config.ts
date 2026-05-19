@@ -60,4 +60,9 @@ export const COLLECTIONS = {
   MOCK_EXAMS: "mockExams",
   EXAM_ATTEMPTS: "examAttempts",
   EXAM_RESULTS: "examResults",
+  // Structured academic content (scalable hybrid: metadata + external links).
+  SYLLABUS_CONTENT: "syllabusContent",
+  CHAPTER_RESOURCES: "chapterResources",
+  TEXTBOOK_LINKS: "textbookLinks",
+  CHAPTER_NOTES: "chapterNotes",
 } as const;
