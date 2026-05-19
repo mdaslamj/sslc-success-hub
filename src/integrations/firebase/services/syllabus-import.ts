@@ -10,6 +10,14 @@ import {
 } from "firebase/firestore";
 import { COLLECTIONS, db } from "../config";
 import type { SyllabusImportPayload, SyllabusChapterInput } from "../syllabus/types";
+import type {
+  ChapterNoteDoc,
+  ChapterResourceDoc,
+  ResourceKind,
+  SyllabusContentDoc,
+  TextbookLinkDoc,
+} from "../types";
+import { bulkUpsertSyllabus } from "./syllabus-content";
 
 const META_COLLECTION = "_meta";
 const SYLLABUS_DOC = "syllabus";
@@ -32,6 +40,13 @@ export async function importSyllabus(
   // Track ids we are about to write so we can prune anything stale afterwards.
   const keepChapterIdsBySubject = new Map<string, Set<string>>();
   const keepResourceIdsBySubject = new Map<string, Set<string>>();
+
+  // Structured-content payload — written separately into the new collections.
+  const contentDocs: SyllabusContentDoc[] = [];
+  const chapterResourceDocs: ChapterResourceDoc[] = [];
+  const textbookLinkDocs: TextbookLinkDoc[] = [];
+  const chapterNoteDocs: ChapterNoteDoc[] = [];
+  const now = Date.now();
 
   payload.subjects.forEach((s, subjectOrder) => {
     const keepCh = new Set<string>();
@@ -91,6 +106,87 @@ export async function importSyllabus(
       );
       chapterCount++;
 
+      // ---- Structured-content writes (new architecture) ----------------
+      contentDocs.push({
+        id: chId,
+        subjectId: s.id,
+        chapterId: chId,
+        chapterNumber: c.chapterNumber,
+        chapterName: c.chapterName,
+        chapterNameKn: c.chapterNameKn,
+        summary: c.summary,
+        summaryKn: c.summaryKn,
+        importantTopics: c.importantTopics ?? [],
+        formulas: c.formulas ?? [],
+        learningObjectives: c.learningObjectives ?? [],
+        board: payload.board,
+        updatedAt: now,
+      });
+
+      if (c.textbookUrl) {
+        textbookLinkDocs.push({
+          id: chId,
+          subjectId: s.id,
+          chapterId: chId,
+          publisher: c.textbookPublisher,
+          edition: c.textbookEdition,
+          language: "en",
+          title: `${c.chapterName} — Textbook`,
+          url: c.textbookUrl,
+          updatedAt: now,
+        });
+      }
+
+      if (c.notesUrl) {
+        chapterNoteDocs.push({
+          id: chId,
+          subjectId: s.id,
+          chapterId: chId,
+          title: `${c.chapterName} — Notes`,
+          url: c.notesUrl,
+          language: "en",
+          updatedAt: now,
+        });
+      }
+
+      // Build the per-resource flat collection (chapterResources).
+      const pushResource = (
+        kind: ResourceKind,
+        title: string,
+        url: string,
+        idx: number,
+        language?: string,
+        tags?: string[],
+      ) => {
+        const rid = `${chId}__${kind}__${idx}`;
+        chapterResourceDocs.push({
+          id: rid,
+          subjectId: s.id,
+          chapterId: chId,
+          kind,
+          title,
+          url,
+          language,
+          tags,
+          order: idx,
+          createdAt: now,
+        });
+      };
+      if (c.textbookUrl) pushResource("textbook", "Official textbook", c.textbookUrl, 0, "en");
+      if (c.notesUrl) pushResource("notes", "Notes", c.notesUrl, 0, "en");
+      if (c.worksheetUrl) pushResource("worksheet", "Worksheet", c.worksheetUrl, 0, "en");
+      (c.videoUrls ?? []).forEach((url, vi) =>
+        pushResource("video", `Video ${vi + 1}`, url, vi),
+      );
+      (c.pyqUrls ?? []).forEach((url, pi) =>
+        pushResource("pyq", `Previous year paper ${pi + 1}`, url, pi, "en", ["pyq"]),
+      );
+      (c.revisionUrls ?? []).forEach((url, ri) =>
+        pushResource("revision", `Revision notes ${ri + 1}`, url, ri),
+      );
+      if (c.kannadaNotesUrl)
+        pushResource("kannada", "Kannada explanation", c.kannadaNotesUrl, 0, "kn");
+
       // Materialise resources collection from URL fields for queryability.
       const resources: { kind: string; title: string; url: string }[] = [];
       if (c.textbookUrl) resources.push({ kind: "textbook", title: "Textbook", url: c.textbookUrl });
@@ -117,6 +213,21 @@ export async function importSyllabus(
   });
 
   await batch.commit();
+
+  // Persist the structured-content collections in their own batched writes.
+  if (
+    contentDocs.length ||
+    chapterResourceDocs.length ||
+    textbookLinkDocs.length ||
+    chapterNoteDocs.length
+  ) {
+    await bulkUpsertSyllabus({
+      content: contentDocs,
+      resources: chapterResourceDocs,
+      textbooks: textbookLinkDocs,
+      notes: chapterNoteDocs,
+    });
+  }
 
   // Prune stale chapter & resource docs left over from previous imports
   // (e.g. removed/renumbered chapters). Subjects themselves are not pruned
