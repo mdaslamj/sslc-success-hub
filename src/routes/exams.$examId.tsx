@@ -35,6 +35,7 @@ import { readCachedExam } from "@/lib/mock-exam-store";
 import { SEED_MOCK_EXAMS } from "@/lib/mock-exam-seed";
 import { fetchMockExam } from "@/integrations/firebase/services/mock-exams";
 import type { MockExamDoc } from "@/integrations/firebase/types";
+import { UploadAnswerButton } from "@/components/answer-upload/upload-answer-button";
 
 export const Route = createFileRoute("/exams/$examId")({
   head: ({ params }) => ({
@@ -288,6 +289,18 @@ function Player({ exam }: { exam: MockExamDoc }) {
           <Link to="/exams" className="text-xs text-muted-foreground hover:text-foreground">
             Exit exam (progress saved)
           </Link>
+        </div>
+
+        <div className="mt-3 flex justify-center">
+          <UploadAnswerButton
+            context={{
+              type: "mock",
+              refId: exam.id,
+              subjectId: exam.subjectId,
+              label: exam.title,
+            }}
+            label="Upload handwritten answer sheet"
+          />
         </div>
       </div>
 
