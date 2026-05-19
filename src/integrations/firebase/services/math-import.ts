@@ -436,6 +436,16 @@ export async function importMathFromSeed(): Promise<MathImportCounts> {
   return importMath(SSLC_MATH_INTELLIGENCE_SEED as MathImportPayload);
 }
 
+/**
+ * Named entry point for the empty-state "Seed Math data" button.
+ * Writes the bundled SSLC Math intelligence seed (chapters, formulas,
+ * questions, model answers, rubrics, keywords, common mistakes) into
+ * Firestore. Admin-only — enforced by Firestore Security Rules.
+ */
+export async function seedMathData(): Promise<MathImportCounts> {
+  return importMathFromSeed();
+}
+
 // ---------------------------------------------------------------------------
 // Drafts
 // ---------------------------------------------------------------------------
