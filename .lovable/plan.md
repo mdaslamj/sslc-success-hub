@@ -1,77 +1,145 @@
-## Handwritten Answer Upload System
+## Mathematics Intelligence System — Project Aura
 
-Build a scalable answer-upload feature using Firebase Storage + Firestore, integrated into quizzes, mock exams, and chapter practice without redesigning the app.
+Turn Mathematics into the first fully intelligent subject by building a chapter-wise academic database with rich metadata, rubrics, and analytics hooks. Backend-first; no redesign of existing pages.
 
-### Data Model (Firestore)
+### 1. Firestore collections (new)
 
-**`answerUploads`** — one doc per uploaded image
-- `id`, `userId`, `attemptId` (FK → answerAttempts), `questionId` (optional)
-- `storagePath`, `downloadUrl`, `thumbnailUrl?`
-- `width`, `height`, `sizeBytes`, `mimeType`
-- `preprocessing`: `{ rotation, brightness, contrast, cropped }`
-- `ocr`: `{ status: "pending"|"done"|"skipped", text?, confidence? }` (future)
-- `evaluation`: `{ status, score?, rubric?, feedback? }` (future)
-- `createdAt`
+Added to `COLLECTIONS` in `src/integrations/firebase/config.ts`:
 
-**`answerAttempts`** — one doc per submission session
-- `id`, `userId`, `context: { type: "quiz"|"mock"|"chapter", refId, subjectId?, chapterId? }`
-- `imageIds: string[]`, `notes?`
-- `status: "draft"|"submitted"|"evaluated"`
-- `aiEvaluation?: { totalScore, maxScore, breakdown[] }` (future)
-- `createdAt`, `submittedAt?`
+- `mathChapters` — chapter-level academic profile (formulas, key concepts, board weight, mastery thresholds).
+- `mathQuestions` — question bank with full metadata.
+- `mathModelAnswers` — stepwise model solutions linked to questions.
+- `mathFormulas` — central formula registry (cross-chapter searchable).
+- `mathRubrics` — per-question or per-question-type rubrics for evaluation.
+- `mathKeywords` — keyword/concept tags powering OCR + AI grading matches.
+- `mathChapterAnalytics` — per-user rollups: mastery, formula accuracy, speed, weak topics.
+- `mathCommonMistakes` — catalog of typical student errors per chapter/concept.
 
-### Firebase Storage
+All owner-scoped where user-specific; reference data (`mathChapters`, `mathQuestions`, `mathModelAnswers`, `mathFormulas`, `mathRubrics`, `mathKeywords`, `mathCommonMistakes`) is read-only for authenticated users, writable only by admins via `firestore.rules`.
 
-- Bucket path: `answer-uploads/{userId}/{attemptId}/{imageId}.jpg`
-- Storage rules: only owner can read/write own folder
+### 2. Type model (`src/integrations/firebase/types.ts`)
 
-### Components
+```text
+MathChapterDoc
+  ├─ id, subjectId='math', chapterNumber, title, titleKn
+  ├─ keyConcepts: string[]
+  ├─ formulaIds: string[]
+  ├─ boardWeight: number          // % of board marks historically
+  ├─ difficultyMix: { easy, medium, hard, hots }
+  ├─ estimatedStudyTime, masteryThreshold
+  └─ prerequisites: chapterId[]
 
-- `src/components/answer-upload/AnswerUploadDialog.tsx` — main modal (camera + gallery, multi-image)
-- `src/components/answer-upload/ImageEditor.tsx` — crop/rotate/brightness using canvas (no heavy deps)
-- `src/components/answer-upload/UploadButton.tsx` — reusable trigger button
-- `src/components/answer-upload/AnswerUploadHistory.tsx` — list past attempts
+MathQuestionDoc
+  ├─ chapterId, questionType: 'mcq'|'1mark'|'2mark'|'3mark'|'5mark'|'hots'|'competency'
+  ├─ marks, difficulty: 'easy'|'medium'|'hard'
+  ├─ statement, statementKn, options? (mcq), correctOption?
+  ├─ requiredFormulaIds: string[]
+  ├─ keywordIds: string[]
+  ├─ rubricId
+  ├─ metadata:
+  │    ├─ boardFrequency: number        // times appeared in board exams
+  │    ├─ isRepeatedBoardQ: boolean
+  │    ├─ lastAppearedYears: number[]
+  │    ├─ isImportant: boolean
+  │    ├─ commonMistakeIds: string[]
+  │    └─ estimatedSolvingTime: seconds
+  └─ source, tags
 
-### Services / Hooks
+MathModelAnswerDoc
+  ├─ questionId
+  ├─ steps: [{ order, text, formulaId?, marks }]
+  ├─ finalAnswer, alternativeMethods?
+  └─ totalMarks
 
-- `src/integrations/firebase/services/answer-uploads.ts` — CRUD for both collections + Storage upload
-- `src/hooks/use-answer-upload.ts` — upload state, progress, preprocessing pipeline
-- `src/hooks/use-answer-history.ts` — fetch user's past attempts
+MathFormulaDoc
+  ├─ chapterIds[], label, expression (LaTeX), description
+  ├─ category: 'algebra'|'geometry'|'trig'|'mensuration'|...
+  └─ commonUsageNotes
 
-### Integration Points (non-invasive)
+MathRubricDoc
+  ├─ questionType, totalMarks
+  └─ criteria: [{ label, marks, keywords[], required: bool }]
+       // e.g. formula write-up, substitution, calculation, units, final answer
 
-- Add `<UploadButton context={{type:"quiz", refId}} />` in:
-  - `src/routes/quiz.$quizId.tsx` (after submit screen)
-  - `src/routes/exams.$examId.tsx` (per-question and final)
-  - `src/routes/subjects.$subjectId.tsx` (chapter practice block)
-- New route `src/routes/answer-uploads.tsx` — full history page
-- Sidebar link "My Answers"
+MathKeywordDoc { term, synonyms[], chapterIds[], weight }
 
-### Image Preprocessing
+MathCommonMistakeDoc
+  ├─ chapterId, title, description
+  ├─ triggerKeywords[]   // OCR text patterns that signal this mistake
+  └─ correction
 
-Use HTML5 Canvas (no external libs):
-- Rotate: 90°/180°/270° via canvas transform
-- Crop: draggable rect overlay, output cropped canvas
-- Brightness/contrast: per-pixel filter via `ctx.filter = "brightness() contrast()"`
-- Auto-enhance: combined brightness +10%, contrast +15%
+MathChapterAnalyticsDoc (per user)
+  ├─ userId, chapterId
+  ├─ mastery: 0..100
+  ├─ formulaAccuracy: { [formulaId]: { attempts, correct } }
+  ├─ speedIndex: avgSolveTime / estimatedSolvingTime
+  ├─ weakConcepts: string[], strongConcepts: string[]
+  ├─ questionTypeStats: { [type]: { attempts, avgScore } }
+  └─ lastUpdated
+```
 
-Re-encode as JPEG quality 0.85 before upload to keep size small.
+### 3. Service layer
 
-### Future-Ready Architecture
+New files under `src/integrations/firebase/services/`:
 
-- `ocr` and `evaluation` fields on `answerUploads` start as `{status:"pending"}`
-- `aiEvaluation` on `answerAttempts` left null
-- Service layer exposes `triggerOcr(uploadId)` and `triggerEvaluation(attemptId)` stubs that just mark status — wired later to Lovable AI Gateway with vision-capable models (gemini-2.5-pro / gpt-5)
-- Rubric schema reserved: `{ criterion, weight, score, comment }[]`
+- `math-chapters.ts` — fetch chapter profile, list chapters with board weight.
+- `math-questions.ts` — query by chapter / type / difficulty / boardFrequency; helpers `pickAdaptive()`, `pickMockExamSet()`, `pickRevisionSet()`.
+- `math-model-answers.ts` — fetch stepwise answers, used by review screen + evaluator.
+- `math-formulas.ts` — search, list by chapter, record usage.
+- `math-rubrics.ts` — fetch rubric for question/type.
+- `math-keywords.ts` — fetch + match against OCR text.
+- `math-common-mistakes.ts` — detect mistakes from extracted text.
+- `math-chapter-analytics.ts` — read + incremental update (mastery, formula accuracy, speed).
 
-### Firestore Rules
+Exported from `src/integrations/firebase/services/index.ts`.
 
-Add to `firestore.rules`:
-- `answerUploads/{id}` and `answerAttempts/{id}`: read/write only if `request.auth.uid == resource.data.userId`
+### 4. Reusable intelligence layer (`src/lib/math-intelligence/`)
 
-### Out of scope (this round)
+Pure functions, no UI, reusable by AI tutor, OCR evaluator, mock test, revision:
 
-- Actual OCR/AI evaluation calls
-- PDF export
-- Teacher/parent review UI
-- No redesign of existing screens — additions only
+- `question-selector.ts` — adaptive selection by weak chapter, mastery, due-for-revision.
+- `mock-test-builder.ts` — board-style blueprint (n × 1-mark + n × 2-mark + … + HOTS) honoring chapter weights.
+- `revision-recommender.ts` — surface weak chapters + repeated-board questions + due formulas.
+- `formula-tracker.ts` — update `formulaAccuracy` after each attempt.
+- `speed-analyzer.ts` — compute `speedIndex`, flag slow chapters.
+- `mistake-detector.ts` — match OCR/extracted text against `mathCommonMistakes`.
+- `rubric-grader.ts` — score extracted text against a rubric (keyword + step coverage); plugs into existing `evaluations` pipeline as a Math-specialized evaluator.
+- `tutor-context.ts` — assemble per-question context (chapter, formulas, rubric, mistakes, model answer) for the future AI tutor prompt.
+
+### 5. Hooks (`src/hooks/`)
+
+Thin React Query wrappers so feature pages can adopt without redesign:
+
+- `use-math-chapter.ts`, `use-math-questions.ts`, `use-math-analytics.ts`, `use-math-formulas.ts`.
+
+### 6. Seed data (`src/integrations/firebase/syllabus/sslc-math-intelligence.ts`)
+
+Extend existing `sslc-math.ts` with structured intelligence seeds for Karnataka SSLC Math: 2–3 chapters fully populated (Arithmetic Progressions, Triangles, Quadratic Equations) covering all question types, formulas, rubrics, common mistakes, board frequency. Importer reused on `/admin/import` (no new page).
+
+### 7. Integration points (existing features — minimal, additive)
+
+- `services/evaluations.ts`: when `subjectId === 'math'`, call `rubric-grader` + `mistake-detector` instead of generic Jaccard. Stores extra fields (`formulaAccuracy`, `detectedMistakes`) in `EvaluationDoc.metadata`.
+- `services/answer-uploads.ts`: pass detected keywords/formulas to analytics updater.
+- `recommendation-engine.ts`: when subject is math, defer to `revision-recommender`.
+- `mock-exam-engine.ts`: when subject is math, build via `mock-test-builder`.
+- `quiz-engine.ts`: optional `pickAdaptive()` path for math quizzes.
+
+No UI/page redesign — existing pages keep current layout; only the underlying data source becomes richer.
+
+### 8. Security (`firestore.rules`)
+
+- Reference math collections: `allow read: if request.auth != null; allow write: if isAdmin();`
+- `mathChapterAnalytics/{userId}/...`: owner-only read/write.
+
+### 9. Out of scope (future, architecture-ready)
+
+- Actual LLM tutor call (context assembler exists, prompt + Gemini call later).
+- WebGL/handwriting analysis.
+- Parent / teacher dashboard reads (analytics doc shape already multi-reader friendly).
+
+### Deliverables
+
+New files (~15):
+- 8 service files, 8 intelligence libs, 4 hooks, 1 seed file, types + config edits, rules update.
+
+No changes to existing routes/components beyond engine-level dispatch when `subjectId === 'math'`.
