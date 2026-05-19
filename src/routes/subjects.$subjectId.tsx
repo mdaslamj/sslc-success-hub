@@ -249,6 +249,58 @@ function HeaderStat({ label, value }: { label: string; value: string }) {
   );
 }
 
+/* ---------------- Resources ---------------- */
+
+function ResourcesSection({ chapters }: { chapters: ChapterDoc[] }) {
+  const [selectedId, setSelectedId] = useState<string | null>(
+    chapters[0]?.id ?? null,
+  );
+
+  if (chapters.length === 0) {
+    return (
+      <div className="rounded-2xl border border-dashed border-border/60 p-10 text-center text-sm text-muted-foreground">
+        No chapters available.
+      </div>
+    );
+  }
+
+  const selected = chapters.find((c) => c.id === selectedId) ?? chapters[0];
+
+  return (
+    <div className="grid gap-4 md:grid-cols-[220px_1fr]">
+      {/* Chapter picker */}
+      <div className="rounded-2xl border border-border/60 bg-card p-2 md:max-h-[640px] md:overflow-y-auto">
+        <ul className="space-y-1">
+          {chapters.map((c, i) => {
+            const active = selected.id === c.id;
+            return (
+              <li key={c.id}>
+                <button
+                  onClick={() => setSelectedId(c.id)}
+                  className={`flex w-full items-center gap-2 rounded-xl px-3 py-2 text-left text-sm transition ${
+                    active
+                      ? "bg-brand/10 text-foreground"
+                      : "hover:bg-muted/50 text-muted-foreground"
+                  }`}
+                >
+                  <span className="shrink-0 font-mono text-[11px] text-muted-foreground">
+                    {String(c.chapterNumber ?? i + 1).padStart(2, "0")}
+                  </span>
+                  <span className="min-w-0 truncate">{c.title}</span>
+                </button>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+
+      <div className="min-w-0">
+        <ChapterResources chapter={selected} />
+      </div>
+    </div>
+  );
+}
+
 /* ---------------- Chapters ---------------- */
 
 function ChaptersSection({ chapters, color }: { chapters: ChapterDoc[]; color: string }) {
