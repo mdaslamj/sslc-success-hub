@@ -26,6 +26,7 @@ import {
   Brain,
   Clock,
   Star,
+  ExternalLink,
 } from "lucide-react";
 import { todayTasks, subjects } from "@/lib/mock-data";
 import { toast } from "sonner";
@@ -53,6 +54,8 @@ type Task = {
   time: string;
   durationMin: number;
   done: boolean;
+  /** Optional external link (e.g. KTBS textbook PDF). */
+  link?: string;
 };
 
 const STORAGE = "vidyapath.planner.v1";
