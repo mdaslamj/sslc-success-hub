@@ -95,6 +95,10 @@ export const COLLECTIONS = {
   DAILY_PLANS: "dailyPlans",
   DAILY_REFLECTIONS: "dailyReflections",
   MOTIVATION_EVENTS: "motivationEvents",
+  // Study Session Experience — owner-gated per-user collections.
+  SESSION_RESULTS: "sessionResults",
+  SESSION_FEEDBACK: "sessionFeedback",
+  REVISION_TRIGGERS: "revisionTriggers",
 } as const;
 
 // Weakness Diagnosis & Adaptive Remediation Engine
