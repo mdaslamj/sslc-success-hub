@@ -91,6 +91,10 @@ export const COLLECTIONS = {
   MATH_COMMON_MISTAKES: "mathCommonMistakes",
   MATH_CHAPTER_ANALYTICS: "mathChapterAnalytics",
   MATH_IMPORT_DRAFTS: "mathImportDrafts",
+  // Daily AI Study Engine — owner-gated per-user collections.
+  DAILY_PLANS: "dailyPlans",
+  DAILY_REFLECTIONS: "dailyReflections",
+  MOTIVATION_EVENTS: "motivationEvents",
 } as const;
 
 // Weakness Diagnosis & Adaptive Remediation Engine

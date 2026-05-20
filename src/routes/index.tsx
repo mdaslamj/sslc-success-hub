@@ -1,20 +1,17 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import {
   Flame,
   ArrowRight,
-  CheckCircle2,
-  Circle,
   Quote,
   Sparkles,
   Brain,
   CalendarDays,
-  AlertTriangle,
   TrendingUp,
-  ChevronRight,
   Sun,
   Moon,
   Sunrise,
+  Wand2,
 } from "lucide-react";
 import { DashboardLayout } from "@/components/dashboard-layout";
 import { ProgressRing } from "@/components/widgets/progress-ring";
@@ -23,7 +20,6 @@ import { useAuth } from "@/contexts/auth-context";
 import {
   subjects,
   motivationalQuotes,
-  todayTasks,
   getDaysToExam,
   overallPrepScore,
   predictedPercentage,
@@ -31,6 +27,11 @@ import {
   studyStreak,
 } from "@/lib/mock-data";
 import { cn } from "@/lib/utils";
+import { Link } from "@tanstack/react-router";
+import { useDailyEngine } from "@/hooks/use-daily-engine";
+import { TaskRow } from "@/components/daily/task-row";
+import { SessionRunner } from "@/components/daily/session-runner";
+import { ReflectionSheet } from "@/components/daily/reflection-sheet";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -51,12 +52,12 @@ function HomePage() {
   const firstName = (profile?.studentName || profile?.displayName || user?.displayName || "friend")
     .split(" ")[0];
 
-  const [tasks, setTasks] = useState(todayTasks);
   const [quote, setQuote] = useState(motivationalQuotes[0]);
   const [greet, setGreet] = useState<{ label: string; icon: React.ReactNode }>({
     label: "day",
     icon: <Sun className="h-3.5 w-3.5" />,
   });
+  const [reflectionOpen, setReflectionOpen] = useState(false);
 
   useEffect(() => {
     const h = new Date().getHours();
@@ -67,16 +68,40 @@ function HomePage() {
   }, []);
 
   const days = getDaysToExam();
-  const focus = tasks.find((t) => !t.done) ?? tasks[0];
   const weakSubjects = useMemo(
-    () => [...subjects].sort((a, b) => a.mastery - b.mastery).slice(0, 2),
+    () => [...subjects].sort((a, b) => a.mastery - b.mastery),
     [],
   );
 
-  const todayDone = tasks.filter((t) => t.done).length;
-  const todayPct = Math.round((todayDone / tasks.length) * 100);
+  const engine = useDailyEngine({
+    dailyGoalMinutes: profile?.dailyStudyGoalMinutes ?? 60,
+    daysToExam: days,
+    weakSubjects: weakSubjects.slice(0, 3).map((s) => ({
+      id: s.id,
+      name: s.name,
+      mastery: s.mastery,
+      weakTopic: s.weakTopics?.[0],
+    })),
+    revisionCandidates: weakSubjects.slice(0, 4).map((s, i) => ({
+      id: `${s.id}_${i}`,
+      subject: s.name,
+      subjectId: s.id,
+      chapterId: `${s.id}-ch-${i}`,
+      chapterTitle: s.weakTopics?.[0] ?? `${s.name} core revision`,
+      priority: 80 - i * 10,
+      confidenceDecay: 0.5 - i * 0.1,
+      marksAtRisk: 6 - i,
+    })),
+    formulaTargets:
+      weakSubjects[0]?.id === "math"
+        ? [{ chapterId: "math-formulas", subject: "Mathematics", title: "Algebra essentials" }]
+        : undefined,
+  });
 
-  // Last 7 days streak dots — synthetic for now (last `studyStreak % 7` active)
+  const activeTask = engine.plan?.tasks.find((t) => t.id === engine.activeTaskId) ?? null;
+  const focus = engine.plan?.tasks.find((t) => !t.done) ?? engine.plan?.tasks[0];
+  const todayPct = engine.completion;
+
   const weekDots = Array.from({ length: 7 }).map((_, i) => {
     const idx = (new Date().getDay() + i) % 7;
     const active = i < Math.min(7, studyStreak);
@@ -86,7 +111,6 @@ function HomePage() {
   return (
     <DashboardLayout title="Today">
       <div className="mx-auto max-w-md space-y-5 md:max-w-2xl">
-        {/* Calm greeting */}
         <section className="pt-1">
           <div className="inline-flex items-center gap-1.5 rounded-full bg-secondary px-2.5 py-1 text-[11px] font-medium text-primary">
             {greet.icon}
@@ -95,24 +119,59 @@ function HomePage() {
           <h1 className="mt-2 font-display text-[28px] font-bold leading-tight tracking-tight text-foreground">
             Hi {firstName} 🌱
           </h1>
-          <p className="mt-1 text-sm text-muted-foreground">
-            One small step today keeps your plan alive.
-          </p>
+          <p className="mt-1 text-sm text-muted-foreground">{engine.motivation}</p>
+          {user && (
+            <button
+              onClick={() => void engine.requestAiCoach()}
+              className="press mt-2 inline-flex items-center gap-1 rounded-full bg-primary/10 px-2.5 py-1 text-[11px] font-semibold text-primary"
+            >
+              <Wand2 className="h-3 w-3" /> Refresh AI coach
+            </button>
+          )}
         </section>
 
-        {/* Today's focus — hero card */}
-        <FocusCard
-          subject={focus.subject}
-          task={focus.task}
-          time={focus.time}
-          done={focus.done}
-          onToggle={() =>
-            setTasks((p) => p.map((x) => (x.id === focus.id ? { ...x, done: !x.done } : x)))
-          }
-          progress={todayPct}
-        />
+        {focus && (
+          <FocusCard
+            subject={focus.subject ?? "Today"}
+            task={focus.title}
+            time={`${focus.durationMin} min`}
+            done={!!focus.done}
+            onToggle={() => void engine.toggleTask(focus.id)}
+            onStart={() => engine.startSession(focus.id)}
+            progress={todayPct}
+            hint={engine.aiPriorityHint ?? focus.reason}
+          />
+        )}
 
-        {/* Streak strip */}
+        <section>
+          <SectionHeader
+            title="Today's plan"
+            hint={engine.plan ? `${todayPct}% · ${engine.totalMinutes}m` : ""}
+          />
+          <div className="mt-3 space-y-2">
+            {engine.loading || !engine.plan ? (
+              <div className="rounded-2xl bg-card p-4 text-sm text-muted-foreground shadow-soft">
+                Generating your daily plan…
+              </div>
+            ) : (
+              engine.plan.tasks.map((t) => (
+                <TaskRow
+                  key={t.id}
+                  task={t}
+                  active={engine.activeTaskId === t.id}
+                  onToggle={() => {
+                    if (t.kind === "reflection" && !t.done) setReflectionOpen(true);
+                    else void engine.toggleTask(t.id);
+                  }}
+                  onStart={
+                    t.kind === "reflection" ? undefined : () => engine.startSession(t.id)
+                  }
+                />
+              ))
+            )}
+          </div>
+        </section>
+
         <section className="rounded-3xl bg-card p-5 shadow-soft">
           <div className="flex items-center justify-between">
             <div>
@@ -141,78 +200,6 @@ function HomePage() {
           </p>
         </section>
 
-        {/* Revision reminders */}
-        <section>
-          <SectionHeader title="Revision reminders" hint={`${tasks.length - todayDone} due`} />
-          <div className="mt-3 space-y-2">
-            {tasks.map((t) => (
-              <button
-                key={t.id}
-                onClick={() =>
-                  setTasks((p) => p.map((x) => (x.id === t.id ? { ...x, done: !x.done } : x)))
-                }
-                className="press flex w-full items-center gap-3 rounded-2xl bg-card p-3.5 text-left shadow-soft"
-              >
-                {t.done ? (
-                  <CheckCircle2 className="h-5 w-5 shrink-0 text-success" />
-                ) : (
-                  <Circle className="h-5 w-5 shrink-0 text-muted-foreground" />
-                )}
-                <div className="min-w-0 flex-1">
-                  <div
-                    className={cn(
-                      "text-sm font-medium",
-                      t.done ? "text-muted-foreground line-through" : "text-foreground",
-                    )}
-                  >
-                    {t.task}
-                  </div>
-                  <div className="text-[11px] text-muted-foreground">
-                    {t.subject} · {t.time}
-                  </div>
-                </div>
-                <ChevronRight className="h-4 w-4 text-muted-foreground" />
-              </button>
-            ))}
-          </div>
-        </section>
-
-        {/* Weak-topic interventions */}
-        <section>
-          <SectionHeader title="Gentle interventions" hint="From your weak topics" />
-          <div className="mt-3 space-y-2">
-            {weakSubjects.map((s) => (
-              <Link
-                key={s.id}
-                to="/subjects/$subjectId"
-                params={{ subjectId: s.id }}
-                className="press flex items-center gap-3 rounded-2xl bg-card p-4 shadow-soft"
-              >
-                <div
-                  className="flex h-11 w-11 items-center justify-center rounded-2xl text-lg"
-                  style={{
-                    background: `color-mix(in oklab, ${s.color} 18%, transparent)`,
-                    color: s.color,
-                  }}
-                >
-                  {s.emoji}
-                </div>
-                <div className="min-w-0 flex-1">
-                  <div className="flex items-center gap-2">
-                    <div className="font-display text-base font-semibold">{s.name}</div>
-                    <AlertTriangle className="h-3.5 w-3.5 text-warning" />
-                  </div>
-                  <div className="text-xs text-muted-foreground">
-                    Mastery {s.mastery}% · {s.weakTopics?.[0] ?? "Try a quick recap"}
-                  </div>
-                </div>
-                <ChevronRight className="h-4 w-4 text-muted-foreground" />
-              </Link>
-            ))}
-          </div>
-        </section>
-
-        {/* Board readiness */}
         <section className="rounded-3xl bg-card p-5 shadow-soft">
           <div className="flex items-center gap-4">
             <ProgressRing value={overallPrepScore} size={84} stroke={8} sublabel="ready" />
@@ -238,12 +225,38 @@ function HomePage() {
           </Button>
         </section>
 
-        {/* Quick stat strip */}
         <section className="grid grid-cols-2 gap-3">
           <MiniStat icon={<CalendarDays className="h-4 w-4" />} label="Exam in" value={`${days}d`} />
           <MiniStat icon={<Sparkles className="h-4 w-4" />} label="Prep score" value={`${overallPrepScore}`} />
         </section>
+        <div className="h-24" />
       </div>
+
+      {activeTask && (
+        <SessionRunner
+          task={activeTask}
+          seconds={engine.activeSeconds}
+          onComplete={() => void engine.stopSession({ complete: true })}
+          onCancel={() => void engine.stopSession({ complete: false })}
+        />
+      )}
+      <ReflectionSheet
+        open={reflectionOpen}
+        onClose={() => setReflectionOpen(false)}
+        defaultMinutes={
+          engine.plan?.tasks.filter((t) => t.done).reduce((s, t) => s + t.durationMin, 0) ?? 0
+        }
+        onSubmit={async (input) => {
+          await engine.saveReflection({
+            confidence: input.confidence,
+            difficult: input.difficult,
+            studyMinutes: input.studyMinutes,
+          });
+          const reflTask = engine.plan?.tasks.find((t) => t.kind === "reflection" && !t.done);
+          if (reflTask) await engine.toggleTask(reflTask.id);
+          setReflectionOpen(false);
+        }}
+      />
     </DashboardLayout>
   );
 }
@@ -254,14 +267,18 @@ function FocusCard({
   time,
   done,
   onToggle,
+  onStart,
   progress,
+  hint,
 }: {
   subject: string;
   task: string;
   time: string;
   done: boolean;
   onToggle: () => void;
+  onStart?: () => void;
   progress: number;
+  hint?: string;
 }) {
   return (
     <section className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-primary to-brand-glow p-5 text-primary-foreground shadow-soft">
@@ -270,22 +287,21 @@ function FocusCard({
         <div className="flex items-center gap-1.5 text-[11px] font-medium uppercase tracking-wider text-primary-foreground/80">
           <Sparkles className="h-3.5 w-3.5" /> Today's focus
         </div>
-        <h2 className="mt-2 font-display text-[22px] font-bold leading-tight">
-          {task}
-        </h2>
+        <h2 className="mt-2 font-display text-[22px] font-bold leading-tight">{task}</h2>
         <div className="mt-1 text-xs text-primary-foreground/80">
           {subject} · {time}
         </div>
+        {hint && (
+          <div className="mt-2 rounded-2xl bg-white/15 px-3 py-2 text-[11px] leading-snug text-primary-foreground/95">
+            {hint}
+          </div>
+        )}
         <div className="mt-4 flex items-center justify-between gap-3">
           <button
-            onClick={onToggle}
+            onClick={done ? onToggle : (onStart ?? onToggle)}
             className="press inline-flex items-center gap-2 rounded-2xl bg-card px-4 py-2.5 text-sm font-semibold text-foreground shadow-soft"
           >
-            {done ? (
-              <>
-                <CheckCircle2 className="h-4 w-4 text-success" /> Done
-              </>
-            ) : (
+            {done ? "Marked done ✓" : (
               <>
                 Start session <ArrowRight className="h-4 w-4" />
               </>
