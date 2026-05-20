@@ -518,7 +518,7 @@ async function seedAdaptiveBaselines(uid: string, s: State): Promise<void> {
   await saveBoardReadiness({
     userId: uid,
     readinessScore: base,
-    band: base >= 75 ? "on_track" : base >= 60 ? "needs_focus" : "at_risk",
+    band: base >= 75 ? "ready" : base >= 60 ? "reminder" : "remediation",
     contributingFactors: {
       memory: 50,
       reasoning: 50,
