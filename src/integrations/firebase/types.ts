@@ -2818,3 +2818,104 @@ export type TeacherInsightDoc = {
   dayKey: string;
   createdAt: number;
 };
+
+/* ============================================================
+ * Voice AI Tutor + Conversational Learning System
+ * ============================================================
+ * All collections live as subcollections under users/{uid} and are
+ * owner-gated by Firestore Security Rules. Documents store transcripts
+ * only — never raw audio — so reads stay cheap and student speech is
+ * never persisted as a recording.
+ */
+
+export type VoiceTutorLanguageTag =
+  | "en-IN"
+  | "kn-IN"
+  | "ur-IN"
+  | "hi-IN"
+  | "hinglish"
+  | "kanglish";
+
+export type VoiceTutorModeTag =
+  | "beginner"
+  | "concise"
+  | "board"
+  | "motivational"
+  | "deep";
+
+export type VoiceSessionContextTag =
+  | "free_talk"
+  | "scan_explain"
+  | "remediation"
+  | "audio_revision";
+
+export type VoiceTurnDoc = {
+  id: string;
+  role: "student" | "tutor";
+  text: string;
+  spokenMs?: number;
+  createdAt: number;
+};
+
+/** Lives under users/{uid}/voiceSessions/{sessionId}. */
+export type VoiceSessionDoc = {
+  id: string;
+  userId: string;
+  context: VoiceSessionContextTag;
+  language: VoiceTutorLanguageTag;
+  mode: VoiceTutorModeTag;
+  scanId?: string;
+  questionId?: string;
+  chapterId?: string;
+  subjectId?: string;
+  turns: VoiceTurnDoc[];
+  status: "open" | "closed";
+  createdAt: number;
+  updatedAt: number;
+};
+
+/** Lives under users/{uid}/conversationalHistory/{entryId}. Long-term recall. */
+export type ConversationalHistoryDoc = {
+  id: string;
+  userId: string;
+  sessionId: string;
+  summary: string;
+  topics: string[];
+  language: VoiceTutorLanguageTag;
+  createdAt: number;
+};
+
+/** Lives under users/{uid}/spokenHints/{hintId}. */
+export type SpokenHintDoc = {
+  id: string;
+  userId: string;
+  questionId?: string;
+  chapterId?: string;
+  text: string;
+  level: "nudge" | "step" | "full";
+  language: VoiceTutorLanguageTag;
+  createdAt: number;
+};
+
+/** Lives under users/{uid}/audioRevisionHistory/{entryId}. */
+export type AudioRevisionHistoryDoc = {
+  id: string;
+  userId: string;
+  chapterId?: string;
+  topic: string;
+  language: VoiceTutorLanguageTag;
+  durationSec: number;
+  transcript: string;
+  createdAt: number;
+};
+
+/** Lives at users/{uid}/voicePreferences/profile (singleton). */
+export type VoicePreferencesDoc = {
+  userId: string;
+  language: VoiceTutorLanguageTag;
+  mode: VoiceTutorModeTag;
+  rate: number;
+  pitch: number;
+  autoListen: boolean;
+  updatedAt: number;
+};
