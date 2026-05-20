@@ -1,7 +1,7 @@
 {
-  "name": "VidyaPath — SSLC AI Prep",
-  "short_name": "VidyaPath",
-  "description": "AI-powered Karnataka SSLC Class 10 preparation, targets and predictions.",
+  "name": "Aura — SSLC AI Tutor",
+  "short_name": "Aura",
+  "description": "AI-powered Karnataka SSLC Class 10 preparation: tutoring, scans, planner, mock exams.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
@@ -9,6 +9,14 @@
   "background_color": "#0b1220",
   "theme_color": "#0b1220",
   "categories": ["education", "productivity"],
+  "lang": "en-IN",
+  "dir": "ltr",
+  "prefer_related_applications": false,
+  "shortcuts": [
+    { "name": "Scan a question", "short_name": "Scan", "url": "/scan", "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }] },
+    { "name": "Voice tutor",     "short_name": "Voice", "url": "/voice", "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }] },
+    { "name": "Today's planner", "short_name": "Today", "url": "/planner", "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }] }
+  ],
   "icons": [
     { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
     { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }

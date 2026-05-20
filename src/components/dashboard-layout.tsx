@@ -10,6 +10,9 @@ import { BottomNav } from "@/components/bottom-nav";
 import { PageTransition } from "@/components/page-transition";
 import { Camera } from "lucide-react";
 import { SyncStatusBanner } from "@/components/offline/sync-status-banner";
+import { FeedbackButton } from "@/components/feedback/feedback-button";
+import { useEffect } from "react";
+import { installGlobalCrashHandlers } from "@/lib/production/diagnostics";
 
 /**
  * Unified app shell. Mobile = native-style top bar + bottom tab nav.
@@ -20,6 +23,10 @@ export function DashboardLayout({ children, title }: { children: ReactNode; titl
   const { user, profile } = useAuth();
   const name = profile?.studentName || profile?.displayName || user?.displayName || "";
   const initial = (name || user?.email || "S").trim().charAt(0).toUpperCase();
+
+  useEffect(() => {
+    installGlobalCrashHandlers();
+  }, []);
 
   return (
     <SidebarProvider style={{ ["--sidebar-width" as never]: "16rem" } as React.CSSProperties}>
@@ -115,6 +122,7 @@ export function DashboardLayout({ children, title }: { children: ReactNode; titl
         </Link>
 
         <BottomNav />
+        <FeedbackButton />
       </div>
     </SidebarProvider>
   );
