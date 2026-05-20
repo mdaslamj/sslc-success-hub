@@ -15,6 +15,7 @@ import appCss from "../styles.css?url";
 import { Toaster } from "@/components/ui/sonner";
 import { AuthProvider, useAuth } from "@/contexts/auth-context";
 import { ThemeProvider } from "@/contexts/theme-context";
+import { logQADiagnostic } from "@/lib/qa/diagnostics";
 
 function NotFoundComponent() {
   return (
@@ -140,6 +141,7 @@ function RootComponent() {
         <AuthProvider>
           <SessionSync queryClient={queryClient}>
             <OnboardingGate>
+              <GlobalInteractionGuard />
               <Outlet />
             </OnboardingGate>
           </SessionSync>
@@ -148,6 +150,75 @@ function RootComponent() {
       </ThemeProvider>
     </QueryClientProvider>
   );
+}
+
+/**
+ * App-wide safety net for clickable elements:
+ *  - Captures unhandled errors / promise rejections during user interactions
+ *  - Detects dead clicks (anchors without href + buttons without handlers)
+ *  - Logs everything through the QA diagnostics buffer
+ */
+function GlobalInteractionGuard() {
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const onError = (event: ErrorEvent) => {
+      logQADiagnostic("RUNTIME_ERROR", {
+        message: event.message,
+        source: event.filename,
+        line: event.lineno,
+      });
+    };
+
+    const onRejection = (event: PromiseRejectionEvent) => {
+      logQADiagnostic("UNHANDLED_REJECTION", { reason: String(event.reason) });
+    };
+
+    const onClickCapture = (event: MouseEvent) => {
+      const target = event.target as HTMLElement | null;
+      if (!target) return;
+      const interactive = target.closest(
+        'a, button, [role="button"], [data-clickable]'
+      ) as HTMLElement | null;
+      if (!interactive) return;
+
+      // Disabled controls — swallow + log, don't let the action run.
+      const ariaDisabled = interactive.getAttribute("aria-disabled") === "true";
+      const nativeDisabled =
+        (interactive as HTMLButtonElement).disabled === true || ariaDisabled;
+      if (nativeDisabled) {
+        event.preventDefault();
+        event.stopPropagation();
+        logQADiagnostic("DEAD_CLICK", {
+          reason: "disabled",
+          tag: interactive.tagName,
+          label: (interactive.textContent || "").trim().slice(0, 80),
+        });
+        return;
+      }
+
+      if (interactive.tagName === "A") {
+        const href = (interactive as HTMLAnchorElement).getAttribute("href");
+        if (!href || href === "#" || href.trim() === "") {
+          logQADiagnostic("DEAD_CLICK", {
+            reason: "anchor-missing-href",
+            label: (interactive.textContent || "").trim().slice(0, 80),
+          });
+        }
+      }
+    };
+
+    window.addEventListener("error", onError);
+    window.addEventListener("unhandledrejection", onRejection);
+    document.addEventListener("click", onClickCapture, true);
+    return () => {
+      window.removeEventListener("error", onError);
+      window.removeEventListener("unhandledrejection", onRejection);
+      document.removeEventListener("click", onClickCapture, true);
+    };
+  }, []);
+
+  return null;
 }
 
 /**
