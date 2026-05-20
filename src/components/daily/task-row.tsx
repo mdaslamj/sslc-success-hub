@@ -1,4 +1,5 @@
 import { CheckCircle2, Circle, ChevronRight, Sparkles } from "lucide-react";
+import { Link } from "@tanstack/react-router";
 import { cn } from "@/lib/utils";
 import type { DailyTask } from "@/integrations/firebase/types";
 
@@ -77,12 +78,14 @@ export function TaskRow({
         )}
       </div>
       {onStart && !task.done && task.kind !== "reflection" && (
-        <button
+        <Link
+          to="/session"
+          search={{ taskId: task.id }}
           onClick={onStart}
           className="press shrink-0 self-center rounded-xl bg-primary px-2.5 py-1.5 text-[11px] font-semibold text-primary-foreground"
         >
           Start
-        </button>
+        </Link>
       )}
       {task.kind === "reflection" && !task.done && (
         <ChevronRight className="h-4 w-4 shrink-0 self-center text-muted-foreground" />

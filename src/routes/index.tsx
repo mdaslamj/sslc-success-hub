@@ -27,10 +27,9 @@ import {
   studyStreak,
 } from "@/lib/mock-data";
 import { cn } from "@/lib/utils";
-import { Link } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
 import { useDailyEngine } from "@/hooks/use-daily-engine";
 import { TaskRow } from "@/components/daily/task-row";
-import { SessionRunner } from "@/components/daily/session-runner";
 import { ReflectionSheet } from "@/components/daily/reflection-sheet";
 
 export const Route = createFileRoute("/")({
@@ -49,6 +48,7 @@ export const Route = createFileRoute("/")({
 
 function HomePage() {
   const { user, profile } = useAuth();
+  const navigate = useNavigate();
   const firstName = (profile?.studentName || profile?.displayName || user?.displayName || "friend")
     .split(" ")[0];
 
@@ -98,7 +98,6 @@ function HomePage() {
         : undefined,
   });
 
-  const activeTask = engine.plan?.tasks.find((t) => t.id === engine.activeTaskId) ?? null;
   const focus = engine.plan?.tasks.find((t) => !t.done) ?? engine.plan?.tasks[0];
   const todayPct = engine.completion;
 
@@ -137,7 +136,7 @@ function HomePage() {
             time={`${focus.durationMin} min`}
             done={!!focus.done}
             onToggle={() => void engine.toggleTask(focus.id)}
-            onStart={() => engine.startSession(focus.id)}
+            onStart={() => navigate({ to: "/session", search: { taskId: focus.id } })}
             progress={todayPct}
             hint={engine.aiPriorityHint ?? focus.reason}
           />
@@ -163,9 +162,7 @@ function HomePage() {
                     if (t.kind === "reflection" && !t.done) setReflectionOpen(true);
                     else void engine.toggleTask(t.id);
                   }}
-                  onStart={
-                    t.kind === "reflection" ? undefined : () => engine.startSession(t.id)
-                  }
+                  onStart={t.kind === "reflection" ? undefined : () => undefined}
                 />
               ))
             )}
@@ -232,14 +229,6 @@ function HomePage() {
         <div className="h-24" />
       </div>
 
-      {activeTask && (
-        <SessionRunner
-          task={activeTask}
-          seconds={engine.activeSeconds}
-          onComplete={() => void engine.stopSession({ complete: true })}
-          onCancel={() => void engine.stopSession({ complete: false })}
-        />
-      )}
       <ReflectionSheet
         open={reflectionOpen}
         onClose={() => setReflectionOpen(false)}
