@@ -40,6 +40,9 @@ export type AuthContextValue = {
   user: FirebaseUser | null;
   profile: UserProfileDoc | null;
   loading: boolean;
+  /** Increments whenever the signed-in uid changes (sign-in/out/swap).
+   *  Consumers can include this in effect deps to force a clean refetch. */
+  sessionEpoch: number;
   signInWithEmail: (email: string, password: string) => Promise<void>;
   signUpWithEmail: (
     email: string,
@@ -54,10 +57,26 @@ export type AuthContextValue = {
 
 const AuthContext = createContext<AuthContextValue | null>(null);
 
+const GUEST_KEYS = [
+  "aura.guest.v1",
+  "aura.guest.onboarding.v1",
+  "vidyapath.uid.v1",
+];
+
+function clearGuestLocalState() {
+  if (typeof window === "undefined") return;
+  try {
+    for (const k of GUEST_KEYS) localStorage.removeItem(k);
+  } catch {
+    /* storage unavailable */
+  }
+}
+
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<FirebaseUser | null>(null);
   const [profile, setProfile] = useState<UserProfileDoc | null>(null);
   const [loading, setLoading] = useState(true);
+  const [sessionEpoch, setSessionEpoch] = useState(0);
 
   useEffect(() => {
     if (typeof window === "undefined") {
@@ -65,12 +84,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       return;
     }
     const unsub = onAuthStateChanged(auth, async (u) => {
-      setUser(u);
+      setUser((prev) => {
+        if ((prev?.uid ?? null) !== (u?.uid ?? null)) {
+          setSessionEpoch((n) => n + 1);
+        }
+        return u;
+      });
       if (!u) {
         setProfile(null);
         setLoading(false);
         return;
       }
+      // A real user just signed in — drop any lingering guest-mode data so
+      // the dashboard hydrates against the authenticated profile, not the
+      // local fallback id from before sign-in.
+      clearGuestLocalState();
       try {
         const p = await ensureUserDocuments({
           uid: u.uid,
@@ -131,6 +159,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       user,
       profile,
       loading,
+      sessionEpoch,
       signInWithEmail,
       signUpWithEmail,
       signInWithGoogle,
@@ -142,6 +171,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       user,
       profile,
       loading,
+      sessionEpoch,
       signInWithEmail,
       signUpWithEmail,
       signInWithGoogle,
