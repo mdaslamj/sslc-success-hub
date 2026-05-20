@@ -2278,3 +2278,127 @@ export type PracticeRecommendationDoc = {
   reason: string;
   createdAt: number;
 };
+// ---------------------------------------------------------------------------
+// Continuous Learning Memory + Tutoring Continuity Engine
+// ---------------------------------------------------------------------------
+
+export type ExplanationDepth = "beginner" | "intermediate" | "board";
+export type LearnerPace = "fast" | "balanced" | "slow";
+export type LearnerLanguage = "en" | "kn" | "bilingual";
+
+/** Singleton per user — lives at users/{uid}/learningProfile/profile. */
+export type LearningProfileDoc = {
+  id: "profile";
+  userId: string;
+  strengths: string[]; // chapter / concept keys
+  weaknesses: string[];
+  preferredLanguage: LearnerLanguage;
+  explanationDepth: ExplanationDepth;
+  pace: LearnerPace;
+  /** Median solve duration across recent scans (seconds). */
+  avgSolveSeconds?: number;
+  /** EMA of recent confidence deltas, clamped to -1..+1. */
+  confidenceTrend: number;
+  /** Number of tutoring interactions feeding this profile. */
+  interactions: number;
+  lastUpdatedAt: number;
+};
+
+export type MistakePattern =
+  | "sign_error"
+  | "formula_misuse"
+  | "skipped_step"
+  | "conceptual_confusion"
+  | "presentation_weak"
+  | "calculation"
+  | "unit_error";
+
+/** Lives at users/{uid}/mistakeMemory/{mistakeId}. */
+export type MistakeMemoryDoc = {
+  id: string;
+  userId: string;
+  pattern: MistakePattern;
+  subjectId?: string;
+  chapterId?: string;
+  conceptKey?: string;
+  occurrences: number;
+  /** Scan ids that contributed to this pattern (capped at ~20). */
+  scanIds: string[];
+  /** Short human-readable hint Aura can echo back later. */
+  note?: string;
+  firstSeenAt: number;
+  lastSeenAt: number;
+};
+
+/** Singleton per user — lives at users/{uid}/tutoringPreferences/preferences. */
+export type TutoringPreferencesDoc = {
+  id: "preferences";
+  userId: string;
+  hintDepth: "minimal" | "guided" | "detailed";
+  explanationDepth: ExplanationDepth;
+  language: LearnerLanguage;
+  kannadaFriendly: boolean;
+  preferStepByStep: boolean;
+  toneFormality: "casual" | "neutral" | "formal";
+  updatedAt: number;
+};
+
+export type LearningTimelineKind =
+  | "scan_solved"
+  | "weakness_detected"
+  | "mistake_repeated"
+  | "confidence_rise"
+  | "confidence_drop"
+  | "recovery"
+  | "preference_changed";
+
+/** Lives at users/{uid}/learningTimeline/{eventId}. */
+export type LearningTimelineDoc = {
+  id: string;
+  userId: string;
+  kind: LearningTimelineKind;
+  subjectId?: string;
+  chapterId?: string;
+  conceptKey?: string;
+  scanId?: string;
+  summary: string;
+  payload?: Record<string, unknown>;
+  createdAt: number;
+};
+
+/** Lives at users/{uid}/scanHistory/{scanId}. Compact mirror of /scans for fast tutoring continuity reads. */
+export type ScanHistoryDoc = {
+  id: string;
+  userId: string;
+  scanId: string;
+  subject?: string;
+  subjectId?: string;
+  chapterId?: string;
+  chapterTitle?: string;
+  conceptHighlights: string[];
+  difficulty?: ScanDifficulty;
+  modeUsed?: SolveMode;
+  language?: "en" | "kn";
+  weakAreasTouched: string[];
+  createdAt: number;
+};
+
+/** Lives at users/{uid}/conceptConfidence/{conceptKey}. */
+export type ConceptConfidenceDoc = {
+  id: string;
+  userId: string;
+  conceptKey: string;
+  conceptLabel: string;
+  subjectId?: string;
+  chapterId?: string;
+  /** 0..100 rolling confidence. */
+  confidence: number;
+  /** -1..+1 EMA of recent deltas. */
+  trend: number;
+  attempts: number;
+  successes: number;
+  lastDelta: number;
+  lastSeenAt: number;
+  /** True once confidence has lingered below 35 across 3+ attempts. */
+  chronicWeak: boolean;
+};
