@@ -67,3 +67,5 @@ export * from "./gamification";
 export * from "./parents";
 // Teacher Intelligence Dashboard
 export * from "./teachers";
+// Voice AI Tutor + Conversational Learning System
+export * from "./voice-sessions";
