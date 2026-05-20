@@ -69,3 +69,5 @@ export * from "./parents";
 export * from "./teachers";
 // Voice AI Tutor + Conversational Learning System
 export * from "./voice-sessions";
+// Board Exam Hall Mode + Full Simulation Engine
+export * from "./exam-hall";
