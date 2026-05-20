@@ -65,3 +65,5 @@ export * from "./learning-memory";
 export * from "./gamification";
 // Parent Intelligence Dashboard
 export * from "./parents";
+// Teacher Intelligence Dashboard
+export * from "./teachers";
