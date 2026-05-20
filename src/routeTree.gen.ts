@@ -13,6 +13,7 @@ import { Route as TextbooksRouteImport } from './routes/textbooks'
 import { Route as TargetsRouteImport } from './routes/targets'
 import { Route as SessionRouteImport } from './routes/session'
 import { Route as SeedRouteImport } from './routes/seed'
+import { Route as ScanRouteImport } from './routes/scan'
 import { Route as ResourcesRouteImport } from './routes/resources'
 import { Route as QuizzesRouteImport } from './routes/quizzes'
 import { Route as ProfileRouteImport } from './routes/profile'
@@ -55,6 +56,11 @@ const SessionRoute = SessionRouteImport.update({
 const SeedRoute = SeedRouteImport.update({
   id: '/seed',
   path: '/seed',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ScanRoute = ScanRouteImport.update({
+  id: '/scan',
+  path: '/scan',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ResourcesRoute = ResourcesRouteImport.update({
@@ -189,6 +195,7 @@ export interface FileRoutesByFullPath {
   '/profile': typeof ProfileRoute
   '/quizzes': typeof QuizzesRoute
   '/resources': typeof ResourcesRoute
+  '/scan': typeof ScanRoute
   '/seed': typeof SeedRoute
   '/session': typeof SessionRoute
   '/targets': typeof TargetsRoute
@@ -218,6 +225,7 @@ export interface FileRoutesByTo {
   '/profile': typeof ProfileRoute
   '/quizzes': typeof QuizzesRoute
   '/resources': typeof ResourcesRoute
+  '/scan': typeof ScanRoute
   '/seed': typeof SeedRoute
   '/session': typeof SessionRoute
   '/targets': typeof TargetsRoute
@@ -248,6 +256,7 @@ export interface FileRoutesById {
   '/profile': typeof ProfileRoute
   '/quizzes': typeof QuizzesRoute
   '/resources': typeof ResourcesRoute
+  '/scan': typeof ScanRoute
   '/seed': typeof SeedRoute
   '/session': typeof SessionRoute
   '/targets': typeof TargetsRoute
@@ -279,6 +288,7 @@ export interface FileRouteTypes {
     | '/profile'
     | '/quizzes'
     | '/resources'
+    | '/scan'
     | '/seed'
     | '/session'
     | '/targets'
@@ -308,6 +318,7 @@ export interface FileRouteTypes {
     | '/profile'
     | '/quizzes'
     | '/resources'
+    | '/scan'
     | '/seed'
     | '/session'
     | '/targets'
@@ -337,6 +348,7 @@ export interface FileRouteTypes {
     | '/profile'
     | '/quizzes'
     | '/resources'
+    | '/scan'
     | '/seed'
     | '/session'
     | '/targets'
@@ -367,6 +379,7 @@ export interface RootRouteChildren {
   ProfileRoute: typeof ProfileRoute
   QuizzesRoute: typeof QuizzesRoute
   ResourcesRoute: typeof ResourcesRoute
+  ScanRoute: typeof ScanRoute
   SeedRoute: typeof SeedRoute
   SessionRoute: typeof SessionRoute
   TargetsRoute: typeof TargetsRoute
@@ -407,6 +420,13 @@ declare module '@tanstack/react-router' {
       path: '/seed'
       fullPath: '/seed'
       preLoaderRoute: typeof SeedRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/scan': {
+      id: '/scan'
+      path: '/scan'
+      fullPath: '/scan'
+      preLoaderRoute: typeof ScanRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/resources': {
@@ -611,6 +631,7 @@ const rootRouteChildren: RootRouteChildren = {
   ProfileRoute: ProfileRoute,
   QuizzesRoute: QuizzesRoute,
   ResourcesRoute: ResourcesRoute,
+  ScanRoute: ScanRoute,
   SeedRoute: SeedRoute,
   SessionRoute: SessionRoute,
   TargetsRoute: TargetsRoute,
