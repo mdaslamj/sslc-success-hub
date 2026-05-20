@@ -17,8 +17,18 @@ import { Input } from "@/components/ui/input";
 import { Slider } from "@/components/ui/slider";
 import { useAuth } from "@/contexts/auth-context";
 import { patchUserProfile } from "@/integrations/firebase/services/users";
+import { saveMemoryTracking } from "@/integrations/firebase/services/memory-tracking";
+import { saveBoardReadiness } from "@/integrations/firebase/services/board-readiness";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
+
+const GUEST_KEY = "aura.guest.v1";
+const GUEST_ONBOARDING_KEY = "aura.guest.onboarding.v1";
+
+function isGuest() {
+  if (typeof window === "undefined") return false;
+  return localStorage.getItem(GUEST_KEY) === "1";
+}
 
 export const Route = createFileRoute("/onboarding")({
   head: () => ({
@@ -84,6 +94,21 @@ function OnboardingFlow() {
   const back = () => setStep((x) => Math.max(x - 1, 0));
 
   const finish = async () => {
+    // Guest path — persist locally and continue.
+    if (!user && isGuest()) {
+      setSaving(true);
+      try {
+        localStorage.setItem(
+          GUEST_ONBOARDING_KEY,
+          JSON.stringify({ ...s, completedAt: Date.now() }),
+        );
+        toast.success("Your plan is ready 🌱");
+        navigate({ to: "/" });
+      } finally {
+        setSaving(false);
+      }
+      return;
+    }
     if (!user) {
       navigate({ to: "/login" });
       return;
@@ -100,6 +125,10 @@ function OnboardingFlow() {
         revisionIntensity: s.intensity,
         onboardingCompletedAt: Date.now(),
       });
+      // Seed adaptive baselines for weak subjects (non-blocking).
+      void seedAdaptiveBaselines(user.uid, s).catch((e) =>
+        console.warn("baseline seed failed", e),
+      );
       await refreshProfile();
       toast.success("Your plan is ready 🌱");
       navigate({ to: "/" });
