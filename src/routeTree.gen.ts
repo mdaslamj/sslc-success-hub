@@ -28,6 +28,7 @@ import { Route as LogRouteImport } from './routes/log'
 import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
 import { Route as FocusRouteImport } from './routes/focus'
 import { Route as ExamsRouteImport } from './routes/exams'
+import { Route as ExamHallRouteImport } from './routes/exam-hall'
 import { Route as AnswerUploadsRouteImport } from './routes/answer-uploads'
 import { Route as AnalyticsRouteImport } from './routes/analytics'
 import { Route as AchievementsRouteImport } from './routes/achievements'
@@ -38,6 +39,7 @@ import { Route as ScanScanIdRouteImport } from './routes/scan.$scanId'
 import { Route as QuizQuizIdRouteImport } from './routes/quiz.$quizId'
 import { Route as ExamsExamIdRouteImport } from './routes/exams.$examId'
 import { Route as ExamResultsAttemptIdRouteImport } from './routes/exam-results.$attemptId'
+import { Route as ExamHallSessionIdRouteImport } from './routes/exam-hall.$sessionId'
 import { Route as AnswerUploadsAttemptIdRouteImport } from './routes/answer-uploads.$attemptId'
 import { Route as AdminImportRouteImport } from './routes/admin.import'
 import { Route as SubjectsMathChapterIdRouteImport } from './routes/subjects.math.$chapterId'
@@ -137,6 +139,11 @@ const ExamsRoute = ExamsRouteImport.update({
   path: '/exams',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ExamHallRoute = ExamHallRouteImport.update({
+  id: '/exam-hall',
+  path: '/exam-hall',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AnswerUploadsRoute = AnswerUploadsRouteImport.update({
   id: '/answer-uploads',
   path: '/answer-uploads',
@@ -187,6 +194,11 @@ const ExamResultsAttemptIdRoute = ExamResultsAttemptIdRouteImport.update({
   path: '/exam-results/$attemptId',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ExamHallSessionIdRoute = ExamHallSessionIdRouteImport.update({
+  id: '/$sessionId',
+  path: '/$sessionId',
+  getParentRoute: () => ExamHallRoute,
+} as any)
 const AnswerUploadsAttemptIdRoute = AnswerUploadsAttemptIdRouteImport.update({
   id: '/$attemptId',
   path: '/$attemptId',
@@ -208,6 +220,7 @@ export interface FileRoutesByFullPath {
   '/achievements': typeof AchievementsRoute
   '/analytics': typeof AnalyticsRoute
   '/answer-uploads': typeof AnswerUploadsRouteWithChildren
+  '/exam-hall': typeof ExamHallRouteWithChildren
   '/exams': typeof ExamsRouteWithChildren
   '/focus': typeof FocusRoute
   '/forgot-password': typeof ForgotPasswordRoute
@@ -229,6 +242,7 @@ export interface FileRoutesByFullPath {
   '/voice': typeof VoiceRoute
   '/admin/import': typeof AdminImportRoute
   '/answer-uploads/$attemptId': typeof AnswerUploadsAttemptIdRoute
+  '/exam-hall/$sessionId': typeof ExamHallSessionIdRoute
   '/exam-results/$attemptId': typeof ExamResultsAttemptIdRoute
   '/exams/$examId': typeof ExamsExamIdRoute
   '/quiz/$quizId': typeof QuizQuizIdRoute
@@ -242,6 +256,7 @@ export interface FileRoutesByTo {
   '/achievements': typeof AchievementsRoute
   '/analytics': typeof AnalyticsRoute
   '/answer-uploads': typeof AnswerUploadsRouteWithChildren
+  '/exam-hall': typeof ExamHallRouteWithChildren
   '/exams': typeof ExamsRouteWithChildren
   '/focus': typeof FocusRoute
   '/forgot-password': typeof ForgotPasswordRoute
@@ -263,6 +278,7 @@ export interface FileRoutesByTo {
   '/voice': typeof VoiceRoute
   '/admin/import': typeof AdminImportRoute
   '/answer-uploads/$attemptId': typeof AnswerUploadsAttemptIdRoute
+  '/exam-hall/$sessionId': typeof ExamHallSessionIdRoute
   '/exam-results/$attemptId': typeof ExamResultsAttemptIdRoute
   '/exams/$examId': typeof ExamsExamIdRoute
   '/quiz/$quizId': typeof QuizQuizIdRoute
@@ -277,6 +293,7 @@ export interface FileRoutesById {
   '/achievements': typeof AchievementsRoute
   '/analytics': typeof AnalyticsRoute
   '/answer-uploads': typeof AnswerUploadsRouteWithChildren
+  '/exam-hall': typeof ExamHallRouteWithChildren
   '/exams': typeof ExamsRouteWithChildren
   '/focus': typeof FocusRoute
   '/forgot-password': typeof ForgotPasswordRoute
@@ -298,6 +315,7 @@ export interface FileRoutesById {
   '/voice': typeof VoiceRoute
   '/admin/import': typeof AdminImportRoute
   '/answer-uploads/$attemptId': typeof AnswerUploadsAttemptIdRoute
+  '/exam-hall/$sessionId': typeof ExamHallSessionIdRoute
   '/exam-results/$attemptId': typeof ExamResultsAttemptIdRoute
   '/exams/$examId': typeof ExamsExamIdRoute
   '/quiz/$quizId': typeof QuizQuizIdRoute
@@ -313,6 +331,7 @@ export interface FileRouteTypes {
     | '/achievements'
     | '/analytics'
     | '/answer-uploads'
+    | '/exam-hall'
     | '/exams'
     | '/focus'
     | '/forgot-password'
@@ -334,6 +353,7 @@ export interface FileRouteTypes {
     | '/voice'
     | '/admin/import'
     | '/answer-uploads/$attemptId'
+    | '/exam-hall/$sessionId'
     | '/exam-results/$attemptId'
     | '/exams/$examId'
     | '/quiz/$quizId'
@@ -347,6 +367,7 @@ export interface FileRouteTypes {
     | '/achievements'
     | '/analytics'
     | '/answer-uploads'
+    | '/exam-hall'
     | '/exams'
     | '/focus'
     | '/forgot-password'
@@ -368,6 +389,7 @@ export interface FileRouteTypes {
     | '/voice'
     | '/admin/import'
     | '/answer-uploads/$attemptId'
+    | '/exam-hall/$sessionId'
     | '/exam-results/$attemptId'
     | '/exams/$examId'
     | '/quiz/$quizId'
@@ -381,6 +403,7 @@ export interface FileRouteTypes {
     | '/achievements'
     | '/analytics'
     | '/answer-uploads'
+    | '/exam-hall'
     | '/exams'
     | '/focus'
     | '/forgot-password'
@@ -402,6 +425,7 @@ export interface FileRouteTypes {
     | '/voice'
     | '/admin/import'
     | '/answer-uploads/$attemptId'
+    | '/exam-hall/$sessionId'
     | '/exam-results/$attemptId'
     | '/exams/$examId'
     | '/quiz/$quizId'
@@ -416,6 +440,7 @@ export interface RootRouteChildren {
   AchievementsRoute: typeof AchievementsRoute
   AnalyticsRoute: typeof AnalyticsRoute
   AnswerUploadsRoute: typeof AnswerUploadsRouteWithChildren
+  ExamHallRoute: typeof ExamHallRouteWithChildren
   ExamsRoute: typeof ExamsRouteWithChildren
   FocusRoute: typeof FocusRoute
   ForgotPasswordRoute: typeof ForgotPasswordRoute
@@ -578,6 +603,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ExamsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/exam-hall': {
+      id: '/exam-hall'
+      path: '/exam-hall'
+      fullPath: '/exam-hall'
+      preLoaderRoute: typeof ExamHallRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/answer-uploads': {
       id: '/answer-uploads'
       path: '/answer-uploads'
@@ -648,6 +680,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ExamResultsAttemptIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/exam-hall/$sessionId': {
+      id: '/exam-hall/$sessionId'
+      path: '/$sessionId'
+      fullPath: '/exam-hall/$sessionId'
+      preLoaderRoute: typeof ExamHallSessionIdRouteImport
+      parentRoute: typeof ExamHallRoute
+    }
     '/answer-uploads/$attemptId': {
       id: '/answer-uploads/$attemptId'
       path: '/$attemptId'
@@ -684,6 +723,18 @@ const AnswerUploadsRouteWithChildren = AnswerUploadsRoute._addFileChildren(
   AnswerUploadsRouteChildren,
 )
 
+interface ExamHallRouteChildren {
+  ExamHallSessionIdRoute: typeof ExamHallSessionIdRoute
+}
+
+const ExamHallRouteChildren: ExamHallRouteChildren = {
+  ExamHallSessionIdRoute: ExamHallSessionIdRoute,
+}
+
+const ExamHallRouteWithChildren = ExamHallRoute._addFileChildren(
+  ExamHallRouteChildren,
+)
+
 interface ExamsRouteChildren {
   ExamsExamIdRoute: typeof ExamsExamIdRoute
 }
@@ -709,6 +760,7 @@ const rootRouteChildren: RootRouteChildren = {
   AchievementsRoute: AchievementsRoute,
   AnalyticsRoute: AnalyticsRoute,
   AnswerUploadsRoute: AnswerUploadsRouteWithChildren,
+  ExamHallRoute: ExamHallRouteWithChildren,
   ExamsRoute: ExamsRouteWithChildren,
   FocusRoute: FocusRoute,
   ForgotPasswordRoute: ForgotPasswordRoute,
@@ -738,3 +790,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
