@@ -8,6 +8,7 @@ import { Link } from "@tanstack/react-router";
 import { useAuth } from "@/contexts/auth-context";
 import { BottomNav } from "@/components/bottom-nav";
 import { PageTransition } from "@/components/page-transition";
+import { Camera } from "lucide-react";
 
 /**
  * Unified app shell. Mobile = native-style top bar + bottom tab nav.
@@ -99,6 +100,17 @@ export function DashboardLayout({ children, title }: { children: ReactNode; titl
             <PageTransition>{children}</PageTransition>
           </main>
         </div>
+
+        {/* Premium Scan FAB — anchored above bottom nav, mobile-first */}
+        <Link
+          to="/scan"
+          aria-label="Scan a question"
+          className="press fixed right-4 z-40 md:right-8 flex h-14 w-14 items-center justify-center rounded-2xl gradient-brand text-brand-foreground shadow-glow"
+          style={{ bottom: "calc(env(safe-area-inset-bottom) + 4.75rem)" }}
+        >
+          <span className="absolute inset-0 rounded-2xl gradient-brand opacity-50 blur-lg" aria-hidden />
+          <Camera className="relative h-6 w-6" />
+        </Link>
 
         <BottomNav />
       </div>
