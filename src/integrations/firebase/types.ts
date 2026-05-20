@@ -2643,3 +2643,178 @@ export type ParentEngagementDoc = {
   dayKey: string;
   createdAt: number;
 };
+
+// ---------------------------------------------------------------------------
+// Teacher Intelligence Dashboard
+// ---------------------------------------------------------------------------
+
+/** Top-level teacher account doc. Lives at teachers/{teacherUid}. */
+export type TeacherDoc = {
+  id: string; // == teacherUid
+  teacherUid: string;
+  displayName?: string;
+  email?: string;
+  phone?: string;
+  school?: string;
+  subjectsTaught?: string[];
+  preferredLanguage?: "en" | "kn" | "bilingual";
+  notificationOptIn: boolean;
+  createdAt: number;
+  updatedAt: number;
+};
+
+/** A class/section managed by a teacher. Lives at classes/{classId}. */
+export type TeacherClassDoc = {
+  id: string;
+  classId: string;
+  teacherUid: string;
+  name: string;            // "SSLC – A"
+  school?: string;
+  section?: string;        // "A", "B"
+  batch?: string;          // "2026"
+  grade?: string;          // "SSLC"
+  subjectFocus?: string[]; // ["math", "science"]
+  inviteCode: string;      // share-with-students
+  studentCount: number;
+  createdAt: number;
+  updatedAt: number;
+};
+
+/** Mirror under teachers/{teacherUid}/classes/{classId} for quick listing. */
+export type TeacherClassMirrorDoc = {
+  id: string; // == classId
+  classId: string;
+  teacherUid: string;
+  name: string;
+  studentCount: number;
+  createdAt: number;
+};
+
+/** Student membership in a class. Lives at classes/{classId}/students/{studentUid}. */
+export type ClassStudentDoc = {
+  id: string; // == studentUid
+  classId: string;
+  studentUid: string;
+  studentName?: string;
+  rollNo?: string;
+  status: "active" | "pending" | "removed";
+  joinedAt: number;
+  /** Last cached student snapshot — refreshed when teacher views dashboard. */
+  lastSummary?: TeacherStudentSummary;
+};
+
+/** Lightweight per-student summary cached on the membership doc. */
+export type TeacherStudentSummary = {
+  weeklyMinutes: number;
+  plannerCompletionPct: number;
+  averageConfidence: number;
+  boardReadiness: number;
+  streakCurrent: number;
+  weakSubjects: { id: string; name: string; mastery: number }[];
+  lastStudiedAt?: number;
+};
+
+/** Class invite code (top-level for cross-user reads). */
+export type ClassInviteDoc = {
+  id: string; // == code
+  code: string;
+  classId: string;
+  teacherUid: string;
+  className: string;
+  expiresAt: number;
+  createdAt: number;
+};
+
+export type AssignmentKind =
+  | "chapter_practice"
+  | "mock_exam"
+  | "formula_drill"
+  | "scan_submission"
+  | "revision_task";
+
+export type AssignmentStatus = "draft" | "active" | "completed" | "archived";
+
+/** Lives at classes/{classId}/assignments/{assignmentId}. */
+export type ClassAssignmentDoc = {
+  id: string;
+  classId: string;
+  teacherUid: string;
+  kind: AssignmentKind;
+  title: string;
+  description?: string;
+  subjectId?: string;
+  chapterId?: string;
+  dueAt?: number;
+  status: AssignmentStatus;
+  totalStudents: number;
+  completedStudents: number;
+  createdAt: number;
+  updatedAt: number;
+};
+
+/** Cached class-level analytics snapshot. */
+export type ClassAnalyticsDoc = {
+  id: string; // == dayKey or weekKey
+  classId: string;
+  teacherUid: string;
+  dayKey: string;
+  averageReadiness: number;
+  averageConfidence: number;
+  averageStudyMinutes: number;
+  plannerCompletionPct: number;
+  weakChapters: { subject: string; chapter: string; mastery: number; affectedStudents: number }[];
+  commonMistakes: { label: string; affectedStudents: number }[];
+  segmentation: {
+    onTrack: number;
+    needsAttention: number;
+    atRisk: number;
+  };
+  generatedAt: number;
+};
+
+export type TeacherRiskKind =
+  | "inactivity"
+  | "burnout"
+  | "low_confidence"
+  | "marks_at_risk"
+  | "consistency_decline";
+
+export type TeacherRiskSeverity = "info" | "warning" | "critical";
+
+/** Lives at classes/{classId}/riskAlerts/{alertId}. */
+export type ClassRiskAlertDoc = {
+  id: string;
+  classId: string;
+  teacherUid: string;
+  studentUid: string;
+  studentName?: string;
+  kind: TeacherRiskKind;
+  severity: TeacherRiskSeverity;
+  title: string;
+  body: string;
+  suggestedAction?: string;
+  acknowledged: boolean;
+  dayKey: string;
+  createdAt: number;
+};
+
+export type TeacherInsightKind =
+  | "weak_concept"
+  | "repeated_mistake"
+  | "remediation_priority"
+  | "chapter_intervention";
+
+/** AI teaching insight — class-level recommendation. */
+export type TeacherInsightDoc = {
+  id: string;
+  classId: string;
+  teacherUid: string;
+  kind: TeacherInsightKind;
+  title: string;
+  body: string;
+  affectedStudents: number;
+  suggestedAssignmentKind?: AssignmentKind;
+  suggestedChapterId?: string;
+  dayKey: string;
+  createdAt: number;
+};

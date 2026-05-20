@@ -614,6 +614,74 @@ service cloud.firestore {
             || isAdmin());
     }
 
+    // -----------------------------------------------------------------------
+    // Teacher Intelligence Dashboard
+    // -----------------------------------------------------------------------
+    // Teachers own their root doc and the classes-mirror subcollection.
+    match /teachers/{teacherUid} {
+      allow read, write: if isOwner(teacherUid) || isAdmin();
+
+      match /classes/{classId} {
+        allow read, write: if isOwner(teacherUid) || isAdmin();
+      }
+    }
+
+    // Classes — only the owning teacher reads/writes the class doc and most
+    // subcollections. Students may read their own membership doc.
+    match /classes/{classId} {
+      allow read: if isSignedIn()
+        && (resource.data.teacherUid == request.auth.uid || isAdmin());
+      allow create: if isSignedIn()
+        && request.resource.data.teacherUid == request.auth.uid;
+      allow update, delete: if isSignedIn()
+        && (resource.data.teacherUid == request.auth.uid || isAdmin());
+
+      match /students/{studentUid} {
+        // Teacher of the class OR the student themselves may read; teacher writes.
+        allow read: if isSignedIn()
+          && (get(/databases/$(database)/documents/classes/$(classId)).data.teacherUid == request.auth.uid
+              || studentUid == request.auth.uid
+              || isAdmin());
+        allow write: if isSignedIn()
+          && (get(/databases/$(database)/documents/classes/$(classId)).data.teacherUid == request.auth.uid
+              || isAdmin());
+      }
+      match /assignments/{assignmentId} {
+        allow read: if isSignedIn()
+          && (get(/databases/$(database)/documents/classes/$(classId)).data.teacherUid == request.auth.uid
+              || exists(/databases/$(database)/documents/classes/$(classId)/students/$(request.auth.uid))
+              || isAdmin());
+        allow write: if isSignedIn()
+          && (get(/databases/$(database)/documents/classes/$(classId)).data.teacherUid == request.auth.uid
+              || isAdmin());
+      }
+      match /analytics/{snapshotId} {
+        allow read, write: if isSignedIn()
+          && (get(/databases/$(database)/documents/classes/$(classId)).data.teacherUid == request.auth.uid
+              || isAdmin());
+      }
+      match /riskAlerts/{alertId} {
+        allow read, write: if isSignedIn()
+          && (get(/databases/$(database)/documents/classes/$(classId)).data.teacherUid == request.auth.uid
+              || isAdmin());
+      }
+      match /insights/{insightId} {
+        allow read, write: if isSignedIn()
+          && (get(/databases/$(database)/documents/classes/$(classId)).data.teacherUid == request.auth.uid
+              || isAdmin());
+      }
+    }
+
+    // Class invite codes — top-level, world-readable by signed-in users for
+    // claim flow. Teacher who owns the linked class may write; admins override.
+    match /classInvites/{code} {
+      allow read: if isSignedIn();
+      allow create: if isSignedIn()
+        && request.resource.data.teacherUid == request.auth.uid;
+      allow update, delete: if isSignedIn()
+        && (resource.data.teacherUid == request.auth.uid || isAdmin());
+    }
+
     // Default deny.
     match /{document=**} {
       allow read, write: if false;
