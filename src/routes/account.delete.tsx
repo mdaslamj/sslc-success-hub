@@ -12,6 +12,8 @@ import {
   exportLocalUserData,
   purgeLocalUserData,
   requestAccountDeletion,
+  purgeFirestoreUserData,
+  deleteFirebaseAuthAccount,
 } from "@/lib/production/account-lifecycle";
 
 export const Route = createFileRoute("/account/delete")({
@@ -50,9 +52,26 @@ function AccountDeleteRoute() {
         email: user.email ?? undefined,
         reason: reason.trim() || undefined,
       });
+      // Best-effort wipe of Firestore data while we still have an auth token.
+      await purgeFirestoreUserData(user.uid);
+      // Permanently remove the Firebase Auth credential.
+      const authResult = await deleteFirebaseAuthAccount();
+      // Always clear local cache regardless of remote result.
       purgeLocalUserData();
-      await signOut();
-      toast.success("Account deletion requested. Local data was cleared.");
+      if (!authResult.ok) {
+        if (authResult.reason === "requires-recent-login") {
+          await signOut();
+          toast.error(authResult.message);
+          navigate({ to: "/login" });
+          return;
+        }
+        toast.error(authResult.message);
+        return;
+      }
+      // deleteUser already signs the user out; calling signOut is a no-op
+      // but keeps the auth context state consistent.
+      await signOut().catch(() => {});
+      toast.success("Your account and study data have been deleted.");
       navigate({ to: "/login" });
     } finally {
       setBusy(false);
