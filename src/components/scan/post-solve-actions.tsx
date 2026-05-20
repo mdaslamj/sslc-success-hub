@@ -3,10 +3,12 @@ import { CalendarClock, AlertTriangle, RotateCw, Sparkles, Check } from "lucide-
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { usePostSolveActions } from "@/hooks/use-scan";
+import { useLearningMemory } from "@/hooks/use-learning-memory";
 import type { ScanDoc } from "@/integrations/firebase/types";
 
 export function PostSolveActions({ scan }: { scan: ScanDoc }) {
   const actions = usePostSolveActions(scan);
+  const memory = useLearningMemory();
   const [done, setDone] = useState<Record<string, boolean>>({});
 
   async function run(key: string, fn: () => Promise<unknown>, ok: string, gateMsg?: string) {
@@ -29,14 +31,48 @@ export function PostSolveActions({ scan }: { scan: ScanDoc }) {
       label: "Add to revision",
       icon: CalendarClock,
       tone: "brand" as const,
-      go: () => run("revise", () => actions.scheduleRevision(2), "Scheduled in your revision queue."),
+      go: () =>
+        run(
+          "revise",
+          async () => {
+            const r = await actions.scheduleRevision(2);
+            for (const label of (scan.understanding?.concepts ?? []).slice(0, 3)) {
+              await memory.recordConceptSignal({
+                conceptLabel: label,
+                delta: -5,
+                success: false,
+                subjectId: scan.understanding?.subjectId,
+                chapterId: scan.understanding?.chapterId,
+              });
+            }
+            return r;
+          },
+          "Scheduled in your revision queue.",
+        ),
     },
     {
       key: "weak",
       label: "Save weak topic",
       icon: AlertTriangle,
       tone: "warning" as const,
-      go: () => run("weak", () => actions.markWeak(), "Marked as a weak topic Aura will revisit."),
+      go: () =>
+        run(
+          "weak",
+          async () => {
+            const r = await actions.markWeak();
+            for (const label of (scan.understanding?.concepts ?? []).slice(0, 3)) {
+              await memory.recordConceptSignal({
+                conceptLabel: label,
+                delta: -20,
+                success: false,
+                subjectId: scan.understanding?.subjectId,
+                chapterId: scan.understanding?.chapterId,
+              });
+            }
+            return r;
+          },
+          "Marked as a weak topic Aura will revisit.",
+        ),
     },
     {
       key: "similar",
