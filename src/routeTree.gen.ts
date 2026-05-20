@@ -31,6 +31,7 @@ import { Route as AchievementsRouteImport } from './routes/achievements'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as SubjectsIndexRouteImport } from './routes/subjects.index'
 import { Route as SubjectsSubjectIdRouteImport } from './routes/subjects.$subjectId'
+import { Route as ScanScanIdRouteImport } from './routes/scan.$scanId'
 import { Route as QuizQuizIdRouteImport } from './routes/quiz.$quizId'
 import { Route as ExamsExamIdRouteImport } from './routes/exams.$examId'
 import { Route as ExamResultsAttemptIdRouteImport } from './routes/exam-results.$attemptId'
@@ -148,6 +149,11 @@ const SubjectsSubjectIdRoute = SubjectsSubjectIdRouteImport.update({
   path: '/subjects/$subjectId',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ScanScanIdRoute = ScanScanIdRouteImport.update({
+  id: '/$scanId',
+  path: '/$scanId',
+  getParentRoute: () => ScanRoute,
+} as any)
 const QuizQuizIdRoute = QuizQuizIdRouteImport.update({
   id: '/quiz/$quizId',
   path: '/quiz/$quizId',
@@ -195,7 +201,7 @@ export interface FileRoutesByFullPath {
   '/profile': typeof ProfileRoute
   '/quizzes': typeof QuizzesRoute
   '/resources': typeof ResourcesRoute
-  '/scan': typeof ScanRoute
+  '/scan': typeof ScanRouteWithChildren
   '/seed': typeof SeedRoute
   '/session': typeof SessionRoute
   '/targets': typeof TargetsRoute
@@ -205,6 +211,7 @@ export interface FileRoutesByFullPath {
   '/exam-results/$attemptId': typeof ExamResultsAttemptIdRoute
   '/exams/$examId': typeof ExamsExamIdRoute
   '/quiz/$quizId': typeof QuizQuizIdRoute
+  '/scan/$scanId': typeof ScanScanIdRoute
   '/subjects/$subjectId': typeof SubjectsSubjectIdRoute
   '/subjects/': typeof SubjectsIndexRoute
   '/subjects/math/$chapterId': typeof SubjectsMathChapterIdRoute
@@ -225,7 +232,7 @@ export interface FileRoutesByTo {
   '/profile': typeof ProfileRoute
   '/quizzes': typeof QuizzesRoute
   '/resources': typeof ResourcesRoute
-  '/scan': typeof ScanRoute
+  '/scan': typeof ScanRouteWithChildren
   '/seed': typeof SeedRoute
   '/session': typeof SessionRoute
   '/targets': typeof TargetsRoute
@@ -235,6 +242,7 @@ export interface FileRoutesByTo {
   '/exam-results/$attemptId': typeof ExamResultsAttemptIdRoute
   '/exams/$examId': typeof ExamsExamIdRoute
   '/quiz/$quizId': typeof QuizQuizIdRoute
+  '/scan/$scanId': typeof ScanScanIdRoute
   '/subjects/$subjectId': typeof SubjectsSubjectIdRoute
   '/subjects': typeof SubjectsIndexRoute
   '/subjects/math/$chapterId': typeof SubjectsMathChapterIdRoute
@@ -256,7 +264,7 @@ export interface FileRoutesById {
   '/profile': typeof ProfileRoute
   '/quizzes': typeof QuizzesRoute
   '/resources': typeof ResourcesRoute
-  '/scan': typeof ScanRoute
+  '/scan': typeof ScanRouteWithChildren
   '/seed': typeof SeedRoute
   '/session': typeof SessionRoute
   '/targets': typeof TargetsRoute
@@ -266,6 +274,7 @@ export interface FileRoutesById {
   '/exam-results/$attemptId': typeof ExamResultsAttemptIdRoute
   '/exams/$examId': typeof ExamsExamIdRoute
   '/quiz/$quizId': typeof QuizQuizIdRoute
+  '/scan/$scanId': typeof ScanScanIdRoute
   '/subjects/$subjectId': typeof SubjectsSubjectIdRoute
   '/subjects/': typeof SubjectsIndexRoute
   '/subjects/math/$chapterId': typeof SubjectsMathChapterIdRoute
@@ -298,6 +307,7 @@ export interface FileRouteTypes {
     | '/exam-results/$attemptId'
     | '/exams/$examId'
     | '/quiz/$quizId'
+    | '/scan/$scanId'
     | '/subjects/$subjectId'
     | '/subjects/'
     | '/subjects/math/$chapterId'
@@ -328,6 +338,7 @@ export interface FileRouteTypes {
     | '/exam-results/$attemptId'
     | '/exams/$examId'
     | '/quiz/$quizId'
+    | '/scan/$scanId'
     | '/subjects/$subjectId'
     | '/subjects'
     | '/subjects/math/$chapterId'
@@ -358,6 +369,7 @@ export interface FileRouteTypes {
     | '/exam-results/$attemptId'
     | '/exams/$examId'
     | '/quiz/$quizId'
+    | '/scan/$scanId'
     | '/subjects/$subjectId'
     | '/subjects/'
     | '/subjects/math/$chapterId'
@@ -379,7 +391,7 @@ export interface RootRouteChildren {
   ProfileRoute: typeof ProfileRoute
   QuizzesRoute: typeof QuizzesRoute
   ResourcesRoute: typeof ResourcesRoute
-  ScanRoute: typeof ScanRoute
+  ScanRoute: typeof ScanRouteWithChildren
   SeedRoute: typeof SeedRoute
   SessionRoute: typeof SessionRoute
   TargetsRoute: typeof TargetsRoute
@@ -548,6 +560,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SubjectsSubjectIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/scan/$scanId': {
+      id: '/scan/$scanId'
+      path: '/$scanId'
+      fullPath: '/scan/$scanId'
+      preLoaderRoute: typeof ScanScanIdRouteImport
+      parentRoute: typeof ScanRoute
+    }
     '/quiz/$quizId': {
       id: '/quiz/$quizId'
       path: '/quiz/$quizId'
@@ -615,6 +634,16 @@ const ExamsRouteChildren: ExamsRouteChildren = {
 
 const ExamsRouteWithChildren = ExamsRoute._addFileChildren(ExamsRouteChildren)
 
+interface ScanRouteChildren {
+  ScanScanIdRoute: typeof ScanScanIdRoute
+}
+
+const ScanRouteChildren: ScanRouteChildren = {
+  ScanScanIdRoute: ScanScanIdRoute,
+}
+
+const ScanRouteWithChildren = ScanRoute._addFileChildren(ScanRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AchievementsRoute: AchievementsRoute,
@@ -631,7 +660,7 @@ const rootRouteChildren: RootRouteChildren = {
   ProfileRoute: ProfileRoute,
   QuizzesRoute: QuizzesRoute,
   ResourcesRoute: ResourcesRoute,
-  ScanRoute: ScanRoute,
+  ScanRoute: ScanRouteWithChildren,
   SeedRoute: SeedRoute,
   SessionRoute: SessionRoute,
   TargetsRoute: TargetsRoute,
