@@ -2919,3 +2919,186 @@ export type VoicePreferencesDoc = {
   autoListen: boolean;
   updatedAt: number;
 };
+
+/* ============================================================
+ * Board Exam Hall Mode + Full Simulation Engine
+ * ============================================================
+ * All collections live as subcollections under users/{uid} and are
+ * owner-gated by Firestore Security Rules. Sessions store every
+ * answer, every per-question time spent, invigilator events,
+ * stress markers and the final post-exam analysis snapshot.
+ */
+
+export type ExamHallSectionKind =
+  | "mcq"
+  | "short"
+  | "long"
+  | "diagram"
+  | "case";
+
+export type ExamHallStatus =
+  | "draft"
+  | "in_progress"
+  | "paused"
+  | "submitted"
+  | "auto_submitted";
+
+export type ExamHallQuestion = {
+  id: string;
+  prompt: string;
+  marks: number;
+  kind: ExamHallSectionKind;
+  chapterId?: string;
+  modelAnswer?: string;
+  keywords?: string[];
+};
+
+export type ExamHallSection = {
+  id: string;
+  title: string;
+  kind: ExamHallSectionKind;
+  durationSec: number;
+  questions: ExamHallQuestion[];
+  recommendedOrder?: number;
+};
+
+export type ExamHallAnswer = {
+  questionId: string;
+  text: string;
+  timeSpentSec: number;
+  visits: number;
+  hesitations: number;
+  flagged?: boolean;
+  startedAt?: number;
+  lastTouchedAt?: number;
+};
+
+/** Lives under users/{uid}/examHallSessions/{sessionId}. */
+export type ExamHallSessionDoc = {
+  id: string;
+  userId: string;
+  title: string;
+  examId?: string;
+  totalMarks: number;
+  totalDurationSec: number;
+  startedAt: number;
+  endedAt?: number;
+  status: ExamHallStatus;
+  sections: ExamHallSection[];
+  answers: Record<string, ExamHallAnswer>;
+  /** Section the student is currently on. */
+  cursor: { sectionIndex: number; questionIndex: number };
+  /** Total elapsed seconds at last heartbeat. */
+  elapsedSec: number;
+  /** Section the student should attempt next per adaptive strategy. */
+  recommendedSectionId?: string;
+  language?: "en" | "kn";
+  antiCheat?: {
+    blurEvents: number;
+    fullscreenExits: number;
+    pasteEvents: number;
+  };
+  createdAt: number;
+  updatedAt: number;
+};
+
+/** Lives under users/{uid}/examStrategies/{strategyId}. */
+export type ExamStrategyDoc = {
+  id: string;
+  userId: string;
+  sessionId: string;
+  recommendedOrder: { sectionId: string; reason: string }[];
+  timeAllocation: { sectionId: string; allocSec: number }[];
+  confidenceGuidance: string;
+  weakTopicNotes: string[];
+  createdAt: number;
+};
+
+export type InvigilatorEventKind =
+  | "slow_solving"
+  | "panic"
+  | "time_imbalance"
+  | "section_skipped"
+  | "fatigue"
+  | "confidence_drop"
+  | "encourage";
+
+export type InvigilatorEventSeverity = "info" | "warning" | "critical";
+
+/** Lives under users/{uid}/invigilatorEvents/{eventId}. */
+export type InvigilatorEventDoc = {
+  id: string;
+  userId: string;
+  sessionId: string;
+  kind: InvigilatorEventKind;
+  severity: InvigilatorEventSeverity;
+  message: string;
+  questionId?: string;
+  sectionId?: string;
+  acknowledged?: boolean;
+  createdAt: number;
+};
+
+/** Lives under users/{uid}/timingAnalytics/{analyticsId}. */
+export type TimingAnalyticsDoc = {
+  id: string;
+  userId: string;
+  sessionId: string;
+  perSection: {
+    sectionId: string;
+    allocSec: number;
+    spentSec: number;
+    overspendSec: number;
+    avgPerQuestionSec: number;
+  }[];
+  totalAllocatedSec: number;
+  totalSpentSec: number;
+  /** 0..1 — closer to 1 means time was well-distributed. */
+  balanceScore: number;
+  slowestQuestionId?: string;
+  fastestQuestionId?: string;
+  createdAt: number;
+};
+
+/** Lives under users/{uid}/stressPatterns/{patternId}. */
+export type StressPatternDoc = {
+  id: string;
+  userId: string;
+  sessionId: string;
+  hesitationCount: number;
+  panicSpikes: number;
+  fatigueScore: number; // 0..1
+  performanceDropPct: number; // 0..1 — drop from first half to second half
+  pressureResponse: "calm" | "steady" | "rattled" | "overwhelmed";
+  notes: string[];
+  createdAt: number;
+};
+
+/** Lives under users/{uid}/boardSimulationResults/{resultId}. */
+export type BoardSimulationResultDoc = {
+  id: string;
+  userId: string;
+  sessionId: string;
+  predictedMarks: number;
+  outOf: number;
+  predictedPct: number;
+  marksAtRisk: number;
+  perSection: { sectionId: string; scored: number; outOf: number }[];
+  weakAreas: { chapterId?: string; label: string; gap: number }[];
+  presentation: {
+    structureScore: number; // 0..1
+    keywordCoverage: number; // 0..1
+    diagramLabeling: number; // 0..1
+    longAnswerOrganization: number; // 0..1
+    handwritingClarity?: number; // 0..1 — set when OCR was used
+  };
+  timingSummary: {
+    balanceScore: number;
+    overspendSec: number;
+    underspendSec: number;
+  };
+  confidenceTrend: "rising" | "flat" | "falling" | "volatile";
+  revisionRecommendations: { chapterId?: string; label: string }[];
+  invigilatorHighlights: InvigilatorEventKind[];
+  createdAt: number;
+};

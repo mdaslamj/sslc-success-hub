@@ -207,3 +207,17 @@ export const VOICE_SUBCOLLECTIONS = {
   AUDIO_REVISION_HISTORY: "audioRevisionHistory",
   VOICE_PREFERENCES: "voicePreferences",
 } as const;
+
+// Board Exam Hall Mode + Full Simulation Engine.
+// All collections live as subcollections under users/{uid} and are
+// owner-gated. Documents persist hall sessions, invigilator events,
+// timing analytics, stress patterns, exam strategies, and the
+// final board simulation result.
+export const EXAM_HALL_SUBCOLLECTIONS = {
+  HALL_SESSIONS: "examHallSessions",
+  STRATEGIES: "examStrategies",
+  INVIGILATOR_EVENTS: "invigilatorEvents",
+  TIMING_ANALYTICS: "timingAnalytics",
+  STRESS_PATTERNS: "stressPatterns",
+  SIMULATION_RESULTS: "boardSimulationResults",
+} as const;
