@@ -2402,3 +2402,125 @@ export type ConceptConfidenceDoc = {
   /** True once confidence has lingered below 35 across 3+ attempts. */
   chronicWeak: boolean;
 };
+
+// ---------------------------------------------------------------------------
+// Gamification + Student Reward System
+// ---------------------------------------------------------------------------
+
+/** Source that produced an XP grant — drives ledger filters & analytics. */
+export type XpSource =
+  | "study_session"
+  | "revision"
+  | "quiz"
+  | "mock_exam"
+  | "weak_recovery"
+  | "planner_completion"
+  | "streak_day"
+  | "mission"
+  | "achievement"
+  | "scan_solve"
+  | "reflection"
+  | "manual";
+
+/** Lives at users/{uid}/xp/{entryId}. Append-only ledger. */
+export type XpLedgerDoc = {
+  id: string;
+  userId: string;
+  amount: number;
+  source: XpSource;
+  subjectId?: string;
+  refId?: string;
+  label?: string;
+  dayKey: string;
+  createdAt: number;
+};
+
+/** Lives at users/{uid}/levels/summary (singleton). Mirrors aggregate XP. */
+export type LevelSummaryDoc = {
+  id: string; // "summary"
+  userId: string;
+  totalXp: number;
+  level: number;
+  xpIntoLevel: number;
+  xpForNextLevel: number;
+  /** Per-subject XP roll-up — drives subject mastery rings. */
+  bySubject: Record<string, number>;
+  /** Board journey tier — see JOURNEY_TIERS. */
+  journeyTier: JourneyTier;
+  updatedAt: number;
+};
+
+/** Board readiness journey tiers — visualized in the home strip. */
+export type JourneyTier =
+  | "beginner"
+  | "consistent_learner"
+  | "board_fighter"
+  | "sslc_master";
+
+/** Kinds of streaks tracked independently. */
+export type StreakKind =
+  | "study"
+  | "revision"
+  | "recovery"
+  | "subject";
+
+/** Lives at users/{uid}/streaks/{kind} or {kind}_{subjectId} for subject streaks. */
+export type StreakLedgerDoc = {
+  id: string;
+  userId: string;
+  kind: StreakKind;
+  subjectId?: string;
+  current: number;
+  longest: number;
+  lastDayKey: string | null;
+  /** 0..100 consistency score over the last 14 days. */
+  consistencyScore: number;
+  updatedAt: number;
+};
+
+export type MissionKind =
+  | "study_minutes"
+  | "revision_count"
+  | "weak_recovery"
+  | "mock_exam"
+  | "scan_solve"
+  | "quiz_attempt"
+  | "reflection";
+
+/** Lives at users/{uid}/missions/{missionId}. Daily, regenerated per dayKey. */
+export type MissionDoc = {
+  id: string;
+  userId: string;
+  dayKey: string;
+  kind: MissionKind;
+  title: string;
+  description: string;
+  icon: string;
+  /** Target measured in the kind's natural unit (minutes, count, etc.). */
+  target: number;
+  progress: number;
+  completed: boolean;
+  xpReward: number;
+  completedAt?: number;
+  createdAt: number;
+};
+
+/** Lives at users/{uid}/rewardHistory/{eventId}. Subtle celebration log. */
+export type RewardEventDoc = {
+  id: string;
+  userId: string;
+  kind:
+    | "xp_grant"
+    | "level_up"
+    | "mission_complete"
+    | "streak_milestone"
+    | "recovery"
+    | "journey_tier"
+    | "achievement";
+  title: string;
+  detail?: string;
+  xp?: number;
+  refId?: string;
+  dayKey: string;
+  createdAt: number;
+};
