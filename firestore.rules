@@ -566,6 +566,54 @@ service cloud.firestore {
       allow read, write: if isOwner(uid);
     }
 
+    // Parent Intelligence Dashboard — parents own all their subcollections;
+    // student-issued invites are world-readable (by code) and consumable once.
+    match /parents/{parentUid} {
+      allow read, write: if isOwner(parentUid) || isAdmin();
+
+      match /linkedStudents/{studentUid} {
+        allow read, write: if isOwner(parentUid) || isAdmin();
+      }
+      match /alerts/{alertId} {
+        allow read, write: if isOwner(parentUid) || isAdmin();
+      }
+      match /weeklyReports/{weekKey} {
+        allow read, write: if isOwner(parentUid) || isAdmin();
+      }
+      match /engagementHistory/{eventId} {
+        allow read, write: if isOwner(parentUid) || isAdmin();
+      }
+    }
+
+    // Student-issued invite codes — student creates/updates own; signed-in
+    // parents may read by code to claim, and update once (to mark used).
+    match /studentInvites/{code} {
+      allow read: if isSignedIn();
+      allow create: if isSignedIn() && request.resource.data.studentUid == request.auth.uid;
+      allow update: if isSignedIn()
+        && (
+          resource.data.studentUid == request.auth.uid
+          || (resource.data.used == false && request.resource.data.used == true
+              && request.resource.data.usedByParentUid == request.auth.uid)
+        );
+      allow delete: if isSignedIn() && resource.data.studentUid == request.auth.uid;
+    }
+
+    // Parent ↔ student link records. Both sides may read. Parent creates;
+    // either side may revoke. Admin can override.
+    match /parentLinks/{linkId} {
+      allow read: if isSignedIn()
+        && (resource.data.parentUid == request.auth.uid
+            || resource.data.studentUid == request.auth.uid
+            || isAdmin());
+      allow create: if isSignedIn()
+        && request.resource.data.parentUid == request.auth.uid;
+      allow update, delete: if isSignedIn()
+        && (resource.data.parentUid == request.auth.uid
+            || resource.data.studentUid == request.auth.uid
+            || isAdmin());
+    }
+
     // Default deny.
     match /{document=**} {
       allow read, write: if false;

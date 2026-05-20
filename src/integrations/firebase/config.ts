@@ -104,6 +104,10 @@ export const COLLECTIONS = {
   SOLVED_QUESTIONS: "solvedQuestions",
   AI_EVALUATIONS: "aiEvaluations",
   PRACTICE_RECOMMENDATIONS: "practiceRecommendations",
+  // Parent Intelligence Dashboard
+  PARENTS: "parents",
+  STUDENT_INVITES: "studentInvites",
+  PARENT_LINKS: "parentLinks",
 } as const;
 
 // Weakness Diagnosis & Adaptive Remediation Engine
@@ -165,4 +169,12 @@ export const GAMIFICATION_SUBCOLLECTIONS = {
   MISSIONS: "missions",
   STREAKS_LEDGER: "streaks",
   REWARD_HISTORY: "rewardHistory",
+} as const;
+
+// Parent Intelligence Dashboard subcollections (under parents/{parentUid}).
+export const PARENT_SUBCOLLECTIONS = {
+  LINKED_STUDENTS: "linkedStudents",
+  ALERTS: "alerts",
+  WEEKLY_REPORTS: "weeklyReports",
+  ENGAGEMENT_HISTORY: "engagementHistory",
 } as const;

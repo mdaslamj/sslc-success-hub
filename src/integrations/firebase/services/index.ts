@@ -63,3 +63,5 @@ export * from "./practice-recommendations";
 export * from "./learning-memory";
 // Gamification + Student Reward System
 export * from "./gamification";
+// Parent Intelligence Dashboard
+export * from "./parents";

@@ -2524,3 +2524,122 @@ export type RewardEventDoc = {
   dayKey: string;
   createdAt: number;
 };
+
+// ---------------------------------------------------------------------------
+// Parent Intelligence Dashboard
+// ---------------------------------------------------------------------------
+
+/** Top-level parent account doc. Lives at parents/{parentUid}. */
+export type ParentDoc = {
+  id: string; // == parentUid
+  parentUid: string;
+  displayName?: string;
+  email?: string;
+  phone?: string;
+  preferredLanguage?: "en" | "kn" | "bilingual";
+  notificationOptIn: boolean;
+  createdAt: number;
+  updatedAt: number;
+};
+
+/** One linked student — mirrored under parents/{parentUid}/linkedStudents/{studentUid}. */
+export type LinkedStudentDoc = {
+  id: string; // == studentUid
+  parentUid: string;
+  studentUid: string;
+  studentName?: string;
+  relationship?: "mother" | "father" | "guardian" | "other";
+  status: "pending" | "active" | "revoked";
+  linkedAt: number;
+  /** Last cached summary snapshot — refreshed by the parent app on view. */
+  lastSyncedAt?: number;
+};
+
+/** Top-level invite issued by a student. Lives at studentInvites/{code}. */
+export type StudentInviteDoc = {
+  id: string; // == code
+  code: string;
+  studentUid: string;
+  studentName?: string;
+  expiresAt: number;
+  used: boolean;
+  usedByParentUid?: string;
+  createdAt: number;
+};
+
+/** Top-level link record. Lives at parentLinks/{parentUid}_{studentUid}. */
+export type ParentLinkDoc = {
+  id: string;
+  parentUid: string;
+  studentUid: string;
+  inviteCode: string;
+  status: "active" | "revoked";
+  createdAt: number;
+};
+
+export type ParentAlertSeverity = "info" | "warning" | "celebration";
+export type ParentAlertKind =
+  | "weak_subject"
+  | "revision_overdue"
+  | "confidence_decline"
+  | "improvement"
+  | "recovery"
+  | "board_readiness"
+  | "streak_milestone"
+  | "low_study_time";
+
+/** Lives at parents/{parentUid}/alerts/{alertId}. */
+export type ParentAlertDoc = {
+  id: string;
+  parentUid: string;
+  studentUid: string;
+  kind: ParentAlertKind;
+  severity: ParentAlertSeverity;
+  title: string;
+  body: string;
+  /** Suggested constructive action — kept calm + supportive. */
+  suggestion?: string;
+  read: boolean;
+  dayKey: string;
+  createdAt: number;
+};
+
+/** Lives at parents/{parentUid}/weeklyReports/{weekKey}. */
+export type ParentWeeklyReportDoc = {
+  id: string; // == weekKey (e.g. "2026-W21")
+  parentUid: string;
+  studentUid: string;
+  weekKey: string;
+  rangeStart: number;
+  rangeEnd: number;
+  studyMinutes: number;
+  plannerCompletionPct: number;
+  revisionCompleted: number;
+  mockExamsAttempted: number;
+  averageConfidence: number; // 1..5
+  boardReadiness: number; // 0..100
+  readinessDelta: number; // vs previous week
+  streak: { current: number; longest: number };
+  strengths: string[];
+  weakChapters: { subject: string; chapter: string; mastery: number }[];
+  parentSuggestions: string[];
+  generatedAt: number;
+};
+
+export type ParentEngagementKind =
+  | "viewed_dashboard"
+  | "viewed_alert"
+  | "viewed_report"
+  | "sent_encouragement"
+  | "linked_student";
+
+/** Lives at parents/{parentUid}/engagementHistory/{eventId}. */
+export type ParentEngagementDoc = {
+  id: string;
+  parentUid: string;
+  studentUid?: string;
+  kind: ParentEngagementKind;
+  detail?: string;
+  dayKey: string;
+  createdAt: number;
+};

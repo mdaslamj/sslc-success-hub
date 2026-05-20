@@ -19,6 +19,7 @@ import { Route as QuizzesRouteImport } from './routes/quizzes'
 import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as PredictionsRouteImport } from './routes/predictions'
 import { Route as PlannerRouteImport } from './routes/planner'
+import { Route as ParentRouteImport } from './routes/parent'
 import { Route as OnboardingRouteImport } from './routes/onboarding'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as LogRouteImport } from './routes/log'
@@ -87,6 +88,11 @@ const PredictionsRoute = PredictionsRouteImport.update({
 const PlannerRoute = PlannerRouteImport.update({
   id: '/planner',
   path: '/planner',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ParentRoute = ParentRouteImport.update({
+  id: '/parent',
+  path: '/parent',
   getParentRoute: () => rootRouteImport,
 } as any)
 const OnboardingRoute = OnboardingRouteImport.update({
@@ -196,6 +202,7 @@ export interface FileRoutesByFullPath {
   '/log': typeof LogRoute
   '/login': typeof LoginRoute
   '/onboarding': typeof OnboardingRoute
+  '/parent': typeof ParentRoute
   '/planner': typeof PlannerRoute
   '/predictions': typeof PredictionsRoute
   '/profile': typeof ProfileRoute
@@ -227,6 +234,7 @@ export interface FileRoutesByTo {
   '/log': typeof LogRoute
   '/login': typeof LoginRoute
   '/onboarding': typeof OnboardingRoute
+  '/parent': typeof ParentRoute
   '/planner': typeof PlannerRoute
   '/predictions': typeof PredictionsRoute
   '/profile': typeof ProfileRoute
@@ -259,6 +267,7 @@ export interface FileRoutesById {
   '/log': typeof LogRoute
   '/login': typeof LoginRoute
   '/onboarding': typeof OnboardingRoute
+  '/parent': typeof ParentRoute
   '/planner': typeof PlannerRoute
   '/predictions': typeof PredictionsRoute
   '/profile': typeof ProfileRoute
@@ -292,6 +301,7 @@ export interface FileRouteTypes {
     | '/log'
     | '/login'
     | '/onboarding'
+    | '/parent'
     | '/planner'
     | '/predictions'
     | '/profile'
@@ -323,6 +333,7 @@ export interface FileRouteTypes {
     | '/log'
     | '/login'
     | '/onboarding'
+    | '/parent'
     | '/planner'
     | '/predictions'
     | '/profile'
@@ -354,6 +365,7 @@ export interface FileRouteTypes {
     | '/log'
     | '/login'
     | '/onboarding'
+    | '/parent'
     | '/planner'
     | '/predictions'
     | '/profile'
@@ -386,6 +398,7 @@ export interface RootRouteChildren {
   LogRoute: typeof LogRoute
   LoginRoute: typeof LoginRoute
   OnboardingRoute: typeof OnboardingRoute
+  ParentRoute: typeof ParentRoute
   PlannerRoute: typeof PlannerRoute
   PredictionsRoute: typeof PredictionsRoute
   ProfileRoute: typeof ProfileRoute
@@ -474,6 +487,13 @@ declare module '@tanstack/react-router' {
       path: '/planner'
       fullPath: '/planner'
       preLoaderRoute: typeof PlannerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/parent': {
+      id: '/parent'
+      path: '/parent'
+      fullPath: '/parent'
+      preLoaderRoute: typeof ParentRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/onboarding': {
@@ -655,6 +675,7 @@ const rootRouteChildren: RootRouteChildren = {
   LogRoute: LogRoute,
   LoginRoute: LoginRoute,
   OnboardingRoute: OnboardingRoute,
+  ParentRoute: ParentRoute,
   PlannerRoute: PlannerRoute,
   PredictionsRoute: PredictionsRoute,
   ProfileRoute: ProfileRoute,
