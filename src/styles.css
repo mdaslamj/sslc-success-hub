@@ -237,6 +237,65 @@
     background-size: 200% 100%;
     animation: shimmer 2.5s infinite;
   }
+
+  /* ───────── Typography scale (premium mobile rhythm) ───────── */
+  .text-display    { font-family: var(--font-display); font-size: 32px; line-height: 1.1;  letter-spacing: -0.02em; font-weight: 700; }
+  .text-title-1    { font-family: var(--font-display); font-size: 24px; line-height: 1.15; letter-spacing: -0.018em; font-weight: 700; }
+  .text-title-2    { font-family: var(--font-display); font-size: 20px; line-height: 1.2;  letter-spacing: -0.015em; font-weight: 600; }
+  .text-title-3    { font-family: var(--font-display); font-size: 17px; line-height: 1.25; letter-spacing: -0.012em; font-weight: 600; }
+  .text-body       { font-size: 15px; line-height: 1.5; letter-spacing: -0.005em; }
+  .text-body-sm    { font-size: 13px; line-height: 1.45; }
+  .text-caption    { font-size: 11px; line-height: 1.3; letter-spacing: 0.02em; text-transform: uppercase; color: var(--muted-foreground); font-weight: 600; }
+  .text-overline   { font-size: 10px; line-height: 1; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted-foreground); font-weight: 600; }
+
+  /* ───────── Elevation tiers ───────── */
+  .elev-1 { box-shadow: 0 1px 1.5px color-mix(in oklab, var(--foreground) 4%, transparent), 0 2px 6px -3px color-mix(in oklab, var(--foreground) 8%, transparent); }
+  .elev-2 { box-shadow: 0 1px 2px color-mix(in oklab, var(--foreground) 5%, transparent), 0 8px 22px -12px color-mix(in oklab, var(--foreground) 14%, transparent); }
+  .elev-3 { box-shadow: 0 2px 4px color-mix(in oklab, var(--foreground) 6%, transparent), 0 18px 42px -18px color-mix(in oklab, var(--foreground) 22%, transparent); }
+
+  /* ───────── Surface tiers ───────── */
+  .surface-1 { background: var(--card); border: 1px solid color-mix(in oklab, var(--border) 70%, transparent); }
+  .surface-2 { background: color-mix(in oklab, var(--secondary) 55%, var(--card)); border: 1px solid color-mix(in oklab, var(--border) 60%, transparent); }
+  .surface-3 { background: color-mix(in oklab, var(--muted) 70%, transparent); border: 1px solid color-mix(in oklab, var(--border) 40%, transparent); }
+
+  /* Premium card composites */
+  .card-premium {
+    background: var(--card);
+    border-radius: var(--radius-2xl);
+    border: 1px solid color-mix(in oklab, var(--border) 70%, transparent);
+    box-shadow: 0 1px 2px color-mix(in oklab, var(--foreground) 4%, transparent),
+                0 10px 28px -16px color-mix(in oklab, var(--foreground) 14%, transparent);
+    transition: transform 220ms cubic-bezier(.2,.7,.2,1), box-shadow 220ms ease;
+  }
+  .card-premium:active { transform: scale(.985); }
+  .card-tap { transition: transform 180ms cubic-bezier(.2,.7,.2,1), box-shadow 180ms ease; }
+  .card-tap:active { transform: scale(.97); box-shadow: 0 1px 2px color-mix(in oklab, var(--foreground) 4%, transparent); }
+
+  /* ───────── Micro-interactions / animations ───────── */
+  @keyframes page-in       { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+  @keyframes slide-up      { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+  @keyframes ring-fill     { from { stroke-dashoffset: 100; } }
+  @keyframes streak-pulse  { 0%,100% { transform: scale(1); filter: drop-shadow(0 0 0 transparent); } 50% { transform: scale(1.08); filter: drop-shadow(0 6px 14px color-mix(in oklab, var(--warning) 50%, transparent)); } }
+  @keyframes pill-bounce   { 0% { transform: scale(.6); opacity: 0; } 60% { transform: scale(1.05); opacity: 1; } 100% { transform: scale(1); } }
+  @keyframes progress-grow { from { width: 0; } }
+
+  .animate-page-in      { animation: page-in 320ms cubic-bezier(.2,.7,.2,1) both; }
+  .animate-slide-up     { animation: slide-up 380ms cubic-bezier(.2,.7,.2,1) both; }
+  .animate-streak       { animation: streak-pulse 2.4s ease-in-out infinite; }
+  .animate-pill         { animation: pill-bounce 280ms cubic-bezier(.3,1.4,.4,1) both; }
+  .animate-progress     { animation: progress-grow 700ms cubic-bezier(.2,.7,.2,1) both; }
+
+  /* Stagger helpers (apply to children via [style="--i:n"]) */
+  .stagger > * { animation: slide-up 380ms cubic-bezier(.2,.7,.2,1) both; animation-delay: calc(var(--i, 0) * 40ms); }
+
+  /* Keyboard-safe layout helper for forms */
+  .kb-safe { padding-bottom: max(env(keyboard-inset-height, 0px), env(safe-area-inset-bottom, 0px)); }
+
+  /* Refined focus ring */
+  .focus-ring:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--background), 0 0 0 4px color-mix(in oklab, var(--ring) 70%, transparent);
+  }
 }
 
 /* Mobile-first base improvements */
@@ -249,6 +308,15 @@ body {
   -webkit-tap-highlight-color: transparent;
   overflow-x: hidden;
   overscroll-behavior-y: contain;
+}
+/* Smooth reduced-motion fallback */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
 }
 /* Prevent iOS zoom on focused inputs (must be >=16px) */
 @media (max-width: 640px) {
