@@ -16,7 +16,6 @@ import {
   Square,
   Trophy,
   Wand2,
-  X,
 } from "lucide-react";
 import { useAuth } from "@/contexts/auth-context";
 import { useStudySession } from "@/hooks/use-study-session";
