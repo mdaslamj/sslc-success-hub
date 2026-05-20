@@ -50,7 +50,7 @@ export const Route = createFileRoute("/")({
 });
 
 function HomePage() {
-  const { user, profile } = useAuth();
+  const { user, profile, loading: authLoading } = useAuth();
   const navigate = useNavigate();
   const firstName = (profile?.studentName || profile?.displayName || user?.displayName || "friend")
     .split(" ")[0];
@@ -114,6 +114,31 @@ function HomePage() {
 
   const focus = engine.plan?.tasks.find((t) => !t.done) ?? engine.plan?.tasks[0];
   const todayPct = engine.completion;
+
+  // Hold the dashboard until auth + profile + today's plan are ready,
+  // so signed-in users don't briefly see a guest/empty state on hydration.
+  const hydrating =
+    authLoading || (user && !profile) || engine.loading || gamification.loading;
+  if (hydrating) {
+    return (
+      <DashboardLayout title="Today">
+        <div className="mx-auto max-w-md space-y-4 md:max-w-2xl">
+          <div className="h-6 w-32 animate-pulse rounded-full bg-muted" />
+          <div className="h-8 w-3/4 animate-pulse rounded-md bg-muted" />
+          <div className="h-4 w-2/3 animate-pulse rounded-md bg-muted/70" />
+          <div className="mt-4 h-32 w-full animate-pulse rounded-2xl bg-muted" />
+          <div className="grid grid-cols-2 gap-3">
+            <div className="h-24 animate-pulse rounded-2xl bg-muted" />
+            <div className="h-24 animate-pulse rounded-2xl bg-muted" />
+          </div>
+          <div className="h-40 w-full animate-pulse rounded-2xl bg-muted" />
+          <span className="sr-only" role="status" aria-live="polite">
+            Loading your dashboard…
+          </span>
+        </div>
+      </DashboardLayout>
+    );
+  }
 
   const weekDots = Array.from({ length: 7 }).map((_, i) => {
     const idx = (new Date().getDay() + i) % 7;
