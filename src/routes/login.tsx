@@ -8,6 +8,8 @@ import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useAuth } from "@/contexts/auth-context";
 
+const GUEST_KEY = "aura.guest.v1";
+
 export const Route = createFileRoute("/login")({
   head: () => ({
     meta: [
@@ -82,11 +84,21 @@ function LoginPage() {
         </Tabs>
 
         <p className="mt-6 text-center text-xs text-muted-foreground">
-          Continue without an account?{" "}
-          <Link to="/" className="font-medium text-foreground underline">
-            Browse as guest
-          </Link>
+          Want to look around first?
         </p>
+        <Button
+          variant="ghost"
+          className="mt-2 w-full rounded-xl"
+          onClick={() => {
+            try {
+              localStorage.setItem(GUEST_KEY, "1");
+            } catch {}
+            toast.success("Continuing as guest — progress saved on this device");
+            navigate({ to: "/onboarding" });
+          }}
+        >
+          Continue as guest
+        </Button>
       </div>
     </div>
   );
