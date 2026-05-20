@@ -156,6 +156,9 @@ const PUBLIC_PATHS = new Set([
   "/seed",
 ]);
 
+const GUEST_KEY = "aura.guest.v1";
+const GUEST_ONBOARDING_KEY = "aura.guest.onboarding.v1";
+
 function OnboardingGate({ children }: { children: React.ReactNode }) {
   const { user, profile, loading } = useAuth();
   const pathname = useRouterState({ select: (r) => r.location.pathname });
@@ -163,11 +166,30 @@ function OnboardingGate({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     if (loading) return;
-    if (!user) return; // unauthenticated users are handled per-route
-    if (!profile) return;
-    if (profile.onboardingCompletedAt) return;
     if (PUBLIC_PATHS.has(pathname)) return;
-    navigate({ to: "/onboarding" });
+
+    // Authenticated path — gate on profile completion.
+    if (user) {
+      if (!profile) return;
+      if (profile.onboardingCompletedAt) return;
+      navigate({ to: "/onboarding" });
+      return;
+    }
+
+    // Unauthenticated path — guest mode or redirect to login.
+    let isGuest = false;
+    let guestOnboarded = false;
+    try {
+      isGuest = localStorage.getItem(GUEST_KEY) === "1";
+      guestOnboarded = !!localStorage.getItem(GUEST_ONBOARDING_KEY);
+    } catch {}
+    if (!isGuest) {
+      navigate({ to: "/login" });
+      return;
+    }
+    if (!guestOnboarded) {
+      navigate({ to: "/onboarding" });
+    }
   }, [user, profile, loading, pathname, navigate]);
 
   return <>{children}</>;
