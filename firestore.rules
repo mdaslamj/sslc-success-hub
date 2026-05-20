@@ -163,6 +163,29 @@ service cloud.firestore {
       allow read, write: if isOwner(uid);
     }
 
+    // Board Exam Hall Mode + Full Simulation Engine — per-user
+    // subcollections under users/{uid}. Owner read/write only.
+    // Stores hall sessions, AI invigilator events, exam strategy,
+    // timing/stress analytics, and final board simulation results.
+    match /users/{uid}/examHallSessions/{sessionId} {
+      allow read, write: if isOwner(uid);
+    }
+    match /users/{uid}/examStrategies/{strategyId} {
+      allow read, write: if isOwner(uid);
+    }
+    match /users/{uid}/invigilatorEvents/{eventId} {
+      allow read, write: if isOwner(uid);
+    }
+    match /users/{uid}/timingAnalytics/{analyticsId} {
+      allow read, write: if isOwner(uid);
+    }
+    match /users/{uid}/stressPatterns/{patternId} {
+      allow read, write: if isOwner(uid);
+    }
+    match /users/{uid}/boardSimulationResults/{resultId} {
+      allow read, write: if isOwner(uid);
+    }
+
     // Per-user profile (auth + onboarding metadata). Doc id == auth uid.
     match /userProfiles/{uid} {
       allow read, write: if isOwner(uid);

@@ -91,6 +91,29 @@ function ExamsPage() {
           </div>
         </section>
 
+        {/* Board Exam Hall CTA */}
+        <Link
+          to="/exam-hall"
+          className="group flex items-center justify-between gap-4 rounded-3xl border border-foreground/30 bg-gradient-to-br from-foreground/5 to-transparent p-5 transition-colors hover:border-foreground/50"
+        >
+          <div className="min-w-0">
+            <div className="flex items-center gap-2 text-[10px] uppercase tracking-widest text-muted-foreground">
+              <Sparkles className="h-3 w-3" />
+              New · Board Exam Hall
+            </div>
+            <h2 className="mt-1 font-display text-lg font-semibold">
+              Full SSLC simulation with AI invigilator
+            </h2>
+            <p className="mt-1 text-xs text-muted-foreground">
+              Strict timing · presentation analysis · stress patterns · predicted marks.
+            </p>
+          </div>
+          <Button className="rounded-full gap-2 shrink-0">
+            <Play className="h-3.5 w-3.5" />
+            Enter hall
+          </Button>
+        </Link>
+
         {/* Filter pills */}
         <div className="flex flex-wrap gap-2">
           {(["all", "full", "chapter", "mixed", "previous"] as Filter[]).map((k) => (
