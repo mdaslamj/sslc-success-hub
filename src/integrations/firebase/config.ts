@@ -108,6 +108,10 @@ export const COLLECTIONS = {
   PARENTS: "parents",
   STUDENT_INVITES: "studentInvites",
   PARENT_LINKS: "parentLinks",
+  // Teacher Intelligence Dashboard
+  TEACHERS: "teachers",
+  CLASSES: "classes",
+  CLASS_INVITES: "classInvites",
 } as const;
 
 // Weakness Diagnosis & Adaptive Remediation Engine
@@ -177,4 +181,18 @@ export const PARENT_SUBCOLLECTIONS = {
   ALERTS: "alerts",
   WEEKLY_REPORTS: "weeklyReports",
   ENGAGEMENT_HISTORY: "engagementHistory",
+} as const;
+
+// Teacher Intelligence Dashboard subcollections.
+// Under teachers/{teacherUid}: a lightweight mirror of classes for quick lists.
+// Under classes/{classId}: students, assignments, analytics snapshots, risk alerts, insights.
+export const TEACHER_SUBCOLLECTIONS = {
+  CLASSES_MIRROR: "classes",
+} as const;
+export const CLASS_SUBCOLLECTIONS = {
+  STUDENTS: "students",
+  ASSIGNMENTS: "assignments",
+  ANALYTICS: "analytics",
+  RISK_ALERTS: "riskAlerts",
+  INSIGHTS: "insights",
 } as const;
