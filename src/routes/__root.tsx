@@ -6,11 +6,14 @@ import {
   useRouter,
   HeadContent,
   Scripts,
+  useNavigate,
+  useRouterState,
 } from "@tanstack/react-router";
+import { useEffect } from "react";
 
 import appCss from "../styles.css?url";
 import { Toaster } from "@/components/ui/sonner";
-import { AuthProvider } from "@/contexts/auth-context";
+import { AuthProvider, useAuth } from "@/contexts/auth-context";
 import { ThemeProvider } from "@/contexts/theme-context";
 
 function NotFoundComponent() {
@@ -132,10 +135,40 @@ function RootComponent() {
     <QueryClientProvider client={queryClient}>
       <ThemeProvider>
         <AuthProvider>
-          <Outlet />
+          <OnboardingGate>
+            <Outlet />
+          </OnboardingGate>
           <Toaster richColors position="top-right" />
         </AuthProvider>
       </ThemeProvider>
     </QueryClientProvider>
   );
+}
+
+/**
+ * Redirects signed-in users without a completed onboarding flow to /onboarding.
+ * Public auth routes are allow-listed so the flow itself is reachable.
+ */
+const PUBLIC_PATHS = new Set([
+  "/login",
+  "/forgot-password",
+  "/onboarding",
+  "/seed",
+]);
+
+function OnboardingGate({ children }: { children: React.ReactNode }) {
+  const { user, profile, loading } = useAuth();
+  const pathname = useRouterState({ select: (r) => r.location.pathname });
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (loading) return;
+    if (!user) return; // unauthenticated users are handled per-route
+    if (!profile) return;
+    if (profile.onboardingCompletedAt) return;
+    if (PUBLIC_PATHS.has(pathname)) return;
+    navigate({ to: "/onboarding" });
+  }, [user, profile, loading, pathname, navigate]);
+
+  return <>{children}</>;
 }
