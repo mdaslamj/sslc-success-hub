@@ -133,6 +133,26 @@ service cloud.firestore {
       allow read, write: if isOwner(uid);
     }
 
+    // Voice AI Tutor + Conversational Learning System — per-user
+    // subcollections under users/{uid}. Owner read/write only.
+    // Transcripts only (no raw audio). voicePreferences uses singleton
+    // doc id "profile".
+    match /users/{uid}/voiceSessions/{sessionId} {
+      allow read, write: if isOwner(uid);
+    }
+    match /users/{uid}/conversationalHistory/{entryId} {
+      allow read, write: if isOwner(uid);
+    }
+    match /users/{uid}/spokenHints/{hintId} {
+      allow read, write: if isOwner(uid);
+    }
+    match /users/{uid}/audioRevisionHistory/{entryId} {
+      allow read, write: if isOwner(uid);
+    }
+    match /users/{uid}/voicePreferences/{prefsId} {
+      allow read, write: if isOwner(uid);
+    }
+
     // Board Readiness Prediction + Exam Simulation Engine —
     // per-user subcollections under users/{uid}. Owner read/write only.
     // Public chapter reads and admin seeding rules remain unchanged.
