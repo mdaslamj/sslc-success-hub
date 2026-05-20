@@ -34,6 +34,7 @@ import { ReflectionSheet } from "@/components/daily/reflection-sheet";
 import { useGamification } from "@/hooks/use-gamification";
 import { DailyMissionsCard } from "@/components/gamification/daily-missions-card";
 import { JourneyStrip } from "@/components/gamification/journey-strip";
+import { ScanHeroBanner } from "@/components/scan/scan-hero-banner";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -180,6 +181,10 @@ function HomePage() {
             hint={engine.aiPriorityHint ?? focus.reason}
           />
         )}
+
+        <ScanHeroBanner />
+
+
 
         <section>
           <SectionHeader
