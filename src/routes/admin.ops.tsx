@@ -17,7 +17,7 @@ function AdminOpsRoute() {
             Production monitoring, feature flags, AI cost governance, and beta tooling.
           </p>
         </div>
-        <AdminGate>
+        <AdminGate title="Operations">
           <AdminOpsPanel />
         </AdminGate>
       </div>
