@@ -631,12 +631,13 @@ service cloud.firestore {
     // Student-issued invite codes — student creates/updates own; signed-in
     // parents may read by code to claim, and update once (to mark used).
     match /studentInvites/{code} {
-      // Point-lookup by code is still allowed for any signed-in user
-      // (parents need it to claim a code), but only the issuing student
-      // or the parent who already claimed it can read the document via
-      // listing/queries. Rules apply per-document, so a parent who
-      // doesn't yet know the code cannot enumerate invites.
-      allow read: if isSignedIn()
+      // Point-lookup by code is allowed for any signed-in user — parents
+      // need it to claim a code they were given out-of-band. Listing /
+      // querying the collection is restricted to the issuing student or
+      // the parent who already claimed the invite, preventing attackers
+      // from enumerating every student's invite code + display name.
+      allow get: if isSignedIn();
+      allow list: if isSignedIn()
         && (resource.data.studentUid == request.auth.uid
             || resource.data.get('usedByParentUid', null) == request.auth.uid);
       allow create: if isSignedIn() && request.resource.data.studentUid == request.auth.uid;
@@ -726,9 +727,11 @@ service cloud.firestore {
     // Class invite codes — top-level, world-readable by signed-in users for
     // claim flow. Teacher who owns the linked class may write; admins override.
     match /classInvites/{code} {
-      // Same posture as studentInvites: only the issuing teacher can list,
-      // but point lookups by code remain usable for students claiming it.
-      allow read: if isSignedIn()
+      // Same posture as studentInvites: point lookups by code remain
+      // usable for students claiming it, but listing is restricted to
+      // the issuing teacher.
+      allow get: if isSignedIn();
+      allow list: if isSignedIn()
         && resource.data.teacherUid == request.auth.uid;
       allow create: if isSignedIn()
         && request.resource.data.teacherUid == request.auth.uid;
