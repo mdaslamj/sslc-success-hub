@@ -528,6 +528,27 @@ service cloud.firestore {
         && request.resource.data.userId == request.auth.uid;
     }
 
+    // Continuous Learning Memory + Tutoring Continuity Engine —
+    // per-user subcollections under users/{uid}. Owner read/write only.
+    match /users/{uid}/learningProfile/{docId} {
+      allow read, write: if isOwner(uid);
+    }
+    match /users/{uid}/mistakeMemory/{docId} {
+      allow read, write: if isOwner(uid);
+    }
+    match /users/{uid}/tutoringPreferences/{docId} {
+      allow read, write: if isOwner(uid);
+    }
+    match /users/{uid}/learningTimeline/{docId} {
+      allow read, write: if isOwner(uid);
+    }
+    match /users/{uid}/scanHistory/{docId} {
+      allow read, write: if isOwner(uid);
+    }
+    match /users/{uid}/conceptConfidence/{docId} {
+      allow read, write: if isOwner(uid);
+    }
+
     // Default deny.
     match /{document=**} {
       allow read, write: if false;
