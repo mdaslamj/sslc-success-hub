@@ -54,3 +54,8 @@ export * from "./reasoning-feedback";
 // Board Readiness Prediction + Exam Simulation Engine
 export * from "./exam-simulations";
 export * from "./board-readiness";
+// AI Scan & Solve experience
+export * from "./scans";
+export * from "./solved-questions";
+export * from "./ai-evaluations";
+export * from "./practice-recommendations";

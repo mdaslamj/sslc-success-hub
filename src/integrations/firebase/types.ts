@@ -2176,3 +2176,105 @@ export type BoardReadinessDoc = {
   createdAt: number;
   updatedAt: number;
 };
+
+// ---------------------------------------------------------------------------
+// AI Scan & Solve experience
+// ---------------------------------------------------------------------------
+
+export type ScanSource = "camera" | "gallery" | "pdf" | "text";
+export type ScanMode = "solve" | "evaluate";
+export type ScanStatus =
+  | "capturing"
+  | "ocr_processing"
+  | "understanding"
+  | "ready"
+  | "error";
+
+export type ScanDifficulty = "easy" | "medium" | "hard" | "unknown";
+
+export type ScanUnderstanding = {
+  subject?: string;
+  subjectId?: string;
+  chapterId?: string;
+  chapterTitle?: string;
+  difficulty: ScanDifficulty;
+  /** 0..100 — likelihood the question matches board exam patterns. */
+  boardRelevance: number;
+  concepts: string[];
+  formulas: string[];
+  keywords: string[];
+  diagrams?: string[];
+  language?: string;
+  /** Short one-line summary the UI can show as a subtitle. */
+  summary?: string;
+};
+
+/** Owner-gated, lives at `scans/{id}`. */
+export type ScanDoc = {
+  id: string;
+  userId: string;
+  mode: ScanMode;
+  source: ScanSource;
+  /** Optional underlying answer-attempt id when image upload was used. */
+  attemptId?: string;
+  imageIds: string[];
+  /** Inline preview URL — first page thumb (Storage download URL). */
+  previewUrl?: string;
+  /** Raw OCR / pasted text the AI works with. */
+  extractedText: string;
+  ocrConfidence?: number;
+  understanding?: ScanUnderstanding;
+  status: ScanStatus;
+  error?: string;
+  createdAt: number;
+  updatedAt: number;
+};
+
+export type SolveMode =
+  | "quick"
+  | "step_by_step"
+  | "hint"
+  | "board"
+  | "kannada";
+
+/** Owner-gated cache of an AI-generated solution for a (scan, mode, language). */
+export type SolvedQuestionDoc = {
+  id: string;
+  userId: string;
+  scanId: string;
+  mode: SolveMode;
+  language: "en" | "kn";
+  content: string;
+  model: string;
+  /** Pre-parsed steps when mode === "step_by_step". */
+  steps?: { order: number; text: string; formula?: string }[];
+  /** Pre-parsed hints when mode === "hint". */
+  hints?: { level: "nudge" | "guided" | "full"; text: string }[];
+  createdAt: number;
+};
+
+export type AiEvaluationDoc = {
+  id: string;
+  userId: string;
+  scanId?: string;
+  attemptId: string;
+  predictedMarks: number;
+  maxMarks: number;
+  rubricScores: { label: string; score: number; max: number }[];
+  missingSteps: string[];
+  formulaIssues: string[];
+  suggestions: string[];
+  summary?: string;
+  createdAt: number;
+};
+
+export type PracticeRecommendationDoc = {
+  id: string;
+  userId: string;
+  scanId: string;
+  questionIds: string[];
+  /** Free-form prompts when no DB-backed questions exist (guest fallback). */
+  prompts?: string[];
+  reason: string;
+  createdAt: number;
+};

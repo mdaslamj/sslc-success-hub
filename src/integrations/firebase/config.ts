@@ -99,6 +99,11 @@ export const COLLECTIONS = {
   SESSION_RESULTS: "sessionResults",
   SESSION_FEEDBACK: "sessionFeedback",
   REVISION_TRIGGERS: "revisionTriggers",
+  // AI Scan & Solve experience.
+  SCANS: "scans",
+  SOLVED_QUESTIONS: "solvedQuestions",
+  AI_EVALUATIONS: "aiEvaluations",
+  PRACTICE_RECOMMENDATIONS: "practiceRecommendations",
 } as const;
 
 // Weakness Diagnosis & Adaptive Remediation Engine

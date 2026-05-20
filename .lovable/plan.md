@@ -1,120 +1,143 @@
+# Plan: AI Scan & Solve Experience
 
-# Project Aura — Premium Mobile Redesign
+Build a signature mobile-first scan flow that becomes Aura's headline AI feature. We **reuse** existing OCR / answer-upload infra, semantic reasoning serverFn, adaptive planner, memory tracking, and weakness diagnosis — wrapping them in a dedicated Scan & Solve workflow with new Firestore collections for scan history and AI solutions.
 
-A full UI/UX transformation into a calm, native-feeling student companion. Backend intelligence (planner, tutoring, OCR, remediation, memory tracking, predictions, semantic reasoning) is left untouched — only presentation, navigation, and onboarding/log/profile flows change.
+## 1. Navigation & entry points
 
-## Design language
+- Add a floating premium **Scan FAB** (camera icon, gradient glow, soft press animation) anchored above the bottom nav, visible on Home, Subjects, Planner, Exams.
+  - New component: `src/components/scan/scan-fab.tsx`
+  - Tap → navigates to `/scan`
+- Add "Scan a problem" quick-action card to Home's Today's Focus section.
 
-- **Palette (Sage & Cream)**: cream surface `#f5f0e8`, soft sage card `#dce5d4`, sage accent `#a8c0a0`, deep sage primary `#7d9b76`. Dark mode mirrors with warm charcoal + muted sage.
-- **Type**: Outfit (display/headings), Figtree (body/UI). Scale: 32 / 24 / 20 / 17 / 15 / 13.
-- **Surfaces**: rounded-2xl/3xl cards, soft shadows, generous padding, no harsh borders.
-- **Motion**: gentle 200–300ms ease, subtle scale-on-press for native feel.
+## 2. New routes
 
-## Information architecture
+| Route | Purpose |
+|---|---|
+| `/scan` | Capture / upload entry (camera, gallery, PDF, handwritten answer toggle) |
+| `/scan/$scanId` | Solve workspace: OCR result + mode tabs + AI output + post-solve actions |
+| `/scan/history` | Past scans, filter by subject/chapter, re-open or practice |
 
-Replace sidebar shell with a **native bottom tab bar** (6 tabs): Home · Planner · Subjects · Exams · Analytics · Profile. Top app bar becomes minimal (greeting + avatar + notification).
+All mobile-first, safe-area aware, page-transition wrapped.
 
-## Screens
+## 3. Capture UX
 
-### 1. Onboarding (new flow `/onboarding`)
-Multi-step, one question per screen, progress dots:
-1. Welcome + name
-2. Target marks (slider)
-3. Weak subjects (chip multi-select)
-4. Daily study capacity (slider, minutes)
-5. Preferred language
-6. Weekend study preference (toggle + intensity)
-7. Revision intensity (light / balanced / intense)
-8. Generating plan… → reveal AI-generated adaptive plan summary → "Start"
-Persists to existing user profile + adaptive planner services.
+`/scan` flow stages:
+1. **Mode toggle** — *Solve a question* vs *Evaluate my answer* (routes to existing `AnswerUploadDialog` flow when "evaluate").
+2. **Capture surface** — camera input (`<input capture="environment">`), gallery picker, or PDF picker. Live "scan glow" animation while preprocessing.
+3. **Preview + retake** — uses existing `preprocessImage` (auto-enhance, rotate, crop).
+4. **Confirm** → creates a `ScanDoc` and navigates to `/scan/$scanId`.
 
-### 2. Home (`/`) — single column
-Sections, top to bottom:
-- Calm greeting ("Good morning, Aanya 🌱") + tiny streak chip
-- **Today's Focus** hero card (one chapter/task from planner)
-- Revision reminders (due cards, swipeable list)
-- Weak-topic interventions (2–3 cards from diagnosis engine)
-- Board readiness summary (compact ring + delta)
-- Motivational streak card (week dots + quote)
+Components:
+- `src/components/scan/scan-capture.tsx`
+- `src/components/scan/scan-glow.tsx` (animated overlay; reused on FAB press too)
+- `src/components/scan/mode-toggle.tsx`
 
-### 3. Analytics (`/analytics`)
-- Mastery radar (subjects)
-- Weak-topic heatmap
-- Mastery progression line
-- Study consistency calendar strip
-- All wired to existing analytics/math-analytics hooks
+## 4. OCR + Understanding
 
-### 4. Study Log (new `/log`, surfaced via Profile or Planner)
-- Daily log entry (subject, chapter, minutes, mood)
-- Streak ring + month calendar
-- Spaced-repetition due overlays on calendar dates
-- "Revision due today" list
+- Reuse `runOcrExtraction` pipeline (already wired for vision LLM). Add a sibling `runScanUnderstanding(scanId)` that:
+  - Calls `runSemanticReasoning` with OCR text to classify: subject, chapter, difficulty (easy/medium/hard), board relevance %, concept tags, detected entities (formulas, diagrams, keywords).
+  - Stores result on `ScanDoc.understanding`.
+- Display: skeleton chips → animated chip reveal once classified.
 
-### 5. Profile & Settings (`/profile`)
-Grouped, iOS-style sections:
-- Account (name, email, target marks, language)
-- Appearance (theme: system/light/dark, accent picker)
-- Study preferences (capacity, weekend, intensity)
-- Privacy & data (export, deletion request)
-- Subscription (placeholder)
-- About / Sign out
+New file: `src/lib/scan-engine/understanding.ts`
 
-### 6. Planner / Subjects / Exams
-Keep existing logic; restyle into the new card system + bottom-nav layout.
+## 5. Solve modes
 
-## Technical plan
+Tabs in `/scan/$scanId` (sticky, segmented control):
+- **Quick Answer** — concise final answer + key formula.
+- **Step-by-Step** — numbered steps with reveal animation.
+- **Hint Mode** — Socratic hints, one at a time (reuses `study-session/ai-coach` pattern).
+- **Board Method** — answer in SSLC marking-scheme structure (Given / To Find / Solution / Answer).
+- **Kannada Explanation** — same content, Kannada language toggle.
 
-### Design system
-- Rewrite `src/styles.css` tokens: cream/sage palette in `oklch`, new typography stack, radius (`--radius: 1.25rem`), spacing scale, accent CSS var (`--accent-personal`) for personalization.
-- Add Outfit + Figtree via Google Fonts in `__root.tsx` head.
-- Update `tailwind` semantic tokens (already token-driven via styles.css).
+Each mode is a server call through `runSemanticReasoning` with a mode-specific prompt template. Outputs cached per `(scanId, mode, language)` in `solvedQuestions` so re-tapping a tab is instant.
 
-### Shell
-- New `src/components/mobile-shell.tsx`: top bar + `<Outlet/>` + bottom tab bar.
-- New `src/components/bottom-nav.tsx`: 6 tabs with active indicator, safe-area inset padding.
-- Retire `DashboardLayout` usage on mobile (keep available, but routes adopt `MobileShell`).
-- Add accent personalization via `ThemeContext` extension (writes `--accent-personal`).
+New files:
+- `src/lib/scan-engine/solve-modes.ts` — prompt templates + dispatcher
+- `src/hooks/use-scan-solve.ts` — lifecycle hook (load scan, request mode, cache, errors)
+- `src/components/scan/solve-tabs.tsx`
+- `src/components/scan/solution-view.tsx` (markdown + math friendly)
 
-### New routes / files
-- `src/routes/onboarding.tsx` (+ step components in `src/components/onboarding/`)
-- `src/routes/log.tsx` + `src/components/study-log/*`
-- Redesigned `src/routes/index.tsx`, `analytics.tsx`, `profile.tsx`
-- Restyled `planner.tsx`, `subjects.index.tsx`, `exams.tsx`
+## 6. Handwritten evaluation
 
-### New components
-- `home/greeting-card`, `home/today-focus`, `home/revision-reminders`, `home/weak-topic-card`, `home/readiness-summary`, `home/streak-card`
-- `analytics/mastery-radar`, `analytics/weak-heatmap`, `analytics/consistency-strip`
-- `study-log/log-entry-form`, `study-log/calendar-grid`, `study-log/streak-ring`
-- `settings/section-group`, `settings/accent-picker`, `settings/theme-toggle`
-- `ui/bottom-sheet` (radix Drawer wrapper) for native-feeling forms
+Reuse existing `/answer-uploads` infra. Add a deep entry from `/scan` ("Evaluate my answer") that pre-fills `AnswerAttemptContext` and opens the dialog. After submission, evaluation panel (`evaluation-panel.tsx`) already shows rubric/marks; extend it with:
+- Missing-step detection (`mistake-detector` reuse)
+- Formula misuse flags (`formula-tracker` reuse)
+- Improvement suggestions list (semantic reasoning)
 
-### Backend integration
-- Onboarding writes to existing `users` profile service + seeds adaptive plan via existing planner.
-- Study Log uses existing `study-sessions` + `revision-queue` services; add thin `study-log` service only if a dedicated collection is needed (otherwise reuse).
-- All redesigned cards consume existing hooks: `useAdaptivePlanner`, `useBoardReadiness`, `useWeaknessDiagnosis`, `useMemoryTracking`, `useAnalytics`, `useMathMastery`, `useRecommendations`.
-- No changes to: tutoring, OCR evaluation, remediation, semantic reasoning, prediction engines.
+Wire results into new `aiEvaluations` collection (lightweight pointer doc keyed by attempt + scan).
 
-### Routing / first-run
-- `__root.tsx` checks profile `onboardingComplete`; redirects authenticated users without it to `/onboarding`.
-- Bottom nav hidden on `/login`, `/onboarding`, `/forgot-password`.
+## 7. Post-solve action bar
 
-### Mobile hardening
-- `pb-[max(env(safe-area-inset-bottom),0.75rem)]` on bottom nav and scroll containers.
-- All new touch targets ≥ 44px.
-- Lazy-load analytics charts (already chunked by route).
+Sticky bottom action bar on `/scan/$scanId`:
+- **Practice similar** → generates 3 questions via `question-selector` + opens quiz.
+- **Add to revision** → writes to `revisionQueue` (existing service).
+- **Save weak concept** → patches `weaknessProfiles` for the detected chapter/concept.
+- **Adaptive quiz** → seeds a quick quiz via `adaptive-planner`.
+- **Schedule revision** → SM-2 spacing trigger via `study-session/spacing`.
 
-## Out of scope (explicitly)
-- No changes to AI engines, evaluation pipelines, Firestore rules, or service-function logic.
-- No PWA service worker (separate roadmap item).
-- No Play Store packaging — UX prep only.
+New file: `src/components/scan/post-solve-actions.tsx`, `src/lib/scan-engine/post-solve.ts`.
 
-## Deliverables
-1. Updated design tokens + fonts
-2. `MobileShell` + `BottomNav`
-3. Onboarding flow (8 steps)
-4. Redesigned Home, Analytics, Profile
-5. Study Log screen + components
-6. Restyled Planner / Subjects / Exams to new system
-7. Accent personalization wired through ThemeContext
+## 8. Firestore schema (new)
 
-Approve to start implementing in this order: tokens → shell+nav → home → onboarding → study log → analytics → profile → restyle remaining tabs.
+Add to `types.ts` + `config.ts` + `firestore.rules` (owner-gated):
+
+- `scans` (`ScanDoc`): `{ id, userId, createdAt, source: 'camera'|'gallery'|'pdf', imageIds[], ocr: {text, confidence, language}, understanding: {subject, chapterId?, difficulty, boardRelevance, concepts[], formulas[]}, status }`
+- `solvedQuestions` (`SolvedQuestionDoc`): `{ id, userId, scanId, mode, language, content, model, createdAt }`
+- `aiEvaluations` (`AiEvaluationDoc`): `{ id, userId, scanId?, attemptId, rubricScores, predictedMarks, missingSteps[], formulaIssues[], suggestions[] }`
+- `practiceRecommendations` (`PracticeRecDoc`): `{ id, userId, scanId, questionIds[], reason, createdAt }`
+- `scanHistory` view — derived from `scans` (no separate doc).
+
+Guest-mode mirror in `src/lib/scan-engine/local-store.ts` (localStorage, same shape).
+
+## 9. Loading & motion
+
+- Scan glow: animated gradient ring + scanline using framer-motion (already in use in session UI).
+- Mode tab switch: cross-fade + skeleton.
+- Solution reveal: per-step stagger animation in Step-by-Step.
+- Empty/error states use existing `empty-state.tsx`.
+
+## 10. Files to add / change
+
+**Add**
+```
+src/routes/scan.tsx
+src/routes/scan.$scanId.tsx
+src/routes/scan.history.tsx
+src/components/scan/scan-fab.tsx
+src/components/scan/scan-capture.tsx
+src/components/scan/scan-glow.tsx
+src/components/scan/mode-toggle.tsx
+src/components/scan/solve-tabs.tsx
+src/components/scan/solution-view.tsx
+src/components/scan/post-solve-actions.tsx
+src/hooks/use-scan-solve.ts
+src/hooks/use-scan-capture.ts
+src/lib/scan-engine/understanding.ts
+src/lib/scan-engine/solve-modes.ts
+src/lib/scan-engine/post-solve.ts
+src/lib/scan-engine/local-store.ts
+src/lib/scan-engine/index.ts
+src/integrations/firebase/services/scans.ts
+src/integrations/firebase/services/solved-questions.ts
+src/integrations/firebase/services/ai-evaluations.ts
+src/integrations/firebase/services/practice-recommendations.ts
+```
+
+**Edit**
+```
+src/integrations/firebase/types.ts        # new doc types
+src/integrations/firebase/config.ts       # new collection names
+firestore.rules                           # owner-gated rules
+src/components/dashboard-layout.tsx       # mount ScanFab
+src/components/answer-upload/evaluation-panel.tsx  # add missing-step + formula + suggestions blocks
+src/routes/index.tsx                      # scan quick-action card
+```
+
+## 11. Constraints honored
+
+- No backend redesign: OCR + semantic reasoning serverFn + adaptive/memory/weakness layers are reused as-is.
+- Mobile-first only — all new components are stacked, safe-area aware, FAB anchored above bottom-nav.
+- Existing architecture (TanStack routes, owner-gated Firestore, guest local store, `useDailyEngine`, `useStudySession`) is unchanged.
+
+After approval I'll implement in one pass.
