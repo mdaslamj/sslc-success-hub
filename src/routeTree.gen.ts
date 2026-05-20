@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as TextbooksRouteImport } from './routes/textbooks'
+import { Route as TeacherRouteImport } from './routes/teacher'
 import { Route as TargetsRouteImport } from './routes/targets'
 import { Route as SessionRouteImport } from './routes/session'
 import { Route as SeedRouteImport } from './routes/seed'
@@ -43,6 +44,11 @@ import { Route as SubjectsMathChapterIdRouteImport } from './routes/subjects.mat
 const TextbooksRoute = TextbooksRouteImport.update({
   id: '/textbooks',
   path: '/textbooks',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TeacherRoute = TeacherRouteImport.update({
+  id: '/teacher',
+  path: '/teacher',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TargetsRoute = TargetsRouteImport.update({
@@ -212,6 +218,7 @@ export interface FileRoutesByFullPath {
   '/seed': typeof SeedRoute
   '/session': typeof SessionRoute
   '/targets': typeof TargetsRoute
+  '/teacher': typeof TeacherRoute
   '/textbooks': typeof TextbooksRoute
   '/admin/import': typeof AdminImportRoute
   '/answer-uploads/$attemptId': typeof AnswerUploadsAttemptIdRoute
@@ -244,6 +251,7 @@ export interface FileRoutesByTo {
   '/seed': typeof SeedRoute
   '/session': typeof SessionRoute
   '/targets': typeof TargetsRoute
+  '/teacher': typeof TeacherRoute
   '/textbooks': typeof TextbooksRoute
   '/admin/import': typeof AdminImportRoute
   '/answer-uploads/$attemptId': typeof AnswerUploadsAttemptIdRoute
@@ -277,6 +285,7 @@ export interface FileRoutesById {
   '/seed': typeof SeedRoute
   '/session': typeof SessionRoute
   '/targets': typeof TargetsRoute
+  '/teacher': typeof TeacherRoute
   '/textbooks': typeof TextbooksRoute
   '/admin/import': typeof AdminImportRoute
   '/answer-uploads/$attemptId': typeof AnswerUploadsAttemptIdRoute
@@ -311,6 +320,7 @@ export interface FileRouteTypes {
     | '/seed'
     | '/session'
     | '/targets'
+    | '/teacher'
     | '/textbooks'
     | '/admin/import'
     | '/answer-uploads/$attemptId'
@@ -343,6 +353,7 @@ export interface FileRouteTypes {
     | '/seed'
     | '/session'
     | '/targets'
+    | '/teacher'
     | '/textbooks'
     | '/admin/import'
     | '/answer-uploads/$attemptId'
@@ -375,6 +386,7 @@ export interface FileRouteTypes {
     | '/seed'
     | '/session'
     | '/targets'
+    | '/teacher'
     | '/textbooks'
     | '/admin/import'
     | '/answer-uploads/$attemptId'
@@ -408,6 +420,7 @@ export interface RootRouteChildren {
   SeedRoute: typeof SeedRoute
   SessionRoute: typeof SessionRoute
   TargetsRoute: typeof TargetsRoute
+  TeacherRoute: typeof TeacherRoute
   TextbooksRoute: typeof TextbooksRoute
   AdminImportRoute: typeof AdminImportRoute
   ExamResultsAttemptIdRoute: typeof ExamResultsAttemptIdRoute
@@ -424,6 +437,13 @@ declare module '@tanstack/react-router' {
       path: '/textbooks'
       fullPath: '/textbooks'
       preLoaderRoute: typeof TextbooksRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/teacher': {
+      id: '/teacher'
+      path: '/teacher'
+      fullPath: '/teacher'
+      preLoaderRoute: typeof TeacherRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/targets': {
@@ -685,6 +705,7 @@ const rootRouteChildren: RootRouteChildren = {
   SeedRoute: SeedRoute,
   SessionRoute: SessionRoute,
   TargetsRoute: TargetsRoute,
+  TeacherRoute: TeacherRoute,
   TextbooksRoute: TextbooksRoute,
   AdminImportRoute: AdminImportRoute,
   ExamResultsAttemptIdRoute: ExamResultsAttemptIdRoute,
