@@ -1,5 +1,5 @@
 import { createFileRoute, Link, useParams } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ChevronLeft, Sparkles, ScanLine } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ExtractedQuestion } from "@/components/scan/extracted-question";
@@ -8,7 +8,9 @@ import { SolutionView } from "@/components/scan/solution-view";
 import { PostSolveActions } from "@/components/scan/post-solve-actions";
 import { EvaluationWorkspace } from "@/components/scan/evaluation-workspace";
 import { AnalyzingOverlay } from "@/components/scan/analyzing-overlay";
+import { AuraRemembers } from "@/components/learning-memory/aura-remembers";
 import { useScan, useSolveScan } from "@/hooks/use-scan";
+import { useLearningMemory } from "@/hooks/use-learning-memory";
 import type { SolveMode } from "@/integrations/firebase/types";
 
 export const Route = createFileRoute("/scan/$scanId")({
@@ -27,6 +29,9 @@ function ScanWorkspacePage() {
   const [mode, setMode] = useState<SolveMode>("step_by_step");
   const [lang, setLang] = useState<"en" | "kn">("en");
   const { solve, solutions, pending } = useSolveScan(scan);
+  const memory = useLearningMemory();
+  const startedAtRef = useRef<number>(Date.now());
+  const recordedRef = useRef<string | null>(null);
 
   const key = `${mode}__${lang}`;
   const doc = solutions[key];
@@ -37,6 +42,28 @@ function ScanWorkspacePage() {
     if (scan && !doc && !isPending) void solve(mode, lang);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [scan?.id, mode, lang]);
+
+  // Fold this scan into the long-term learning memory once a solution lands.
+  useEffect(() => {
+    if (!scan || !doc || doc.model === "error" || doc.model === "guest") return;
+    const stamp = `${scan.id}__${doc.mode}__${doc.language}`;
+    if (recordedRef.current === stamp) return;
+    recordedRef.current = stamp;
+    void memory.recordScanInteraction({
+      scan,
+      solved: doc,
+      startedAt: startedAtRef.current,
+      confidenceSignal: 0.2, // soft positive; refined by post-solve actions
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [scan?.id, doc?.id]);
+
+  const continuity = scan
+    ? memory.continuityHints({
+        chapterId: scan.understanding?.chapterId,
+        conceptLabels: scan.understanding?.concepts,
+      })
+    : [];
 
   if (loading || !scan) {
     return <AnalyzingOverlay />;
@@ -70,6 +97,8 @@ function ScanWorkspacePage() {
           scan={scan}
           onEdit={(text) => setScan({ ...scan, extractedText: text })}
         />
+
+        <AuraRemembers hints={continuity} />
 
         {scan.mode === "evaluate" ? (
           <EvaluationWorkspace scan={scan} />

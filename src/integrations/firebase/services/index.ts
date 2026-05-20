@@ -59,3 +59,5 @@ export * from "./scans";
 export * from "./solved-questions";
 export * from "./ai-evaluations";
 export * from "./practice-recommendations";
+// Continuous Learning Memory + Tutoring Continuity Engine
+export * from "./learning-memory";

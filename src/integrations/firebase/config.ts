@@ -144,3 +144,15 @@ export const BOARD_READINESS_SUBCOLLECTIONS = {
   EXAM_SIMULATIONS: "examSimulations",
   BOARD_READINESS: "boardReadiness",
 } as const;
+
+// Continuous Learning Memory + Tutoring Continuity Engine
+// All live as subcollections under users/{uid}. Singletons use fixed doc ids
+// ("profile", "preferences") so reads stay O(1).
+export const LEARNING_MEMORY_SUBCOLLECTIONS = {
+  LEARNING_PROFILE: "learningProfile",
+  MISTAKE_MEMORY: "mistakeMemory",
+  TUTORING_PREFERENCES: "tutoringPreferences",
+  LEARNING_TIMELINE: "learningTimeline",
+  SCAN_HISTORY: "scanHistory",
+  CONCEPT_CONFIDENCE: "conceptConfidence",
+} as const;

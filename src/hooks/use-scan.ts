@@ -4,6 +4,7 @@ import { useAuthOptional } from "@/contexts/auth-context";
 import { useCurrentUserId } from "@/hooks/use-current-user";
 import { useServerFn } from "@tanstack/react-start";
 import { runSemanticReasoning } from "@/lib/semantic-reasoning";
+import { useLearningMemory } from "@/hooks/use-learning-memory";
 import {
   createScan,
   fetchScan,
@@ -176,6 +177,7 @@ export function useSolveScan(scan: ScanDoc | null) {
   const userId = useCurrentUserId();
   const authCtx = useAuthOptional();
   const run = useServerFn(runSemanticReasoning);
+  const memory = useLearningMemory();
   const [solutions, setSolutions] = useState<Record<string, SolvedQuestionDoc>>({});
   const [pending, setPending] = useState<Record<string, boolean>>({});
 
@@ -228,9 +230,14 @@ export function useSolveScan(scan: ScanDoc | null) {
           data: {
             idToken,
             systemPrompt: solveSystemPrompt(mode, language),
-            grounding: scan.understanding
-              ? `Subject: ${scan.understanding.subject ?? "n/a"} | Chapter: ${scan.understanding.chapterTitle ?? "n/a"} | Difficulty: ${scan.understanding.difficulty} | Concepts: ${scan.understanding.concepts.join(", ") || "n/a"} | Formulas: ${scan.understanding.formulas.join(", ") || "n/a"}`
-              : undefined,
+            grounding: [
+              scan.understanding
+                ? `Subject: ${scan.understanding.subject ?? "n/a"} | Chapter: ${scan.understanding.chapterTitle ?? "n/a"} | Difficulty: ${scan.understanding.difficulty} | Concepts: ${scan.understanding.concepts.join(", ") || "n/a"} | Formulas: ${scan.understanding.formulas.join(", ") || "n/a"}`
+                : "",
+              memory.grounding(),
+            ]
+              .filter(Boolean)
+              .join("\n") || undefined,
             messages: [
               {
                 role: "user",
