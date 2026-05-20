@@ -138,14 +138,38 @@ function RootComponent() {
     <QueryClientProvider client={queryClient}>
       <ThemeProvider>
         <AuthProvider>
-          <OnboardingGate>
-            <Outlet />
-          </OnboardingGate>
+          <SessionSync queryClient={queryClient}>
+            <OnboardingGate>
+              <Outlet />
+            </OnboardingGate>
+          </SessionSync>
           <Toaster richColors position="top-right" />
         </AuthProvider>
       </ThemeProvider>
     </QueryClientProvider>
   );
+}
+
+/**
+ * Whenever the signed-in uid changes, clear the React Query cache and force
+ * route loaders to re-run so the dashboard hydrates against the fresh
+ * profile / planner / streaks / insights instead of stale guest data.
+ */
+function SessionSync({
+  children,
+  queryClient,
+}: {
+  children: React.ReactNode;
+  queryClient: QueryClient;
+}) {
+  const { sessionEpoch } = useAuth();
+  const router = useRouter();
+  useEffect(() => {
+    if (sessionEpoch === 0) return; // initial mount, nothing stale yet
+    queryClient.clear();
+    void router.invalidate();
+  }, [sessionEpoch, queryClient, router]);
+  return <>{children}</>;
 }
 
 /**
