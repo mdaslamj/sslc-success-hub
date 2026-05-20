@@ -15,7 +15,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Slider } from "@/components/ui/slider";
-import { Switch } from "@/components/ui/switch";
 import { useAuth } from "@/contexts/auth-context";
 import { patchUserProfile } from "@/integrations/firebase/services/users";
 import { cn } from "@/lib/utils";
@@ -456,6 +455,3 @@ function formatMin(m: number) {
   const r = m % 60;
   return r ? `${h}h ${r}m` : `${h}h`;
 }
-
-// `Switch` is imported but not used in current step set — keep import out:
-void Switch;

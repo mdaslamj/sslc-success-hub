@@ -17,6 +17,7 @@ import { Route as QuizzesRouteImport } from './routes/quizzes'
 import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as PredictionsRouteImport } from './routes/predictions'
 import { Route as PlannerRouteImport } from './routes/planner'
+import { Route as OnboardingRouteImport } from './routes/onboarding'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
 import { Route as FocusRouteImport } from './routes/focus'
@@ -72,6 +73,11 @@ const PredictionsRoute = PredictionsRouteImport.update({
 const PlannerRoute = PlannerRouteImport.update({
   id: '/planner',
   path: '/planner',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OnboardingRoute = OnboardingRouteImport.update({
+  id: '/onboarding',
+  path: '/onboarding',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LoginRoute = LoginRouteImport.update({
@@ -164,6 +170,7 @@ export interface FileRoutesByFullPath {
   '/focus': typeof FocusRoute
   '/forgot-password': typeof ForgotPasswordRoute
   '/login': typeof LoginRoute
+  '/onboarding': typeof OnboardingRoute
   '/planner': typeof PlannerRoute
   '/predictions': typeof PredictionsRoute
   '/profile': typeof ProfileRoute
@@ -190,6 +197,7 @@ export interface FileRoutesByTo {
   '/focus': typeof FocusRoute
   '/forgot-password': typeof ForgotPasswordRoute
   '/login': typeof LoginRoute
+  '/onboarding': typeof OnboardingRoute
   '/planner': typeof PlannerRoute
   '/predictions': typeof PredictionsRoute
   '/profile': typeof ProfileRoute
@@ -217,6 +225,7 @@ export interface FileRoutesById {
   '/focus': typeof FocusRoute
   '/forgot-password': typeof ForgotPasswordRoute
   '/login': typeof LoginRoute
+  '/onboarding': typeof OnboardingRoute
   '/planner': typeof PlannerRoute
   '/predictions': typeof PredictionsRoute
   '/profile': typeof ProfileRoute
@@ -245,6 +254,7 @@ export interface FileRouteTypes {
     | '/focus'
     | '/forgot-password'
     | '/login'
+    | '/onboarding'
     | '/planner'
     | '/predictions'
     | '/profile'
@@ -271,6 +281,7 @@ export interface FileRouteTypes {
     | '/focus'
     | '/forgot-password'
     | '/login'
+    | '/onboarding'
     | '/planner'
     | '/predictions'
     | '/profile'
@@ -297,6 +308,7 @@ export interface FileRouteTypes {
     | '/focus'
     | '/forgot-password'
     | '/login'
+    | '/onboarding'
     | '/planner'
     | '/predictions'
     | '/profile'
@@ -324,6 +336,7 @@ export interface RootRouteChildren {
   FocusRoute: typeof FocusRoute
   ForgotPasswordRoute: typeof ForgotPasswordRoute
   LoginRoute: typeof LoginRoute
+  OnboardingRoute: typeof OnboardingRoute
   PlannerRoute: typeof PlannerRoute
   PredictionsRoute: typeof PredictionsRoute
   ProfileRoute: typeof ProfileRoute
@@ -396,6 +409,13 @@ declare module '@tanstack/react-router' {
       path: '/planner'
       fullPath: '/planner'
       preLoaderRoute: typeof PlannerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/onboarding': {
+      id: '/onboarding'
+      path: '/onboarding'
+      fullPath: '/onboarding'
+      preLoaderRoute: typeof OnboardingRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/login': {
@@ -544,6 +564,7 @@ const rootRouteChildren: RootRouteChildren = {
   FocusRoute: FocusRoute,
   ForgotPasswordRoute: ForgotPasswordRoute,
   LoginRoute: LoginRoute,
+  OnboardingRoute: OnboardingRoute,
   PlannerRoute: PlannerRoute,
   PredictionsRoute: PredictionsRoute,
   ProfileRoute: ProfileRoute,
