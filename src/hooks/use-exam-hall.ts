@@ -29,7 +29,7 @@ import {
   localSaveResult,
   localUpsertSession,
 } from "@/lib/exam-hall/local-store";
-import { useCurrentUser } from "@/hooks/use-current-user";
+import { useAuthOptional } from "@/contexts/auth-context";
 import type {
   BoardSimulationResultDoc,
   ExamHallAnswer,
@@ -93,9 +93,10 @@ function blankSession(args: {
  * Falls back to localStorage when the user is not signed in.
  */
 export function useExamHall(sessionId?: string) {
-  const { user } = useCurrentUser();
-  const isGuest = !user?.uid;
-  const uid = user?.uid ?? "guest";
+  const authCtx = useAuthOptional();
+  const authUid = authCtx?.user?.uid;
+  const isGuest = !authUid;
+  const uid = authUid ?? "guest";
 
   const [session, setSession] = useState<ExamHallSessionDoc | null>(null);
   const [events, setEvents] = useState<InvigilatorEventDoc[]>([]);
@@ -403,17 +404,18 @@ export function useExamHall(sessionId?: string) {
  * Lightweight list hook for the exam hall index page.
  */
 export function useExamHallList() {
-  const { user } = useCurrentUser();
+  const authCtx = useAuthOptional();
+  const authUid = authCtx?.user?.uid;
   const [list, setList] = useState<ExamHallSessionDoc[]>(() =>
     localListSessions(),
   );
   useEffect(() => {
-    if (!user?.uid) return;
-    listHallSessions(user.uid)
+    if (!authUid) return;
+    listHallSessions(authUid)
       .then((remote) => {
         if (remote.length > 0) setList(remote);
       })
       .catch(() => {});
-  }, [user?.uid]);
+  }, [authUid]);
   return list;
 }
