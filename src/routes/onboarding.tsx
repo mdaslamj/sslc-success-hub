@@ -89,7 +89,7 @@ function OnboardingFlow() {
     }));
   }, [profile]);
 
-  const total = 8;
+  const total = 9;
   const next = () => setStep((x) => Math.min(x + 1, total - 1));
   const back = () => setStep((x) => Math.max(x - 1, 0));
 
@@ -175,8 +175,38 @@ function OnboardingFlow() {
             <Step
               icon={<Sparkles className="h-5 w-5" />}
               eyebrow="Welcome to Aura"
-              title="Let's build a calm study plan together"
-              subtitle="A few quick questions so your AI mentor can tailor everything to you."
+              title="Your calm AI study companion 🌱"
+              subtitle="Aura learns how you study and shapes a plan that fits your real life — not a generic timetable."
+            >
+              <ul className="mt-2 space-y-3">
+                {[
+                  { icon: <Target className="h-4 w-4" />, label: "Personalised to your target marks" },
+                  { icon: <Brain className="h-4 w-4" />, label: "Adaptive revision for weak chapters" },
+                  { icon: <Clock className="h-4 w-4" />, label: "Daily plans that respect your time" },
+                ].map((row) => (
+                  <li
+                    key={row.label}
+                    className="flex items-center gap-3 rounded-2xl bg-card px-4 py-3 shadow-soft"
+                  >
+                    <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-secondary text-primary">
+                      {row.icon}
+                    </span>
+                    <span className="text-sm font-medium text-foreground">{row.label}</span>
+                  </li>
+                ))}
+              </ul>
+              <p className="mt-5 text-center text-[11px] text-muted-foreground">
+                Takes about a minute • You can change anything later
+              </p>
+            </Step>
+          )}
+
+          {step === 1 && (
+            <Step
+              icon={<Sparkles className="h-5 w-5" />}
+              eyebrow="About you"
+              title="What should Aura call you?"
+              subtitle="Just a first name is fine."
             >
               <label className="block">
                 <span className="text-xs font-medium text-muted-foreground">Your name</span>
@@ -190,7 +220,7 @@ function OnboardingFlow() {
             </Step>
           )}
 
-          {step === 1 && (
+          {step === 2 && (
             <Step
               icon={<Target className="h-5 w-5" />}
               eyebrow="Goal"
@@ -211,7 +241,7 @@ function OnboardingFlow() {
             </Step>
           )}
 
-          {step === 2 && (
+          {step === 3 && (
             <Step
               icon={<Brain className="h-5 w-5" />}
               eyebrow="Focus areas"
@@ -247,7 +277,7 @@ function OnboardingFlow() {
             </Step>
           )}
 
-          {step === 3 && (
+          {step === 4 && (
             <Step
               icon={<Clock className="h-5 w-5" />}
               eyebrow="Daily capacity"
@@ -268,7 +298,7 @@ function OnboardingFlow() {
             </Step>
           )}
 
-          {step === 4 && (
+          {step === 5 && (
             <Step
               icon={<Languages className="h-5 w-5" />}
               eyebrow="Language"
@@ -303,7 +333,7 @@ function OnboardingFlow() {
             </Step>
           )}
 
-          {step === 5 && (
+          {step === 6 && (
             <Step
               icon={<CalendarDays className="h-5 w-5" />}
               eyebrow="Weekends"
@@ -338,7 +368,7 @@ function OnboardingFlow() {
             </Step>
           )}
 
-          {step === 6 && (
+          {step === 7 && (
             <Step
               icon={<Repeat className="h-5 w-5" />}
               eyebrow="Revision style"
@@ -373,7 +403,7 @@ function OnboardingFlow() {
             </Step>
           )}
 
-          {step === 7 && (
+          {step === 8 && (
             <Step
               icon={<Sparkles className="h-5 w-5" />}
               eyebrow="All set"
@@ -419,7 +449,7 @@ function OnboardingFlow() {
               size="lg"
               className="press h-14 w-full rounded-2xl text-base font-semibold gradient-brand text-brand-foreground shadow-soft"
               onClick={next}
-              disabled={step === 0 && !s.name.trim()}
+              disabled={step === 1 && !s.name.trim()}
             >
               Continue <ArrowRight className="ml-1 h-4 w-4" />
             </Button>
