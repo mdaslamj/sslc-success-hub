@@ -50,31 +50,6 @@ type CacheEntry = { value: SemanticReasoningResult; expiresAt: number };
 const responseCache = new Map<string, CacheEntry>();
 const inflight = new Map<string, Promise<SemanticReasoningResult>>();
 
-/**
- * Server-side per-user daily request quota. Prevents an authenticated
- * client from bypassing the client-side budget (localStorage) and draining
- * LOVABLE_API_KEY credits. In-memory and per-instance — acceptable as a
- * coarse abuse cap; the gateway also enforces project-level limits.
- */
-const DAILY_REQUEST_LIMIT = Number(process.env.AI_DAILY_REQUEST_LIMIT ?? 200);
-type QuotaEntry = { dayKey: string; count: number };
-const userQuota = new Map<string, QuotaEntry>();
-function todayKey(): string {
-  const d = new Date();
-  return `${d.getUTCFullYear()}-${d.getUTCMonth() + 1}-${d.getUTCDate()}`;
-}
-function checkAndIncrementQuota(uid: string): boolean {
-  const key = todayKey();
-  const cur = userQuota.get(uid);
-  if (!cur || cur.dayKey !== key) {
-    userQuota.set(uid, { dayKey: key, count: 1 });
-    return true;
-  }
-  if (cur.count >= DAILY_REQUEST_LIMIT) return false;
-  cur.count += 1;
-  return true;
-}
-
 function fnv1a(input: string): string {
   let h = 0x811c9dc5;
   for (let i = 0; i < input.length; i++) {
@@ -135,21 +110,11 @@ export const runSemanticReasoning = createServerFn({ method: "POST" })
   .inputValidator((input) => InputSchema.parse(input))
   .handler(async ({ data }): Promise<SemanticReasoningResult> => {
     // Auth gate — reject anonymous callers before spending credits.
-    let uid: string;
     try {
-      uid = await verifyFirebaseIdToken(data.idToken);
+      await verifyFirebaseIdToken(data.idToken);
     } catch (err) {
       const message = err instanceof Error ? err.message : "Invalid token";
       return { ok: false, status: 401, error: `Unauthorized: ${message}` };
-    }
-
-    // Server-side per-user daily quota (cannot be bypassed from client).
-    if (!checkAndIncrementQuota(uid)) {
-      return {
-        ok: false,
-        status: 429,
-        error: "Daily AI request limit reached. Try again tomorrow.",
-      };
     }
 
     const apiKey = process.env.LOVABLE_API_KEY;
