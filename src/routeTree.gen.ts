@@ -19,6 +19,7 @@ import { Route as PredictionsRouteImport } from './routes/predictions'
 import { Route as PlannerRouteImport } from './routes/planner'
 import { Route as OnboardingRouteImport } from './routes/onboarding'
 import { Route as LoginRouteImport } from './routes/login'
+import { Route as LogRouteImport } from './routes/log'
 import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
 import { Route as FocusRouteImport } from './routes/focus'
 import { Route as ExamsRouteImport } from './routes/exams'
@@ -83,6 +84,11 @@ const OnboardingRoute = OnboardingRouteImport.update({
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LogRoute = LogRouteImport.update({
+  id: '/log',
+  path: '/log',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ForgotPasswordRoute = ForgotPasswordRouteImport.update({
@@ -169,6 +175,7 @@ export interface FileRoutesByFullPath {
   '/exams': typeof ExamsRouteWithChildren
   '/focus': typeof FocusRoute
   '/forgot-password': typeof ForgotPasswordRoute
+  '/log': typeof LogRoute
   '/login': typeof LoginRoute
   '/onboarding': typeof OnboardingRoute
   '/planner': typeof PlannerRoute
@@ -196,6 +203,7 @@ export interface FileRoutesByTo {
   '/exams': typeof ExamsRouteWithChildren
   '/focus': typeof FocusRoute
   '/forgot-password': typeof ForgotPasswordRoute
+  '/log': typeof LogRoute
   '/login': typeof LoginRoute
   '/onboarding': typeof OnboardingRoute
   '/planner': typeof PlannerRoute
@@ -224,6 +232,7 @@ export interface FileRoutesById {
   '/exams': typeof ExamsRouteWithChildren
   '/focus': typeof FocusRoute
   '/forgot-password': typeof ForgotPasswordRoute
+  '/log': typeof LogRoute
   '/login': typeof LoginRoute
   '/onboarding': typeof OnboardingRoute
   '/planner': typeof PlannerRoute
@@ -253,6 +262,7 @@ export interface FileRouteTypes {
     | '/exams'
     | '/focus'
     | '/forgot-password'
+    | '/log'
     | '/login'
     | '/onboarding'
     | '/planner'
@@ -280,6 +290,7 @@ export interface FileRouteTypes {
     | '/exams'
     | '/focus'
     | '/forgot-password'
+    | '/log'
     | '/login'
     | '/onboarding'
     | '/planner'
@@ -307,6 +318,7 @@ export interface FileRouteTypes {
     | '/exams'
     | '/focus'
     | '/forgot-password'
+    | '/log'
     | '/login'
     | '/onboarding'
     | '/planner'
@@ -335,6 +347,7 @@ export interface RootRouteChildren {
   ExamsRoute: typeof ExamsRouteWithChildren
   FocusRoute: typeof FocusRoute
   ForgotPasswordRoute: typeof ForgotPasswordRoute
+  LogRoute: typeof LogRoute
   LoginRoute: typeof LoginRoute
   OnboardingRoute: typeof OnboardingRoute
   PlannerRoute: typeof PlannerRoute
@@ -423,6 +436,13 @@ declare module '@tanstack/react-router' {
       path: '/login'
       fullPath: '/login'
       preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/log': {
+      id: '/log'
+      path: '/log'
+      fullPath: '/log'
+      preLoaderRoute: typeof LogRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/forgot-password': {
@@ -563,6 +583,7 @@ const rootRouteChildren: RootRouteChildren = {
   ExamsRoute: ExamsRouteWithChildren,
   FocusRoute: FocusRoute,
   ForgotPasswordRoute: ForgotPasswordRoute,
+  LogRoute: LogRoute,
   LoginRoute: LoginRoute,
   OnboardingRoute: OnboardingRoute,
   PlannerRoute: PlannerRoute,
@@ -583,3 +604,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
