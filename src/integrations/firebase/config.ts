@@ -196,3 +196,14 @@ export const CLASS_SUBCOLLECTIONS = {
   RISK_ALERTS: "riskAlerts",
   INSIGHTS: "insights",
 } as const;
+
+// Voice AI Tutor + Conversational Learning System.
+// All subcollections under users/{uid}. `voicePreferences` is a singleton
+// (doc id "profile") so reads stay O(1).
+export const VOICE_SUBCOLLECTIONS = {
+  VOICE_SESSIONS: "voiceSessions",
+  CONVERSATIONAL_HISTORY: "conversationalHistory",
+  SPOKEN_HINTS: "spokenHints",
+  AUDIO_REVISION_HISTORY: "audioRevisionHistory",
+  VOICE_PREFERENCES: "voicePreferences",
+} as const;
