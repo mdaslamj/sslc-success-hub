@@ -970,6 +970,15 @@ export type UserProfileDoc = {
   role: "student" | "parent" | "teacher" | "admin";
   /** Reserved for future parent/teacher linkage. */
   linkedAccounts?: { parents?: string[]; teachers?: string[] };
+  /**
+   * Onboarding state. Set when the user finishes the multi-step
+   * onboarding flow. Used by the root route to gate first-run access.
+   */
+  onboardingCompletedAt?: number;
+  /** Weekend study preference set during onboarding. */
+  weekendStudy?: "none" | "light" | "full";
+  /** Revision intensity preference set during onboarding. */
+  revisionIntensity?: "light" | "balanced" | "intense";
   createdAt: number;
   updatedAt: number;
 };
