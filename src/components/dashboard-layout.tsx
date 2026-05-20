@@ -9,6 +9,7 @@ import { useAuth } from "@/contexts/auth-context";
 import { BottomNav } from "@/components/bottom-nav";
 import { PageTransition } from "@/components/page-transition";
 import { Camera } from "lucide-react";
+import { SyncStatusBanner } from "@/components/offline/sync-status-banner";
 
 /**
  * Unified app shell. Mobile = native-style top bar + bottom tab nav.
@@ -97,6 +98,7 @@ export function DashboardLayout({ children, title }: { children: ReactNode; titl
           </header>
 
           <main className="flex-1 min-w-0 p-4 sm:p-5 md:p-6 lg:p-8 pb-[calc(5.25rem+env(safe-area-inset-bottom))] md:pb-8">
+            <SyncStatusBanner className="mb-3" />
             <PageTransition>{children}</PageTransition>
           </main>
         </div>
