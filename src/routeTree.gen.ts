@@ -19,6 +19,7 @@ import { Route as ScanRouteImport } from './routes/scan'
 import { Route as ResourcesRouteImport } from './routes/resources'
 import { Route as QuizzesRouteImport } from './routes/quizzes'
 import { Route as ProfileRouteImport } from './routes/profile'
+import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as PredictionsRouteImport } from './routes/predictions'
 import { Route as PlannerRouteImport } from './routes/planner'
 import { Route as ParentRouteImport } from './routes/parent'
@@ -41,7 +42,9 @@ import { Route as ExamsExamIdRouteImport } from './routes/exams.$examId'
 import { Route as ExamResultsAttemptIdRouteImport } from './routes/exam-results.$attemptId'
 import { Route as ExamHallSessionIdRouteImport } from './routes/exam-hall.$sessionId'
 import { Route as AnswerUploadsAttemptIdRouteImport } from './routes/answer-uploads.$attemptId'
+import { Route as AdminOpsRouteImport } from './routes/admin.ops'
 import { Route as AdminImportRouteImport } from './routes/admin.import'
+import { Route as AccountDeleteRouteImport } from './routes/account.delete'
 import { Route as SubjectsMathChapterIdRouteImport } from './routes/subjects.math.$chapterId'
 
 const VoiceRoute = VoiceRouteImport.update({
@@ -92,6 +95,11 @@ const QuizzesRoute = QuizzesRouteImport.update({
 const ProfileRoute = ProfileRouteImport.update({
   id: '/profile',
   path: '/profile',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PredictionsRoute = PredictionsRouteImport.update({
@@ -204,9 +212,19 @@ const AnswerUploadsAttemptIdRoute = AnswerUploadsAttemptIdRouteImport.update({
   path: '/$attemptId',
   getParentRoute: () => AnswerUploadsRoute,
 } as any)
+const AdminOpsRoute = AdminOpsRouteImport.update({
+  id: '/admin/ops',
+  path: '/admin/ops',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminImportRoute = AdminImportRouteImport.update({
   id: '/admin/import',
   path: '/admin/import',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AccountDeleteRoute = AccountDeleteRouteImport.update({
+  id: '/account/delete',
+  path: '/account/delete',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SubjectsMathChapterIdRoute = SubjectsMathChapterIdRouteImport.update({
@@ -230,6 +248,7 @@ export interface FileRoutesByFullPath {
   '/parent': typeof ParentRoute
   '/planner': typeof PlannerRoute
   '/predictions': typeof PredictionsRoute
+  '/privacy': typeof PrivacyRoute
   '/profile': typeof ProfileRoute
   '/quizzes': typeof QuizzesRoute
   '/resources': typeof ResourcesRoute
@@ -240,7 +259,9 @@ export interface FileRoutesByFullPath {
   '/teacher': typeof TeacherRoute
   '/textbooks': typeof TextbooksRoute
   '/voice': typeof VoiceRoute
+  '/account/delete': typeof AccountDeleteRoute
   '/admin/import': typeof AdminImportRoute
+  '/admin/ops': typeof AdminOpsRoute
   '/answer-uploads/$attemptId': typeof AnswerUploadsAttemptIdRoute
   '/exam-hall/$sessionId': typeof ExamHallSessionIdRoute
   '/exam-results/$attemptId': typeof ExamResultsAttemptIdRoute
@@ -266,6 +287,7 @@ export interface FileRoutesByTo {
   '/parent': typeof ParentRoute
   '/planner': typeof PlannerRoute
   '/predictions': typeof PredictionsRoute
+  '/privacy': typeof PrivacyRoute
   '/profile': typeof ProfileRoute
   '/quizzes': typeof QuizzesRoute
   '/resources': typeof ResourcesRoute
@@ -276,7 +298,9 @@ export interface FileRoutesByTo {
   '/teacher': typeof TeacherRoute
   '/textbooks': typeof TextbooksRoute
   '/voice': typeof VoiceRoute
+  '/account/delete': typeof AccountDeleteRoute
   '/admin/import': typeof AdminImportRoute
+  '/admin/ops': typeof AdminOpsRoute
   '/answer-uploads/$attemptId': typeof AnswerUploadsAttemptIdRoute
   '/exam-hall/$sessionId': typeof ExamHallSessionIdRoute
   '/exam-results/$attemptId': typeof ExamResultsAttemptIdRoute
@@ -303,6 +327,7 @@ export interface FileRoutesById {
   '/parent': typeof ParentRoute
   '/planner': typeof PlannerRoute
   '/predictions': typeof PredictionsRoute
+  '/privacy': typeof PrivacyRoute
   '/profile': typeof ProfileRoute
   '/quizzes': typeof QuizzesRoute
   '/resources': typeof ResourcesRoute
@@ -313,7 +338,9 @@ export interface FileRoutesById {
   '/teacher': typeof TeacherRoute
   '/textbooks': typeof TextbooksRoute
   '/voice': typeof VoiceRoute
+  '/account/delete': typeof AccountDeleteRoute
   '/admin/import': typeof AdminImportRoute
+  '/admin/ops': typeof AdminOpsRoute
   '/answer-uploads/$attemptId': typeof AnswerUploadsAttemptIdRoute
   '/exam-hall/$sessionId': typeof ExamHallSessionIdRoute
   '/exam-results/$attemptId': typeof ExamResultsAttemptIdRoute
@@ -341,6 +368,7 @@ export interface FileRouteTypes {
     | '/parent'
     | '/planner'
     | '/predictions'
+    | '/privacy'
     | '/profile'
     | '/quizzes'
     | '/resources'
@@ -351,7 +379,9 @@ export interface FileRouteTypes {
     | '/teacher'
     | '/textbooks'
     | '/voice'
+    | '/account/delete'
     | '/admin/import'
+    | '/admin/ops'
     | '/answer-uploads/$attemptId'
     | '/exam-hall/$sessionId'
     | '/exam-results/$attemptId'
@@ -377,6 +407,7 @@ export interface FileRouteTypes {
     | '/parent'
     | '/planner'
     | '/predictions'
+    | '/privacy'
     | '/profile'
     | '/quizzes'
     | '/resources'
@@ -387,7 +418,9 @@ export interface FileRouteTypes {
     | '/teacher'
     | '/textbooks'
     | '/voice'
+    | '/account/delete'
     | '/admin/import'
+    | '/admin/ops'
     | '/answer-uploads/$attemptId'
     | '/exam-hall/$sessionId'
     | '/exam-results/$attemptId'
@@ -413,6 +446,7 @@ export interface FileRouteTypes {
     | '/parent'
     | '/planner'
     | '/predictions'
+    | '/privacy'
     | '/profile'
     | '/quizzes'
     | '/resources'
@@ -423,7 +457,9 @@ export interface FileRouteTypes {
     | '/teacher'
     | '/textbooks'
     | '/voice'
+    | '/account/delete'
     | '/admin/import'
+    | '/admin/ops'
     | '/answer-uploads/$attemptId'
     | '/exam-hall/$sessionId'
     | '/exam-results/$attemptId'
@@ -450,6 +486,7 @@ export interface RootRouteChildren {
   ParentRoute: typeof ParentRoute
   PlannerRoute: typeof PlannerRoute
   PredictionsRoute: typeof PredictionsRoute
+  PrivacyRoute: typeof PrivacyRoute
   ProfileRoute: typeof ProfileRoute
   QuizzesRoute: typeof QuizzesRoute
   ResourcesRoute: typeof ResourcesRoute
@@ -460,7 +497,9 @@ export interface RootRouteChildren {
   TeacherRoute: typeof TeacherRoute
   TextbooksRoute: typeof TextbooksRoute
   VoiceRoute: typeof VoiceRoute
+  AccountDeleteRoute: typeof AccountDeleteRoute
   AdminImportRoute: typeof AdminImportRoute
+  AdminOpsRoute: typeof AdminOpsRoute
   ExamResultsAttemptIdRoute: typeof ExamResultsAttemptIdRoute
   QuizQuizIdRoute: typeof QuizQuizIdRoute
   SubjectsSubjectIdRoute: typeof SubjectsSubjectIdRoute
@@ -538,6 +577,13 @@ declare module '@tanstack/react-router' {
       path: '/profile'
       fullPath: '/profile'
       preLoaderRoute: typeof ProfileRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/predictions': {
@@ -694,11 +740,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AnswerUploadsAttemptIdRouteImport
       parentRoute: typeof AnswerUploadsRoute
     }
+    '/admin/ops': {
+      id: '/admin/ops'
+      path: '/admin/ops'
+      fullPath: '/admin/ops'
+      preLoaderRoute: typeof AdminOpsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/import': {
       id: '/admin/import'
       path: '/admin/import'
       fullPath: '/admin/import'
       preLoaderRoute: typeof AdminImportRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/account/delete': {
+      id: '/account/delete'
+      path: '/account/delete'
+      fullPath: '/account/delete'
+      preLoaderRoute: typeof AccountDeleteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/subjects/math/$chapterId': {
@@ -770,6 +830,7 @@ const rootRouteChildren: RootRouteChildren = {
   ParentRoute: ParentRoute,
   PlannerRoute: PlannerRoute,
   PredictionsRoute: PredictionsRoute,
+  PrivacyRoute: PrivacyRoute,
   ProfileRoute: ProfileRoute,
   QuizzesRoute: QuizzesRoute,
   ResourcesRoute: ResourcesRoute,
@@ -780,7 +841,9 @@ const rootRouteChildren: RootRouteChildren = {
   TeacherRoute: TeacherRoute,
   TextbooksRoute: TextbooksRoute,
   VoiceRoute: VoiceRoute,
+  AccountDeleteRoute: AccountDeleteRoute,
   AdminImportRoute: AdminImportRoute,
+  AdminOpsRoute: AdminOpsRoute,
   ExamResultsAttemptIdRoute: ExamResultsAttemptIdRoute,
   QuizQuizIdRoute: QuizQuizIdRoute,
   SubjectsSubjectIdRoute: SubjectsSubjectIdRoute,
