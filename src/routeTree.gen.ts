@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as VoiceRouteImport } from './routes/voice'
 import { Route as TextbooksRouteImport } from './routes/textbooks'
 import { Route as TeacherRouteImport } from './routes/teacher'
 import { Route as TargetsRouteImport } from './routes/targets'
@@ -41,6 +42,11 @@ import { Route as AnswerUploadsAttemptIdRouteImport } from './routes/answer-uplo
 import { Route as AdminImportRouteImport } from './routes/admin.import'
 import { Route as SubjectsMathChapterIdRouteImport } from './routes/subjects.math.$chapterId'
 
+const VoiceRoute = VoiceRouteImport.update({
+  id: '/voice',
+  path: '/voice',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TextbooksRoute = TextbooksRouteImport.update({
   id: '/textbooks',
   path: '/textbooks',
@@ -220,6 +226,7 @@ export interface FileRoutesByFullPath {
   '/targets': typeof TargetsRoute
   '/teacher': typeof TeacherRoute
   '/textbooks': typeof TextbooksRoute
+  '/voice': typeof VoiceRoute
   '/admin/import': typeof AdminImportRoute
   '/answer-uploads/$attemptId': typeof AnswerUploadsAttemptIdRoute
   '/exam-results/$attemptId': typeof ExamResultsAttemptIdRoute
@@ -253,6 +260,7 @@ export interface FileRoutesByTo {
   '/targets': typeof TargetsRoute
   '/teacher': typeof TeacherRoute
   '/textbooks': typeof TextbooksRoute
+  '/voice': typeof VoiceRoute
   '/admin/import': typeof AdminImportRoute
   '/answer-uploads/$attemptId': typeof AnswerUploadsAttemptIdRoute
   '/exam-results/$attemptId': typeof ExamResultsAttemptIdRoute
@@ -287,6 +295,7 @@ export interface FileRoutesById {
   '/targets': typeof TargetsRoute
   '/teacher': typeof TeacherRoute
   '/textbooks': typeof TextbooksRoute
+  '/voice': typeof VoiceRoute
   '/admin/import': typeof AdminImportRoute
   '/answer-uploads/$attemptId': typeof AnswerUploadsAttemptIdRoute
   '/exam-results/$attemptId': typeof ExamResultsAttemptIdRoute
@@ -322,6 +331,7 @@ export interface FileRouteTypes {
     | '/targets'
     | '/teacher'
     | '/textbooks'
+    | '/voice'
     | '/admin/import'
     | '/answer-uploads/$attemptId'
     | '/exam-results/$attemptId'
@@ -355,6 +365,7 @@ export interface FileRouteTypes {
     | '/targets'
     | '/teacher'
     | '/textbooks'
+    | '/voice'
     | '/admin/import'
     | '/answer-uploads/$attemptId'
     | '/exam-results/$attemptId'
@@ -388,6 +399,7 @@ export interface FileRouteTypes {
     | '/targets'
     | '/teacher'
     | '/textbooks'
+    | '/voice'
     | '/admin/import'
     | '/answer-uploads/$attemptId'
     | '/exam-results/$attemptId'
@@ -422,6 +434,7 @@ export interface RootRouteChildren {
   TargetsRoute: typeof TargetsRoute
   TeacherRoute: typeof TeacherRoute
   TextbooksRoute: typeof TextbooksRoute
+  VoiceRoute: typeof VoiceRoute
   AdminImportRoute: typeof AdminImportRoute
   ExamResultsAttemptIdRoute: typeof ExamResultsAttemptIdRoute
   QuizQuizIdRoute: typeof QuizQuizIdRoute
@@ -432,6 +445,13 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/voice': {
+      id: '/voice'
+      path: '/voice'
+      fullPath: '/voice'
+      preLoaderRoute: typeof VoiceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/textbooks': {
       id: '/textbooks'
       path: '/textbooks'
@@ -707,6 +727,7 @@ const rootRouteChildren: RootRouteChildren = {
   TargetsRoute: TargetsRoute,
   TeacherRoute: TeacherRoute,
   TextbooksRoute: TextbooksRoute,
+  VoiceRoute: VoiceRoute,
   AdminImportRoute: AdminImportRoute,
   ExamResultsAttemptIdRoute: ExamResultsAttemptIdRoute,
   QuizQuizIdRoute: QuizQuizIdRoute,
