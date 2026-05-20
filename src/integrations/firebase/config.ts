@@ -156,3 +156,13 @@ export const LEARNING_MEMORY_SUBCOLLECTIONS = {
   SCAN_HISTORY: "scanHistory",
   CONCEPT_CONFIDENCE: "conceptConfidence",
 } as const;
+
+// Gamification + Student Reward System
+// All live under users/{uid}. `levels` is a singleton (doc id "summary").
+export const GAMIFICATION_SUBCOLLECTIONS = {
+  XP: "xp",
+  LEVELS: "levels",
+  MISSIONS: "missions",
+  STREAKS_LEDGER: "streaks",
+  REWARD_HISTORY: "rewardHistory",
+} as const;

@@ -31,6 +31,9 @@ import { Link, useNavigate } from "@tanstack/react-router";
 import { useDailyEngine } from "@/hooks/use-daily-engine";
 import { TaskRow } from "@/components/daily/task-row";
 import { ReflectionSheet } from "@/components/daily/reflection-sheet";
+import { useGamification } from "@/hooks/use-gamification";
+import { DailyMissionsCard } from "@/components/gamification/daily-missions-card";
+import { JourneyStrip } from "@/components/gamification/journey-strip";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -96,6 +99,17 @@ function HomePage() {
       weakSubjects[0]?.id === "math"
         ? [{ chapterId: "math-formulas", subject: "Mathematics", title: "Algebra essentials" }]
         : undefined,
+  });
+
+  const gamification = useGamification({
+    dailyGoalMinutes: profile?.dailyStudyGoalMinutes ?? 60,
+    daysToExam: days,
+    weakSubjects: weakSubjects.slice(0, 3).map((s) => ({
+      id: s.id,
+      name: s.name,
+      mastery: s.mastery,
+    })),
+    revisionDue: 3,
   });
 
   const focus = engine.plan?.tasks.find((t) => !t.done) ?? engine.plan?.tasks[0];
@@ -196,6 +210,17 @@ function HomePage() {
             "{quote.text}" <span className="text-muted-foreground">— {quote.author}</span>
           </p>
         </section>
+
+        <JourneyStrip
+          tier={gamification.journey}
+          progress={gamification.journeyProgress}
+          totalXp={gamification.totalXp}
+          level={gamification.level.level}
+        />
+
+        {gamification.todaysMissions.length > 0 && (
+          <DailyMissionsCard missions={gamification.todaysMissions} />
+        )}
 
         <section className="rounded-3xl bg-card p-5 shadow-soft">
           <div className="flex items-center gap-4">

@@ -61,3 +61,5 @@ export * from "./ai-evaluations";
 export * from "./practice-recommendations";
 // Continuous Learning Memory + Tutoring Continuity Engine
 export * from "./learning-memory";
+// Gamification + Student Reward System
+export * from "./gamification";

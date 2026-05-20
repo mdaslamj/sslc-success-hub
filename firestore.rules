@@ -549,6 +549,23 @@ service cloud.firestore {
       allow read, write: if isOwner(uid);
     }
 
+    // Gamification + Student Reward System — owner-gated per-user subcollections.
+    match /users/{uid}/xp/{docId} {
+      allow read, write: if isOwner(uid);
+    }
+    match /users/{uid}/levels/{docId} {
+      allow read, write: if isOwner(uid);
+    }
+    match /users/{uid}/missions/{docId} {
+      allow read, write: if isOwner(uid);
+    }
+    match /users/{uid}/streaks/{docId} {
+      allow read, write: if isOwner(uid);
+    }
+    match /users/{uid}/rewardHistory/{docId} {
+      allow read, write: if isOwner(uid);
+    }
+
     // Default deny.
     match /{document=**} {
       allow read, write: if false;
