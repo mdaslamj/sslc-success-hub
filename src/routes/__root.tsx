@@ -9,7 +9,7 @@ import {
   useNavigate,
   useRouterState,
 } from "@tanstack/react-router";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import appCss from "../styles.css?url";
 import { Toaster } from "@/components/ui/sonner";
@@ -154,43 +154,111 @@ const PUBLIC_PATHS = new Set([
   "/forgot-password",
   "/onboarding",
   "/seed",
+  "/privacy",
 ]);
 
 const GUEST_KEY = "aura.guest.v1";
 const GUEST_ONBOARDING_KEY = "aura.guest.onboarding.v1";
+const SPLASH_SEEN_KEY = "aura.splash.seen.v1";
+
+function Splash({ label = "Preparing your study space" }: { label?: string }) {
+  return (
+    <div
+      className="flex min-h-[100dvh] w-full flex-col items-center justify-center bg-background px-6 text-center"
+      style={{ paddingTop: "max(env(safe-area-inset-top), 0px)" }}
+    >
+      <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-primary/10 text-primary shadow-soft">
+        <span className="text-2xl" aria-hidden>🌱</span>
+      </div>
+      <h1 className="mt-5 text-lg font-semibold text-foreground">Aura</h1>
+      <p className="mt-1 text-sm text-muted-foreground">{label}</p>
+      <div className="mt-6 flex items-center gap-1.5" aria-hidden>
+        <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-primary [animation-delay:-0.2s]" />
+        <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-primary [animation-delay:-0.1s]" />
+        <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-primary" />
+      </div>
+      <span className="sr-only" role="status" aria-live="polite">Loading…</span>
+    </div>
+  );
+}
 
 function OnboardingGate({ children }: { children: React.ReactNode }) {
   const { user, profile, loading } = useAuth();
   const pathname = useRouterState({ select: (r) => r.location.pathname });
   const navigate = useNavigate();
+  const [splashHold, setSplashHold] = useState(true);
+
+  // Minimum splash window on first paint so session restore feels smooth
+  // instead of flashing the dashboard.
+  useEffect(() => {
+    const t = setTimeout(() => setSplashHold(false), 450);
+    return () => clearTimeout(t);
+  }, []);
 
   useEffect(() => {
     if (loading) return;
-    if (PUBLIC_PATHS.has(pathname)) return;
+    const isPublic = PUBLIC_PATHS.has(pathname);
 
     // Authenticated path — gate on profile completion.
     if (user) {
       if (!profile) return;
-      if (profile.onboardingCompletedAt) return;
+      if (profile.onboardingCompletedAt) {
+        // Returning authenticated user landing on auth pages → dashboard.
+        if (pathname === "/login" || pathname === "/onboarding") {
+          navigate({ to: "/" });
+        }
+        return;
+      }
+      if (pathname === "/onboarding") return;
       navigate({ to: "/onboarding" });
       return;
     }
 
+    if (isPublic) return;
+
     // Unauthenticated path — guest mode or redirect to login.
     let isGuest = false;
     let guestOnboarded = false;
+    let splashSeen = false;
     try {
       isGuest = localStorage.getItem(GUEST_KEY) === "1";
       guestOnboarded = !!localStorage.getItem(GUEST_ONBOARDING_KEY);
+      splashSeen = localStorage.getItem(SPLASH_SEEN_KEY) === "1";
     } catch {}
     if (!isGuest) {
-      navigate({ to: "/login" });
+      // First-time visitor → Splash → Onboarding → Auth.
+      if (!splashSeen) {
+        try { localStorage.setItem(SPLASH_SEEN_KEY, "1"); } catch {}
+        navigate({ to: "/onboarding" });
+      } else {
+        navigate({ to: "/login" });
+      }
       return;
     }
     if (!guestOnboarded) {
       navigate({ to: "/onboarding" });
     }
   }, [user, profile, loading, pathname, navigate]);
+
+  // Prevent rendering protected content before auth/profile context is ready.
+  const isPublic = PUBLIC_PATHS.has(pathname);
+  const profilePending = !!user && !profile;
+  const showSplash =
+    splashHold ||
+    (!isPublic && loading) ||
+    (!isPublic && profilePending);
+
+  if (showSplash) {
+    return (
+      <Splash
+        label={
+          loading || profilePending
+            ? "Restoring your session…"
+            : "Preparing your study space"
+        }
+      />
+    );
+  }
 
   return <>{children}</>;
 }
