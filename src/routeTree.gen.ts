@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as TextbooksRouteImport } from './routes/textbooks'
 import { Route as TargetsRouteImport } from './routes/targets'
+import { Route as SessionRouteImport } from './routes/session'
 import { Route as SeedRouteImport } from './routes/seed'
 import { Route as ResourcesRouteImport } from './routes/resources'
 import { Route as QuizzesRouteImport } from './routes/quizzes'
@@ -44,6 +45,11 @@ const TextbooksRoute = TextbooksRouteImport.update({
 const TargetsRoute = TargetsRouteImport.update({
   id: '/targets',
   path: '/targets',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SessionRoute = SessionRouteImport.update({
+  id: '/session',
+  path: '/session',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SeedRoute = SeedRouteImport.update({
@@ -184,6 +190,7 @@ export interface FileRoutesByFullPath {
   '/quizzes': typeof QuizzesRoute
   '/resources': typeof ResourcesRoute
   '/seed': typeof SeedRoute
+  '/session': typeof SessionRoute
   '/targets': typeof TargetsRoute
   '/textbooks': typeof TextbooksRoute
   '/admin/import': typeof AdminImportRoute
@@ -212,6 +219,7 @@ export interface FileRoutesByTo {
   '/quizzes': typeof QuizzesRoute
   '/resources': typeof ResourcesRoute
   '/seed': typeof SeedRoute
+  '/session': typeof SessionRoute
   '/targets': typeof TargetsRoute
   '/textbooks': typeof TextbooksRoute
   '/admin/import': typeof AdminImportRoute
@@ -241,6 +249,7 @@ export interface FileRoutesById {
   '/quizzes': typeof QuizzesRoute
   '/resources': typeof ResourcesRoute
   '/seed': typeof SeedRoute
+  '/session': typeof SessionRoute
   '/targets': typeof TargetsRoute
   '/textbooks': typeof TextbooksRoute
   '/admin/import': typeof AdminImportRoute
@@ -271,6 +280,7 @@ export interface FileRouteTypes {
     | '/quizzes'
     | '/resources'
     | '/seed'
+    | '/session'
     | '/targets'
     | '/textbooks'
     | '/admin/import'
@@ -299,6 +309,7 @@ export interface FileRouteTypes {
     | '/quizzes'
     | '/resources'
     | '/seed'
+    | '/session'
     | '/targets'
     | '/textbooks'
     | '/admin/import'
@@ -327,6 +338,7 @@ export interface FileRouteTypes {
     | '/quizzes'
     | '/resources'
     | '/seed'
+    | '/session'
     | '/targets'
     | '/textbooks'
     | '/admin/import'
@@ -356,6 +368,7 @@ export interface RootRouteChildren {
   QuizzesRoute: typeof QuizzesRoute
   ResourcesRoute: typeof ResourcesRoute
   SeedRoute: typeof SeedRoute
+  SessionRoute: typeof SessionRoute
   TargetsRoute: typeof TargetsRoute
   TextbooksRoute: typeof TextbooksRoute
   AdminImportRoute: typeof AdminImportRoute
@@ -380,6 +393,13 @@ declare module '@tanstack/react-router' {
       path: '/targets'
       fullPath: '/targets'
       preLoaderRoute: typeof TargetsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/session': {
+      id: '/session'
+      path: '/session'
+      fullPath: '/session'
+      preLoaderRoute: typeof SessionRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/seed': {
@@ -592,6 +612,7 @@ const rootRouteChildren: RootRouteChildren = {
   QuizzesRoute: QuizzesRoute,
   ResourcesRoute: ResourcesRoute,
   SeedRoute: SeedRoute,
+  SessionRoute: SessionRoute,
   TargetsRoute: TargetsRoute,
   TextbooksRoute: TextbooksRoute,
   AdminImportRoute: AdminImportRoute,

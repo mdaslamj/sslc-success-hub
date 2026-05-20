@@ -452,6 +452,86 @@ export type StudySessionDoc = {
 };
 
 /* ============================================================
+ * Study Session Experience
+ * ============================================================
+ * A `studySessions` doc is the raw timer log. The two records below
+ * capture the richer end-of-session experience: an objective result
+ * (XP/streak/mastery delta) and a subjective feedback ping (confidence,
+ * hints used, perceived difficulty). A separate `revisionTriggers`
+ * doc records the SM-2-style next-due scheduling decision so the
+ * adaptive planner can replay it later without re-deriving the math.
+ */
+
+/** Lives at sessionResults/{sessionId}. Owner-gated by `userId` field. */
+export type SessionResultDoc = {
+  id: string; // == sessionId from studySessions
+  userId: string;
+  sessionId: string;
+  dayKey: string;
+  taskId?: string;
+  taskKind?: DailyTaskKind;
+  subjectId?: string;
+  chapterId?: string;
+  /** Planned minutes vs actually-focused minutes. */
+  plannedMinutes: number;
+  focusedMinutes: number;
+  /** XP awarded for the block (focus + streak + mastery bonuses). */
+  xpAwarded: number;
+  /** Delta applied to subject mastery (0..100). May be negative on lapse. */
+  masteryDelta: number;
+  /** Number of pomodoro cycles completed inside this session. */
+  pomodorosCompleted: number;
+  /** Whether the session ended via "Done" (true) or "Stop" (false). */
+  completed: boolean;
+  createdAt: number;
+};
+
+/** Lives at sessionFeedback/{sessionId}. Owner-gated by `userId` field. */
+export type SessionFeedbackDoc = {
+  id: string; // == sessionId
+  userId: string;
+  sessionId: string;
+  /** 1..5 — self-reported confidence at the end of the session. */
+  confidence: number;
+  /** 1..5 — perceived difficulty. */
+  difficulty: number;
+  /** Number of AI hints consumed during the session. */
+  hintsUsed: number;
+  /** Free-text note. Optional. */
+  note?: string;
+  /** Tags marked as "still confused" — feeds adaptive planner. */
+  strugglingTags?: string[];
+  createdAt: number;
+};
+
+/**
+ * Lives at revisionTriggers/{docId}. Owner-gated by `userId` field.
+ * One row per scheduling decision (audit log). The current "card" state
+ * lives in revisionSchedules — this collection captures *why* it moved.
+ */
+export type RevisionTriggerDoc = {
+  id: string;
+  userId: string;
+  sessionId: string;
+  subjectId?: string;
+  chapterId?: string;
+  /** What caused the schedule update. */
+  reason:
+    | "session_complete"
+    | "low_confidence"
+    | "lapse_detected"
+    | "mastery_jump"
+    | "manual";
+  /** Quality rating (0..5) fed into SM-2. */
+  quality: number;
+  /** Next due timestamp (epoch ms). */
+  nextDueAt: number;
+  /** Days until next due. */
+  intervalDays: number;
+  createdAt: number;
+};
+
+/* ============================================================
  * Daily AI Study Engine
  * ============================================================
  * One generated plan per user per day. Tasks reference (but do not
