@@ -451,6 +451,94 @@ export type StudySessionDoc = {
   notes?: string;
 };
 
+/* ============================================================
+ * Daily AI Study Engine
+ * ============================================================
+ * One generated plan per user per day. Tasks reference (but do not
+ * duplicate) memoryTracking / revisionQueue cards. Drives Today's
+ * Focus, session runner, motivation, and reflection systems.
+ */
+
+export type DailyTaskKind =
+  | "focus"
+  | "revision"
+  | "weak_drill"
+  | "formula"
+  | "recovery"
+  | "reflection";
+
+export type DailyTask = {
+  id: string;
+  kind: DailyTaskKind;
+  title: string;
+  subject?: string;
+  subjectId?: string;
+  chapterId?: string;
+  durationMin: number;
+  /** 0..100 — higher means more urgent / higher impact. */
+  priority: number;
+  /** Short, human-readable AI rationale. */
+  reason?: string;
+  done?: boolean;
+  completedAt?: number;
+};
+
+/** Lives at dailyPlans/{userId_dayKey}. Owner-gated. */
+export type DailyPlanDoc = {
+  id: string; // `${userId}_${dayKey}`
+  userId: string;
+  dayKey: string; // local YYYY-MM-DD
+  generatedAt: number;
+  tasks: DailyTask[];
+  /** Total planned minutes — sum of task durations. */
+  totalMinutes: number;
+  /** AI-generated motivational opener for the day. */
+  aiGreeting?: string;
+  /** AI priority hint (single sentence). */
+  aiPriorityHint?: string;
+  /** 0..100 — completion at last save. */
+  completionScore: number;
+  updatedAt: number;
+};
+
+/** Lives at dailyReflections/{userId_dayKey}. Owner-gated. */
+export type DailyReflectionDoc = {
+  id: string; // `${userId}_${dayKey}`
+  userId: string;
+  dayKey: string;
+  /** 1..5 — self-reported confidence at end of day. */
+  confidence: number;
+  /** What felt difficult today (free text). */
+  difficult?: string;
+  /** Topic ids the student marked as struggling — feeds adaptive planner. */
+  strugglingChapterIds?: string[];
+  completedTaskIds: string[];
+  studyMinutes: number;
+  /** AI synthesis of the reflection — surfaced tomorrow. */
+  aiInsight?: string;
+  createdAt: number;
+};
+
+export type MotivationEventKind =
+  | "streak_extended"
+  | "streak_broken"
+  | "daily_complete"
+  | "milestone"
+  | "gentle_nudge"
+  | "ai_encouragement";
+
+/** Lives at motivationEvents/{docId}. Owner-gated by userId field. */
+export type MotivationEventDoc = {
+  id: string;
+  userId: string;
+  kind: MotivationEventKind;
+  message: string;
+  dayKey: string;
+  /** Optional numeric payload (streak length, completion %, etc). */
+  value?: number;
+  createdAt: number;
+};
+
 /**
  * Unlocked achievement / badge. Owner-gated. Reserved for future
  * gamification + leaderboard.
