@@ -4,9 +4,11 @@ import {
   getDoc,
   getDocs,
   getCountFromServer,
+  setDoc,
 } from "firebase/firestore";
 import { db } from "./config";
 import type { ChapterDoc, SubjectDoc } from "./types";
+import { subjectChapters as mockSubjectChapters, type Chapter } from "@/lib/mock-data";
 
 // New canonical Firestore layout:
 //   subject/{subjectId}                 -> subject metadata doc (may be sparse)
@@ -25,6 +27,59 @@ const SUBJECT_ID_ALIASES: Record<string, string> = {
   math: "mathematics",
   social: "social-science",
 };
+// Reverse-map canonical -> mock-data key used by `subjectChapters`.
+const MOCK_KEY_FOR: Record<string, string> = {
+  mathematics: "math",
+  science: "science",
+  "social-science": "social",
+  english: "english",
+  kannada: "kannada",
+  hindi: "hindi",
+};
+
+function slugify(input: string): string {
+  return (
+    input
+      .toLowerCase()
+      .normalize("NFKD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/(^-|-$)/g, "") || input.toLowerCase()
+  );
+}
+
+async function autoSeedChapters(subjectId: string): Promise<number> {
+  const mockKey = MOCK_KEY_FOR[subjectId] ?? subjectId;
+  const chapters: Chapter[] = mockSubjectChapters[mockKey] ?? [];
+  if (!chapters.length) return 0;
+  console.log(`[subjects] auto-seeding ${chapters.length} chapters for ${subjectId}`);
+  let written = 0;
+  for (let j = 0; j < chapters.length; j++) {
+    const c = chapters[j];
+    const docId = slugify(c.title) || c.id;
+    try {
+      await setDoc(
+        doc(db, SUBJECT_COLLECTION, subjectId, CHAPTERS_SUBCOLLECTION, docId),
+        {
+          subjectId,
+          title: c.title,
+          titleKn: c.titleKn ?? null,
+          chapterNumber: j + 1,
+          order: j,
+          progress: c.progress,
+          done: c.done,
+          difficulty: c.difficulty,
+          emoji: "📘",
+        },
+        { merge: true },
+      );
+      written++;
+    } catch (err) {
+      console.warn(`[subjects] auto-seed failed for ${subjectId}/${docId}`, err);
+    }
+  }
+  return written;
+}
 
 /** Fetch all subjects from the top-level `subject` collection. */
 export async function fetchSubjects(): Promise<SubjectDoc[]> {
@@ -53,8 +108,12 @@ export async function fetchSubjects(): Promise<SubjectDoc[]> {
         const c = await getCountFromServer(
           collection(db, SUBJECT_COLLECTION, row.id, CHAPTERS_SUBCOLLECTION),
         );
-        const count = c.data().count;
+        let count = c.data().count;
         console.log(`[subjects] chapters fetched for ${row.id}: ${count}`);
+        if (count === 0) {
+          const seeded = await autoSeedChapters(row.id);
+          if (seeded > 0) count = seeded;
+        }
         if (count > 0 || !row.chaptersTotal) {
           row.chaptersTotal = count;
         }
