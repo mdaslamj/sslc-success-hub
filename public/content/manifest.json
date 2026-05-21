@@ -17,9 +17,9 @@
       "chapterNumber": 2,
       "title": "Polynomials",
       "difficulty": "medium",
-      "mcqCount": 0,
-      "exerciseCount": 0,
-      "status": "pending"
+      "mcqCount": 15,
+      "exerciseCount": 8,
+      "status": "ready"
     },
     {
       "id": "pair-of-linear-equations",
