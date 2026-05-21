@@ -1,0 +1,248 @@
+{
+  "id": "polynomials",
+  "chapterNumber": 2,
+  "subjectId": "mathematics",
+  "title": "Polynomials",
+  "difficulty": "medium",
+  "estimatedMinutes": 55,
+  "version": "1.0",
+  "lastUpdated": "2026-05",
+  "summary": "Chapter 2 explores polynomials in depth, beginning with a review of degrees and types of polynomials. The chapter establishes the geometrical meaning of zeros of a polynomial by connecting them to the x-intercepts of their graphs. Students learn the relationship between zeros and coefficients for linear, quadratic, and cubic polynomials using Vieta's formulas. The chapter then introduces the Division Algorithm for polynomials, which states that any polynomial can be divided by a non-zero polynomial to give a quotient and remainder. Finally, students apply the division algorithm to find remaining zeros when some zeros are already known.",
+
+  "learningPoints": [
+    "Recall the definition of a polynomial and identify its degree, coefficients, and terms",
+    "Understand the geometrical meaning of zeros of a polynomial as x-intercepts of its graph",
+    "Find the number of zeros a polynomial can have based on its degree",
+    "Verify that a given value is a zero of a polynomial by substitution",
+    "For a quadratic polynomial ax² + bx + c with zeros α and β: apply α + β = -b/a and αβ = c/a",
+    "For a cubic polynomial ax³ + bx² + cx + d with zeros α, β, γ: apply α+β+γ = -b/a, αβ+βγ+γα = c/a, αβγ = -d/a",
+    "Form a quadratic polynomial when its zeros are given using the formula x² - (sum of zeros)x + (product of zeros)",
+    "Apply the Division Algorithm: Dividend = Divisor × Quotient + Remainder",
+    "Divide one polynomial by another using long division method",
+    "Use the Division Algorithm to find remaining zeros of a polynomial when some zeros are known"
+  ],
+
+  "formulas": [
+    {
+      "label": "Sum of Zeros — Quadratic",
+      "expression": "α + β = -b/a",
+      "description": "For quadratic polynomial ax² + bx + c, the sum of zeros α and β equals negative of coefficient of x divided by leading coefficient."
+    },
+    {
+      "label": "Product of Zeros — Quadratic",
+      "expression": "αβ = c/a",
+      "description": "For quadratic polynomial ax² + bx + c, the product of zeros equals constant term divided by leading coefficient."
+    },
+    {
+      "label": "Forming a Quadratic from Zeros",
+      "expression": "p(x) = x² - (α+β)x + αβ",
+      "description": "To form a quadratic polynomial with zeros α and β, use sum and product of zeros."
+    },
+    {
+      "label": "Sum of Zeros — Cubic",
+      "expression": "α + β + γ = -b/a",
+      "description": "For cubic polynomial ax³ + bx² + cx + d, sum of all three zeros."
+    },
+    {
+      "label": "Sum of Products of Zeros — Cubic",
+      "expression": "αβ + βγ + γα = c/a",
+      "description": "For cubic polynomial ax³ + bx² + cx + d, sum of products of zeros taken two at a time."
+    },
+    {
+      "label": "Product of Zeros — Cubic",
+      "expression": "αβγ = -d/a",
+      "description": "For cubic polynomial ax³ + bx² + cx + d, product of all three zeros."
+    },
+    {
+      "label": "Division Algorithm for Polynomials",
+      "expression": "p(x) = g(x) × q(x) + r(x)",
+      "description": "Any polynomial p(x) divided by non-zero polynomial g(x) gives quotient q(x) and remainder r(x), where degree of r(x) < degree of g(x)."
+    }
+  ],
+
+  "resources": [
+    {
+      "type": "video",
+      "provider": "Khan Academy",
+      "label": "Polynomials — Video Lessons & Practice",
+      "description": "Watch chapter videos on zeros of polynomials, relationship between zeros and coefficients, and the division algorithm.",
+      "url": "https://www.khanacademy.org/math/ncert-class-10/xd6a17b08edbd2443:polynomials-ncert-new"
+    },
+    {
+      "type": "textbook",
+      "provider": "ePathshala",
+      "label": "NCERT Mathematics Textbook — Class 10",
+      "description": "Official NCERT Class 10 Mathematics textbook. Read Chapter 2 Polynomials with all examples and exercises.",
+      "url": "https://epathshala.nic.in/e-pathshala-4/flipbook/?id=0964"
+    },
+    {
+      "type": "video",
+      "provider": "Khan Academy",
+      "label": "Full Class 10 Mathematics Course",
+      "description": "Access the complete Khan Academy Class 10 Mathematics course covering all chapters.",
+      "url": "https://www.khanacademy.org/math/ncert-class-10"
+    }
+  ],
+
+  "mcqs": [
+    {
+      "id": "ch2-mcq-001",
+      "question": "The degree of the polynomial 4x³ - 2x² + 7x - 1 is:",
+      "options": ["A. 1", "B. 2", "C. 3", "D. 4"],
+      "correctAnswer": "C",
+      "explanation": "The degree is the highest power of the variable. Here the highest power is x³, so degree = 3."
+    },
+    {
+      "id": "ch2-mcq-002",
+      "question": "The number of zeros of a polynomial is equal to:",
+      "options": ["A. Its degree", "B. Number of terms", "C. At most its degree", "D. Exactly its degree always"],
+      "correctAnswer": "C",
+      "explanation": "A polynomial of degree n can have AT MOST n zeros, not necessarily exactly n."
+    },
+    {
+      "id": "ch2-mcq-003",
+      "question": "The zeros of the polynomial p(x) = x² - 5x + 6 are:",
+      "options": ["A. 2 and 3", "B. -2 and -3", "C. 2 and -3", "D. -2 and 3"],
+      "correctAnswer": "A",
+      "explanation": "x² - 5x + 6 = (x-2)(x-3). So zeros are x = 2 and x = 3."
+    },
+    {
+      "id": "ch2-mcq-004",
+      "question": "If α and β are zeros of 2x² - 7x + 3, then α + β equals:",
+      "options": ["A. 7/2", "B. -7/2", "C. 3/2", "D. -3/2"],
+      "correctAnswer": "A",
+      "explanation": "α + β = -b/a = -(-7)/2 = 7/2."
+    },
+    {
+      "id": "ch2-mcq-005",
+      "question": "If α and β are zeros of 2x² - 7x + 3, then αβ equals:",
+      "options": ["A. 7/2", "B. -7/2", "C. 3/2", "D. -3/2"],
+      "correctAnswer": "C",
+      "explanation": "αβ = c/a = 3/2."
+    },
+    {
+      "id": "ch2-mcq-006",
+      "question": "A quadratic polynomial whose zeros are 3 and -4 is:",
+      "options": ["A. x² + x - 12", "B. x² - x - 12", "C. x² + x + 12", "D. x² - x + 12"],
+      "correctAnswer": "A",
+      "explanation": "Sum of zeros = 3 + (-4) = -1. Product = 3 × (-4) = -12. Polynomial = x² - (-1)x + (-12) = x² + x - 12."
+    },
+    {
+      "id": "ch2-mcq-007",
+      "question": "The graph of y = p(x) is given below. The number of zeros of p(x) is determined by:",
+      "options": ["A. The highest point of the graph", "B. The number of times the graph crosses the x-axis", "C. The number of times the graph crosses the y-axis", "D. The degree of the polynomial"],
+      "correctAnswer": "B",
+      "explanation": "The zeros of a polynomial are the x-coordinates where the graph crosses or touches the x-axis."
+    },
+    {
+      "id": "ch2-mcq-008",
+      "question": "If one zero of the polynomial x² - 5x + k is 2, what is the value of k?",
+      "options": ["A. 2", "B. 4", "C. 6", "D. 8"],
+      "correctAnswer": "C",
+      "explanation": "If 2 is a zero, p(2) = 0. So 4 - 10 + k = 0, giving k = 6."
+    },
+    {
+      "id": "ch2-mcq-009",
+      "question": "For a cubic polynomial ax³ + bx² + cx + d with zeros α, β, γ, the product αβγ equals:",
+      "options": ["A. -b/a", "B. c/a", "C. -d/a", "D. d/a"],
+      "correctAnswer": "C",
+      "explanation": "Product of all three zeros of a cubic polynomial = -d/a."
+    },
+    {
+      "id": "ch2-mcq-010",
+      "question": "On dividing x³ - 3x² + x + 2 by (x - 2), the remainder is:",
+      "options": ["A. 0", "B. 1", "C. -1", "D. 2"],
+      "correctAnswer": "A",
+      "explanation": "p(2) = 8 - 12 + 2 + 2 = 0. Since remainder = 0, (x-2) is a factor."
+    },
+    {
+      "id": "ch2-mcq-011",
+      "question": "According to the Division Algorithm for polynomials, which condition must hold for the remainder r(x)?",
+      "options": ["A. degree r(x) = degree g(x)", "B. degree r(x) > degree g(x)", "C. degree r(x) < degree g(x)", "D. r(x) = 0 always"],
+      "correctAnswer": "C",
+      "explanation": "The degree of remainder r(x) must be strictly less than the degree of divisor g(x)."
+    },
+    {
+      "id": "ch2-mcq-012",
+      "question": "The sum of zeros of the polynomial x² - 2 is:",
+      "options": ["A. 2", "B. -2", "C. 0", "D. √2"],
+      "correctAnswer": "C",
+      "explanation": "x² - 2 = x² + 0x - 2. Sum of zeros = -b/a = 0/1 = 0."
+    },
+    {
+      "id": "ch2-mcq-013",
+      "question": "If the product of zeros of ax² - 6x - 6 is 4, then a equals:",
+      "options": ["A. -3/2", "B. 3/2", "C. -2/3", "D. 2/3"],
+      "correctAnswer": "A",
+      "explanation": "Product of zeros = c/a = -6/a = 4. So a = -6/4 = -3/2."
+    },
+    {
+      "id": "ch2-mcq-014",
+      "question": "Which of the following is NOT a polynomial?",
+      "options": ["A. 3x² - 2x + 1", "B. x + 1/x", "C. 5", "D. √3 x + 1"],
+      "correctAnswer": "B",
+      "explanation": "x + 1/x = x + x⁻¹ has a negative exponent, so it is not a polynomial. Polynomials only have non-negative integer exponents."
+    },
+    {
+      "id": "ch2-mcq-015",
+      "question": "A quadratic polynomial with sum of zeros = 0 and product of zeros = -1 is:",
+      "options": ["A. x² + 1", "B. x² - 1", "C. x² + x - 1", "D. x² - x + 1"],
+      "correctAnswer": "B",
+      "explanation": "p(x) = x² - (0)x + (-1) = x² - 1. Zeros are +1 and -1, sum = 0, product = -1."
+    }
+  ],
+
+  "exercises": [
+    {
+      "id": "ch2-ex-001",
+      "question": "Find the zeros of the quadratic polynomial x² + 7x + 10 and verify the relationship between zeros and coefficients.",
+      "answer": "x² + 7x + 10 = (x+2)(x+5). Zeros: α = -2, β = -5. Verification: α+β = -7 = -7/1 = -b/a ✓. αβ = 10 = 10/1 = c/a ✓.",
+      "type": "short-answer"
+    },
+    {
+      "id": "ch2-ex-002",
+      "question": "Find a quadratic polynomial whose zeros are -3 and 4.",
+      "answer": "Sum of zeros = -3 + 4 = 1. Product of zeros = -3 × 4 = -12. Polynomial = x² - (1)x + (-12) = x² - x - 12.",
+      "type": "short-answer"
+    },
+    {
+      "id": "ch2-ex-003",
+      "question": "Divide 3x³ + x² + 2x + 5 by 1 + 2x + x² and find quotient and remainder.",
+      "answer": "Dividing 3x³ + x² + 2x + 5 by x² + 2x + 1: Quotient = 3x - 5. Remainder = 9x + 10. Verify: (x²+2x+1)(3x-5) + (9x+10) = 3x³+x²+2x+5 ✓.",
+      "type": "short-answer"
+    },
+    {
+      "id": "ch2-ex-004",
+      "question": "If α and β are zeros of x² - 4x + 3, find the value of α² + β².",
+      "answer": "α + β = 4, αβ = 3. α² + β² = (α+β)² - 2αβ = 16 - 6 = 10.",
+      "type": "short-answer"
+    },
+    {
+      "id": "ch2-ex-005",
+      "question": "Verify that 2 and -3 are zeros of the polynomial x² + x - 6. Then form a new quadratic polynomial whose zeros are 1/α and 1/β.",
+      "answer": "p(2) = 4+2-6 = 0 ✓. p(-3) = 9-3-6 = 0 ✓. For 1/α and 1/β: sum = 1/α+1/β = (α+β)/αβ = (-1)/(-6) = 1/6. Product = 1/αβ = 1/(-6) = -1/6. New polynomial = x² - (1/6)x - 1/6, or 6x² - x - 1.",
+      "type": "short-answer"
+    },
+    {
+      "id": "ch2-ex-006",
+      "question": "Given that two zeros of the cubic polynomial x³ - 4x² - 7x + 10 are -2 and 5, find the third zero.",
+      "answer": "For cubic x³ - 4x² - 7x + 10: sum of all zeros = 4. Two zeros are -2 and 5. Third zero = 4 - (-2) - 5 = 1. Verify: product of zeros = -2 × 5 × 1 = -10 = -d/a = -10/1 ✓.",
+      "type": "short-answer"
+    },
+    {
+      "id": "ch2-ex-007",
+      "question": "What must be subtracted from 8x⁴ + 14x³ - 2x² + 8x - 12 so that it is completely divisible by 4x² + 3x - 2?",
+      "answer": "Divide 8x⁴+14x³-2x²+8x-12 by 4x²+3x-2. The remainder is 15x - 14. Subtract (15x - 14) from the polynomial to make it exactly divisible.",
+      "type": "short-answer"
+    },
+    {
+      "id": "ch2-ex-008",
+      "question": "If the zeros of the quadratic polynomial x² + (a+1)x + b are 2 and -3, find a and b.",
+      "answer": "Sum of zeros = 2 + (-3) = -1 = -(a+1). So a+1 = 1, a = 0. Product of zeros = 2×(-3) = -6 = b. Therefore a = 0, b = -6.",
+      "type": "short-answer"
+    }
+  ],
+
+  "mcqCount": 15,
+  "exerciseCount": 8
+}
