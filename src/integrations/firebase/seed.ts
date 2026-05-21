@@ -131,6 +131,7 @@ export async function seedFirestore(): Promise<{
   skippedSubjects: number;
   skippedChapters: number;
 }> {
+  console.log("Seeding started");
   let subjectsWritten = 0;
   let chaptersWritten = 0;
   let skippedSubjects = 0;
@@ -139,6 +140,7 @@ export async function seedFirestore(): Promise<{
   for (let i = 0; i < mockSubjects.length; i++) {
     const s: Subject = mockSubjects[i];
     const fsId = SUBJECT_ID_MAP[s.id] ?? s.id;
+    console.log(`Uploading ${s.name}`);
     const subjectRef = doc(db, SUBJECT_COLLECTION, fsId);
     const exists = await getDoc(subjectRef);
     if (exists.exists()) {
@@ -163,6 +165,7 @@ export async function seedFirestore(): Promise<{
     }
 
     const chapters = subjectChapters[s.id] ?? [];
+    if (chapters.length) console.log(`Uploading chapters (${chapters.length}) for ${s.name}`);
     for (let j = 0; j < chapters.length; j++) {
       const c = chapters[j];
       const docId = chapterDocId(c);
@@ -197,6 +200,12 @@ export async function seedFirestore(): Promise<{
     chapters: chaptersWritten + skippedChapters,
   });
 
+  console.log("Seeding completed", {
+    subjectsWritten,
+    chaptersWritten,
+    skippedSubjects,
+    skippedChapters,
+  });
   return {
     subjects: subjectsWritten,
     chapters: chaptersWritten,
