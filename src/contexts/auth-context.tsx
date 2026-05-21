@@ -25,6 +25,8 @@ import {
   sendPasswordResetEmail,
   signInWithEmailAndPassword,
   signInWithPopup,
+  signInWithRedirect,
+  getRedirectResult,
   signOut as fbSignOut,
   updateProfile,
   type User as FirebaseUser,
@@ -83,6 +85,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setLoading(false);
       return;
     }
+    // If we just came back from a Google redirect sign-in (popup blocked or
+    // running inside an iframe like the preview), surface any error so the
+    // UI doesn't silently hang. The actual session is delivered through
+    // onAuthStateChanged below.
+    getRedirectResult(auth).catch((err) => {
+      console.error("Google redirect sign-in failed", err);
+    });
     const unsub = onAuthStateChanged(auth, async (u) => {
       setUser((prev) => {
         if ((prev?.uid ?? null) !== (u?.uid ?? null)) {
@@ -138,7 +147,32 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const signInWithGoogle = useCallback(async () => {
     const provider = new GoogleAuthProvider();
-    await signInWithPopup(auth, provider);
+    provider.setCustomParameters({ prompt: "select_account" });
+    // The preview runs the app inside an iframe, which blocks popups in most
+    // browsers — and many mobile browsers block popups outright. Try popup
+    // first (best UX when it works), then fall back to a full-page redirect
+    // so sign-in still completes reliably.
+    const inIframe =
+      typeof window !== "undefined" && window.self !== window.top;
+    if (inIframe) {
+      await signInWithRedirect(auth, provider);
+      return;
+    }
+    try {
+      await signInWithPopup(auth, provider);
+    } catch (err) {
+      const code = (err as { code?: string } | null)?.code ?? "";
+      const popupIssue =
+        code === "auth/popup-blocked" ||
+        code === "auth/popup-closed-by-user" ||
+        code === "auth/cancelled-popup-request" ||
+        code === "auth/operation-not-supported-in-this-environment";
+      if (popupIssue) {
+        await signInWithRedirect(auth, provider);
+        return;
+      }
+      throw err;
+    }
   }, []);
 
   const signOut = useCallback(async () => {
