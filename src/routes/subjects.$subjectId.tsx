@@ -811,7 +811,7 @@ function DifficultyBadge({ level }: { level: ChapterDoc["difficulty"] }) {
 
 /* ---------------- Content overview (from /content JSON) ---------------- */
 
-function ChapterContentOverview({ chapter }: { chapter: ContentChapter }) {
+function ChapterContentOverview({ chapter }: { chapter: NormalizedChapter }) {
   return (
     <div className="mb-4 rounded-2xl border border-border/60 bg-card p-5 shadow-soft">
       <div className="flex items-center gap-2 text-[11px] uppercase tracking-widest text-muted-foreground">
@@ -833,7 +833,7 @@ function ChapterContentOverview({ chapter }: { chapter: ContentChapter }) {
             </Badge>
           </div>
           <ul className="mt-2 space-y-1.5 pl-1">
-            {chapter.learningPoints.map((p, i) => (
+            {chapter.learningPoints.map((p: string, i: number) => (
               <li key={i} className="flex gap-2 text-sm">
                 <span className="mt-1 inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-brand" />
                 <span className="text-foreground/90">{p}</span>
@@ -842,6 +842,66 @@ function ChapterContentOverview({ chapter }: { chapter: ContentChapter }) {
           </ul>
         </div>
       )}
+    </div>
+  );
+}
+
+/* ---------------- Chapter picker pane (drives content tabs) ---------------- */
+
+function ContentChapterPane({
+  chapters,
+  activeId,
+  onSelect,
+  loading,
+  emptyMessage,
+  children,
+}: {
+  chapters: NormalizedChapter[];
+  activeId: string | null;
+  onSelect: (id: string) => void;
+  loading: boolean;
+  emptyMessage: string;
+  children: (chapter: NormalizedChapter) => React.ReactNode;
+}) {
+  if (loading && chapters.length === 0) {
+    return <Skeleton className="h-48 w-full rounded-2xl" />;
+  }
+  if (chapters.length === 0) {
+    return (
+      <div className="rounded-2xl border border-dashed border-border/60 p-10 text-center text-sm text-muted-foreground">
+        {emptyMessage}
+      </div>
+    );
+  }
+  const selected =
+    chapters.find((c) => c.id === activeId) ?? chapters[0];
+  return (
+    <div className="grid gap-4 md:grid-cols-[220px_1fr]">
+      <div className="rounded-2xl border border-border/60 bg-card p-2 md:max-h-[640px] md:overflow-y-auto">
+        <ul className="space-y-1">
+          {chapters.map((c, i) => {
+            const active = selected.id === c.id;
+            return (
+              <li key={c.id}>
+                <button
+                  onClick={() => onSelect(c.id)}
+                  className={`flex w-full items-center gap-2 rounded-xl px-3 py-2 text-left text-sm transition ${
+                    active
+                      ? "bg-brand/10 text-foreground"
+                      : "hover:bg-muted/50 text-muted-foreground"
+                  }`}
+                >
+                  <span className="shrink-0 font-mono text-[11px] text-muted-foreground">
+                    {String(c.chapterNumber || i + 1).padStart(2, "0")}
+                  </span>
+                  <span className="min-w-0 truncate">{c.title}</span>
+                </button>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+      <div className="min-w-0">{children(selected)}</div>
     </div>
   );
 }
