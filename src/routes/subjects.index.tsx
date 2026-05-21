@@ -24,14 +24,14 @@ function SubjectsPage() {
 
   return (
     <DashboardLayout title="Subjects">
-      <div className="mx-auto max-w-7xl">
+      <div className="mx-auto max-w-3xl">
         <header className="mb-6">
           <h1 className="font-display text-3xl font-bold tracking-tight">All Subjects</h1>
           <p className="text-sm text-muted-foreground">Karnataka SSLC Class 10 syllabus · 6 subjects</p>
         </header>
 
         {isLoading && (
-          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {Array.from({ length: 6 }).map((_, i) => (
               <Skeleton key={i} className="h-[340px] rounded-3xl" />
             ))}
@@ -78,11 +78,11 @@ function SubjectsPage() {
         )}
 
         {!isLoading && !isError && subjects && subjects.length > 0 && (
-        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {subjects.map((s) => (
             <article
               key={s.id}
-              className="group relative overflow-hidden rounded-3xl border border-border/60 bg-card p-6 shadow-card transition-all hover:-translate-y-1 hover:shadow-glow"
+              className="group relative overflow-hidden rounded-2xl border border-border/60 bg-card p-4 shadow-soft transition-all hover:-translate-y-1 hover:shadow-glow"
             >
               <div
                 className="absolute -right-12 -top-12 h-40 w-40 rounded-full blur-2xl opacity-40 transition-opacity group-hover:opacity-70"
@@ -160,7 +160,7 @@ function SubjectsPage() {
         </div>
         )}
 
-        <div className="mt-8 rounded-3xl border border-border/60 bg-card p-6 shadow-card">
+        <div className="mt-8 rounded-2xl border border-border/60 bg-card p-4 shadow-soft">
           <div className="flex items-start gap-3">
             <div className="flex h-10 w-10 items-center justify-center rounded-xl gradient-brand text-brand-foreground">
               <Sparkles className="h-5 w-5" />

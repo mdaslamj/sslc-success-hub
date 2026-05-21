@@ -105,7 +105,7 @@ function SubjectDetailPage() {
   if (subjectQuery.isLoading || chaptersQuery.isLoading) {
     return (
       <DashboardLayout title="Loading…">
-        <div className="mx-auto max-w-7xl space-y-6">
+        <div className="mx-auto max-w-3xl space-y-4">
           <Skeleton className="h-40 w-full rounded-3xl" />
           <Skeleton className="h-10 w-72 rounded-full" />
           <div className="grid gap-3 md:grid-cols-2">
@@ -188,7 +188,7 @@ function SubjectDetailPage() {
 
   return (
     <DashboardLayout title={subject.name}>
-      <div className="mx-auto max-w-7xl space-y-6">
+      <div className="mx-auto max-w-3xl space-y-4">
         {/* Header */}
         <div>
           <Button asChild variant="ghost" size="sm" className="mb-2 -ml-2 rounded-full">
@@ -198,7 +198,7 @@ function SubjectDetailPage() {
           </Button>
 
           <div
-            className="relative overflow-hidden rounded-3xl p-6 md:p-8 text-white shadow-glow"
+            className="relative overflow-hidden rounded-2xl p-4 md:p-5 text-white shadow-soft"
             style={{
               background: `linear-gradient(135deg, ${subject.color}, color-mix(in oklab, ${subject.color} 60%, var(--brand-glow)))`,
             }}
@@ -209,7 +209,7 @@ function SubjectDetailPage() {
                 {subject.emoji}
               </div>
               <div className="flex-1 min-w-[180px]">
-                <h1 className="font-display text-3xl md:text-4xl font-bold tracking-tight">
+                <h1 className="font-display text-2xl md:text-[28px] font-bold tracking-tight">
                   {subject.name}
                 </h1>
                 {subject.nameKn && (
@@ -521,7 +521,7 @@ function TopicsSection({
   return (
     <div className="grid gap-4 md:grid-cols-2">
       {/* Strong */}
-      <div className="rounded-3xl border border-border/60 bg-card p-6 shadow-card">
+      <div className="rounded-2xl border border-border/60 bg-card p-4 shadow-soft">
         <div className="flex items-center gap-2">
           <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-success/15 text-success">
             <ThumbsUp className="h-4 w-4" />
@@ -550,7 +550,7 @@ function TopicsSection({
       </div>
 
       {/* Weak */}
-      <div className="rounded-3xl border border-border/60 bg-card p-6 shadow-card">
+      <div className="rounded-2xl border border-border/60 bg-card p-4 shadow-soft">
         <div className="flex items-center gap-2">
           <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-destructive/15 text-destructive">
             <AlertTriangle className="h-4 w-4" />
@@ -682,7 +682,7 @@ function PracticeQuiz({ mcqs, color }: { mcqs: MCQ[]; color: string }) {
     const tone =
       score >= 80 ? "text-success" : score >= 50 ? "text-warning" : "text-destructive";
     return (
-      <div className="rounded-3xl border border-border/60 bg-card p-8 text-center shadow-card">
+      <div className="rounded-2xl border border-border/60 bg-card p-5 text-center shadow-soft">
         <div
           className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl text-white"
           style={{ background: color }}
@@ -703,7 +703,7 @@ function PracticeQuiz({ mcqs, color }: { mcqs: MCQ[]; color: string }) {
   }
 
   return (
-    <div className="rounded-3xl border border-border/60 bg-card p-6 shadow-card">
+    <div className="rounded-2xl border border-border/60 bg-card p-4 shadow-soft">
       {/* Header */}
       <div className="flex items-center justify-between gap-3 flex-wrap">
         <div className="flex items-center gap-2">
