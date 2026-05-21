@@ -422,7 +422,57 @@ function HeaderStat({ label, value }: { label: string; value: string }) {
   );
 }
 
+/* ---------------- Content Resources (from chapter JSON) ---------------- */
+
+function ContentResourcesGrid({ resources }: { resources: ContentResource[] }) {
+  const iconFor = (type: string) => {
+    const t = type.toLowerCase();
+    if (t === "video") return "🎬";
+    if (t === "textbook") return "📖";
+    if (t === "course") return "🎓";
+    return "🔗";
+  };
+
+  return (
+    <div className="rounded-2xl border border-border/60 bg-card p-4">
+      <h3 className="mb-3 font-display text-base font-semibold">Recommended Resources</h3>
+      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        {resources.map((r, i) => (
+          <div
+            key={`${r.url}-${i}`}
+            className="flex flex-col gap-2 rounded-xl border border-border/60 bg-background p-3"
+          >
+            <div className="flex items-start gap-2">
+              <span className="text-2xl leading-none" aria-hidden>
+                {iconFor(r.type)}
+              </span>
+              <div className="min-w-0">
+                <div className="text-[11px] font-medium uppercase tracking-wide text-muted-foreground">
+                  {r.provider}
+                </div>
+                <div className="text-sm font-semibold leading-snug">{r.label}</div>
+              </div>
+            </div>
+            {r.description && (
+              <p className="text-xs text-muted-foreground leading-relaxed">{r.description}</p>
+            )}
+            <a
+              href={r.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-auto inline-flex items-center justify-center rounded-lg bg-brand px-3 py-1.5 text-xs font-semibold text-brand-foreground hover:bg-brand/90 transition"
+            >
+              Open
+            </a>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 /* ---------------- Resources ---------------- */
+
 
 function ResourcesSection({ chapters }: { chapters: ChapterDoc[] }) {
   const [selectedId, setSelectedId] = useState<string | null>(
