@@ -35,6 +35,8 @@ import { useGamification } from "@/hooks/use-gamification";
 import { DailyMissionsCard } from "@/components/gamification/daily-missions-card";
 import { JourneyStrip } from "@/components/gamification/journey-strip";
 import { ScanHeroBanner } from "@/components/scan/scan-hero-banner";
+import { useQuery } from "@tanstack/react-query";
+import { fetchSubjectChapters } from "@/integrations/firebase/services/subject-chapters";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -250,6 +252,8 @@ function HomePage() {
           <DailyMissionsCard missions={gamification.todaysMissions} />
         )}
 
+        <MathChaptersSection />
+
         <section className="rounded-3xl bg-card p-5 shadow-soft">
           <div className="flex items-center gap-4">
             <ProgressRing value={overallPrepScore} size={84} stroke={8} sublabel="ready" />
@@ -387,5 +391,67 @@ function MiniStat({
       </div>
       <div className="mt-1 font-display text-2xl font-bold">{value}</div>
     </div>
+  );
+}
+
+function MathChaptersSection() {
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["subject-chapters", "mathematics"],
+    queryFn: () => fetchSubjectChapters("mathematics"),
+    staleTime: 5 * 60 * 1000,
+  });
+
+  return (
+    <section>
+      <SectionHeader
+        title="Mathematics chapters"
+        hint={data ? `${data.length} chapters` : ""}
+      />
+      <div className="mt-3 grid grid-cols-1 gap-2 sm:grid-cols-2">
+        {isLoading && (
+          <>
+            <div className="h-20 animate-pulse rounded-2xl bg-muted" />
+            <div className="h-20 animate-pulse rounded-2xl bg-muted" />
+          </>
+        )}
+        {error && (
+          <div className="col-span-full rounded-2xl bg-card p-4 text-sm text-muted-foreground shadow-soft">
+            Couldn't load chapters from Firestore.
+          </div>
+        )}
+        {data && data.length === 0 && (
+          <div className="col-span-full rounded-2xl bg-card p-4 text-sm text-muted-foreground shadow-soft">
+            No chapters found in <code>subject/mathematics/chapters</code>.
+          </div>
+        )}
+        {data?.map((c) => (
+          <Link
+            key={c.id}
+            to="/subjects/math/$chapterId"
+            params={{ chapterId: c.id }}
+            className="press group rounded-2xl bg-card p-4 shadow-soft transition-colors hover:bg-secondary/50"
+          >
+            <div className="flex items-start gap-3">
+              <div className="text-2xl">{c.emoji ?? "📘"}</div>
+              <div className="min-w-0 flex-1">
+                <div className="flex items-center gap-1.5 text-[10px] uppercase tracking-wider text-muted-foreground">
+                  {c.chapterNumber != null && <span>Ch {c.chapterNumber}</span>}
+                  {c.difficulty && <span>· {c.difficulty}</span>}
+                </div>
+                <h4 className="mt-0.5 line-clamp-2 font-display text-sm font-semibold text-foreground">
+                  {c.title}
+                </h4>
+                {c.estimatedStudyTime != null && (
+                  <div className="mt-1 text-[11px] text-muted-foreground">
+                    {c.estimatedStudyTime} min
+                  </div>
+                )}
+              </div>
+              <ArrowRight className="h-4 w-4 text-muted-foreground transition-transform group-hover:translate-x-0.5" />
+            </div>
+          </Link>
+        ))}
+      </div>
+    </section>
   );
 }
