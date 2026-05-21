@@ -18,11 +18,14 @@ import {
   deleteDoc,
   doc,
   getDocs,
+  query,
+  where,
   writeBatch,
 } from "firebase/firestore";
 import { deleteUser } from "firebase/auth";
+import { deleteObject, listAll, ref as storageRef } from "firebase/storage";
 
-import { auth, db, COLLECTIONS } from "@/integrations/firebase/config";
+import { auth, db, storage, COLLECTIONS } from "@/integrations/firebase/config";
 import {
   ADAPTIVE_SUBCOLLECTIONS,
   BOARD_READINESS_SUBCOLLECTIONS,
@@ -160,6 +163,43 @@ const FLAT_USER_DOC_COLLECTIONS: readonly string[] = [
   COLLECTIONS.STREAKS,
 ];
 
+// Flat top-level collections whose docs carry a `userId` field referencing
+// the owning user. We query+batch-delete matching docs for full account
+// erasure (Play Store / GDPR compliance).
+const FLAT_USERID_FIELD_COLLECTIONS: readonly string[] = [
+  COLLECTIONS.NOTES,
+  COLLECTIONS.CHAPTER_PROGRESS,
+  COLLECTIONS.USER_PROGRESS,
+  COLLECTIONS.STUDY_SESSIONS,
+  COLLECTIONS.ANALYTICS,
+  COLLECTIONS.QUIZ_ATTEMPTS,
+  COLLECTIONS.STUDY_PLANS,
+  COLLECTIONS.PLANNER_TASKS,
+  COLLECTIONS.REVISION_SCHEDULES,
+  COLLECTIONS.RECOMMENDATIONS,
+  COLLECTIONS.AI_INSIGHTS,
+  COLLECTIONS.EXAM_ATTEMPTS,
+  COLLECTIONS.EXAM_RESULTS,
+  COLLECTIONS.DAILY_PLANS,
+  COLLECTIONS.DAILY_REFLECTIONS,
+  COLLECTIONS.MOTIVATION_EVENTS,
+  COLLECTIONS.WEAKNESS_REPORTS,
+  COLLECTIONS.USER_ACHIEVEMENTS,
+  COLLECTIONS.SESSION_RESULTS,
+  COLLECTIONS.SESSION_FEEDBACK,
+  COLLECTIONS.REVISION_TRIGGERS,
+  COLLECTIONS.SCANS,
+  COLLECTIONS.SOLVED_QUESTIONS,
+  COLLECTIONS.AI_EVALUATIONS,
+  COLLECTIONS.PRACTICE_RECOMMENDATIONS,
+  COLLECTIONS.MATH_CHAPTER_ANALYTICS,
+  COLLECTIONS.ANSWER_UPLOADS,
+  COLLECTIONS.ANSWER_ATTEMPTS,
+  COLLECTIONS.EVALUATIONS,
+  COLLECTIONS.STUDENT_INVITES,
+  COLLECTIONS.PARENT_LINKS,
+];
+
 async function deleteCollectionDocs(colPath: string) {
   try {
     const snap = await getDocs(collection(db, colPath));
@@ -177,6 +217,36 @@ async function deleteCollectionDocs(colPath: string) {
   }
 }
 
+async function deleteDocsWhereUserId(colName: string, uid: string) {
+  try {
+    const q = query(collection(db, colName), where("userId", "==", uid));
+    const snap = await getDocs(q);
+    if (snap.empty) return;
+    const docs = snap.docs;
+    for (let i = 0; i < docs.length; i += 400) {
+      const batch = writeBatch(db);
+      for (const d of docs.slice(i, i + 400)) batch.delete(d.ref);
+      await batch.commit();
+    }
+  } catch (err) {
+    console.warn(`[account-deletion] skip flat-userId ${colName}:`, err);
+  }
+}
+
+async function deleteStorageFolder(path: string) {
+  try {
+    const dir = storageRef(storage, path);
+    const listing = await listAll(dir);
+    await Promise.all(listing.items.map((it) => deleteObject(it).catch(() => {})));
+    // Recurse into subfolders.
+    await Promise.all(
+      listing.prefixes.map((p) => deleteStorageFolder(p.fullPath)),
+    );
+  } catch (err) {
+    console.warn(`[account-deletion] skip storage ${path}:`, err);
+  }
+}
+
 /**
  * Best-effort purge of the signed-in user's Firestore data. Iterates
  * every per-user subcollection we know about plus flat docs keyed by
@@ -188,6 +258,9 @@ export async function purgeFirestoreUserData(uid: string): Promise<void> {
   for (const sub of USER_SUBCOLLECTIONS) {
     tasks.push(deleteCollectionDocs(`${COLLECTIONS.USERS}/${uid}/${sub}`));
   }
+  for (const col of FLAT_USERID_FIELD_COLLECTIONS) {
+    tasks.push(deleteDocsWhereUserId(col, uid));
+  }
   await Promise.all(tasks);
   for (const col of FLAT_USER_DOC_COLLECTIONS) {
     try {
@@ -196,6 +269,9 @@ export async function purgeFirestoreUserData(uid: string): Promise<void> {
       console.warn(`[account-deletion] skip flat ${col}/${uid}:`, err);
     }
   }
+  // Best-effort: delete handwritten-answer uploads stored under
+  // answer-uploads/{uid}/ in Firebase Storage.
+  await deleteStorageFolder(`answer-uploads/${uid}`);
   recordEvent("info", "account_firestore_purge", USER_SUBCOLLECTIONS.length);
 }
 
