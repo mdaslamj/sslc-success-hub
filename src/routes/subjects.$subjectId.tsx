@@ -58,6 +58,13 @@ type ContentMCQ = {
   correctAnswer: string;
   explanation?: string;
 };
+type ContentResource = {
+  type: string;
+  provider: string;
+  label: string;
+  description?: string;
+  url: string;
+};
 type ContentChapter = {
   title: string;
   summary?: string;
@@ -65,7 +72,9 @@ type ContentChapter = {
   learningPoints?: string[];
   formulas?: ContentFormula[];
   mcqs?: ContentMCQ[];
+  resources?: ContentResource[];
 };
+
 
 const MATH_SUBJECT_IDS = new Set(["mathematics", "math"]);
 
