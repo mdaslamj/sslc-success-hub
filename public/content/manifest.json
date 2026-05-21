@@ -26,9 +26,9 @@
       "chapterNumber": 3,
       "title": "Pair of Linear Equations in Two Variables",
       "difficulty": "medium",
-      "mcqCount": 0,
-      "exerciseCount": 0,
-      "status": "pending"
+      "mcqCount": 15,
+      "exerciseCount": 8,
+      "status": "ready"
     },
     {
       "id": "quadratic-equations",
