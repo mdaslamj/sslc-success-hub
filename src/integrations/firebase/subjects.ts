@@ -12,14 +12,34 @@ import type { ChapterDoc, SubjectDoc } from "./types";
 //   subject/{subjectId}/chapters/{id}   -> chapter docs
 const SUBJECT_COLLECTION = "subject";
 const CHAPTERS_SUBCOLLECTION = "chapters";
+const KNOWN_SUBJECT_IDS = [
+  "mathematics",
+  "science",
+  "social-science",
+  "english",
+  "kannada",
+  "hindi",
+] as const;
 
 /** Fetch all subjects from the top-level `subject` collection. */
 export async function fetchSubjects(): Promise<SubjectDoc[]> {
   const snap = await getDocs(collection(db, SUBJECT_COLLECTION));
-  const rows = snap.docs.map((d) =>
-    normalizeSubject({ id: d.id, ...(d.data() as Record<string, unknown>) }),
-  );
-  return rows.sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+  const byId = new Map<string, Record<string, unknown> & { id: string }>();
+
+  for (const d of snap.docs) {
+    byId.set(d.id, { id: d.id, ...(d.data() as Record<string, unknown>) });
+  }
+
+  for (const id of KNOWN_SUBJECT_IDS) {
+    if (!byId.has(id)) byId.set(id, { id });
+  }
+
+  const rows = Array.from(byId.values()).map(normalizeSubject);
+  return rows.sort((a, b) => {
+    const orderA = a.order ?? KNOWN_SUBJECT_IDS.indexOf(a.id as (typeof KNOWN_SUBJECT_IDS)[number]);
+    const orderB = b.order ?? KNOWN_SUBJECT_IDS.indexOf(b.id as (typeof KNOWN_SUBJECT_IDS)[number]);
+    return (orderA === -1 ? Number.MAX_SAFE_INTEGER : orderA) - (orderB === -1 ? Number.MAX_SAFE_INTEGER : orderB);
+  });
 }
 
 /** Fetch a single subject doc by id from `subject/{subjectId}`. */
@@ -54,6 +74,7 @@ function normalizeSubject(raw: Record<string, unknown> & { id: string }): Subjec
     mathematics: { name: "Mathematics", nameKn: "ಗಣಿತ", emoji: "🔢", color: "#6366f1" },
     math: { name: "Mathematics", nameKn: "ಗಣಿತ", emoji: "🔢", color: "#6366f1" },
     science: { name: "Science", nameKn: "ವಿಜ್ಞಾನ", emoji: "🔬", color: "#10b981" },
+    "social-science": { name: "Social Science", nameKn: "ಸಮಾಜ ವಿಜ್ಞಾನ", emoji: "🌍", color: "#f59e0b" },
     social: { name: "Social Science", nameKn: "ಸಮಾಜ ವಿಜ್ಞಾನ", emoji: "🌍", color: "#f59e0b" },
     english: { name: "English", emoji: "🔤", color: "#ef4444" },
     kannada: { name: "Kannada", nameKn: "ಕನ್ನಡ", emoji: "✍️", color: "#8b5cf6" },
@@ -62,7 +83,7 @@ function normalizeSubject(raw: Record<string, unknown> & { id: string }): Subjec
   const fallback = subjectDefaults[raw.id] ?? { name: raw.id, emoji: "📘", color: "#6366f1" };
   return {
     id: raw.id,
-    name: (raw.name as string) ?? fallback.name,
+    name: (raw.name as string) ?? (raw.title as string) ?? fallback.name,
     nameKn: (raw.nameKn as string) ?? fallback.nameKn,
     emoji: (raw.emoji as string) ?? fallback.emoji,
     color: (raw.color as string) ?? fallback.color,
