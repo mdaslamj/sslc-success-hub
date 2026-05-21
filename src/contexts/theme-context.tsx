@@ -49,10 +49,10 @@ function applyTheme(mode: ThemeMode): "light" | "dark" {
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
   const [theme, setThemeState] = useState<ThemeMode>(() => {
-    if (typeof window === "undefined") return "system";
-    return (localStorage.getItem(STORAGE_KEY) as ThemeMode) || "system";
+    if (typeof window === "undefined") return "light";
+    return (localStorage.getItem(STORAGE_KEY) as ThemeMode) || "light";
   });
-  const [resolved, setResolved] = useState<"light" | "dark">("dark");
+  const [resolved, setResolved] = useState<"light" | "dark">("light");
   const [accent, setAccentState] = useState<AccentId>(() => {
     if (typeof window === "undefined") return "sage";
     return (localStorage.getItem(ACCENT_KEY) as AccentId) || "sage";
