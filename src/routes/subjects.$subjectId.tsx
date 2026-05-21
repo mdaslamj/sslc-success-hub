@@ -338,15 +338,23 @@ function SubjectDetailPage() {
 
           {/* CHAPTERS */}
           <TabsContent value="chapters" className="mt-4">
-            {isMath && activeChapter && (
-              <ChapterContentOverview chapter={activeChapter} />
-            )}
             {isMath && manifestQuery.data?.chapters ? (
-              <ManifestChaptersGrid
-                chapters={manifestQuery.data.chapters as ManifestChapter[]}
-                color={subject.color}
-                readyChapterId={readyChapterId}
-              />
+              chapterDetailOpen && activeChapter ? (
+                <ChapterDetailView
+                  chapter={activeChapter}
+                  color={subject.color}
+                  onBack={() => setChapterDetailOpen(false)}
+                />
+              ) : (
+                <ManifestChaptersGrid
+                  chapters={manifestQuery.data.chapters as ManifestChapter[]}
+                  color={subject.color}
+                  onSelect={(id) => {
+                    setSelectedContentId(id);
+                    setChapterDetailOpen(true);
+                  }}
+                />
+              )
             ) : (
               <ChaptersSection
                 chapters={chapters}
