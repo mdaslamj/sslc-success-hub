@@ -921,9 +921,10 @@ function PracticeQuiz({ mcqs, color }: { mcqs: MCQ[]; color: string }) {
           return (
             <button
               key={i}
+              type="button"
               disabled={revealed}
               onClick={() => setSelected(i)}
-              className={`group flex w-full items-center gap-3 rounded-2xl border p-3 text-left text-sm transition ${
+              className={`group flex w-full min-h-[3rem] h-auto items-start gap-3 rounded-2xl border p-3 text-left text-sm transition ${
                 isCorrect
                   ? "border-success/40 bg-success/10"
                   : isWrong
@@ -934,7 +935,7 @@ function PracticeQuiz({ mcqs, color }: { mcqs: MCQ[]; color: string }) {
               }`}
             >
               <span
-                className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-lg text-xs font-semibold ${
+                className={`mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-lg text-xs font-semibold ${
                   isCorrect
                     ? "bg-success text-white"
                     : isWrong
@@ -944,9 +945,11 @@ function PracticeQuiz({ mcqs, color }: { mcqs: MCQ[]; color: string }) {
               >
                 {String.fromCharCode(65 + i)}
               </span>
-              <span className="flex-1">{opt}</span>
-              {isCorrect && <CheckCircle2 className="h-4 w-4 text-success" />}
-              {isWrong && <XCircle className="h-4 w-4 text-destructive" />}
+              <span className="flex-1 min-w-0 whitespace-normal break-words leading-relaxed">
+                {opt}
+              </span>
+              {isCorrect && <CheckCircle2 className="h-4 w-4 shrink-0 mt-1 text-success" />}
+              {isWrong && <XCircle className="h-4 w-4 shrink-0 mt-1 text-destructive" />}
             </button>
           );
         })}
