@@ -35,6 +35,8 @@ import { useGamification } from "@/hooks/use-gamification";
 import { DailyMissionsCard } from "@/components/gamification/daily-missions-card";
 import { JourneyStrip } from "@/components/gamification/journey-strip";
 import { ScanHeroBanner } from "@/components/scan/scan-hero-banner";
+import { useQuery } from "@tanstack/react-query";
+import { fetchSubjectChapters } from "@/integrations/firebase/services/subject-chapters";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -249,6 +251,8 @@ function HomePage() {
         {gamification.todaysMissions.length > 0 && (
           <DailyMissionsCard missions={gamification.todaysMissions} />
         )}
+
+        <MathChaptersSection />
 
         <section className="rounded-3xl bg-card p-5 shadow-soft">
           <div className="flex items-center gap-4">
