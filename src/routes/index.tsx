@@ -149,8 +149,10 @@ function HomePage() {
 
   return (
     <DashboardLayout title="Today">
-      <div className="mx-auto max-w-md space-y-5 md:max-w-2xl">
-        <section className="pt-1">
+      <div className="mx-auto max-w-md space-y-4 md:max-w-2xl">
+        <ScanHeroBanner />
+
+        <section className="pt-0.5">
           <div className="inline-flex items-center gap-1.5 rounded-full bg-secondary px-2.5 py-1 text-[11px] font-medium text-primary">
             {greet.icon}
             Good {greet.label}
@@ -181,10 +183,6 @@ function HomePage() {
             hint={engine.aiPriorityHint ?? focus.reason}
           />
         )}
-
-        <ScanHeroBanner />
-
-
 
         <section>
           <SectionHeader
