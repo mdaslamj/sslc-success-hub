@@ -33,7 +33,8 @@ type AllowedModel = (typeof ALLOWED_MODELS)[number];
  * securetoken JWKS, plus issuer/audience claims tied to the Firebase
  * project ID.
  */
-const FIREBASE_PROJECT_ID = "c-success-hub";
+const FIREBASE_PROJECT_ID =
+  process.env.FIREBASE_PROJECT_ID ?? "aura-57e48";
 const FIREBASE_ISSUER = `https://securetoken.google.com/${FIREBASE_PROJECT_ID}`;
 const FIREBASE_JWKS = createRemoteJWKSet(
   new URL(
