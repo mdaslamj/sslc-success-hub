@@ -43,11 +43,16 @@ function SeedPage() {
       setState({ kind: "success", ...r });
       status.refetch();
     } catch (e) {
-      // Log internal details for the admin's browser console only.
-      if (typeof console !== "undefined") console.error("seed failed", e);
+      console.error("seed failed", e);
+      const err = e as { code?: string; message?: string };
+      const isPerm =
+        err?.code === "permission-denied" ||
+        /permission|insufficient|PERMISSION_DENIED/i.test(err?.message ?? "");
       setState({
         kind: "error",
-        message: "Seeding failed. Check the browser console for details.",
+        message: isPerm
+          ? "Firestore permission denied. Update your Firestore security rules to allow writes to `subject/**` and `_meta/seed`, then retry."
+          : err?.message ?? "Seeding failed. Check the browser console for details.",
       });
     }
   }
@@ -131,7 +136,7 @@ function SeedPage() {
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Seeding…
               </>
             ) : (
-              <>Run seed</>
+              <>Run Firestore Seeder</>
             )}
           </Button>
 
@@ -139,7 +144,7 @@ function SeedPage() {
             <div className="mt-6 flex items-start gap-2 rounded-2xl border border-success/30 bg-success/5 p-4 text-sm">
               <CheckCircle2 className="h-5 w-5 text-success shrink-0" />
               <div>
-                <p className="font-semibold text-success">Done!</p>
+                <p className="font-semibold text-success">Firestore seeded successfully</p>
                 <p className="text-muted-foreground">
                   Wrote {state.subjects} subjects and {state.chapters} chapters.
                 </p>
