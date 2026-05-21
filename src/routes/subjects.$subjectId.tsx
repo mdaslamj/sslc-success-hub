@@ -613,6 +613,87 @@ function DifficultyBadge({ level }: { level: ChapterDoc["difficulty"] }) {
   );
 }
 
+/* ---------------- Content overview (from /content JSON) ---------------- */
+
+function ChapterContentOverview({ chapter }: { chapter: ContentChapter }) {
+  return (
+    <div className="mb-4 rounded-2xl border border-border/60 bg-card p-5 shadow-soft">
+      <div className="flex items-center gap-2 text-[11px] uppercase tracking-widest text-muted-foreground">
+        <BookOpen className="h-3.5 w-3.5" /> Chapter overview
+      </div>
+      <h2 className="mt-1 font-display text-xl font-bold">{chapter.title}</h2>
+      {chapter.summary && (
+        <p className="mt-2 text-sm text-muted-foreground leading-relaxed">
+          {chapter.summary}
+        </p>
+      )}
+      {chapter.learningPoints && chapter.learningPoints.length > 0 && (
+        <div className="mt-4">
+          <div className="flex items-center gap-2">
+            <Lightbulb className="h-4 w-4 text-warning" />
+            <h3 className="font-display font-semibold">Learning points</h3>
+            <Badge variant="outline" className="rounded-full text-[10px]">
+              {chapter.learningPoints.length}
+            </Badge>
+          </div>
+          <ul className="mt-2 space-y-1.5 pl-1">
+            {chapter.learningPoints.map((p, i) => (
+              <li key={i} className="flex gap-2 text-sm">
+                <span className="mt-1 inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-brand" />
+                <span className="text-foreground/90">{p}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function FormulasSection({
+  formulas,
+  loading,
+}: {
+  formulas: ContentFormula[];
+  loading: boolean;
+}) {
+  if (loading) {
+    return <Skeleton className="h-48 w-full rounded-2xl" />;
+  }
+  if (formulas.length === 0) {
+    return (
+      <div className="rounded-2xl border border-dashed border-border/60 p-10 text-center text-sm text-muted-foreground">
+        No formulas available for this chapter yet.
+      </div>
+    );
+  }
+  return (
+    <div className="grid gap-3 md:grid-cols-2">
+      {formulas.map((f, i) => (
+        <div
+          key={i}
+          className="rounded-2xl border border-border/60 bg-card p-4 shadow-soft"
+        >
+          <div className="flex items-center gap-2">
+            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-brand/10 text-brand">
+              <Sigma className="h-4 w-4" />
+            </div>
+            <h3 className="font-display font-semibold">{f.label}</h3>
+          </div>
+          <div className="mt-3 rounded-xl border border-border/60 bg-background/60 p-3 font-mono text-sm">
+            {f.expression}
+          </div>
+          {f.description && (
+            <p className="mt-2 text-xs text-muted-foreground leading-relaxed">
+              {f.description}
+            </p>
+          )}
+        </div>
+      ))}
+    </div>
+  );
+}
+
 /* ---------------- Topics ---------------- */
 
 function TopicsSection({
