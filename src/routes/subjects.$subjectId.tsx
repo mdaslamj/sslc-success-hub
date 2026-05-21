@@ -357,9 +357,13 @@ function SubjectDetailPage() {
           </TabsContent>
 
           {/* RESOURCES */}
-          <TabsContent value="resources" className="mt-4">
+          <TabsContent value="resources" className="mt-4 space-y-4">
+            {isMath && contentChapter?.resources && contentChapter.resources.length > 0 && (
+              <ContentResourcesGrid resources={contentChapter.resources} />
+            )}
             <ResourcesSection chapters={chapters} />
           </TabsContent>
+
 
           {isMath && (
             <TabsContent value="formulas" className="mt-4">
