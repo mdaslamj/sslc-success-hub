@@ -3,6 +3,7 @@ import {
   doc,
   getDoc,
   getDocs,
+  getCountFromServer,
 } from "firebase/firestore";
 import { db } from "./config";
 import type { ChapterDoc, SubjectDoc } from "./types";
@@ -42,6 +43,29 @@ export async function fetchSubjects(): Promise<SubjectDoc[]> {
   }
 
   const rows = Array.from(byId.values()).map(normalizeSubject);
+  console.log("[subjects] subjects loaded", rows.map((r) => r.id));
+
+  // Fetch live chapter counts from `subject/{id}/chapters` in parallel so
+  // each card shows the real total instead of a stale `chaptersTotal` field.
+  await Promise.all(
+    rows.map(async (row) => {
+      try {
+        const c = await getCountFromServer(
+          collection(db, SUBJECT_COLLECTION, row.id, CHAPTERS_SUBCOLLECTION),
+        );
+        const count = c.data().count;
+        console.log(`[subjects] chapters fetched for ${row.id}: ${count}`);
+        if (count > 0 || !row.chaptersTotal) {
+          row.chaptersTotal = count;
+        }
+        if (row.chaptersDone > row.chaptersTotal) row.chaptersDone = row.chaptersTotal;
+        console.log(`[subjects] chapter count for ${row.id}: ${row.chaptersDone}/${row.chaptersTotal}`);
+      } catch (err) {
+        console.warn(`[subjects] chapter count failed for ${row.id}`, err);
+      }
+    }),
+  );
+
   return rows.sort((a, b) => {
     const orderA = a.order ?? KNOWN_SUBJECT_IDS.indexOf(a.id as (typeof KNOWN_SUBJECT_IDS)[number]);
     const orderB = b.order ?? KNOWN_SUBJECT_IDS.indexOf(b.id as (typeof KNOWN_SUBJECT_IDS)[number]);
