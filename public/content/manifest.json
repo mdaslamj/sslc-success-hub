@@ -1,283 +1,142 @@
 {
-
   "id": "mathematics",
-
   "name": "Mathematics",
-
   "totalChapters": 15,
-
   "chapters": [
-
     {
-
       "id": "real-numbers",
-
       "chapterNumber": 1,
-
       "title": "Real Numbers",
-
       "difficulty": "medium",
-
       "mcqCount": 15,
-
       "exerciseCount": 8,
-
       "status": "ready"
-
     },
-
     {
-
       "id": "polynomials",
-
       "chapterNumber": 2,
-
       "title": "Polynomials",
-
       "difficulty": "medium",
-
       "mcqCount": 0,
-
       "exerciseCount": 0,
-
       "status": "pending"
-
     },
-
     {
-
       "id": "pair-of-linear-equations",
-
       "chapterNumber": 3,
-
       "title": "Pair of Linear Equations in Two Variables",
-
       "difficulty": "medium",
-
       "mcqCount": 0,
-
       "exerciseCount": 0,
-
       "status": "pending"
-
     },
-
     {
-
       "id": "quadratic-equations",
-
       "chapterNumber": 4,
-
       "title": "Quadratic Equations",
-
       "difficulty": "hard",
-
       "mcqCount": 0,
-
       "exerciseCount": 0,
-
       "status": "pending"
-
     },
-
     {
-
       "id": "arithmetic-progressions",
-
       "chapterNumber": 5,
-
       "title": "Arithmetic Progressions",
-
       "difficulty": "medium",
-
       "mcqCount": 0,
-
       "exerciseCount": 0,
-
       "status": "pending"
-
     },
-
     {
-
       "id": "triangles",
-
       "chapterNumber": 6,
-
       "title": "Triangles",
-
       "difficulty": "hard",
-
       "mcqCount": 0,
-
       "exerciseCount": 0,
-
       "status": "pending"
-
     },
-
     {
-
       "id": "coordinate-geometry",
-
       "chapterNumber": 7,
-
       "title": "Coordinate Geometry",
-
       "difficulty": "medium",
-
       "mcqCount": 0,
-
       "exerciseCount": 0,
-
       "status": "pending"
-
     },
-
     {
-
       "id": "introduction-to-trigonometry",
-
       "chapterNumber": 8,
-
       "title": "Introduction to Trigonometry",
-
       "difficulty": "hard",
-
       "mcqCount": 0,
-
       "exerciseCount": 0,
-
       "status": "pending"
-
     },
-
     {
-
       "id": "some-applications-of-trigonometry",
-
       "chapterNumber": 9,
-
       "title": "Some Applications of Trigonometry",
-
       "difficulty": "hard",
-
       "mcqCount": 0,
-
       "exerciseCount": 0,
-
       "status": "pending"
-
     },
-
     {
-
       "id": "circles",
-
       "chapterNumber": 10,
-
       "title": "Circles",
-
       "difficulty": "medium",
-
       "mcqCount": 0,
-
       "exerciseCount": 0,
-
       "status": "pending"
-
     },
-
     {
-
       "id": "constructions",
-
       "chapterNumber": 11,
-
       "title": "Constructions",
-
       "difficulty": "easy",
-
       "mcqCount": 0,
-
       "exerciseCount": 0,
-
       "status": "pending"
-
     },
-
     {
-
       "id": "areas-related-to-circles",
-
       "chapterNumber": 12,
-
       "title": "Areas Related to Circles",
-
       "difficulty": "medium",
-
       "mcqCount": 0,
-
       "exerciseCount": 0,
-
       "status": "pending"
-
     },
-
     {
-
       "id": "surface-areas-and-volumes",
-
       "chapterNumber": 13,
-
       "title": "Surface Areas and Volumes",
-
       "difficulty": "medium",
-
       "mcqCount": 0,
-
       "exerciseCount": 0,
-
       "status": "pending"
-
     },
-
     {
-
       "id": "statistics",
-
       "chapterNumber": 14,
-
       "title": "Statistics",
-
       "difficulty": "medium",
-
       "mcqCount": 0,
-
       "exerciseCount": 0,
-
       "status": "pending"
-
     },
-
     {
-
       "id": "probability",
-
       "chapterNumber": 15,
-
       "title": "Probability",
-
       "difficulty": "easy",
-
       "mcqCount": 0,
-
       "exerciseCount": 0,
-
       "status": "pending"
-
     }
-
   ]
-
 }
