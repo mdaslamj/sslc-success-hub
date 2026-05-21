@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
-import { useQueries } from "@tanstack/react-query";
+import { useQueries, useQuery } from "@tanstack/react-query";
 import { DashboardLayout } from "@/components/dashboard-layout";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -37,7 +37,56 @@ import { ChapterResources } from "@/components/chapter-resources";
 import { useAllChapterMastery } from "@/hooks/use-math-mastery";
 import { tierFor } from "@/lib/math-intelligence/mastery-tiers";
 import { UploadAnswerButton } from "@/components/answer-upload/upload-answer-button";
-import { Library } from "lucide-react";
+import { Library, Sigma } from "lucide-react";
+import { loadChapter, loadManifest } from "@/lib/contentLoader";
+
+type ManifestChapter = {
+  id: string;
+  status?: string;
+  chapterNumber?: number;
+  title?: string;
+};
+type ContentFormula = {
+  label: string;
+  expression: string;
+  description?: string;
+};
+type ContentMCQ = {
+  id: string;
+  question: string;
+  options: string[];
+  correctAnswer: string;
+  explanation?: string;
+};
+type ContentChapter = {
+  title: string;
+  summary?: string;
+  difficulty?: string;
+  learningPoints?: string[];
+  formulas?: ContentFormula[];
+  mcqs?: ContentMCQ[];
+};
+
+const MATH_SUBJECT_IDS = new Set(["mathematics", "math"]);
+
+function mapContentMcqs(mcqs: ContentMCQ[]): MCQ[] {
+  return mcqs.map((m) => {
+    const letter = (m.correctAnswer ?? "A").trim().charAt(0).toUpperCase();
+    const correctIndex = Math.max(0, letter.charCodeAt(0) - 65);
+    const options = m.options.map((opt) =>
+      opt.replace(/^[A-D][.\)]\s*/i, "").trim(),
+    );
+    return {
+      id: m.id,
+      question: m.question,
+      options,
+      correctIndex: Math.min(correctIndex, options.length - 1),
+      explanation: m.explanation ?? "",
+      topic: "Real Numbers",
+      difficulty: "Medium",
+    };
+  });
+}
 
 export const Route = createFileRoute("/subjects/$subjectId")({
   head: ({ params }) => ({
@@ -82,6 +131,7 @@ export const Route = createFileRoute("/subjects/$subjectId")({
 
 function SubjectDetailPage() {
   const { subjectId } = Route.useParams();
+  const isMath = MATH_SUBJECT_IDS.has(subjectId);
 
   const [subjectQuery, chaptersQuery, mathChaptersQuery] = useQueries({
     queries: [
@@ -100,6 +150,25 @@ function SubjectDetailPage() {
         staleTime: 5 * 60 * 1000,
       },
     ],
+  });
+
+  const manifestQuery = useQuery({
+    queryKey: ["content", "manifest", "mathematics"],
+    queryFn: loadManifest,
+    enabled: isMath,
+    staleTime: 60 * 60 * 1000,
+  });
+
+  const readyChapterId = useMemo(() => {
+    const chapters = (manifestQuery.data?.chapters ?? []) as ManifestChapter[];
+    return chapters.find((c) => c.status === "ready")?.id ?? null;
+  }, [manifestQuery.data]);
+
+  const contentChapterQuery = useQuery({
+    queryKey: ["content", "chapter", "mathematics", readyChapterId],
+    queryFn: () => loadChapter("mathematics", readyChapterId as string),
+    enabled: isMath && !!readyChapterId,
+    staleTime: 60 * 60 * 1000,
   });
 
   if (subjectQuery.isLoading || chaptersQuery.isLoading) {
@@ -179,9 +248,29 @@ function SubjectDetailPage() {
     );
   }
 
-  const mcqs: MCQ[] = subjectMCQs[subject.id] ?? [];
+  const contentChapter = contentChapterQuery.data as ContentChapter | undefined;
+  const contentMcqs = useMemo<MCQ[]>(
+    () =>
+      contentChapter?.mcqs ? mapContentMcqs(contentChapter.mcqs) : [],
+    [contentChapter],
+  );
+  const mcqs: MCQ[] =
+    isMath && contentMcqs.length > 0
+      ? contentMcqs
+      : (subjectMCQs[subject.id] ?? []);
+
+  const manifestReady = useMemo(() => {
+    if (!isMath) return null;
+    const list = (manifestQuery.data?.chapters ?? []) as ManifestChapter[];
+    const ready = list.filter((c) => c.status === "ready").length;
+    return ready > 0 ? ready : null;
+  }, [isMath, manifestQuery.data]);
 
   const doneChapters = chapters.filter((c) => c.done).length;
+  const chapterCountDisplay =
+    manifestReady != null
+      ? `${manifestReady}/${manifestReady}`
+      : `${doneChapters}/${chapters.length}`;
   const overallProgress = chapters.length
     ? Math.round(chapters.reduce((a, c) => a + c.progress, 0) / chapters.length)
     : subject.completion;
@@ -218,7 +307,7 @@ function SubjectDetailPage() {
               </div>
               <div className="grid grid-cols-3 gap-3 min-w-[260px]">
                 <HeaderStat label="Progress" value={`${overallProgress}%`} />
-                <HeaderStat label="Chapters" value={`${doneChapters}/${chapters.length}`} />
+                <HeaderStat label="Chapters" value={chapterCountDisplay} />
                 <HeaderStat label="Target" value={`${subject.target}%`} />
               </div>
             </div>
@@ -233,6 +322,11 @@ function SubjectDetailPage() {
             <TabsTrigger value="resources" className="rounded-full gap-1.5">
               <Library className="h-3.5 w-3.5" /> Resources
             </TabsTrigger>
+            {isMath && (
+              <TabsTrigger value="formulas" className="rounded-full gap-1.5">
+                <Sigma className="h-3.5 w-3.5" /> Formulas
+              </TabsTrigger>
+            )}
             <TabsTrigger value="topics" className="rounded-full gap-1.5">
               <Sparkles className="h-3.5 w-3.5" /> Topics
             </TabsTrigger>
@@ -243,6 +337,9 @@ function SubjectDetailPage() {
 
           {/* CHAPTERS */}
           <TabsContent value="chapters" className="mt-4">
+            {isMath && contentChapter && (
+              <ChapterContentOverview chapter={contentChapter} />
+            )}
             <ChaptersSection
               chapters={chapters}
               color={subject.color}
@@ -254,6 +351,15 @@ function SubjectDetailPage() {
           <TabsContent value="resources" className="mt-4">
             <ResourcesSection chapters={chapters} />
           </TabsContent>
+
+          {isMath && (
+            <TabsContent value="formulas" className="mt-4">
+              <FormulasSection
+                formulas={contentChapter?.formulas ?? []}
+                loading={contentChapterQuery.isLoading}
+              />
+            </TabsContent>
+          )}
 
           {/* TOPICS */}
           <TabsContent value="topics" className="mt-4">
@@ -504,6 +610,87 @@ function DifficultyBadge({ level }: { level: ChapterDoc["difficulty"] }) {
     <Badge variant="outline" className={`h-4 px-1.5 text-[9px] rounded-full ${tone}`}>
       {level}
     </Badge>
+  );
+}
+
+/* ---------------- Content overview (from /content JSON) ---------------- */
+
+function ChapterContentOverview({ chapter }: { chapter: ContentChapter }) {
+  return (
+    <div className="mb-4 rounded-2xl border border-border/60 bg-card p-5 shadow-soft">
+      <div className="flex items-center gap-2 text-[11px] uppercase tracking-widest text-muted-foreground">
+        <BookOpen className="h-3.5 w-3.5" /> Chapter overview
+      </div>
+      <h2 className="mt-1 font-display text-xl font-bold">{chapter.title}</h2>
+      {chapter.summary && (
+        <p className="mt-2 text-sm text-muted-foreground leading-relaxed">
+          {chapter.summary}
+        </p>
+      )}
+      {chapter.learningPoints && chapter.learningPoints.length > 0 && (
+        <div className="mt-4">
+          <div className="flex items-center gap-2">
+            <Lightbulb className="h-4 w-4 text-warning" />
+            <h3 className="font-display font-semibold">Learning points</h3>
+            <Badge variant="outline" className="rounded-full text-[10px]">
+              {chapter.learningPoints.length}
+            </Badge>
+          </div>
+          <ul className="mt-2 space-y-1.5 pl-1">
+            {chapter.learningPoints.map((p, i) => (
+              <li key={i} className="flex gap-2 text-sm">
+                <span className="mt-1 inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-brand" />
+                <span className="text-foreground/90">{p}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function FormulasSection({
+  formulas,
+  loading,
+}: {
+  formulas: ContentFormula[];
+  loading: boolean;
+}) {
+  if (loading) {
+    return <Skeleton className="h-48 w-full rounded-2xl" />;
+  }
+  if (formulas.length === 0) {
+    return (
+      <div className="rounded-2xl border border-dashed border-border/60 p-10 text-center text-sm text-muted-foreground">
+        No formulas available for this chapter yet.
+      </div>
+    );
+  }
+  return (
+    <div className="grid gap-3 md:grid-cols-2">
+      {formulas.map((f, i) => (
+        <div
+          key={i}
+          className="rounded-2xl border border-border/60 bg-card p-4 shadow-soft"
+        >
+          <div className="flex items-center gap-2">
+            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-brand/10 text-brand">
+              <Sigma className="h-4 w-4" />
+            </div>
+            <h3 className="font-display font-semibold">{f.label}</h3>
+          </div>
+          <div className="mt-3 rounded-xl border border-border/60 bg-background/60 p-3 font-mono text-sm">
+            {f.expression}
+          </div>
+          {f.description && (
+            <p className="mt-2 text-xs text-muted-foreground leading-relaxed">
+              {f.description}
+            </p>
+          )}
+        </div>
+      ))}
+    </div>
   );
 }
 
