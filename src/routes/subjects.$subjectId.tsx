@@ -38,6 +38,7 @@ import { useAllChapterMastery } from "@/hooks/use-math-mastery";
 import { tierFor } from "@/lib/math-intelligence/mastery-tiers";
 import { UploadAnswerButton } from "@/components/answer-upload/upload-answer-button";
 import { Library, Sigma } from "lucide-react";
+import { ExternalLink } from "lucide-react";
 import { loadChapter, loadManifest } from "@/lib/contentLoader";
 import {
   normalizeChapterData,
@@ -167,6 +168,7 @@ function SubjectDetailPage() {
   }, [normalizedChapters]);
 
   const [selectedContentId, setSelectedContentId] = useState<string | null>(null);
+  const [chapterDetailOpen, setChapterDetailOpen] = useState(false);
   const activeContentId =
     selectedContentId && normalizedById.has(selectedContentId)
       ? selectedContentId
@@ -336,15 +338,23 @@ function SubjectDetailPage() {
 
           {/* CHAPTERS */}
           <TabsContent value="chapters" className="mt-4">
-            {isMath && activeChapter && (
-              <ChapterContentOverview chapter={activeChapter} />
-            )}
             {isMath && manifestQuery.data?.chapters ? (
-              <ManifestChaptersGrid
-                chapters={manifestQuery.data.chapters as ManifestChapter[]}
-                color={subject.color}
-                readyChapterId={readyChapterId}
-              />
+              chapterDetailOpen && activeChapter ? (
+                <ChapterDetailView
+                  chapter={activeChapter}
+                  color={subject.color}
+                  onBack={() => setChapterDetailOpen(false)}
+                />
+              ) : (
+                <ManifestChaptersGrid
+                  chapters={manifestQuery.data.chapters as ManifestChapter[]}
+                  color={subject.color}
+                  onSelect={(id) => {
+                    setSelectedContentId(id);
+                    setChapterDetailOpen(true);
+                  }}
+                />
+              )
             ) : (
               <ChaptersSection
                 chapters={chapters}
@@ -481,11 +491,11 @@ function HeaderStat({ label, value }: { label: string; value: string }) {
 function ManifestChaptersGrid({
   chapters,
   color,
-  readyChapterId,
+  onSelect,
 }: {
   chapters: ManifestChapter[];
   color: string;
-  readyChapterId: string | null;
+  onSelect: (id: string) => void;
 }) {
   const sorted = [...chapters].sort(
     (a, b) => (a.chapterNumber ?? 0) - (b.chapterNumber ?? 0),
@@ -494,14 +504,21 @@ function ManifestChaptersGrid({
     <div className="grid gap-3 md:grid-cols-2">
       {sorted.map((c) => {
         const isReady = c.status === "ready";
-        const Wrapper: React.ElementType =
-          isReady && c.id === readyChapterId ? "div" : "div";
         return (
           <div
             key={c.id}
+            role={isReady ? "button" : undefined}
+            tabIndex={isReady ? 0 : -1}
+            onClick={() => isReady && onSelect(c.id)}
+            onKeyDown={(e) => {
+              if (isReady && (e.key === "Enter" || e.key === " ")) {
+                e.preventDefault();
+                onSelect(c.id);
+              }
+            }}
             className={`rounded-2xl border p-4 transition ${
               isReady
-                ? "border-border/60 bg-card hover:border-brand/40"
+                ? "border-border/60 bg-card hover:border-brand/40 cursor-pointer focus:outline-none focus:ring-2 focus:ring-brand/40"
                 : "border-dashed border-border/60 bg-muted/30 opacity-75"
             }`}
           >
@@ -546,11 +563,125 @@ function ManifestChaptersGrid({
                   <span>·</span>
                   <span>{c.exerciseCount ?? 0} exercises</span>
                 </div>
+                <div className="mt-3">
+                  <a
+                    href="https://ktbs.kar.nic.in/new/index.html#!/textbook"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={(e) => e.stopPropagation()}
+                    className="inline-flex items-center gap-1.5 rounded-full border border-border/60 bg-background px-2.5 py-1 text-[11px] font-medium text-foreground hover:border-brand/40 hover:text-brand transition"
+                  >
+                    <BookOpen className="h-3 w-3" />
+                    Karnataka Textbook (KTBS)
+                    <ExternalLink className="h-3 w-3" />
+                  </a>
+                </div>
               </div>
             </div>
           </div>
         );
       })}
+    </div>
+  );
+}
+
+/* ---------------- Chapter Detail View (in Chapters tab) ---------------- */
+
+function ChapterDetailView({
+  chapter,
+  color,
+  onBack,
+}: {
+  chapter: NormalizedChapter;
+  color: string;
+  onBack: () => void;
+}) {
+  const mcqs = useMemo(
+    () => mapContentMcqs(chapter.mcqs ?? [], chapter.title),
+    [chapter],
+  );
+  return (
+    <div className="space-y-4">
+      <div className="flex items-center justify-between gap-3">
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={onBack}
+          className="-ml-2 rounded-full"
+        >
+          <ArrowLeft className="mr-1 h-3.5 w-3.5" /> All chapters
+        </Button>
+        <a
+          href="https://ktbs.kar.nic.in/new/index.html#!/textbook"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-1.5 rounded-full border border-border/60 bg-background px-3 py-1.5 text-xs font-medium hover:border-brand/40 hover:text-brand transition"
+        >
+          <BookOpen className="h-3.5 w-3.5" />
+          Karnataka Textbook (KTBS)
+          <ExternalLink className="h-3 w-3" />
+        </a>
+      </div>
+
+      <ChapterContentOverview chapter={chapter} />
+
+      {chapter.formulas.length > 0 && (
+        <div>
+          <div className="mb-2 flex items-center gap-2">
+            <Sigma className="h-4 w-4 text-brand" />
+            <h3 className="font-display font-semibold">Formulas</h3>
+            <Badge variant="outline" className="rounded-full text-[10px]">
+              {chapter.formulas.length}
+            </Badge>
+          </div>
+          <FormulasSection formulas={chapter.formulas} loading={false} />
+        </div>
+      )}
+
+      {mcqs.length > 0 && (
+        <div>
+          <div className="mb-2 flex items-center gap-2">
+            <Brain className="h-4 w-4 text-brand" />
+            <h3 className="font-display font-semibold">Practice MCQs</h3>
+            <Badge variant="outline" className="rounded-full text-[10px]">
+              {mcqs.length}
+            </Badge>
+          </div>
+          <PracticeQuiz mcqs={mcqs} color={color} />
+        </div>
+      )}
+
+      {chapter.exercises.length > 0 && (
+        <div className="rounded-2xl border border-border/60 bg-card p-4 shadow-soft">
+          <div className="mb-3 flex items-center gap-2">
+            <BookOpen className="h-4 w-4 text-brand" />
+            <h3 className="font-display font-semibold">Exercises</h3>
+            <Badge variant="outline" className="rounded-full text-[10px]">
+              {chapter.exercises.length}
+            </Badge>
+          </div>
+          <ol className="space-y-3 list-decimal pl-5">
+            {chapter.exercises.map((ex) => (
+              <li key={ex.id} className="text-sm">
+                <div className="text-foreground/90">{ex.question}</div>
+                {ex.answer && (
+                  <div className="mt-1 text-xs text-muted-foreground">
+                    <span className="font-semibold">Answer:</span> {ex.answer}
+                  </div>
+                )}
+              </li>
+            ))}
+          </ol>
+        </div>
+      )}
+
+      {chapter.formulas.length === 0 &&
+        mcqs.length === 0 &&
+        chapter.exercises.length === 0 && (
+          <div className="rounded-2xl border border-dashed border-border/60 p-10 text-center text-sm text-muted-foreground">
+            Detailed content for this chapter coming soon.
+          </div>
+        )}
     </div>
   );
 }
