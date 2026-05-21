@@ -3,47 +3,69 @@ import {
   doc,
   getDoc,
   getDocs,
-  query,
-  where,
 } from "firebase/firestore";
-import { COLLECTIONS, db } from "./config";
+import { db } from "./config";
 import type { ChapterDoc, SubjectDoc } from "./types";
 
-/** Fetch all subjects, ordered by `order` field (sorted client-side to avoid index requirements). */
+// New canonical Firestore layout:
+//   subject/{subjectId}                 -> subject metadata doc (may be sparse)
+//   subject/{subjectId}/chapters/{id}   -> chapter docs
+const SUBJECT_COLLECTION = "subject";
+const CHAPTERS_SUBCOLLECTION = "chapters";
+
+/** Fetch all subjects from the top-level `subject` collection. */
 export async function fetchSubjects(): Promise<SubjectDoc[]> {
-  const snap = await getDocs(collection(db, COLLECTIONS.SUBJECTS));
-  const rows = snap.docs.map((d) => normalizeSubject({ id: d.id, ...(d.data() as Record<string, unknown>) }));
+  const snap = await getDocs(collection(db, SUBJECT_COLLECTION));
+  const rows = snap.docs.map((d) =>
+    normalizeSubject({ id: d.id, ...(d.data() as Record<string, unknown>) }),
+  );
   return rows.sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
 }
 
-/** Fetch a single subject by id. Returns null if not found. */
+/** Fetch a single subject doc by id from `subject/{subjectId}`. */
 export async function fetchSubject(subjectId: string): Promise<SubjectDoc | null> {
-  const ref = doc(db, COLLECTIONS.SUBJECTS, subjectId);
+  const ref = doc(db, SUBJECT_COLLECTION, subjectId);
   const snap = await getDoc(ref);
-  if (!snap.exists()) return null;
+  // Even if the parent doc is empty (chapters live in a subcollection),
+  // return a normalized placeholder so the UI can still render.
+  if (!snap.exists()) return normalizeSubject({ id: subjectId });
   return normalizeSubject({ id: snap.id, ...(snap.data() as Record<string, unknown>) });
 }
 
-/** Fetch all chapters for a given subject (sorted client-side to avoid composite index). */
+/** Fetch chapters from `subject/{subjectId}/chapters`. */
 export async function fetchChapters(subjectId: string): Promise<ChapterDoc[]> {
-  const q = query(
-    collection(db, COLLECTIONS.CHAPTERS),
-    where("subjectId", "==", subjectId),
+  const snap = await getDocs(
+    collection(db, SUBJECT_COLLECTION, subjectId, CHAPTERS_SUBCOLLECTION),
   );
-  const snap = await getDocs(q);
-  const rows = snap.docs.map((d) => normalizeChapter({ id: d.id, ...(d.data() as Record<string, unknown>) }));
+  const rows = snap.docs.map((d) =>
+    normalizeChapter({
+      id: d.id,
+      subjectId,
+      ...(d.data() as Record<string, unknown>),
+    }),
+  );
   return rows.sort(
     (a, b) => (a.chapterNumber ?? a.order ?? 0) - (b.chapterNumber ?? b.order ?? 0),
   );
 }
 
 function normalizeSubject(raw: Record<string, unknown> & { id: string }): SubjectDoc {
+  const subjectDefaults: Record<string, { name: string; nameKn?: string; emoji: string; color: string }> = {
+    mathematics: { name: "Mathematics", nameKn: "ಗಣಿತ", emoji: "🔢", color: "#6366f1" },
+    math: { name: "Mathematics", nameKn: "ಗಣಿತ", emoji: "🔢", color: "#6366f1" },
+    science: { name: "Science", nameKn: "ವಿಜ್ಞಾನ", emoji: "🔬", color: "#10b981" },
+    social: { name: "Social Science", nameKn: "ಸಮಾಜ ವಿಜ್ಞಾನ", emoji: "🌍", color: "#f59e0b" },
+    english: { name: "English", emoji: "🔤", color: "#ef4444" },
+    kannada: { name: "Kannada", nameKn: "ಕನ್ನಡ", emoji: "✍️", color: "#8b5cf6" },
+    hindi: { name: "Hindi", nameKn: "हिन्दी", emoji: "📖", color: "#ec4899" },
+  };
+  const fallback = subjectDefaults[raw.id] ?? { name: raw.id, emoji: "📘", color: "#6366f1" };
   return {
     id: raw.id,
-    name: (raw.name as string) ?? raw.id,
-    nameKn: (raw.nameKn as string) ?? undefined,
-    emoji: (raw.emoji as string) ?? "📘",
-    color: (raw.color as string) ?? "#6366f1",
+    name: (raw.name as string) ?? fallback.name,
+    nameKn: (raw.nameKn as string) ?? fallback.nameKn,
+    emoji: (raw.emoji as string) ?? fallback.emoji,
+    color: (raw.color as string) ?? fallback.color,
     completion: (raw.completion as number) ?? 0,
     mastery: (raw.mastery as number) ?? 0,
     target: (raw.target as number) ?? 90,
@@ -61,7 +83,11 @@ function normalizeChapter(raw: Record<string, unknown> & { id: string }): Chapte
   return {
     id: raw.id,
     subjectId: (raw.subjectId as string) ?? "",
-    title: (raw.title as string) ?? (raw.chapterName as string) ?? "Untitled chapter",
+    title:
+      (raw.title as string) ??
+      (raw.chapterName as string) ??
+      (raw.name as string) ??
+      raw.id,
     titleKn: (raw.titleKn as string) ?? undefined,
     progress: (raw.progress as number) ?? 0,
     done: Boolean(raw.done),
