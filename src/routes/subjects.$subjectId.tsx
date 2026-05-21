@@ -45,6 +45,9 @@ type ManifestChapter = {
   status?: string;
   chapterNumber?: number;
   title?: string;
+  difficulty?: string;
+  mcqCount?: number;
+  exerciseCount?: number;
 };
 type ContentFormula = {
   label: string;
