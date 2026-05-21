@@ -15,6 +15,18 @@ const GATEWAY_URL = "https://ai.gateway.lovable.dev/v1/chat/completions";
 const DEFAULT_MODEL = "google/gemini-2.5-flash";
 
 /**
+ * Model allowlist. Prevents authenticated callers from requesting expensive
+ * premium models (e.g. gpt-5-pro, claude-opus) and draining the project's
+ * LOVABLE_API_KEY credits. Only cost-bounded Gemini Flash tiers are exposed.
+ */
+const ALLOWED_MODELS = [
+  "google/gemini-2.5-flash",
+  "google/gemini-2.5-flash-lite",
+  "google/gemini-2.5-flash-image",
+] as const;
+type AllowedModel = (typeof ALLOWED_MODELS)[number];
+
+/**
  * Firebase ID token verification. Prevents unauthenticated callers from
  * draining the project's LOVABLE_API_KEY credits by hitting this server
  * function directly. Verifies the JWT signature against Google's
@@ -88,7 +100,7 @@ const MessageSchema = z.object({
 
 const InputSchema = z.object({
   idToken: z.string().min(20).max(8000),
-  model: z.string().min(1).max(128).optional(),
+  model: z.enum(ALLOWED_MODELS).optional(),
   systemPrompt: z.string().min(1).max(8000),
   grounding: z.string().max(20000).optional(),
   messages: z.array(MessageSchema).min(1).max(40),
