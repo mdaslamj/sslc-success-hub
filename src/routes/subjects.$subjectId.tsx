@@ -45,6 +45,9 @@ type ManifestChapter = {
   status?: string;
   chapterNumber?: number;
   title?: string;
+  difficulty?: string;
+  mcqCount?: number;
+  exerciseCount?: number;
 };
 type ContentFormula = {
   label: string;
@@ -349,11 +352,19 @@ function SubjectDetailPage() {
             {isMath && contentChapter && (
               <ChapterContentOverview chapter={contentChapter} />
             )}
-            <ChaptersSection
-              chapters={chapters}
-              color={subject.color}
-              subjectId={subject.id}
-            />
+            {isMath && manifestQuery.data?.chapters ? (
+              <ManifestChaptersGrid
+                chapters={manifestQuery.data.chapters as ManifestChapter[]}
+                color={subject.color}
+                readyChapterId={readyChapterId}
+              />
+            ) : (
+              <ChaptersSection
+                chapters={chapters}
+                color={subject.color}
+                subjectId={subject.id}
+              />
+            )}
           </TabsContent>
 
           {/* RESOURCES */}
@@ -418,6 +429,85 @@ function HeaderStat({ label, value }: { label: string; value: string }) {
     <div className="rounded-2xl bg-white/15 p-2 text-center backdrop-blur">
       <div className="text-[10px] uppercase tracking-widest text-white/70">{label}</div>
       <div className="font-display text-lg font-bold">{value}</div>
+    </div>
+  );
+}
+
+/* ---------------- Content Resources (from chapter JSON) ---------------- */
+
+function ManifestChaptersGrid({
+  chapters,
+  color,
+  readyChapterId,
+}: {
+  chapters: ManifestChapter[];
+  color: string;
+  readyChapterId: string | null;
+}) {
+  const sorted = [...chapters].sort(
+    (a, b) => (a.chapterNumber ?? 0) - (b.chapterNumber ?? 0),
+  );
+  return (
+    <div className="grid gap-3 md:grid-cols-2">
+      {sorted.map((c) => {
+        const isReady = c.status === "ready";
+        const Wrapper: React.ElementType =
+          isReady && c.id === readyChapterId ? "div" : "div";
+        return (
+          <div
+            key={c.id}
+            className={`rounded-2xl border p-4 transition ${
+              isReady
+                ? "border-border/60 bg-card hover:border-brand/40"
+                : "border-dashed border-border/60 bg-muted/30 opacity-75"
+            }`}
+          >
+            <div className="flex items-start justify-between gap-3">
+              <div className="min-w-0 flex-1">
+                <div className="flex items-center gap-2 text-[11px] text-muted-foreground">
+                  <span>Chapter {c.chapterNumber ?? "—"}</span>
+                  {c.difficulty && (
+                    <DifficultyBadge
+                      level={
+                        (c.difficulty.charAt(0).toUpperCase() +
+                          c.difficulty.slice(1)) as ChapterDoc["difficulty"]
+                      }
+                    />
+                  )}
+                  {isReady ? (
+                    <Badge
+                      variant="outline"
+                      className="h-4 rounded-full border-transparent bg-success/15 px-1.5 text-[9px] text-success"
+                    >
+                      Available
+                    </Badge>
+                  ) : (
+                    <Badge
+                      variant="outline"
+                      className="h-4 rounded-full border-transparent bg-muted px-1.5 text-[9px] text-muted-foreground"
+                    >
+                      Coming soon
+                    </Badge>
+                  )}
+                </div>
+                <div
+                  className={`font-display font-semibold ${
+                    isReady ? "" : "text-muted-foreground"
+                  }`}
+                  style={isReady ? { color } : undefined}
+                >
+                  {c.title ?? c.id}
+                </div>
+                <div className="mt-2 flex flex-wrap items-center gap-3 text-[11px] text-muted-foreground">
+                  <span>{c.mcqCount ?? 0} MCQs</span>
+                  <span>·</span>
+                  <span>{c.exerciseCount ?? 0} exercises</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+      })}
     </div>
   );
 }
