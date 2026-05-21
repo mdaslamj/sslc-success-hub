@@ -435,6 +435,78 @@ function HeaderStat({ label, value }: { label: string; value: string }) {
 
 /* ---------------- Content Resources (from chapter JSON) ---------------- */
 
+function ManifestChaptersGrid({
+  chapters,
+  color,
+  readyChapterId,
+}: {
+  chapters: ManifestChapter[];
+  color: string;
+  readyChapterId: string | null;
+}) {
+  const sorted = [...chapters].sort(
+    (a, b) => (a.chapterNumber ?? 0) - (b.chapterNumber ?? 0),
+  );
+  return (
+    <div className="grid gap-3 md:grid-cols-2">
+      {sorted.map((c) => {
+        const isReady = c.status === "ready";
+        const Wrapper: React.ElementType =
+          isReady && c.id === readyChapterId ? "div" : "div";
+        return (
+          <div
+            key={c.id}
+            className={`rounded-2xl border p-4 transition ${
+              isReady
+                ? "border-border/60 bg-card hover:border-brand/40"
+                : "border-dashed border-border/60 bg-muted/30 opacity-75"
+            }`}
+          >
+            <div className="flex items-start justify-between gap-3">
+              <div className="min-w-0 flex-1">
+                <div className="flex items-center gap-2 text-[11px] text-muted-foreground">
+                  <span>Chapter {c.chapterNumber ?? "—"}</span>
+                  {c.difficulty && <DifficultyBadge level={c.difficulty} />}
+                  {isReady ? (
+                    <Badge
+                      variant="outline"
+                      className="h-4 rounded-full border-transparent bg-success/15 px-1.5 text-[9px] text-success"
+                    >
+                      Available
+                    </Badge>
+                  ) : (
+                    <Badge
+                      variant="outline"
+                      className="h-4 rounded-full border-transparent bg-muted px-1.5 text-[9px] text-muted-foreground"
+                    >
+                      Coming soon
+                    </Badge>
+                  )}
+                </div>
+                <div
+                  className={`font-display font-semibold ${
+                    isReady ? "" : "text-muted-foreground"
+                  }`}
+                  style={isReady ? { color } : undefined}
+                >
+                  {c.title ?? c.id}
+                </div>
+                <div className="mt-2 flex flex-wrap items-center gap-3 text-[11px] text-muted-foreground">
+                  <span>{c.mcqCount ?? 0} MCQs</span>
+                  <span>·</span>
+                  <span>{c.exerciseCount ?? 0} exercises</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+/* ---------------- Content Resources (from chapter JSON) ---------------- */
+
 function ContentResourcesGrid({ resources }: { resources: ContentResource[] }) {
   const iconFor = (type: string) => {
     const t = type.toLowerCase();
