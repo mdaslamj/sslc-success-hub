@@ -94,6 +94,46 @@ function setCached(key: string, value: SemanticReasoningResult) {
   }
 }
 
+/**
+ * Server-side per-user rate limiting. Enforces both a short-window burst
+ * cap and a rolling 24h daily cap, so a single authenticated user cannot
+ * drain the shared LOVABLE_API_KEY by clearing their browser localStorage
+ * budget. In-memory only — resets on cold start, which is acceptable as a
+ * defense-in-depth alongside the gateway's global rate limits.
+ */
+const MINUTE_MS = 60 * 1000;
+const DAY_MS = 24 * 60 * MINUTE_MS;
+const PER_USER_PER_MINUTE = Number(process.env.AI_PER_USER_PER_MINUTE ?? 20);
+const PER_USER_PER_DAY = Number(process.env.AI_PER_USER_PER_DAY ?? 500);
+const RATE_USERS_MAX = 5000;
+type UserCounter = { minute: number[]; day: number[] };
+const userCounters = new Map<string, UserCounter>();
+
+function checkRateLimit(uid: string): { ok: true } | { ok: false; retryAfterSec: number } {
+  const now = Date.now();
+  let entry = userCounters.get(uid);
+  if (!entry) {
+    entry = { minute: [], day: [] };
+    userCounters.set(uid, entry);
+    if (userCounters.size > RATE_USERS_MAX) {
+      const first = userCounters.keys().next().value;
+      if (first) userCounters.delete(first);
+    }
+  }
+  entry.minute = entry.minute.filter((t) => now - t < MINUTE_MS);
+  entry.day = entry.day.filter((t) => now - t < DAY_MS);
+  if (entry.minute.length >= PER_USER_PER_MINUTE) {
+    return { ok: false, retryAfterSec: 60 };
+  }
+  if (entry.day.length >= PER_USER_PER_DAY) {
+    const oldest = entry.day[0] ?? now;
+    return { ok: false, retryAfterSec: Math.ceil((DAY_MS - (now - oldest)) / 1000) };
+  }
+  entry.minute.push(now);
+  entry.day.push(now);
+  return { ok: true };
+}
+
 const MessageSchema = z.object({
   role: z.enum(["system", "user", "assistant"]),
   content: z.string().min(1).max(20000),
@@ -123,11 +163,23 @@ export const runSemanticReasoning = createServerFn({ method: "POST" })
   .inputValidator((input) => InputSchema.parse(input))
   .handler(async ({ data }): Promise<SemanticReasoningResult> => {
     // Auth gate — reject anonymous callers before spending credits.
+    let uid: string;
     try {
-      await verifyFirebaseIdToken(data.idToken);
+      uid = await verifyFirebaseIdToken(data.idToken);
     } catch (err) {
       const message = err instanceof Error ? err.message : "Invalid token";
       return { ok: false, status: 401, error: `Unauthorized: ${message}` };
+    }
+
+    // Server-side per-user rate limit — authoritative cap that cannot be
+    // bypassed by clearing client localStorage.
+    const rate = checkRateLimit(uid);
+    if (!rate.ok) {
+      return {
+        ok: false,
+        status: 429,
+        error: `Daily AI request limit reached. Try again in ${Math.ceil(rate.retryAfterSec / 60)} minute(s).`,
+      };
     }
 
     const apiKey = process.env.LOVABLE_API_KEY;
