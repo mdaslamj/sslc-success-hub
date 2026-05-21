@@ -10,13 +10,16 @@ import {
 
 // Firebase web config — these values are publishable (safe in client code).
 // Security is enforced via Firestore Security Rules in the Firebase Console.
+// Values come from VITE_FIREBASE_* env vars (set in .env). A safe fallback
+// keeps the legacy project working if env vars are not configured yet.
+const env = (import.meta as unknown as { env?: Record<string, string | undefined> }).env ?? {};
 export const firebaseConfig = {
-  apiKey: "AIzaSyBwzkv0doLXzw2zKkOINOS2zS7IzuybwQM",
-  authDomain: "c-success-hub.firebaseapp.com",
-  projectId: "c-success-hub",
-  storageBucket: "c-success-hub.firebasestorage.app",
-  messagingSenderId: "428486835894",
-  appId: "1:428486835894:web:f4d422ae1a7a183d34b017",
+  apiKey: env.VITE_FIREBASE_API_KEY ?? "AIzaSyBwzkv0doLXzw2zKkOINOS2zS7IzuybwQM",
+  authDomain: env.VITE_FIREBASE_AUTH_DOMAIN ?? "c-success-hub.firebaseapp.com",
+  projectId: env.VITE_FIREBASE_PROJECT_ID ?? "c-success-hub",
+  storageBucket: env.VITE_FIREBASE_STORAGE_BUCKET ?? "c-success-hub.firebasestorage.app",
+  messagingSenderId: env.VITE_FIREBASE_MESSAGING_SENDER_ID ?? "428486835894",
+  appId: env.VITE_FIREBASE_APP_ID ?? "1:428486835894:web:f4d422ae1a7a183d34b017",
 };
 
 export const firebaseApp: FirebaseApp = getApps().length
