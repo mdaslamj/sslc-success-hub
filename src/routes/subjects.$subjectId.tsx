@@ -168,6 +168,7 @@ function SubjectDetailPage() {
   }, [normalizedChapters]);
 
   const [selectedContentId, setSelectedContentId] = useState<string | null>(null);
+  const [chapterDetailOpen, setChapterDetailOpen] = useState(false);
   const activeContentId =
     selectedContentId && normalizedById.has(selectedContentId)
       ? selectedContentId
