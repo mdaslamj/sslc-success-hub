@@ -131,17 +131,50 @@ function SubjectDetailPage() {
     staleTime: 60 * 60 * 1000,
   });
 
-  const readyChapterId = useMemo(() => {
-    const chapters = (manifestQuery.data?.chapters ?? []) as ManifestChapter[];
-    return chapters.find((c) => c.status === "ready")?.id ?? null;
+  const readyChapters = useMemo<ManifestChapter[]>(() => {
+    const list = (manifestQuery.data?.chapters ?? []) as ManifestChapter[];
+    return list
+      .filter((c) => c.status === "ready")
+      .sort((a, b) => (a.chapterNumber ?? 0) - (b.chapterNumber ?? 0));
   }, [manifestQuery.data]);
 
-  const contentChapterQuery = useQuery({
-    queryKey: ["content", "chapter", "mathematics", readyChapterId],
-    queryFn: () => loadChapter("mathematics", readyChapterId as string),
-    enabled: isMath && !!readyChapterId,
-    staleTime: 60 * 60 * 1000,
+  const readyChapterId = readyChapters[0]?.id ?? null;
+
+  // Load every ready chapter in parallel; loadChapter is already cached.
+  const chapterQueries = useQueries({
+    queries: readyChapters.map((c) => ({
+      queryKey: ["content", "chapter", "mathematics", c.id],
+      queryFn: () => loadChapter("mathematics", c.id),
+      enabled: isMath,
+      staleTime: 60 * 60 * 1000,
+    })),
   });
+
+  const normalizedChapters = useMemo<NormalizedChapter[]>(() => {
+    if (!isMath) return [];
+    return readyChapters.map((entry, i) => {
+      const raw = chapterQueries[i]?.data;
+      // Merge manifest skeleton with full chapter JSON when available.
+      const merged = raw ? { ...entry, ...(raw as object) } : entry;
+      return normalizeChapterData(merged);
+    });
+  }, [isMath, readyChapters, chapterQueries]);
+
+  const normalizedById = useMemo(() => {
+    const map = new Map<string, NormalizedChapter>();
+    for (const c of normalizedChapters) map.set(c.id, c);
+    return map;
+  }, [normalizedChapters]);
+
+  const [selectedContentId, setSelectedContentId] = useState<string | null>(null);
+  const activeContentId =
+    selectedContentId && normalizedById.has(selectedContentId)
+      ? selectedContentId
+      : (readyChapterId ?? null);
+  const activeChapter = activeContentId
+    ? normalizedById.get(activeContentId)
+    : undefined;
+  const anyChapterLoading = chapterQueries.some((q) => q.isLoading);
 
   if (subjectQuery.isLoading || chaptersQuery.isLoading) {
     return (
@@ -220,16 +253,10 @@ function SubjectDetailPage() {
     );
   }
 
-  const contentChapter = contentChapterQuery.data as ContentChapter | undefined;
-  const contentMcqs = useMemo<MCQ[]>(
-    () =>
-      contentChapter?.mcqs ? mapContentMcqs(contentChapter.mcqs) : [],
-    [contentChapter],
-  );
-  const mcqs: MCQ[] =
-    isMath && contentMcqs.length > 0
-      ? contentMcqs
-      : (subjectMCQs[subject.id] ?? []);
+  const mcqs: MCQ[] = useMemo(() => {
+    if (!isMath || !activeChapter) return [];
+    return mapContentMcqs(activeChapter.mcqs ?? [], activeChapter.title);
+  }, [isMath, activeChapter]);
 
   const manifestReady = useMemo(() => {
     if (!isMath) return null;
@@ -309,8 +336,8 @@ function SubjectDetailPage() {
 
           {/* CHAPTERS */}
           <TabsContent value="chapters" className="mt-4">
-            {isMath && contentChapter && (
-              <ChapterContentOverview chapter={contentChapter} />
+            {isMath && activeChapter && (
+              <ChapterContentOverview chapter={activeChapter} />
             )}
             {isMath && manifestQuery.data?.chapters ? (
               <ManifestChaptersGrid
@@ -329,29 +356,69 @@ function SubjectDetailPage() {
 
           {/* RESOURCES */}
           <TabsContent value="resources" className="mt-4 space-y-4">
-            {isMath && contentChapter?.resources && contentChapter.resources.length > 0 && (
-              <ContentResourcesGrid resources={contentChapter.resources} />
+            {isMath ? (
+              <ContentChapterPane
+                chapters={normalizedChapters}
+                activeId={activeContentId}
+                onSelect={setSelectedContentId}
+                loading={anyChapterLoading}
+                emptyMessage="No resources available for this chapter yet."
+              >
+                {(ch) => (
+                  <ContentResourcesGrid resources={ch.resources ?? []} />
+                )}
+              </ContentChapterPane>
+            ) : (
+              <ResourcesSection chapters={chapters} />
             )}
-            <ResourcesSection chapters={chapters} />
           </TabsContent>
 
 
           {isMath && (
             <TabsContent value="formulas" className="mt-4">
-              <FormulasSection
-                formulas={contentChapter?.formulas ?? []}
-                loading={contentChapterQuery.isLoading}
-              />
+              <ContentChapterPane
+                chapters={normalizedChapters}
+                activeId={activeContentId}
+                onSelect={setSelectedContentId}
+                loading={anyChapterLoading}
+                emptyMessage="No formulas available for this chapter yet."
+              >
+                {(ch) => (
+                  <FormulasSection
+                    formulas={ch.formulas ?? []}
+                    loading={false}
+                  />
+                )}
+              </ContentChapterPane>
             </TabsContent>
           )}
 
           {/* TOPICS */}
           <TabsContent value="topics" className="mt-4">
-            <TopicsSection
-              weak={subject.weakTopics}
-              strong={subject.strongTopics}
-              color={subject.color}
-            />
+            {isMath ? (
+              <div className="space-y-4">
+                <ContentChapterPane
+                  chapters={normalizedChapters}
+                  activeId={activeContentId}
+                  onSelect={setSelectedContentId}
+                  loading={anyChapterLoading}
+                  emptyMessage="No topics available for this chapter yet."
+                >
+                  {(ch) => <ChapterContentOverview chapter={ch} />}
+                </ContentChapterPane>
+                <TopicsSection
+                  weak={subject.weakTopics}
+                  strong={subject.strongTopics}
+                  color={subject.color}
+                />
+              </div>
+            ) : (
+              <TopicsSection
+                weak={subject.weakTopics}
+                strong={subject.strongTopics}
+                color={subject.color}
+              />
+            )}
           </TabsContent>
 
           {/* PRACTICE */}
@@ -370,8 +437,24 @@ function SubjectDetailPage() {
                 label="Upload answers"
               />
             </div>
-            {mcqs.length > 0 ? (
-              <PracticeQuiz mcqs={mcqs} color={subject.color} />
+            {isMath ? (
+              <ContentChapterPane
+                chapters={normalizedChapters}
+                activeId={activeContentId}
+                onSelect={setSelectedContentId}
+                loading={anyChapterLoading}
+                emptyMessage="MCQs for this chapter coming soon."
+              >
+                {() =>
+                  mcqs.length > 0 ? (
+                    <PracticeQuiz mcqs={mcqs} color={subject.color} />
+                  ) : (
+                    <div className="rounded-3xl border border-dashed border-border/60 p-10 text-center text-sm text-muted-foreground">
+                      MCQs for this chapter coming soon.
+                    </div>
+                  )
+                }
+              </ContentChapterPane>
             ) : (
               <div className="rounded-3xl border border-dashed border-border/60 p-10 text-center text-sm text-muted-foreground">
                 MCQs for this subject coming soon.
