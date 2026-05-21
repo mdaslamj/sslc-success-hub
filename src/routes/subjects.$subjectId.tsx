@@ -466,7 +466,14 @@ function ManifestChaptersGrid({
               <div className="min-w-0 flex-1">
                 <div className="flex items-center gap-2 text-[11px] text-muted-foreground">
                   <span>Chapter {c.chapterNumber ?? "—"}</span>
-                  {c.difficulty && <DifficultyBadge level={c.difficulty} />}
+                  {c.difficulty && (
+                    <DifficultyBadge
+                      level={
+                        (c.difficulty.charAt(0).toUpperCase() +
+                          c.difficulty.slice(1)) as ChapterDoc["difficulty"]
+                      }
+                    />
+                  )}
                   {isReady ? (
                     <Badge
                       variant="outline"
