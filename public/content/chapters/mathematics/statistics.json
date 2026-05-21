@@ -1,0 +1,64 @@
+{
+  "id": "statistics",
+  "chapterNumber": 14,
+  "subjectId": "mathematics",
+  "title": "Statistics",
+  "difficulty": "medium",
+  "estimatedMinutes": 60,
+  "version": "1.0",
+  "lastUpdated": "2026-05",
+  "summary": "Chapter 14 covers statistical measures for grouped data. Students learn three methods to find the mean of grouped data: direct method, assumed mean method, and step deviation method. The chapter covers finding the mode using the modal class formula and finding the median using the cumulative frequency method and ogive. Students also learn to draw ogives and find median graphically.",
+  "learningPoints": [
+    "Calculate mean of grouped data using Direct Method: x̄ = Σfᵢxᵢ / Σfᵢ",
+    "Calculate mean using Assumed Mean Method: x̄ = a + Σfᵢdᵢ/Σfᵢ",
+    "Calculate mean using Step Deviation Method: x̄ = a + (Σfᵢuᵢ/Σfᵢ) × h",
+    "Identify the modal class as the class with highest frequency",
+    "Apply mode formula: Mode = l + [(f₁-f₀)/(2f₁-f₀-f₂)] × h",
+    "Calculate cumulative frequencies to find median class",
+    "Apply median formula: Median = l + [(n/2-cf)/f] × h",
+    "Draw a less than ogive and more than ogive",
+    "Find median graphically using intersection of two ogives",
+    "Understand the empirical relationship: Mode = 3Median - 2Mean"
+  ],
+  "formulas": [
+    { "label": "Mean (Direct Method)", "expression": "x̄ = Σfᵢxᵢ / Σfᵢ", "description": "Mean of grouped data where xᵢ is midpoint and fᵢ is frequency of each class." },
+    { "label": "Mean (Assumed Mean)", "expression": "x̄ = a + Σfᵢdᵢ/Σfᵢ, where dᵢ = xᵢ - a", "description": "Mean using assumed mean 'a' to simplify calculations." },
+    { "label": "Mean (Step Deviation)", "expression": "x̄ = a + (Σfᵢuᵢ/Σfᵢ) × h, where uᵢ = (xᵢ-a)/h", "description": "Most efficient method using class width h and assumed mean a." },
+    { "label": "Mode Formula", "expression": "Mode = l + [(f₁-f₀)/(2f₁-f₀-f₂)] × h", "description": "l=lower class limit of modal class, f₁=modal frequency, f₀=preceding, f₂=following, h=class width." },
+    { "label": "Median Formula", "expression": "Median = l + [(n/2 - cf)/f] × h", "description": "l=lower limit of median class, n=total frequency, cf=preceding cumulative frequency, f=median class frequency." },
+    { "label": "Empirical Relationship", "expression": "Mode = 3 × Median - 2 × Mean", "description": "Approximate relationship between the three measures of central tendency." }
+  ],
+  "resources": [
+    { "type": "video", "provider": "Khan Academy", "label": "Statistics — Video Lessons", "description": "Videos on mean, median, mode for grouped data and ogives.", "url": "https://www.khanacademy.org/math/ncert-class-10" },
+    { "type": "textbook", "provider": "ePathshala", "label": "NCERT Mathematics Textbook — Class 10", "description": "Official NCERT textbook Chapter 14 Statistics.", "url": "https://epathshala.nic.in/e-pathshala-4/flipbook/?id=0964" }
+  ],
+  "mcqs": [
+    { "id": "ch14-mcq-001", "question": "The class with the highest frequency is called:", "options": ["A. Median class", "B. Modal class", "C. Mean class", "D. Maximum class"], "correctAnswer": "B", "explanation": "Modal class is the class interval with the highest frequency." },
+    { "id": "ch14-mcq-002", "question": "For data: 10-20(f=5), 20-30(f=8), 30-40(f=12), 40-50(f=7), 50-60(f=3). The modal class is:", "options": ["A. 10-20", "B. 20-30", "C. 30-40", "D. 40-50"], "correctAnswer": "C", "explanation": "30-40 has highest frequency 12." },
+    { "id": "ch14-mcq-003", "question": "In step deviation method, uᵢ = (xᵢ - a)/h. If a=25, h=10, xᵢ=45, then uᵢ is:", "options": ["A. 1", "B. 2", "C. 3", "D. 4"], "correctAnswer": "B", "explanation": "uᵢ = (45-25)/10 = 20/10 = 2." },
+    { "id": "ch14-mcq-004", "question": "Total students = 50. For median, n/2 is:", "options": ["A. 25", "B. 50", "C. 12.5", "D. 100"], "correctAnswer": "A", "explanation": "n/2 = 50/2 = 25. We find the class where cumulative frequency first exceeds 25." },
+    { "id": "ch14-mcq-005", "question": "Empirical relationship between mean, median and mode is:", "options": ["A. Mode = 2Median - Mean", "B. Mode = 3Median - 2Mean", "C. Mean = 2Median - Mode", "D. Mode = Mean + 2Median"], "correctAnswer": "B", "explanation": "Mode = 3Median - 2Mean is the empirical relationship." },
+    { "id": "ch14-mcq-006", "question": "In the mode formula l + [(f₁-f₀)/(2f₁-f₀-f₂)]×h, f₁ represents:", "options": ["A. Preceding class frequency", "B. Modal class frequency", "C. Following class frequency", "D. Total frequency"], "correctAnswer": "B", "explanation": "f₁ is the frequency of the modal class (highest frequency class)." },
+    { "id": "ch14-mcq-007", "question": "Median class is found using:", "options": ["A. Highest frequency", "B. Cumulative frequency table where cf crosses n/2", "C. Middle class of distribution", "D. Average of all classes"], "correctAnswer": "B", "explanation": "Median class is the class whose cumulative frequency first equals or exceeds n/2." },
+    { "id": "ch14-mcq-008", "question": "If mean = 10 and mode = 7, then median is approximately:", "options": ["A. 8", "B. 9", "C. 10", "D. 11"], "correctAnswer": "B", "explanation": "Mode = 3Median - 2Mean. 7 = 3M - 20. 3M = 27. M = 9." },
+    { "id": "ch14-mcq-009", "question": "In less than ogive, the y-axis shows:", "options": ["A. Frequency", "B. Class boundaries", "C. Cumulative frequency", "D. Class midpoints"], "correctAnswer": "C", "explanation": "In ogive (cumulative frequency curve), y-axis represents cumulative frequency." },
+    { "id": "ch14-mcq-010", "question": "Assumed mean method is useful because:", "options": ["A. Gives more accurate result", "B. Reduces calculation work", "C. Works only for small data", "D. Avoids cumulative frequency"], "correctAnswer": "B", "explanation": "Assumed mean method simplifies arithmetic by working with smaller deviations from the assumed mean." },
+    { "id": "ch14-mcq-011", "question": "The median is graphically determined from:", "options": ["A. Bar graph", "B. Histogram", "C. Intersection point of two ogives", "D. Pie chart"], "correctAnswer": "C", "explanation": "The x-coordinate of intersection of less than and more than ogives gives the median." },
+    { "id": "ch14-mcq-012", "question": "For classes 0-10, 10-20, 20-30. Frequencies 4, 6, 5. Mean by direct method:", "options": ["A. 14", "B. 15", "C. 16", "D. 17"], "correctAnswer": "B", "explanation": "Midpoints: 5,15,25. Σfx = 20+90+125=235. Σf=15. Mean=235/15≈15.67. Closest = 15." },
+    { "id": "ch14-mcq-013", "question": "Which method is most efficient when class widths are equal?", "options": ["A. Direct method", "B. Assumed mean method", "C. Step deviation method", "D. All equally efficient"], "correctAnswer": "C", "explanation": "Step deviation method is most efficient when class widths are equal as it minimizes calculations." },
+    { "id": "ch14-mcq-014", "question": "In median formula, 'cf' stands for:", "options": ["A. Class frequency", "B. Cumulative frequency of the class", "C. Cumulative frequency of class preceding median class", "D. Common factor"], "correctAnswer": "C", "explanation": "cf = cumulative frequency of all classes preceding (before) the median class." },
+    { "id": "ch14-mcq-015", "question": "A less than ogive and more than ogive always intersect at the point corresponding to:", "options": ["A. Mean", "B. Median", "C. Mode", "D. Mid-range"], "correctAnswer": "B", "explanation": "The intersection of the two ogives gives the median of the distribution." }
+  ],
+  "exercises": [
+    { "id": "ch14-ex-001", "question": "Find mean of: Class 0-10(f=5), 10-20(f=8), 20-30(f=15), 30-40(f=12), 40-50(f=10) using direct method.", "answer": "Midpoints: 5,15,25,35,45. Σf=50. Σfx = 25+120+375+420+450=1390. Mean = 1390/50 = 27.8.", "type": "short-answer" },
+    { "id": "ch14-ex-002", "question": "Find mode of: 10-20(f=3), 20-30(f=8), 30-40(f=10), 40-50(f=6), 50-60(f=3).", "answer": "Modal class = 30-40 (f=10). l=30, f₁=10, f₀=8, f₂=6, h=10. Mode = 30 + [(10-8)/(20-8-6)]×10 = 30 + [2/6]×10 = 30+3.33 = 33.33.", "type": "short-answer" },
+    { "id": "ch14-ex-003", "question": "Find median: 0-10(f=3), 10-20(f=10), 20-30(f=15), 30-40(f=12), 40-50(f=10).", "answer": "Σf=50, n/2=25. Cumulative: 3,13,28,40,50. Median class=20-30 (cf first exceeds 25). l=20, cf=13, f=15, h=10. Median = 20+[(25-13)/15]×10 = 20+8 = 28.", "type": "short-answer" },
+    { "id": "ch14-ex-004", "question": "Mean and mode of data are 59 and 52 respectively. Find median using empirical formula.", "answer": "Mode = 3Median - 2Mean. 52 = 3M - 118. 3M = 170. Median = 56.67 ≈ 56.7.", "type": "short-answer" },
+    { "id": "ch14-ex-005", "question": "Find mean using assumed mean method: 15-25(f=2), 25-35(f=3), 35-45(f=7), 45-55(f=6), 55-65(f=6), 65-75(f=6).", "answer": "a=45, h=10. Midpoints: 20,30,40,50,60,70. dᵢ: -25,-15,-5,5,15,25. Σf=30. Σfdᵢ = -50-45-35+30+90+150=140. Mean = 45+140/30 = 45+4.67 = 49.67.", "type": "short-answer" },
+    { "id": "ch14-ex-006", "question": "The following table gives literacy rates. Find mean using step deviation method: 45-55(f=3), 55-65(f=10), 65-75(f=11), 75-85(f=8), 85-95(f=3).", "answer": "a=70, h=10. uᵢ: -2,-1,0,1,2. Σf=35. Σfuᵢ = -6-10+0+8+6=-2. Mean = 70+(-2/35)×10 = 70-0.57 = 69.43.", "type": "short-answer" },
+    { "id": "ch14-ex-007", "question": "Draw less than ogive for: 0-10(f=5), 10-20(f=8), 20-30(f=12), 30-40(f=10), 40-50(f=5) and find median.", "answer": "Cumulative frequencies: less than 10→5, 20→13, 30→25, 40→35, 50→40. Plot points (10,5),(20,13),(30,25),(40,35),(50,40). n/2=20. Draw horizontal line at y=20. Meets curve at approximately x=27.5. Median ≈ 27.5.", "type": "short-answer" },
+    { "id": "ch14-ex-008", "question": "Find mode: Monthly income 10000-15000(f=2), 15000-20000(f=4), 20000-25000(f=6), 25000-30000(f=5), 30000-35000(f=3).", "answer": "Modal class = 20000-25000 (f=6). l=20000, f₁=6, f₀=4, f₂=5, h=5000. Mode = 20000+[(6-4)/(12-4-5)]×5000 = 20000+(2/3)×5000 = 20000+3333 = 23333.", "type": "short-answer" }
+  ],
+  "mcqCount": 15,
+  "exerciseCount": 8
+}

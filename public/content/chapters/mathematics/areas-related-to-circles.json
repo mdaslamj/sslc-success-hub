@@ -1,0 +1,64 @@
+{
+  "id": "areas-related-to-circles",
+  "chapterNumber": 12,
+  "subjectId": "mathematics",
+  "title": "Areas Related to Circles",
+  "difficulty": "medium",
+  "estimatedMinutes": 55,
+  "version": "1.0",
+  "lastUpdated": "2026-05",
+  "summary": "Chapter 12 calculates areas and perimeters related to circles, sectors, and segments. Students learn formulas for circumference and area of a circle, arc length and area of a sector, and area of a segment. These are applied to find areas of combinations of plane figures involving circles, triangles, squares, and rectangles.",
+  "learningPoints": [
+    "Recall circumference = 2πr and area = πr² of a circle",
+    "Define sector as region between two radii and an arc",
+    "Calculate arc length = (θ/360°) × 2πr",
+    "Calculate area of sector = (θ/360°) × πr²",
+    "Define segment as region between chord and arc",
+    "Calculate area of minor segment = area of sector - area of triangle",
+    "Calculate area of major segment = area of circle - area of minor segment",
+    "Solve problems involving combinations of circles with squares, rectangles and triangles",
+    "Find areas of figures with cut-outs and shaded regions",
+    "Apply correct value of π (22/7 or 3.14) as specified"
+  ],
+  "formulas": [
+    { "label": "Circumference of Circle", "expression": "C = 2πr", "description": "Perimeter of a complete circle with radius r." },
+    { "label": "Area of Circle", "expression": "A = πr²", "description": "Area enclosed by a circle of radius r." },
+    { "label": "Arc Length", "expression": "l = (θ/360°) × 2πr", "description": "Length of arc of a sector with central angle θ and radius r." },
+    { "label": "Area of Sector", "expression": "A = (θ/360°) × πr²", "description": "Area of sector with central angle θ and radius r." },
+    { "label": "Area of Minor Segment", "expression": "A = Area of sector - Area of triangle OAB", "description": "Area between chord AB and minor arc." },
+    { "label": "Area of Triangle in Sector", "expression": "A = ½r² sinθ", "description": "Area of triangle formed by two radii and chord when central angle is θ." }
+  ],
+  "resources": [
+    { "type": "video", "provider": "Khan Academy", "label": "Areas Related to Circles — Video Lessons", "description": "Videos on sector, segment areas and combination figures.", "url": "https://www.khanacademy.org/math/ncert-class-10" },
+    { "type": "textbook", "provider": "ePathshala", "label": "NCERT Mathematics Textbook — Class 10", "description": "Official NCERT textbook Chapter 12 Areas Related to Circles.", "url": "https://epathshala.nic.in/e-pathshala-4/flipbook/?id=0964" }
+  ],
+  "mcqs": [
+    { "id": "ch12-mcq-001", "question": "Area of a circle with diameter 14cm is:", "options": ["A. 44 cm²", "B. 154 cm²", "C. 616 cm²", "D. 308 cm²"], "correctAnswer": "B", "explanation": "r=7cm. Area = πr² = 22/7 × 49 = 154 cm²." },
+    { "id": "ch12-mcq-002", "question": "Arc length of sector with radius 7cm and angle 90° is:", "options": ["A. 7 cm", "B. 11 cm", "C. 14 cm", "D. 22 cm"], "correctAnswer": "B", "explanation": "l = (90/360) × 2 × 22/7 × 7 = 11 cm." },
+    { "id": "ch12-mcq-003", "question": "Area of sector with radius 12cm and angle 60° is:", "options": ["A. 75.43 cm²", "B. 78.43 cm²", "C. 75.24 cm²", "D. 72 cm²"], "correctAnswer": "A", "explanation": "A = (60/360) × π × 144 = 24π ≈ 75.43 cm²." },
+    { "id": "ch12-mcq-004", "question": "Circumference of a circle is 44cm. Its area is:", "options": ["A. 77 cm²", "B. 154 cm²", "C. 308 cm²", "D. 616 cm²"], "correctAnswer": "B", "explanation": "2πr=44, r=7cm. Area = πr² = 154 cm²." },
+    { "id": "ch12-mcq-005", "question": "A sector has area 77cm² and radius 7cm. The angle is:", "options": ["A. 90°", "B. 180°", "C. 270°", "D. 360°"], "correctAnswer": "B", "explanation": "77 = (θ/360) × 22/7 × 49. θ = 77×360×7/(22×49) = 180°." },
+    { "id": "ch12-mcq-006", "question": "Area of minor segment when radius=10 and angle=90° is (use π=3.14):", "options": ["A. 28.5 cm²", "B. 30 cm²", "C. 32.5 cm²", "D. 25 cm²"], "correctAnswer": "A", "explanation": "Area of sector = (90/360)×3.14×100 = 78.5. Area of triangle = ½×10×10 = 50. Segment = 78.5-50 = 28.5 cm²." },
+    { "id": "ch12-mcq-007", "question": "A horse is tied to a corner of square field of side 14m with rope 7m. Area it can graze:", "options": ["A. 38.5 m²", "B. 77 m²", "C. 154 m²", "D. 308 m²"], "correctAnswer": "A", "explanation": "Quarter circle: (90/360) × 22/7 × 49 = 38.5 m²." },
+    { "id": "ch12-mcq-008", "question": "Area of ring between two concentric circles of radii 8 and 5 is:", "options": ["A. 39π", "B. 64π", "C. 25π", "D. 89π"], "correctAnswer": "A", "explanation": "Area = π(R²-r²) = π(64-25) = 39π cm²." },
+    { "id": "ch12-mcq-009", "question": "Perimeter of sector with radius 10.5 and angle 60° is:", "options": ["A. 32 cm", "B. 31 cm", "C. 30 cm", "D. 33 cm"], "correctAnswer": "A", "explanation": "Arc = (60/360)×2×22/7×10.5 = 11. Perimeter = 11+10.5+10.5 = 32 cm." },
+    { "id": "ch12-mcq-010", "question": "Four equal circles each of radius 7cm are arranged touching each other. Area enclosed between them:", "options": ["A. 42 cm²", "B. 168 cm²", "C. 84 cm²", "D. 196 cm²"], "correctAnswer": "A", "explanation": "Square formed: side=14cm, area=196. 4 quarter circles = 1 full circle = 154cm². Enclosed = 196-154 = 42 cm²." },
+    { "id": "ch12-mcq-011", "question": "Area of equilateral triangle inscribed in circle of radius 6cm is:", "options": ["A. 27√3 cm²", "B. 36√3 cm²", "C. 9√3 cm²", "D. 54√3 cm²"], "correctAnswer": "A", "explanation": "Side of equilateral triangle = r√3 = 6√3. Area = (√3/4)(6√3)² = (√3/4)×108 = 27√3 cm²." },
+    { "id": "ch12-mcq-012", "question": "If radius is doubled, area of circle becomes:", "options": ["A. Double", "B. Triple", "C. 4 times", "D. 8 times"], "correctAnswer": "C", "explanation": "Area = πr². If r→2r, area = π(2r)² = 4πr². 4 times the original." },
+    { "id": "ch12-mcq-013", "question": "Area of major segment = area of circle minus:", "options": ["A. Area of chord", "B. Area of minor segment", "C. Area of sector", "D. Circumference"], "correctAnswer": "B", "explanation": "Major segment = Total circle area - Minor segment area." },
+    { "id": "ch12-mcq-014", "question": "A circle is inscribed in a square of side 14cm. Area of shaded region outside circle:", "options": ["A. 42 cm²", "B. 44 cm²", "C. 42.5 cm²", "D. 196 cm²"], "correctAnswer": "A", "explanation": "Circle radius = 7cm. Area of square = 196. Area of circle = 154. Shaded = 196-154 = 42 cm²." },
+    { "id": "ch12-mcq-015", "question": "Ratio of areas of sector with angle 90° to full circle is:", "options": ["A. 1:2", "B. 1:3", "C. 1:4", "D. 1:6"], "correctAnswer": "C", "explanation": "90°/360° = 1/4. Sector area is 1/4 of full circle." }
+  ],
+  "exercises": [
+    { "id": "ch12-ex-001", "question": "Find area of sector of circle with radius 6cm and angle 60°.", "answer": "Area = (60/360) × π × 36 = 6π = 18.86 cm².", "type": "short-answer" },
+    { "id": "ch12-ex-002", "question": "Find the area of minor segment of circle radius 14cm with central angle 60°.", "answer": "Area of sector = (60/360)×22/7×196 = 102.67 cm². Triangle: equilateral with side 14cm. Area = (√3/4)×196 = 84.87 cm². Segment = 102.67 - 84.87 = 17.8 cm².", "type": "short-answer" },
+    { "id": "ch12-ex-003", "question": "In a circle of radius 21cm, an arc subtends 60° at centre. Find arc length and area of sector.", "answer": "Arc length = (60/360)×2×22/7×21 = 22 cm. Area = (60/360)×22/7×441 = 231 cm².", "type": "short-answer" },
+    { "id": "ch12-ex-004", "question": "A brooch is made with silver wire in shape of circle of diameter 35mm. A wire is used for 5 diameters. Find length of wire.", "answer": "Circumference = 22/7 × 35 = 110 mm. 5 diameters = 5 × 35 = 175 mm. Total = 110 + 175 = 285 mm.", "type": "short-answer" },
+    { "id": "ch12-ex-005", "question": "A chord of circle of radius 15cm subtends 60° at centre. Find areas of minor and major segments.", "answer": "Minor sector = (60/360)×π×225 = 37.5π = 117.86 cm². Triangle area = ½×15×15×sin60° = 97.31 cm². Minor segment = 20.55 cm². Major segment = π×225 - 20.55 = 686.9 cm².", "type": "short-answer" },
+    { "id": "ch12-ex-006", "question": "Four circular cardboard pieces each of radius 7cm are placed on a table touching each other. Find area of gap between them.", "answer": "Square formed by centres has side 14cm. Area of square = 196 cm². 4 quarter circles = 1 full circle of radius 7 = 154 cm². Gap = 196 - 154 = 42 cm².", "type": "short-answer" },
+    { "id": "ch12-ex-007", "question": "In equilateral triangle of side 12cm, three arcs are drawn each with radius 6cm at each vertex. Find area of remaining triangle.", "answer": "Area of triangle = (√3/4)×144 = 36√3 = 62.35 cm². Each arc is 60° sector. 3 sectors = ½ circle = ½×π×36 = 56.57 cm². Remaining = 62.35 - 56.57 = 5.78 cm².", "type": "short-answer" },
+    { "id": "ch12-ex-008", "question": "A circular park of radius 20m has a path 5m wide around it. Find area of path.", "answer": "Inner radius = 20m. Outer radius = 25m. Area of path = π(25²-20²) = π×225 = 706.86 m².", "type": "short-answer" }
+  ],
+  "mcqCount": 15,
+  "exerciseCount": 8
+}

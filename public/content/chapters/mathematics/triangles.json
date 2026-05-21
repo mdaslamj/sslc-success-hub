@@ -1,0 +1,62 @@
+{
+  "id": "triangles",
+  "chapterNumber": 6,
+  "subjectId": "mathematics",
+  "title": "Triangles",
+  "difficulty": "hard",
+  "estimatedMinutes": 70,
+  "version": "1.0",
+  "lastUpdated": "2026-05",
+  "summary": "Chapter 6 covers similarity of triangles and related theorems. Students learn the difference between congruence and similarity, and identify similar triangles using criteria: AA, SSS, and SAS. The chapter proves the Basic Proportionality Theorem (Thales Theorem) and its converse. Key theorems include the Pythagoras Theorem and its converse, along with the relationship between areas of similar triangles and their corresponding sides.",
+  "learningPoints": [
+    "Distinguish between congruent and similar figures",
+    "State and apply Basic Proportionality Theorem (Thales Theorem): a line parallel to one side divides other two sides proportionally",
+    "State and apply the converse of BPT",
+    "Identify similar triangles using AA, SSS, and SAS similarity criteria",
+    "Prove that ratio of areas of similar triangles equals square of ratio of corresponding sides",
+    "State and prove Pythagoras Theorem: in right triangle, square of hypotenuse = sum of squares of other two sides",
+    "State and apply converse of Pythagoras Theorem",
+    "Apply similarity in solving problems involving heights and distances",
+    "Find unknown sides of similar triangles using proportionality",
+    "Distinguish between similarity criteria and congruence criteria"
+  ],
+  "formulas": [
+    { "label": "Basic Proportionality Theorem", "expression": "AD/DB = AE/EC", "description": "If DE is parallel to BC in triangle ABC, then DE divides AB and AC in the same ratio." },
+    { "label": "Area of Similar Triangles", "expression": "ar(ABC)/ar(PQR) = (AB/PQ)² = (BC/QR)² = (CA/RP)²", "description": "Ratio of areas of similar triangles equals square of ratio of their corresponding sides." },
+    { "label": "Pythagoras Theorem", "expression": "AC² = AB² + BC²", "description": "In a right-angled triangle, square of hypotenuse = sum of squares of the other two sides." },
+    { "label": "Converse of Pythagoras", "expression": "If AC² = AB² + BC², then angle B = 90°", "description": "If the square of one side equals sum of squares of other two, the triangle is right-angled." }
+  ],
+  "resources": [
+    { "type": "video", "provider": "Khan Academy", "label": "Triangles — Video Lessons", "description": "Videos on similar triangles, BPT, and Pythagoras theorem.", "url": "https://www.khanacademy.org/math/ncert-class-10/xd6a17b08edbd2443:triangles-ncert-new" },
+    { "type": "textbook", "provider": "ePathshala", "label": "NCERT Mathematics Textbook — Class 10", "description": "Official NCERT textbook Chapter 6 Triangles.", "url": "https://epathshala.nic.in/e-pathshala-4/flipbook/?id=0964" }
+  ],
+  "mcqs": [
+    { "id": "ch6-mcq-001", "question": "All squares are:", "options": ["A. Congruent", "B. Similar", "C. Neither", "D. Depends on size"], "correctAnswer": "B", "explanation": "All squares have the same shape (all angles 90°) but may differ in size, so they are similar." },
+    { "id": "ch6-mcq-002", "question": "In triangle ABC, DE is parallel to BC. If AD=3, DB=2, AE=6, then EC is:", "options": ["A. 2", "B. 3", "C. 4", "D. 5"], "correctAnswer": "C", "explanation": "By BPT: AD/DB = AE/EC. 3/2 = 6/EC. EC = 4." },
+    { "id": "ch6-mcq-003", "question": "If triangles ABC and DEF are similar with AB/DE = 3/5, then ar(ABC)/ar(DEF) is:", "options": ["A. 3/5", "B. 9/25", "C. 6/10", "D. 27/125"], "correctAnswer": "B", "explanation": "Ratio of areas = (ratio of sides)² = (3/5)² = 9/25." },
+    { "id": "ch6-mcq-004", "question": "In a right triangle with hypotenuse 13 cm and one side 5 cm, the third side is:", "options": ["A. 8 cm", "B. 10 cm", "C. 12 cm", "D. 11 cm"], "correctAnswer": "C", "explanation": "By Pythagoras: third side = √(13²-5²) = √(169-25) = √144 = 12 cm." },
+    { "id": "ch6-mcq-005", "question": "Which of the following is NOT a similarity criterion for triangles?", "options": ["A. AA", "B. SSS", "C. SAS", "D. SSA"], "correctAnswer": "D", "explanation": "SSA is not a valid similarity criterion. AA, SSS, and SAS are valid." },
+    { "id": "ch6-mcq-006", "question": "Two poles of heights 6m and 11m stand on a plane. If distance between feet is 12m, distance between tops is:", "options": ["A. 11 m", "B. 12 m", "C. 13 m", "D. 14 m"], "correctAnswer": "C", "explanation": "Vertical difference = 5m, horizontal = 12m. Distance = √(25+144) = √169 = 13 m." },
+    { "id": "ch6-mcq-007", "question": "If in triangles ABC and PQR, AB/QR = BC/PR = CA/PQ, then:", "options": ["A. Triangle ABC ~ Triangle PQR", "B. Triangle ABC ~ Triangle QPR", "C. Triangle ABC ~ Triangle QRP", "D. Triangle ABC ~ Triangle PRQ"], "correctAnswer": "C", "explanation": "Matching sides AB/QR, BC/PR, CA/PQ → Triangle ABC ~ Triangle QRP." },
+    { "id": "ch6-mcq-008", "question": "The diagonals of a trapezium ABCD with AB parallel to CD intersect at O. If AB=2CD, then ar(AOB)/ar(COD) is:", "options": ["A. 1/4", "B. 4/1", "C. 2/1", "D. 1/2"], "correctAnswer": "B", "explanation": "Triangles AOB and COD are similar with ratio AB/CD = 2. Area ratio = 4/1." },
+    { "id": "ch6-mcq-009", "question": "In triangle ABC, if angle A = 90°, AD is perpendicular to BC, then AB² equals:", "options": ["A. BC × BD", "B. BC × CD", "C. BD × CD", "D. AC × BC"], "correctAnswer": "A", "explanation": "In right triangle: AB² = BD × BC." },
+    { "id": "ch6-mcq-010", "question": "Is the triangle with sides 7cm, 24cm, 25cm a right triangle?", "options": ["A. Yes", "B. No", "C. Cannot determine", "D. Depends on angles"], "correctAnswer": "A", "explanation": "7² + 24² = 49 + 576 = 625 = 25². So yes, it is a right triangle." },
+    { "id": "ch6-mcq-011", "question": "If the ratio of corresponding sides of similar triangles is 4:9, the ratio of their areas is:", "options": ["A. 2:3", "B. 4:9", "C. 16:81", "D. 8:27"], "correctAnswer": "C", "explanation": "Ratio of areas = (4/9)² = 16/81." },
+    { "id": "ch6-mcq-012", "question": "Basic Proportionality Theorem was given by:", "options": ["A. Pythagoras", "B. Thales", "C. Euclid", "D. Archimedes"], "correctAnswer": "B", "explanation": "BPT is also known as Thales Theorem, given by the Greek mathematician Thales." },
+    { "id": "ch6-mcq-013", "question": "In triangle PQR, PQ=4, QR=6, PR=8 and in triangle XYZ, XY=6, YZ=9, XZ=12. The triangles are:", "options": ["A. Congruent", "B. Similar", "C. Neither", "D. Cannot determine"], "correctAnswer": "B", "explanation": "PQ/XY = QR/YZ = PR/XZ = 2/3. All ratios equal so triangles are similar by SSS." },
+    { "id": "ch6-mcq-014", "question": "A vertical stick 12 m tall casts a shadow 8m long. A tower casts a shadow 40m long. Height of tower is:", "options": ["A. 50 m", "B. 60 m", "C. 70 m", "D. 80 m"], "correctAnswer": "B", "explanation": "12/8 = h/40. h = 60 m." },
+    { "id": "ch6-mcq-015", "question": "If area of two similar triangles are 81 cm² and 49 cm², ratio of their corresponding sides is:", "options": ["A. 9:7", "B. 7:9", "C. 81:49", "D. 49:81"], "correctAnswer": "A", "explanation": "Ratio of sides = √(81/49) = 9/7." }
+  ],
+  "exercises": [
+    { "id": "ch6-ex-001", "question": "In triangle ABC, D and E are points on AB and AC. DE is parallel to BC. If AD=3.6, AB=9, AE=2.4, find AC.", "answer": "By BPT: AD/AB = AE/AC. 3.6/9 = 2.4/AC. AC = 2.4 × 9/3.6 = 6 cm.", "type": "short-answer" },
+    { "id": "ch6-ex-002", "question": "ABC and DEF are similar. ar(ABC) = 64 cm² and ar(DEF) = 121 cm². If EF = 15.4 cm, find BC.", "answer": "ar(ABC)/ar(DEF) = BC²/EF². 64/121 = BC²/15.4². BC² = 64 × 237.16/121 = 125.36. BC = 11.2 cm.", "type": "short-answer" },
+    { "id": "ch6-ex-003", "question": "Prove that the ratio of areas of two similar triangles is equal to the square of the ratio of their corresponding sides.", "answer": "Let triangles ABC ~ PQR. Draw altitudes AM and PN. Triangles ABM and PQN are similar (AA). AM/PN = AB/PQ. ar(ABC)/ar(PQR) = (BC×AM)/(QR×PN) = (BC/QR)×(AB/PQ) = (AB/PQ)². Since AB/PQ = BC/QR = CA/RP, ratio of areas = square of ratio of sides. Proved.", "type": "proof" },
+    { "id": "ch6-ex-004", "question": "A ladder 10m long reaches a window 8m above ground. Distance of foot of ladder from wall is:", "answer": "By Pythagoras: d² + 8² = 10². d² = 100-64 = 36. d = 6 m.", "type": "short-answer" },
+    { "id": "ch6-ex-005", "question": "In triangle ABC, angle B = 90°, D is midpoint of hypotenuse AC. Prove BD = AC/2.", "answer": "Draw circle with AC as diameter. Since angle B = 90°, B lies on this circle. Centre O is midpoint of AC = D. So DB = DA = DC = radius = AC/2. Proved.", "type": "proof" },
+    { "id": "ch6-ex-006", "question": "Sides of triangle are 7cm, 24cm, 25cm. Is it right-angled? If so, which angle is 90°?", "answer": "7² + 24² = 49 + 576 = 625 = 25². By converse of Pythagoras, the triangle is right-angled. The angle opposite to 25cm (the largest side) is 90°.", "type": "short-answer" },
+    { "id": "ch6-ex-007", "question": "In an equilateral triangle ABC, D is a point on BC such that BD = BC/3. Prove 9AD² = 7AB².", "answer": "Draw AE perpendicular to BC. BE = BC/2. DE = BE - BD = BC/2 - BC/3 = BC/6. In triangle ADE: AD² = AE² + DE². AE² = AB² - BE² = AB² - AB²/4 = 3AB²/4. AD² = 3AB²/4 + AB²/36 = 27AB²/36 + AB²/36 = 28AB²/36 = 7AB²/9. So 9AD² = 7AB².", "type": "proof" },
+    { "id": "ch6-ex-008", "question": "State and prove Pythagoras Theorem.", "answer": "Statement: In a right-angled triangle, the square of the hypotenuse equals the sum of the squares of the other two sides. Proof: In right triangle ABC with angle B = 90°, draw BD perpendicular to AC. Triangles ADB and ABC are similar (AA). AB/AC = AD/AB → AB² = AC × AD. Similarly BC² = AC × DC. Adding: AB² + BC² = AC(AD+DC) = AC². Proved.", "type": "proof" }
+  ],
+  "mcqCount": 15,
+  "exerciseCount": 8
+}

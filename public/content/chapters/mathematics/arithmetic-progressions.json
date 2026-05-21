@@ -1,0 +1,64 @@
+{
+  "id": "arithmetic-progressions",
+  "chapterNumber": 5,
+  "subjectId": "mathematics",
+  "title": "Arithmetic Progressions",
+  "difficulty": "medium",
+  "estimatedMinutes": 60,
+  "version": "1.0",
+  "lastUpdated": "2026-05",
+  "summary": "Chapter 5 introduces Arithmetic Progressions (AP) — sequences where each term differs from the previous by a fixed common difference. Students learn to identify APs, find the nth term using the formula aₙ = a + (n-1)d, and calculate the sum of n terms using Sₙ = n/2[2a + (n-1)d]. The chapter includes word problems involving APs in real-life situations such as savings, distances, and patterns.",
+  "learningPoints": [
+    "Define an arithmetic progression as a sequence with constant common difference",
+    "Identify whether a given sequence is an AP by checking constant difference",
+    "Find the first term a and common difference d of an AP",
+    "Apply the nth term formula: aₙ = a + (n-1)d",
+    "Find number of terms in a finite AP",
+    "Apply sum formula: Sₙ = n/2[2a + (n-1)d]",
+    "Apply alternative sum formula: Sₙ = n/2(a + l) where l is the last term",
+    "Find the nth term when sum of n terms is given: aₙ = Sₙ - Sₙ₋₁",
+    "Solve problems involving AP in real-life contexts",
+    "Find three numbers in AP when their sum and product are given"
+  ],
+  "formulas": [
+    { "label": "nth Term of AP", "expression": "aₙ = a + (n-1)d", "description": "Find any term of AP where a = first term, d = common difference, n = term number." },
+    { "label": "Sum of n Terms (Method 1)", "expression": "Sₙ = n/2 [2a + (n-1)d]", "description": "Sum of first n terms of AP using first term and common difference." },
+    { "label": "Sum of n Terms (Method 2)", "expression": "Sₙ = n/2 (a + l)", "description": "Sum of first n terms using first term a and last term l." },
+    { "label": "Common Difference", "expression": "d = a₂ - a₁ = a₃ - a₂", "description": "Difference between any two consecutive terms is constant." },
+    { "label": "nth Term from Sum", "expression": "aₙ = Sₙ - Sₙ₋₁", "description": "Find nth term when sum formula is given." },
+    { "label": "Three Terms in AP", "expression": "a-d, a, a+d", "description": "Three numbers in AP assumed as a-d, a, a+d to simplify calculations." }
+  ],
+  "resources": [
+    { "type": "video", "provider": "Khan Academy", "label": "Arithmetic Progressions — Video Lessons", "description": "Videos on AP sequences, nth term and sum formulas with practice exercises.", "url": "https://www.khanacademy.org/math/ncert-class-10" },
+    { "type": "textbook", "provider": "ePathshala", "label": "NCERT Mathematics Textbook — Class 10", "description": "Official NCERT textbook Chapter 5 Arithmetic Progressions.", "url": "https://epathshala.nic.in/e-pathshala-4/flipbook/?id=0964" }
+  ],
+  "mcqs": [
+    { "id": "ch5-mcq-001", "question": "Which of the following is an AP?", "options": ["A. 1, 2, 4, 8", "B. 2, 4, 8, 16", "C. 3, 7, 11, 15", "D. 1, 3, 6, 10"], "correctAnswer": "C", "explanation": "3, 7, 11, 15 has common difference 4. Others are geometric or triangular sequences." },
+    { "id": "ch5-mcq-002", "question": "The 10th term of AP 2, 7, 12, ... is:", "options": ["A. 42", "B. 45", "C. 47", "D. 52"], "correctAnswer": "C", "explanation": "a = 2, d = 5. a₁₀ = 2 + 9×5 = 47." },
+    { "id": "ch5-mcq-003", "question": "The common difference of AP 3, 1, -1, -3, ... is:", "options": ["A. 2", "B. -2", "C. 3", "D. -3"], "correctAnswer": "B", "explanation": "d = 1 - 3 = -2." },
+    { "id": "ch5-mcq-004", "question": "Sum of first 10 terms of AP 1, 3, 5, 7, ... is:", "options": ["A. 81", "B. 90", "C. 100", "D. 110"], "correctAnswer": "C", "explanation": "S₁₀ = 10/2 [2(1) + 9(2)] = 5 × 20 = 100." },
+    { "id": "ch5-mcq-005", "question": "How many terms of AP 9, 17, 25, ... make sum 636?", "options": ["A. 10", "B. 11", "C. 12", "D. 13"], "correctAnswer": "C", "explanation": "636 = n/2[18 + (n-1)8] = n/2[8n+10]. n² + ... n = 12." },
+    { "id": "ch5-mcq-006", "question": "The nth term of an AP is 3n + 5. The common difference is:", "options": ["A. 3", "B. 5", "C. 8", "D. 2"], "correctAnswer": "A", "explanation": "aₙ = 3n + 5. d = a₂ - a₁ = 11 - 8 = 3." },
+    { "id": "ch5-mcq-007", "question": "If 7th term of AP is 34 and 13th term is 64, the common difference is:", "options": ["A. 3", "B. 4", "C. 5", "D. 6"], "correctAnswer": "C", "explanation": "a₁₃ - a₇ = 6d = 30. d = 5." },
+    { "id": "ch5-mcq-008", "question": "The sum of first n natural numbers is:", "options": ["A. n(n+1)", "B. n(n+1)/2", "C. n²", "D. n(n-1)/2"], "correctAnswer": "B", "explanation": "S = n/2(1+n) = n(n+1)/2." },
+    { "id": "ch5-mcq-009", "question": "Three numbers in AP have sum 27 and product 648. The middle number is:", "options": ["A. 6", "B. 9", "C. 12", "D. 8"], "correctAnswer": "B", "explanation": "(a-d) + a + (a+d) = 3a = 27. a = 9." },
+    { "id": "ch5-mcq-010", "question": "Which term of AP 3, 8, 13, ... is 78?", "options": ["A. 14th", "B. 15th", "C. 16th", "D. 17th"], "correctAnswer": "C", "explanation": "78 = 3 + (n-1)5. 75 = 5(n-1). n = 16." },
+    { "id": "ch5-mcq-011", "question": "Sum of first 20 odd numbers is:", "options": ["A. 200", "B. 400", "C. 380", "D. 420"], "correctAnswer": "B", "explanation": "Odd numbers: a=1, d=2. S₂₀ = 20/2[2+19×2] = 10×40 = 400." },
+    { "id": "ch5-mcq-012", "question": "If Sₙ = 3n² + 5n, then a₂ is:", "options": ["A. 14", "B. 16", "C. 17", "D. 20"], "correctAnswer": "A", "explanation": "a₂ = S₂ - S₁ = (12+10) - (3+5) = 22 - 8 = 14." },
+    { "id": "ch5-mcq-013", "question": "The first term of AP is 5, last term is 45, sum is 400. Number of terms is:", "options": ["A. 14", "B. 15", "C. 16", "D. 17"], "correctAnswer": "C", "explanation": "S = n/2(5+45) = 25n = 400. n = 16." },
+    { "id": "ch5-mcq-014", "question": "The 4th term of an AP is 14 and 9th term is 34. First term is:", "options": ["A. 2", "B. 4", "C. 6", "D. 8"], "correctAnswer": "A", "explanation": "a₉ - a₄ = 5d = 20, d = 4. a₄ = a + 3(4) = 14. a = 2." },
+    { "id": "ch5-mcq-015", "question": "How many multiples of 4 lie between 10 and 250?", "options": ["A. 58", "B. 59", "C. 60", "D. 61"], "correctAnswer": "C", "explanation": "First multiple: 12, last: 248. n = (248-12)/4 + 1 = 60." }
+  ],
+  "exercises": [
+    { "id": "ch5-ex-001", "question": "Find the 31st term of AP whose 11th term is 38 and 16th term is 73.", "answer": "a₁₆ - a₁₁ = 5d = 35, d = 7. a₁₁ = a + 10(7) = 38, a = -32. a₃₁ = -32 + 30(7) = 178.", "type": "short-answer" },
+    { "id": "ch5-ex-002", "question": "An AP has 37 terms. Sum of 3 middle terms is 225 and sum of last 3 terms is 429. Find AP.", "answer": "Middle terms are 18th, 19th, 20th. Sum = 3a₁₉ = 225, a₁₉ = 75. Last 3: a₃₅+a₃₆+a₃₇ = 429, 3a₃₆ = 429, a₃₆ = 143. d = (143-75)/17 = 4. a = 75-18(4) = 3. AP: 3, 7, 11, ...", "type": "short-answer" },
+    { "id": "ch5-ex-003", "question": "Find sum of all 3-digit numbers divisible by 7.", "answer": "First: 105, Last: 994. n = (994-105)/7 + 1 = 128. S = 128/2(105+994) = 64 × 1099 = 70336.", "type": "short-answer" },
+    { "id": "ch5-ex-004", "question": "200 logs are stacked in rows. Bottom row has 20 logs, each row has 1 less. How many rows and logs in top row?", "answer": "a = 20, d = -1. Sₙ = n/2[40-(n-1)] = 200. n² - 41n + 400 = 0. (n-16)(n-25) = 0. n = 16 (since top row can't be negative). Top row = 20-15 = 5 logs.", "type": "short-answer" },
+    { "id": "ch5-ex-005", "question": "Find sum of AP 7 + 10½ + 14 + ... + 84.", "answer": "a = 7, d = 3.5, l = 84. n = (84-7)/3.5 + 1 = 23. S = 23/2(7+84) = 23×45.5 = 1046.5.", "type": "short-answer" },
+    { "id": "ch5-ex-006", "question": "In an AP, if pth term is q and qth term is p, find (p+q)th term.", "answer": "aₚ = a+(p-1)d = q and aᵩ = a+(q-1)d = p. Subtracting: (p-q)d = q-p, d = -1. a = q-(p-1)(-1) = q+p-1. aₚ₊ᵩ = (p+q-1) + (p+q-1)(-1) = 0.", "type": "short-answer" },
+    { "id": "ch5-ex-007", "question": "A man repays a loan of ₹3250 by paying ₹20 in first month and increases payment by ₹15 each month. How many months to repay?", "answer": "a = 20, d = 15, Sₙ = 3250. n/2[40+15(n-1)] = 3250. n(15n+25) = 6500. 3n² + 5n - 1300 = 0. n = 20 months.", "type": "short-answer" },
+    { "id": "ch5-ex-008", "question": "The ratio of sums of m and n terms of an AP is m²:n². Show ratio of mth and nth terms is (2m-1):(2n-1).", "answer": "Sₘ/Sₙ = m²/n². Using Sₙ = n/2[2a+(n-1)d]: [2a+(m-1)d]/[2a+(n-1)d] = m/n. For mth term ratio: replace m by 2m-1 and n by 2n-1: aₘ/aₙ = (2m-1)/(2n-1). Proved.", "type": "proof" }
+  ],
+  "mcqCount": 15,
+  "exerciseCount": 8
+}

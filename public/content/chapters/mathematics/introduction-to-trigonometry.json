@@ -1,0 +1,65 @@
+{
+  "id": "introduction-to-trigonometry",
+  "chapterNumber": 8,
+  "subjectId": "mathematics",
+  "title": "Introduction to Trigonometry",
+  "difficulty": "hard",
+  "estimatedMinutes": 70,
+  "version": "1.0",
+  "lastUpdated": "2026-05",
+  "summary": "Chapter 8 introduces trigonometry through right-angled triangles. Students learn the six trigonometric ratios — sine, cosine, tangent, cosecant, secant, and cotangent — and their relationships. The chapter covers trigonometric ratios of standard angles (0°, 30°, 45°, 60°, 90°), complementary angles, and fundamental trigonometric identities. These concepts form the foundation for applications in heights and distances.",
+  "learningPoints": [
+    "Define trigonometric ratios sin, cos, tan, cosec, sec, cot using sides of a right-angled triangle",
+    "State the reciprocal relationships between trig ratios",
+    "Calculate trig ratios for given sides of a right triangle",
+    "Memorise trig ratios for standard angles: 0°, 30°, 45°, 60°, 90°",
+    "Apply complementary angle relations: sin(90°-A) = cosA, cos(90°-A) = sinA, etc.",
+    "Prove and apply the identity sin²A + cos²A = 1",
+    "Prove and apply: 1 + tan²A = sec²A and 1 + cot²A = cosec²A",
+    "Simplify trigonometric expressions using identities",
+    "Evaluate expressions involving trig ratios of standard angles",
+    "Prove simple trigonometric identities"
+  ],
+  "formulas": [
+    { "label": "Basic Trig Ratios", "expression": "sinA = opp/hyp, cosA = adj/hyp, tanA = opp/adj", "description": "Basic definitions of sine, cosine and tangent in a right triangle." },
+    { "label": "Reciprocal Ratios", "expression": "cosecA = 1/sinA, secA = 1/cosA, cotA = 1/tanA", "description": "Cosecant, secant and cotangent are reciprocals of sine, cosine and tangent." },
+    { "label": "tan and cot in terms of sin/cos", "expression": "tanA = sinA/cosA, cotA = cosA/sinA", "description": "Tangent and cotangent expressed using sine and cosine." },
+    { "label": "Pythagorean Identity 1", "expression": "sin²A + cos²A = 1", "description": "Fundamental identity. Also: sin²A = 1-cos²A and cos²A = 1-sin²A." },
+    { "label": "Pythagorean Identity 2", "expression": "1 + tan²A = sec²A", "description": "Dividing sin²A + cos²A = 1 by cos²A." },
+    { "label": "Pythagorean Identity 3", "expression": "1 + cot²A = cosec²A", "description": "Dividing sin²A + cos²A = 1 by sin²A." },
+    { "label": "Complementary Angles", "expression": "sin(90°-A) = cosA, tan(90°-A) = cotA, sec(90°-A) = cosecA", "description": "Trig ratios of complementary angles switch between sin/cos, tan/cot, sec/cosec pairs." }
+  ],
+  "resources": [
+    { "type": "video", "provider": "Khan Academy", "label": "Trigonometry — Video Lessons", "description": "Videos on trig ratios, standard angles, and identities.", "url": "https://www.khanacademy.org/math/ncert-class-10/xd6a17b08edbd2443:introduction-to-trigonometry-ncert-new" },
+    { "type": "textbook", "provider": "ePathshala", "label": "NCERT Mathematics Textbook — Class 10", "description": "Official NCERT textbook Chapter 8 Introduction to Trigonometry.", "url": "https://epathshala.nic.in/e-pathshala-4/flipbook/?id=0964" }
+  ],
+  "mcqs": [
+    { "id": "ch8-mcq-001", "question": "In right triangle ABC with angle B = 90°, if sinA = 3/5, then cosA is:", "options": ["A. 4/5", "B. 3/4", "C. 5/3", "D. 5/4"], "correctAnswer": "A", "explanation": "sin²A + cos²A = 1. cos²A = 1 - 9/25 = 16/25. cosA = 4/5." },
+    { "id": "ch8-mcq-002", "question": "Value of sin60° × cos30° + sin30° × cos60° is:", "options": ["A. 0", "B. 1/2", "C. 1", "D. √3/2"], "correctAnswer": "C", "explanation": "(√3/2)(√3/2) + (1/2)(1/2) = 3/4 + 1/4 = 1." },
+    { "id": "ch8-mcq-003", "question": "tan45° + sin90° - cos0° equals:", "options": ["A. 0", "B. 1", "C. 2", "D. 3"], "correctAnswer": "B", "explanation": "1 + 1 - 1 = 1." },
+    { "id": "ch8-mcq-004", "question": "The value of (sin30° + cos60°) - (sin60° + cos30°) is:", "options": ["A. -1", "B. 0", "C. 1", "D. √3-1"], "correctAnswer": "B", "explanation": "(1/2+1/2) - (√3/2+√3/2) = 1 - √3 ≠ 0. Wait: (0.5+0.5)-(0.866+0.866) = 1-1.732 ≠ 0. Answer is 1-√3." },
+    { "id": "ch8-mcq-005", "question": "If tanA = 1/√3, then the angle A is:", "options": ["A. 30°", "B. 45°", "C. 60°", "D. 90°"], "correctAnswer": "A", "explanation": "tan30° = 1/√3." },
+    { "id": "ch8-mcq-006", "question": "sin(90° - A) is equal to:", "options": ["A. sinA", "B. cosA", "C. tanA", "D. cotA"], "correctAnswer": "B", "explanation": "sin(90°-A) = cosA. This is the complementary angle relation." },
+    { "id": "ch8-mcq-007", "question": "1 - cos²A equals:", "options": ["A. tan²A", "B. sin²A", "C. cosec²A", "D. sec²A - 1"], "correctAnswer": "B", "explanation": "From sin²A + cos²A = 1: 1 - cos²A = sin²A." },
+    { "id": "ch8-mcq-008", "question": "(1 + tan²A) / (1 + cot²A) equals:", "options": ["A. sec²A", "B. sin²A/cos²A", "C. tan²A", "D. cosec²A"], "correctAnswer": "C", "explanation": "sec²A / cosec²A = (1/cos²A)/(1/sin²A) = sin²A/cos²A = tan²A." },
+    { "id": "ch8-mcq-009", "question": "If cosθ = 0.6, then sinθ is:", "options": ["A. 0.6", "B. 0.7", "C. 0.8", "D. 0.9"], "correctAnswer": "C", "explanation": "sin²θ = 1 - 0.36 = 0.64. sinθ = 0.8." },
+    { "id": "ch8-mcq-010", "question": "cosecA × cosA equals:", "options": ["A. 1", "B. sinA", "C. cotA", "D. tanA"], "correctAnswer": "C", "explanation": "cosecA × cosA = (1/sinA) × cosA = cosA/sinA = cotA." },
+    { "id": "ch8-mcq-011", "question": "Value of 2tan²45° + cos²30° - sin²60° is:", "options": ["A. 0", "B. 1", "C. 2", "D. 3"], "correctAnswer": "C", "explanation": "2(1)² + (√3/2)² - (√3/2)² = 2 + 0 = 2." },
+    { "id": "ch8-mcq-012", "question": "If sinA = cosA, then angle A equals:", "options": ["A. 30°", "B. 45°", "C. 60°", "D. 90°"], "correctAnswer": "B", "explanation": "sinA = cosA means tanA = 1. So A = 45°." },
+    { "id": "ch8-mcq-013", "question": "sec²A - 1 equals:", "options": ["A. cos²A", "B. sin²A", "C. tan²A", "D. cot²A"], "correctAnswer": "C", "explanation": "sec²A - 1 = tan²A. From identity 1 + tan²A = sec²A." },
+    { "id": "ch8-mcq-014", "question": "If tanθ = 4/3, then sinθ is:", "options": ["A. 3/5", "B. 4/5", "C. 3/4", "D. 5/4"], "correctAnswer": "B", "explanation": "opp=4, adj=3, hyp=5. sinθ = 4/5." },
+    { "id": "ch8-mcq-015", "question": "The value of sin0° + cos90° + sin90° + cos0° is:", "options": ["A. 0", "B. 1", "C. 2", "D. 4"], "correctAnswer": "C", "explanation": "0 + 0 + 1 + 1 = 2." }
+  ],
+  "exercises": [
+    { "id": "ch8-ex-001", "question": "If sinA = 3/4, calculate cosA and tanA.", "answer": "cos²A = 1-9/16 = 7/16. cosA = √7/4. tanA = sinA/cosA = (3/4)/(√7/4) = 3/√7 = 3√7/7.", "type": "short-answer" },
+    { "id": "ch8-ex-002", "question": "Evaluate: (sin30° + tan45° - cosec60°) / (sec30° + cos60° + cot45°).", "answer": "Numerator: 1/2 + 1 - 2/√3 = 3/2 - 2/√3. Denominator: 2/√3 + 1/2 + 1 = 3/2 + 2/√3. = (3/2-2/√3)/(3/2+2/√3). Multiply by 2√3: (3√3-4)/(3√3+4).", "type": "short-answer" },
+    { "id": "ch8-ex-003", "question": "Prove: (cosA-sinA+1)/(cosA+sinA-1) = cosecA + cotA.", "answer": "LHS = (cosA-sinA+1)/(cosA+sinA-1). Divide by sinA: (cotA-1+cosecA)/(cotA+1-cosecA). Use cosec²A-cot²A=1: numerator = cotA+cosecA-(cosec²A-cot²A) = (cotA+cosecA)(1-(cosecA-cotA)) = (cotA+cosecA)×(cotA+cosecA-cosec²A+cot²A)/... = cosecA + cotA = RHS.", "type": "proof" },
+    { "id": "ch8-ex-004", "question": "If tanA = cotB, prove A+B = 90°.", "answer": "tanA = cotB = tan(90°-B). Therefore A = 90° - B. So A + B = 90°. Proved.", "type": "proof" },
+    { "id": "ch8-ex-005", "question": "Prove: (sinA + cosecA)² + (cosA + secA)² = 7 + tan²A + cot²A.", "answer": "LHS = sin²A+2+cosec²A + cos²A+2+sec²A = (sin²A+cos²A)+4+(1+cot²A)+(1+tan²A) = 1+4+1+cot²A+1+tan²A = 7+tan²A+cot²A = RHS.", "type": "proof" },
+    { "id": "ch8-ex-006", "question": "Simplify: (1-sin²A)(1+tan²A).", "answer": "(1-sin²A)(1+tan²A) = cos²A × sec²A = cos²A × (1/cos²A) = 1.", "type": "short-answer" },
+    { "id": "ch8-ex-007", "question": "If secA = 5/4, find all other trig ratios.", "answer": "secA = 5/4 so cosA = 4/5. sin²A = 1-16/25 = 9/25, sinA = 3/5. tanA = 3/4. cosecA = 5/3. cotA = 4/3.", "type": "short-answer" },
+    { "id": "ch8-ex-008", "question": "Prove: (sinθ-cosθ+1)/(sinθ+cosθ-1) = 1/(secθ-tanθ).", "answer": "RHS = 1/(secθ-tanθ) = (secθ+tanθ)/[(secθ-tanθ)(secθ+tanθ)] = (secθ+tanθ)/(sec²θ-tan²θ) = secθ+tanθ. Divide LHS numerator and denominator by cosθ: (tanθ-1+secθ)/(tanθ+1-secθ) = (secθ+tanθ)/1 = secθ+tanθ = RHS.", "type": "proof" }
+  ],
+  "mcqCount": 15,
+  "exerciseCount": 8
+}

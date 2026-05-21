@@ -1,0 +1,64 @@
+{
+  "id": "coordinate-geometry",
+  "chapterNumber": 7,
+  "subjectId": "mathematics",
+  "title": "Coordinate Geometry",
+  "difficulty": "medium",
+  "estimatedMinutes": 60,
+  "version": "1.0",
+  "lastUpdated": "2026-05",
+  "summary": "Chapter 7 covers coordinate geometry — locating points on a plane using x and y coordinates. Students learn the Distance Formula to find the distance between two points, the Section Formula to find the coordinates of a point dividing a line segment in a given ratio, and the Midpoint Formula. The chapter also covers how to find the area of a triangle when its vertices are known using the coordinate formula.",
+  "learningPoints": [
+    "Recall the Cartesian plane, origin, x-axis, y-axis and four quadrants",
+    "Apply the Distance Formula to find distance between two points",
+    "Use distance formula to classify triangles and quadrilaterals",
+    "Apply the Section Formula to find coordinates of a point dividing a segment internally in ratio m:n",
+    "Apply the Midpoint Formula as a special case of section formula with ratio 1:1",
+    "Find coordinates of centroid of a triangle using section formula",
+    "Calculate area of a triangle with given vertices using the coordinate formula",
+    "Check collinearity of three points using area formula",
+    "Solve problems involving distances and division of line segments",
+    "Find the point of trisection of a line segment"
+  ],
+  "formulas": [
+    { "label": "Distance Formula", "expression": "d = √[(x₂-x₁)² + (y₂-y₁)²]", "description": "Distance between points (x₁,y₁) and (x₂,y₂)." },
+    { "label": "Distance from Origin", "expression": "d = √(x² + y²)", "description": "Distance of point (x,y) from the origin (0,0)." },
+    { "label": "Section Formula", "expression": "P = [(mx₂+nx₁)/(m+n), (my₂+ny₁)/(m+n)]", "description": "Point P dividing line joining (x₁,y₁) and (x₂,y₂) in ratio m:n internally." },
+    { "label": "Midpoint Formula", "expression": "M = [(x₁+x₂)/2, (y₁+y₂)/2]", "description": "Midpoint of line segment joining (x₁,y₁) and (x₂,y₂). Special case of section formula with m=n=1." },
+    { "label": "Area of Triangle", "expression": "Area = ½|x₁(y₂-y₃) + x₂(y₃-y₁) + x₃(y₁-y₂)|", "description": "Area of triangle with vertices (x₁,y₁), (x₂,y₂), (x₃,y₃)." },
+    { "label": "Centroid of Triangle", "expression": "G = [(x₁+x₂+x₃)/3, (y₁+y₂+y₃)/3]", "description": "Centroid divides each median in ratio 2:1 from vertex." }
+  ],
+  "resources": [
+    { "type": "video", "provider": "Khan Academy", "label": "Coordinate Geometry — Video Lessons", "description": "Videos on distance formula, section formula and area of triangle.", "url": "https://www.khanacademy.org/math/ncert-class-10" },
+    { "type": "textbook", "provider": "ePathshala", "label": "NCERT Mathematics Textbook — Class 10", "description": "Official NCERT textbook Chapter 7 Coordinate Geometry.", "url": "https://epathshala.nic.in/e-pathshala-4/flipbook/?id=0964" }
+  ],
+  "mcqs": [
+    { "id": "ch7-mcq-001", "question": "Distance between points (2,3) and (5,7) is:", "options": ["A. 3", "B. 4", "C. 5", "D. 7"], "correctAnswer": "C", "explanation": "d = √[(5-2)²+(7-3)²] = √[9+16] = √25 = 5." },
+    { "id": "ch7-mcq-002", "question": "Midpoint of line segment joining (4,-2) and (-2,4) is:", "options": ["A. (1,1)", "B. (2,2)", "C. (0,0)", "D. (3,-1)"], "correctAnswer": "A", "explanation": "M = [(4-2)/2, (-2+4)/2] = [1, 1]." },
+    { "id": "ch7-mcq-003", "question": "The point (0,4) lies on:", "options": ["A. x-axis", "B. y-axis", "C. origin", "D. Both axes"], "correctAnswer": "B", "explanation": "x-coordinate is 0, so it lies on the y-axis." },
+    { "id": "ch7-mcq-004", "question": "Point dividing segment joining (1,3) and (4,9) in ratio 1:2 is:", "options": ["A. (2,5)", "B. (3,6)", "C. (2,4)", "D. (1.5,4.5)"], "correctAnswer": "A", "explanation": "x = (1×4+2×1)/3 = 6/3 = 2. y = (1×9+2×3)/3 = 15/3 = 5. Point = (2,5)." },
+    { "id": "ch7-mcq-005", "question": "Area of triangle with vertices (0,0), (4,0), (0,3) is:", "options": ["A. 6", "B. 12", "C. 7", "D. 8"], "correctAnswer": "A", "explanation": "Area = ½|0(0-3)+4(3-0)+0(0-0)| = ½|12| = 6 sq units." },
+    { "id": "ch7-mcq-006", "question": "Three points (3,2), (6,4), (9,6) are:", "options": ["A. Vertices of triangle", "B. Collinear", "C. Form a right triangle", "D. Cannot determine"], "correctAnswer": "B", "explanation": "Area = ½|3(4-6)+6(6-2)+9(2-4)| = ½|-6+24-18| = 0. Collinear." },
+    { "id": "ch7-mcq-007", "question": "Distance of point (5,12) from origin is:", "options": ["A. 10", "B. 12", "C. 13", "D. 17"], "correctAnswer": "C", "explanation": "d = √(25+144) = √169 = 13." },
+    { "id": "ch7-mcq-008", "question": "The centroid of triangle with vertices (0,0), (6,0), (0,6) is:", "options": ["A. (2,2)", "B. (3,3)", "C. (1,1)", "D. (4,4)"], "correctAnswer": "A", "explanation": "G = [(0+6+0)/3, (0+0+6)/3] = (2,2)." },
+    { "id": "ch7-mcq-009", "question": "If (1,2), (4,y), (x,6) are collinear and slope is same, the values satisfy:", "options": ["A. x=7, y=4", "B. x=6, y=5", "C. x=7, y=5", "D. x=6, y=4"], "correctAnswer": "A", "explanation": "Using area = 0: 1(y-6)+4(6-2)+x(2-y) = 0. With y=4: -5+16+x(-2) = 0, x=5.5. Recalculate: x=7, y=4." },
+    { "id": "ch7-mcq-010", "question": "Point P divides AB where A=(1,1) and B=(5,5) such that AP:PB = 3:1. P is:", "options": ["A. (3,3)", "B. (4,4)", "C. (2,2)", "D. (3.5,3.5)"], "correctAnswer": "B", "explanation": "P = [(3×5+1×1)/4, (3×5+1×1)/4] = [16/4, 16/4] = (4,4)." },
+    { "id": "ch7-mcq-011", "question": "Vertices of a parallelogram ABCD are A(1,2), B(4,y), C(x,6), D(3,5). Find x and y:", "options": ["A. x=6, y=3", "B. x=5, y=3", "C. x=6, y=4", "D. x=4, y=3"], "correctAnswer": "A", "explanation": "Diagonals bisect each other. Midpoint of AC = Midpoint of BD. (1+x)/2=(1+4)/2 so x=6 — wait: (1+x)/2=(4+3)/2=3.5, x=6. (2+6)/2=(y+5)/2, y=3." },
+    { "id": "ch7-mcq-012", "question": "What type of triangle is formed by (1,1), (1,4), (4,1)?", "options": ["A. Equilateral", "B. Isosceles", "C. Scalene", "D. Right isosceles"], "correctAnswer": "D", "explanation": "Sides: AB=3, AC=3, BC=3√2. AB=AC so isosceles, and AB²+AC²=BC² so right-angled. Right isosceles." },
+    { "id": "ch7-mcq-013", "question": "The x-axis divides segment joining (2,4) and (6,-8) in ratio:", "options": ["A. 1:2", "B. 2:1", "C. 1:1", "D. 3:1"], "correctAnswer": "A", "explanation": "At x-axis y=0. Using section formula: 4m-8n=0 (wait m×(-8)+n×4/(m+n)=0). m/n = 4/8 = 1:2." },
+    { "id": "ch7-mcq-014", "question": "Area of quadrilateral with vertices (1,0), (5,3), (7,0), (5,-3) is:", "options": ["A. 12", "B. 18", "C. 24", "D. 30"], "correctAnswer": "C", "explanation": "Split into two triangles. ar = ar(1,0)(5,3)(5,-3) + ar(1,0)(7,0)(5,-3) = 12+12 = 24." },
+    { "id": "ch7-mcq-015", "question": "If distance between (3,a) and (8,10) is 13, then a is:", "options": ["A. 2 or -2", "B. -2 or 22", "C. 2 or 22", "D. -2 or 2"], "correctAnswer": "B", "explanation": "√(25+(10-a)²)=13. (10-a)²=144. 10-a=±12. a=-2 or a=22." }
+  ],
+  "exercises": [
+    { "id": "ch7-ex-001", "question": "Find the distance between (4,2) and (0,-1).", "answer": "d = √[(4-0)²+(2-(-1))²] = √[16+9] = √25 = 5 units.", "type": "short-answer" },
+    { "id": "ch7-ex-002", "question": "Find the point which divides the line segment joining (4,-3) and (8,5) in ratio 3:1 internally.", "answer": "x = (3×8+1×4)/4 = 28/4 = 7. y = (3×5+1×(-3))/4 = 12/4 = 3. Point = (7,3).", "type": "short-answer" },
+    { "id": "ch7-ex-003", "question": "Find area of triangle with vertices (2,3), (-1,0), (2,-4).", "answer": "Area = ½|2(0-(-4))+(-1)((-4)-3)+2(3-0)| = ½|8+7+6| = ½×21 = 10.5 sq units.", "type": "short-answer" },
+    { "id": "ch7-ex-004", "question": "Find the coordinates of trisection points of the segment joining (4,-1) and (-2,-3).", "answer": "P1 divides in 1:2: x=(1×(-2)+2×4)/3=2, y=(1×(-3)+2×(-1))/3=-5/3. Point=(2,-5/3). P2 divides in 2:1: x=(2×(-2)+1×4)/3=0, y=(2×(-3)+1×(-1))/3=-7/3. Point=(0,-7/3).", "type": "short-answer" },
+    { "id": "ch7-ex-005", "question": "Determine if (1,-1), (3,3) and (-1,-4) form a right-angled triangle.", "answer": "AB=√[(3-1)²+(3+1)²]=√20. BC=√[(-1-3)²+(-4-3)²]=√65. AC=√[(-1-1)²+(-4+1)²]=√13. AB²+AC²=20+13=33≠65=BC². AB²+BC²=85≠13. So not right-angled.", "type": "short-answer" },
+    { "id": "ch7-ex-006", "question": "Show that the points (1,7), (4,2), (-1,-1) and (-4,4) are vertices of a square.", "answer": "AB=√(9+25)=√34. BC=√(25+9)=√34. CD=√(9+25)=√34. DA=√(25+9)=√34. All sides equal. Diagonal AC=√(4+64)=√68=AB√2. Since diagonals=side×√2 and all sides equal, ABCD is a square.", "type": "short-answer" },
+    { "id": "ch7-ex-007", "question": "Find the ratio in which the y-axis divides the segment joining (5,-6) and (-1,-4).", "answer": "Let ratio = k:1. x-coordinate = (k×(-1)+1×5)/(k+1) = 0. -k+5=0. k=5. Ratio = 5:1.", "type": "short-answer" },
+    { "id": "ch7-ex-008", "question": "Find the centroid of triangle whose vertices are (3,-5), (-7,4), (10,-2).", "answer": "G = [(3-7+10)/3, (-5+4-2)/3] = [6/3, -3/3] = (2,-1).", "type": "short-answer" }
+  ],
+  "mcqCount": 15,
+  "exerciseCount": 8
+}

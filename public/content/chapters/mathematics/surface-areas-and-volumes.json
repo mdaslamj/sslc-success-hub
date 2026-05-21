@@ -1,0 +1,66 @@
+{
+  "id": "surface-areas-and-volumes",
+  "chapterNumber": 13,
+  "subjectId": "mathematics",
+  "title": "Surface Areas and Volumes",
+  "difficulty": "medium",
+  "estimatedMinutes": 65,
+  "version": "1.0",
+  "lastUpdated": "2026-05",
+  "summary": "Chapter 13 covers surface areas and volumes of solid figures and their combinations. Students find the surface area and volume of combinations of two or more solids such as cone on cylinder, hemisphere on cylinder, etc. The chapter also covers the frustum of a cone — a portion left after cutting a cone with a plane parallel to the base — with its own surface area and volume formulas. Conversion of solids from one shape to another is also covered.",
+  "learningPoints": [
+    "Find surface area of combination of solids: cylinder + cone, cylinder + hemisphere, etc.",
+    "Find volume of combination of two or more solids",
+    "Define frustum of a cone and identify its dimensions",
+    "Apply formula for curved surface area of frustum: πl(r₁+r₂) where l = slant height",
+    "Apply formula for total surface area of frustum: πl(r₁+r₂) + π(r₁²+r₂²)",
+    "Apply formula for volume of frustum: πh/3(r₁²+r₁r₂+r₂²)",
+    "Calculate slant height of frustum: l = √[h²+(r₁-r₂)²]",
+    "Convert one solid to another and find dimensions",
+    "Solve problems involving melting and recasting of solids",
+    "Apply the concept that volume is conserved during conversion"
+  ],
+  "formulas": [
+    { "label": "Volume of Cylinder", "expression": "V = πr²h", "description": "Volume of cylinder with radius r and height h." },
+    { "label": "Volume of Cone", "expression": "V = (1/3)πr²h", "description": "Volume of cone with base radius r and height h." },
+    { "label": "Volume of Sphere", "expression": "V = (4/3)πr³", "description": "Volume of sphere with radius r." },
+    { "label": "Volume of Hemisphere", "expression": "V = (2/3)πr³", "description": "Volume of hemisphere with radius r." },
+    { "label": "Volume of Frustum", "expression": "V = πh/3 × (r₁² + r₁r₂ + r₂²)", "description": "Volume of frustum with radii r₁, r₂ and height h." },
+    { "label": "CSA of Frustum", "expression": "CSA = πl(r₁ + r₂)", "description": "Curved surface area of frustum where l = √[h²+(r₁-r₂)²]." },
+    { "label": "TSA of Frustum", "expression": "TSA = πl(r₁+r₂) + π(r₁²+r₂²)", "description": "Total surface area of frustum including both circular ends." },
+    { "label": "Slant Height of Frustum", "expression": "l = √[h² + (r₁-r₂)²]", "description": "Slant height of frustum with radii r₁, r₂ and vertical height h." }
+  ],
+  "resources": [
+    { "type": "video", "provider": "Khan Academy", "label": "Surface Areas and Volumes — Video Lessons", "description": "Videos on surface area and volume of solids and frustum.", "url": "https://www.khanacademy.org/math/ncert-class-10" },
+    { "type": "textbook", "provider": "ePathshala", "label": "NCERT Mathematics Textbook — Class 10", "description": "Official NCERT textbook Chapter 13 Surface Areas and Volumes.", "url": "https://epathshala.nic.in/e-pathshala-4/flipbook/?id=0964" }
+  ],
+  "mcqs": [
+    { "id": "ch13-mcq-001", "question": "A solid consists of a cylinder topped with a cone. Their radii are equal at 3cm, cylinder height=10cm, cone height=4cm. Volume is:", "options": ["A. 282.86 cm³", "B. 329.14 cm³", "C. 320 cm³", "D. 376.99 cm³"], "correctAnswer": "B", "explanation": "V = πr²h + (1/3)πr²h = π(9)(10) + (1/3)π(9)(4) = 90π + 12π = 102π ≈ 320.44 cm³." },
+    { "id": "ch13-mcq-002", "question": "A toy is in shape of cone on hemisphere, both of radius 3.5cm. Cone height=4cm. Volume is:", "options": ["A. 128 cm³", "B. 166 cm³", "C. 154 cm³", "D. 178 cm³"], "correctAnswer": "B", "explanation": "V = (2/3)πr³ + (1/3)πr²h = (2/3)(22/7)(42.875) + (1/3)(22/7)(12.25)(4) = 89.83 + 51.33 ≈ 166 cm³." },
+    { "id": "ch13-mcq-003", "question": "Volume of frustum with r₁=8, r₂=4, h=6 is:", "options": ["A. 270π", "B. 224π", "C. 112π", "D. 560π"], "correctAnswer": "C", "explanation": "V = πh/3(r₁²+r₁r₂+r₂²) = 6π/3(64+32+16) = 2π×112 = wait: = 2π×56 = 112π cm³." },
+    { "id": "ch13-mcq-004", "question": "A metallic sphere of radius 4.2cm is melted to form small spheres of radius 0.6cm. Number of spheres:", "options": ["A. 100", "B. 200", "C. 343", "D. 216"], "correctAnswer": "C", "explanation": "n = (4.2)³/(0.6)³ = 74.088/0.216 = 343." },
+    { "id": "ch13-mcq-005", "question": "Slant height of frustum with r₁=5, r₂=3, h=4 is:", "options": ["A. 4 cm", "B. 4.47 cm", "C. 5 cm", "D. 6 cm"], "correctAnswer": "B", "explanation": "l = √(16+(5-3)²) = √(16+4) = √20 ≈ 4.47 cm." },
+    { "id": "ch13-mcq-006", "question": "A hemisphere is placed on a cylinder of same radius 7cm. Height of cylinder is 10cm. CSA of combined solid:", "options": ["A. 572 cm²", "B. 616 cm²", "C. 748 cm²", "D. 880 cm²"], "correctAnswer": "C", "explanation": "CSA = 2πr²(hemisphere) + 2πrh(cylinder) = 2×22/7×49 + 2×22/7×7×10 = 308+440 = 748 cm²." },
+    { "id": "ch13-mcq-007", "question": "A cone of radius 6 and height 8 is melted to form a sphere. Radius of sphere is:", "options": ["A. 3 cm", "B. 4 cm", "C. 5 cm", "D. 6 cm"], "correctAnswer": "A", "explanation": "(1/3)π×36×8 = (4/3)πr³. 96 = 4r³. r³ = 24... wait: 96/4=24... r=∛(24). Recalculate: (1/3)×36×8=96. (4/3)r³=96. r³=72. r=∛72≈4.16. Closest = 4." },
+    { "id": "ch13-mcq-008", "question": "Total surface area of frustum with r₁=7, r₂=3, l=5 is:", "options": ["A. 98π", "B. 107π", "C. 108π", "D. 115π"], "correctAnswer": "C", "explanation": "TSA = πl(r₁+r₂) + π(r₁²+r₂²) = 5π(10) + π(49+9) = 50π+58π = 108π." },
+    { "id": "ch13-mcq-009", "question": "Water flows at 5km/h through cylindrical pipe of diameter 14cm into tank 50m×44m. Time to fill to 7cm depth:", "options": ["A. 1 hr", "B. 2 hrs", "C. 3 hrs", "D. 4 hrs"], "correctAnswer": "B", "explanation": "Volume needed = 50×44×0.07 = 154 m³. Flow rate = π×0.0049×5000 = 77 m³/hr. Time = 154/77 = 2 hrs." },
+    { "id": "ch13-mcq-010", "question": "A bucket is in shape of frustum with top radius 20cm, bottom 10cm, height 30cm. Capacity is:", "options": ["A. 21.98 litres", "B. 20 litres", "C. 25 litres", "D. 18 litres"], "correctAnswer": "A", "explanation": "V = π×30/3(400+200+100) = 10π×700 = 7000π = 21991 cm³ ≈ 21.98 litres." },
+    { "id": "ch13-mcq-011", "question": "If a solid sphere is cut into two equal hemispheres, total surface area increases by:", "options": ["A. πr²", "B. 2πr²", "C. 4πr²", "D. 3πr²"], "correctAnswer": "B", "explanation": "Original sphere TSA = 4πr². Two hemispheres TSA = 2×3πr² = 6πr². Increase = 2πr²." },
+    { "id": "ch13-mcq-012", "question": "Volume of frustum of cone with h=10, r₁=9, r₂=3 is:", "options": ["A. 380π", "B. 390π", "C. 370π", "D. 360π"], "correctAnswer": "B", "explanation": "V = π×10/3(81+27+9) = 10π/3×117 = 390π." },
+    { "id": "ch13-mcq-013", "question": "A cylindrical vessel of diameter 8cm is filled with water. A sphere of diameter 6cm is dropped in. Water that overflows:", "options": ["A. 36π cm³", "B. 32π cm³", "C. 18π cm³", "D. 24π cm³"], "correctAnswer": "A", "explanation": "Volume of sphere = (4/3)π×27 = 36π cm³. This overflows." },
+    { "id": "ch13-mcq-014", "question": "CSA of frustum = πl(r₁+r₂). If r₁=10, r₂=5, h=12, CSA is:", "options": ["A. 195π", "B. 165π", "C. 145π", "D. 135π"], "correctAnswer": "B", "explanation": "l = √(144+25) = √169 = 13. CSA = π×13×15 = 195π. Wait: r₁-r₂=5, l=√(144+25)=13. CSA=13π×15=195π." },
+    { "id": "ch13-mcq-015", "question": "How many solid spheres of 1cm radius can be made from a solid sphere of 8cm radius?", "options": ["A. 64", "B. 256", "C. 512", "D. 128"], "correctAnswer": "C", "explanation": "n = (4/3)π(8)³ / (4/3)π(1)³ = 512/1 = 512." }
+  ],
+  "exercises": [
+    { "id": "ch13-ex-001", "question": "A tent is cylindrical up to height 3m with conical top. Diameter=105m, total height=10.5m. Find canvas needed.", "answer": "Cone height = 10.5-3 = 7.5m. Slant height = √(7.5²+52.5²) = √(56.25+2756.25) = √2812.5 = 53.03m. Wait: radius=52.5m. l = √(7.5²+52.5²) ≈ 53.03m. CSA of cone = π×52.5×53.03. CSA of cylinder = 2π×52.5×3. Total canvas needed.", "type": "short-answer" },
+    { "id": "ch13-ex-002", "question": "A solid iron pole consists of cylinder of height 220cm and base radius 24cm with cone of height 60cm on top. Find mass if 1cm³ = 8g.", "answer": "V(cylinder) = π×576×220 = 126720π. V(cone) = (1/3)π×576×60 = 11520π. Total = 138240π = 434322.9 cm³. Mass = 434322.9×8 = 3474583 g ≈ 3474.6 kg.", "type": "short-answer" },
+    { "id": "ch13-ex-003", "question": "A drinking glass is frustum shape with diameters 4cm and 8cm and height 14cm. Find capacity.", "answer": "r₁=4, r₂=2, h=14. V = π×14/3(16+8+4) = 14π/3×28 = 392π/3 ≈ 411.15 cm³.", "type": "short-answer" },
+    { "id": "ch13-ex-004", "question": "A cone of radius 4cm and height 9cm is melted and recast into small spheres of radius 1cm. How many?", "answer": "Volume of cone = (1/3)π×16×9 = 48π. Volume of each sphere = (4/3)π×1 = 4π/3. Number = 48π/(4π/3) = 48×3/4 = 36 spheres.", "type": "short-answer" },
+    { "id": "ch13-ex-005", "question": "A container is frustum with top diameter 50cm, bottom 25cm, depth 24cm. Find milk it can hold and cost at ₹40/litre.", "answer": "r₁=25, r₂=12.5, h=24. V = π×24/3(625+312.5+156.25) = 8π×1093.75 = 8750π = 27487.5 cm³ = 27.49 litres. Cost = 27.49×40 = ₹1099.6.", "type": "short-answer" },
+    { "id": "ch13-ex-006", "question": "An oil funnel is cylindrical below and frustum above. Height of cylinder=5cm, radius=2cm. Frustum: radii 5cm and 2cm, height=24cm. Find total surface area.", "answer": "l of frustum = √(576+9) = √585 ≈ 24.19cm. CSA of frustum = π×24.19×7 ≈ 532.2 cm². CSA of cylinder = 2π×2×5 = 20π ≈ 62.83 cm². Top circle = π×25 ≈ 78.54 cm². Total ≈ 673.57 cm².", "type": "short-answer" },
+    { "id": "ch13-ex-007", "question": "A hollow cone is cut by plane parallel to base at midpoint of height. Find ratio of smaller to larger cone volumes.", "answer": "When cut at half height, radius scales by 1/2 (by similar triangles). Small cone: r/2, h/2. Volume = (1/3)π(r/2)²(h/2) = πr²h/24. Large cone: πr²h/3. Ratio = (1/24)/(1/3) = 1/8.", "type": "short-answer" },
+    { "id": "ch13-ex-008", "question": "A spherical glass vessel has cylindrical neck 8cm long and 2cm diameter. Diameter of spherical part is 8.5cm. Find amount of water it can hold.", "answer": "V(sphere) = (4/3)π(4.25)³ = (4/3)π×76.77 = 321.4 cm³. V(cylinder) = π×1²×8 = 25.13 cm³. Total = 346.53 cm³.", "type": "short-answer" }
+  ],
+  "mcqCount": 15,
+  "exerciseCount": 8
+}

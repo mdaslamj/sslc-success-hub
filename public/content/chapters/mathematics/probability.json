@@ -1,0 +1,62 @@
+{
+  "id": "probability",
+  "chapterNumber": 15,
+  "subjectId": "mathematics",
+  "title": "Probability",
+  "difficulty": "easy",
+  "estimatedMinutes": 45,
+  "version": "1.0",
+  "lastUpdated": "2026-05",
+  "summary": "Chapter 15 introduces theoretical probability based on equally likely outcomes. Students learn to find probability of simple events involving coins, dice, cards, and balls using the formula P(E) = favourable outcomes / total outcomes. The chapter covers complementary events, impossible events (P=0), and certain events (P=1). Problems include playing cards, dice, coloured balls, and real-life situations.",
+  "learningPoints": [
+    "Define probability as a measure of likelihood of an event",
+    "State that probability of any event lies between 0 and 1 inclusive",
+    "Apply the formula: P(E) = Number of favourable outcomes / Total number of outcomes",
+    "Understand that P(impossible event) = 0 and P(certain event) = 1",
+    "Identify complementary events and apply P(Ē) = 1 - P(E)",
+    "Find probability for single coin, two coins, and three coins",
+    "Find probability for single die and two dice",
+    "Find probability for playing cards (52 cards, 4 suits, face cards, etc.)",
+    "Find probability for selecting balls from a bag",
+    "Solve word problems involving probability in real-life contexts"
+  ],
+  "formulas": [
+    { "label": "Probability of an Event", "expression": "P(E) = n(E) / n(S)", "description": "Probability = Number of favourable outcomes divided by total number of equally likely outcomes." },
+    { "label": "Complementary Event", "expression": "P(Ē) = 1 - P(E)", "description": "Probability of event NOT occurring equals 1 minus probability of it occurring." },
+    { "label": "Range of Probability", "expression": "0 ≤ P(E) ≤ 1", "description": "Probability is always between 0 (impossible) and 1 (certain) inclusive." },
+    { "label": "Sum of All Probabilities", "expression": "P(E) + P(Ē) = 1", "description": "Probabilities of an event and its complement always add to 1." }
+  ],
+  "resources": [
+    { "type": "video", "provider": "Khan Academy", "label": "Probability — Video Lessons", "description": "Videos on basic probability, coins, dice and cards problems.", "url": "https://www.khanacademy.org/math/ncert-class-10" },
+    { "type": "textbook", "provider": "ePathshala", "label": "NCERT Mathematics Textbook — Class 10", "description": "Official NCERT textbook Chapter 15 Probability.", "url": "https://epathshala.nic.in/e-pathshala-4/flipbook/?id=0964" }
+  ],
+  "mcqs": [
+    { "id": "ch15-mcq-001", "question": "A fair coin is tossed. Probability of getting a head is:", "options": ["A. 0", "B. 1/4", "C. 1/2", "D. 1"], "correctAnswer": "C", "explanation": "Total outcomes = 2 (H, T). Favourable = 1 (H). P = 1/2." },
+    { "id": "ch15-mcq-002", "question": "A die is thrown. Probability of getting a number less than 3 is:", "options": ["A. 1/6", "B. 2/6", "C. 3/6", "D. 4/6"], "correctAnswer": "B", "explanation": "Numbers less than 3: 1 and 2. P = 2/6 = 1/3." },
+    { "id": "ch15-mcq-003", "question": "A card is drawn from 52 cards. Probability of drawing a king is:", "options": ["A. 1/52", "B. 1/26", "C. 1/13", "D. 4/52"], "correctAnswer": "C", "explanation": "4 kings in 52 cards. P = 4/52 = 1/13." },
+    { "id": "ch15-mcq-004", "question": "Two coins are tossed. Probability of getting exactly one head is:", "options": ["A. 1/4", "B. 1/2", "C. 3/4", "D. 1"], "correctAnswer": "B", "explanation": "Sample space = {HH, HT, TH, TT}. Exactly one head: HT, TH. P = 2/4 = 1/2." },
+    { "id": "ch15-mcq-005", "question": "A bag has 3 red and 5 blue balls. Probability of drawing a red ball:", "options": ["A. 3/8", "B. 5/8", "C. 3/5", "D. 1/2"], "correctAnswer": "A", "explanation": "Total = 8. Favourable (red) = 3. P = 3/8." },
+    { "id": "ch15-mcq-006", "question": "If P(E) = 0.7, then P(not E) is:", "options": ["A. 0.7", "B. 0.3", "C. 1.7", "D. 0"], "correctAnswer": "B", "explanation": "P(not E) = 1 - P(E) = 1 - 0.7 = 0.3." },
+    { "id": "ch15-mcq-007", "question": "A die is thrown once. Probability of getting an even number is:", "options": ["A. 1/6", "B. 1/3", "C. 1/2", "D. 2/3"], "correctAnswer": "C", "explanation": "Even numbers: 2, 4, 6. P = 3/6 = 1/2." },
+    { "id": "ch15-mcq-008", "question": "From a deck of 52 cards, probability of drawing a red face card is:", "options": ["A. 3/52", "B. 6/52", "C. 3/26", "D. Both B and C"], "correctAnswer": "D", "explanation": "Red face cards = 6 (Jack, Queen, King of Hearts and Diamonds). P = 6/52 = 3/26." },
+    { "id": "ch15-mcq-009", "question": "Probability of an impossible event is:", "options": ["A. 0", "B. 1", "C. 1/2", "D. -1"], "correctAnswer": "A", "explanation": "An impossible event has no favourable outcomes. P = 0/n = 0." },
+    { "id": "ch15-mcq-010", "question": "A bag has 5 white, 7 red, 3 black balls. Probability of NOT drawing a white ball:", "options": ["A. 1/3", "B. 2/3", "C. 5/15", "D. 8/15"], "correctAnswer": "B", "explanation": "P(white) = 5/15 = 1/3. P(not white) = 1 - 1/3 = 2/3." },
+    { "id": "ch15-mcq-011", "question": "Two dice are thrown. Probability of getting sum = 7:", "options": ["A. 1/6", "B. 5/36", "C. 7/36", "D. 6/36"], "correctAnswer": "A", "explanation": "Outcomes with sum 7: (1,6),(2,5),(3,4),(4,3),(5,2),(6,1) = 6 pairs. P = 6/36 = 1/6." },
+    { "id": "ch15-mcq-012", "question": "A number is chosen from 1 to 20. Probability it is a prime number:", "options": ["A. 2/5", "B. 1/4", "C. 3/10", "D. 7/20"], "correctAnswer": "A", "explanation": "Primes 1-20: 2,3,5,7,11,13,17,19 = 8 primes. P = 8/20 = 2/5." },
+    { "id": "ch15-mcq-013", "question": "A card is drawn from 52 cards. Probability it is neither a heart nor a king:", "options": ["A. 9/13", "B. 3/13", "C. 6/13", "D. 35/52"], "correctAnswer": "A", "explanation": "Hearts=13, Kings=4, King of hearts counted once. Neither = 52-13-4+1=36. P=36/52=9/13." },
+    { "id": "ch15-mcq-014", "question": "Letters of MATHEMATICS are written on cards. Probability of picking letter M:", "options": ["A. 1/11", "B. 2/11", "C. 3/11", "D. 1/6"], "correctAnswer": "B", "explanation": "MATHEMATICS has 11 letters. M appears 2 times. P = 2/11." },
+    { "id": "ch15-mcq-015", "question": "Three coins are tossed. Probability of getting at least two heads:", "options": ["A. 1/2", "B. 3/8", "C. 5/8", "D. 7/8"], "correctAnswer": "A", "explanation": "Sample space = 8. At least 2 heads: HHH, HHT, HTH, THH = 4. P = 4/8 = 1/2." }
+  ],
+  "exercises": [
+    { "id": "ch15-ex-001", "question": "A bag has 3 red, 4 blue, 5 white balls. A ball is drawn. Find P(red), P(blue), P(not white).", "answer": "Total = 12. P(red)=3/12=1/4. P(blue)=4/12=1/3. P(white)=5/12. P(not white)=1-5/12=7/12.", "type": "short-answer" },
+    { "id": "ch15-ex-002", "question": "Two dice are thrown simultaneously. Find probability that sum is 8.", "answer": "Total outcomes = 36. Sum 8: (2,6),(3,5),(4,4),(5,3),(6,2) = 5 pairs. P = 5/36.", "type": "short-answer" },
+    { "id": "ch15-ex-003", "question": "A card is drawn from well-shuffled deck. Find probability: (i) King (ii) Red card (iii) Ace of spades.", "answer": "(i) P(King) = 4/52 = 1/13. (ii) P(Red) = 26/52 = 1/2. (iii) P(Ace of spades) = 1/52.", "type": "short-answer" },
+    { "id": "ch15-ex-004", "question": "Numbers 1 to 90 are written on slips. One is chosen. Find P(multiple of 5), P(perfect square), P(divisible by 7).", "answer": "Total = 90. Multiples of 5: 5,10,...,90 = 18. P=18/90=1/5. Perfect squares: 1,4,9,...,81 = 9. P=9/90=1/10. Div by 7: 7,14,...,84 = 12. P=12/90=2/15.", "type": "short-answer" },
+    { "id": "ch15-ex-005", "question": "A jar contains 24 marbles. Some are green and others are blue. If P(green) = 2/3, find number of blue marbles.", "answer": "P(green) = 2/3. Number of green = 2/3 × 24 = 16. Blue = 24-16 = 8.", "type": "short-answer" },
+    { "id": "ch15-ex-006", "question": "Two players toss a coin alternately. First to get head wins. Player A starts. Find P(A wins).", "answer": "P(A wins on 1st toss) = 1/2. P(A wins on 3rd toss) = (1/2)³ × 1/2 = 1/8... P(A) = 1/2 + 1/8 + 1/32... = (1/2)/(1-1/4) = 2/3.", "type": "short-answer" },
+    { "id": "ch15-ex-007", "question": "A game consists of tossing one rupee coin 3 times. Player wins ₹8 if all heads, ₹3 for 2 heads, ₹1 for 1 head, loses ₹1.50 for no heads. Find expected value.", "answer": "P(HHH)=1/8, P(2H)=3/8, P(1H)=3/8, P(0H)=1/8. Expected = 8×1/8+3×3/8+1×3/8-1.5×1/8 = 1+1.125+0.375-0.1875 = 2.3125.", "type": "short-answer" },
+    { "id": "ch15-ex-008", "question": "Cards numbered 11 to 60 are put in a box. One card is drawn. Find P(number is a perfect square), P(divisible by 9).", "answer": "Total = 50 (11 to 60). Perfect squares: 16,25,36,49 = 4. P=4/50=2/25. Divisible by 9: 18,27,36,45,54 = 5. P=5/50=1/10.", "type": "short-answer" }
+  ],
+  "mcqCount": 15,
+  "exerciseCount": 8
+}

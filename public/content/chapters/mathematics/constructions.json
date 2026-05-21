@@ -1,0 +1,61 @@
+{
+  "id": "constructions",
+  "chapterNumber": 11,
+  "subjectId": "mathematics",
+  "title": "Constructions",
+  "difficulty": "easy",
+  "estimatedMinutes": 45,
+  "version": "1.0",
+  "lastUpdated": "2026-05",
+  "summary": "Chapter 11 covers geometric constructions using compass and ruler only. Students learn to divide a line segment in a given ratio, draw tangents to a circle from an external point, and construct a triangle similar to a given triangle with a given scale factor. All constructions require step-by-step justification.",
+  "learningPoints": [
+    "Divide a line segment in a given ratio m:n using basic proportionality theorem",
+    "Construct a triangle similar to a given triangle with scale factor m/n where m/n < 1 (smaller)",
+    "Construct a triangle similar to a given triangle with scale factor m/n where m/n > 1 (larger)",
+    "Construct tangent to a circle from a point on the circle",
+    "Construct two tangents to a circle from an external point",
+    "Justify each step of construction using geometric theorems",
+    "Understand that construction accuracy depends on compass and ruler technique",
+    "Verify constructed triangles using similarity criteria",
+    "Apply the concept of dividing a segment to construct similar triangles",
+    "Draw constructions neatly with proper labels"
+  ],
+  "formulas": [
+    { "label": "Scale Factor (Smaller Triangle)", "expression": "m/n where m < n", "description": "Each side of new triangle = (m/n) × corresponding side of original." },
+    { "label": "Scale Factor (Larger Triangle)", "expression": "m/n where m > n", "description": "Each side of new triangle = (m/n) × corresponding side of original." },
+    { "label": "Division of Line Segment", "expression": "AP/PB = m/n", "description": "Point P divides AB in ratio m:n by construction." }
+  ],
+  "resources": [
+    { "type": "video", "provider": "Khan Academy", "label": "Constructions — Video Lessons", "description": "Videos on geometric constructions with compass and ruler.", "url": "https://www.khanacademy.org/math/ncert-class-10" },
+    { "type": "textbook", "provider": "ePathshala", "label": "NCERT Mathematics Textbook — Class 10", "description": "Official NCERT textbook Chapter 11 Constructions.", "url": "https://epathshala.nic.in/e-pathshala-4/flipbook/?id=0964" }
+  ],
+  "mcqs": [
+    { "id": "ch11-mcq-001", "question": "To divide a segment AB in ratio 3:5, we draw minimum how many rays from A?", "options": ["A. 3", "B. 5", "C. 8", "D. 15"], "correctAnswer": "C", "explanation": "We draw 3+5 = 8 equal parts on the ray from A." },
+    { "id": "ch11-mcq-002", "question": "In construction of similar triangle with scale factor 3/5, the new triangle is:", "options": ["A. Larger", "B. Smaller", "C. Same size", "D. Cannot determine"], "correctAnswer": "B", "explanation": "3/5 < 1 means the new triangle is smaller than the original." },
+    { "id": "ch11-mcq-003", "question": "To construct tangent from external point, the first step after joining the point to centre is to find:", "options": ["A. Radius", "B. Midpoint of the joining line", "C. Diameter", "D. Chord"], "correctAnswer": "B", "explanation": "We find midpoint M of PO, draw circle with MO as radius to find tangent points." },
+    { "id": "ch11-mcq-004", "question": "Construction of a triangle similar to given triangle uses the theorem:", "options": ["A. Pythagoras", "B. Basic Proportionality", "C. Congruence", "D. Angle Sum"], "correctAnswer": "B", "explanation": "BPT is used to divide sides proportionally when constructing similar triangles." },
+    { "id": "ch11-mcq-005", "question": "Two tangents to a circle from external point always:", "options": ["A. Are parallel", "B. Are equal in length", "C. Make 90° at centre", "D. Are perpendicular"], "correctAnswer": "B", "explanation": "Tangents from an external point are always equal in length." },
+    { "id": "ch11-mcq-006", "question": "To construct similar triangle with scale 5/3, the triangle constructed is:", "options": ["A. Smaller", "B. Same", "C. Larger", "D. Incongruent"], "correctAnswer": "C", "explanation": "5/3 > 1 means the new triangle is larger than the original." },
+    { "id": "ch11-mcq-007", "question": "Which instrument is NOT used in geometric constructions?", "options": ["A. Compass", "B. Ruler", "C. Protractor", "D. Pencil"], "correctAnswer": "C", "explanation": "Standard geometric constructions use only compass and ruler (straight edge), not protractor." },
+    { "id": "ch11-mcq-008", "question": "To divide AB in ratio 2:3, if we mark 5 points on ray AX, the required point divides AX at:", "options": ["A. 1st point", "B. 2nd point", "C. 3rd point", "D. 4th point"], "correctAnswer": "B", "explanation": "For ratio 2:3, we connect 5th point to B and draw parallel through 2nd point." },
+    { "id": "ch11-mcq-009", "question": "In constructing tangent from external point P to circle with centre O, angle in semicircle at tangent point is:", "options": ["A. 45°", "B. 60°", "C. 90°", "D. 120°"], "correctAnswer": "C", "explanation": "Angle in semicircle is 90°, and tangent makes 90° with radius — this is used in the construction." },
+    { "id": "ch11-mcq-010", "question": "A triangle with sides 5,6,7 is given. To construct similar triangle with sides in ratio 7:5, first find:", "options": ["A. Scale = 7/5", "B. Scale = 5/7", "C. New sides by adding 2", "D. Perimeter ratio"], "correctAnswer": "A", "explanation": "Scale factor = 7/5. New triangle sides = 7, 8.4, 9.8." },
+    { "id": "ch11-mcq-011", "question": "When constructing a triangle similar to ABC with scale 3:4, we take:", "options": ["A. 3 arcs on ray", "B. 4 arcs on ray", "C. 7 arcs on ray", "D. 12 arcs on ray"], "correctAnswer": "B", "explanation": "For scale m:n = 3:4 where m<n, we draw n=4 arcs on the ray." },
+    { "id": "ch11-mcq-012", "question": "The tangent drawn from external point forms what angle with line joining point to centre?", "options": ["A. Less than 90°", "B. Equal to 90°", "C. Greater than 90°", "D. Depends on position"], "correctAnswer": "A", "explanation": "The tangent-radius makes 90°, but the line from external point to centre makes angle less than 90° with the tangent." },
+    { "id": "ch11-mcq-013", "question": "To construct a segment of length 3/4 of a given segment AB, the scale factor is:", "options": ["A. 3:4", "B. 4:3", "C. 3:1", "D. 1:4"], "correctAnswer": "A", "explanation": "Scale factor 3:4 means new length = 3/4 of original." },
+    { "id": "ch11-mcq-014", "question": "Which step comes first in dividing line segment AB in ratio m:n?", "options": ["A. Draw arc from A", "B. Draw ray AX at acute angle", "C. Mark (m+n) points", "D. Join last point to B"], "correctAnswer": "B", "explanation": "First step is to draw a ray AX at an acute angle to AB." },
+    { "id": "ch11-mcq-015", "question": "Construction is called valid only if done using:", "options": ["A. Ruler and protractor", "B. Compass and protractor", "C. Ruler and compass only", "D. Graph paper"], "correctAnswer": "C", "explanation": "Valid geometric constructions use only an unmarked ruler and compass." }
+  ],
+  "exercises": [
+    { "id": "ch11-ex-001", "question": "Draw a line segment of length 7.6 cm and divide it in ratio 5:8. Measure the two parts.", "answer": "Step 1: Draw AB = 7.6cm. Step 2: Draw ray AX at acute angle. Step 3: Mark 13 equal parts on AX. Step 4: Join A₁₃ to B. Step 5: Draw parallel through A₅ to A₁₃B, cutting AB at P. AP:PB = 5:8. AP = 7.6×5/13 ≈ 2.92cm, PB ≈ 4.68cm.", "type": "short-answer" },
+    { "id": "ch11-ex-002", "question": "Construct a triangle with sides 5cm, 6cm, 7cm and then construct similar triangle with scale 7:5.", "answer": "Step 1: Draw triangle ABC with BC=7, AB=6, AC=5. Step 2: Draw ray BX at acute angle. Step 3: Mark 7 equal arcs. Step 4: Join B₅ to C. Step 5: Draw B₇C' parallel to B₅C. Step 6: Draw A'C' parallel to AC. Triangle A'BC' is the required triangle with scale 7:5.", "type": "short-answer" },
+    { "id": "ch11-ex-003", "question": "Draw a circle of radius 3cm. Take point P at 7cm from centre. Construct two tangents and measure lengths.", "answer": "Step 1: Draw circle with O, r=3cm. Mark P at 7cm. Step 2: Join OP, find midpoint M. Step 3: Draw circle with radius MP. Let it intersect at A and B. Step 4: PA and PB are tangents. Length = √(49-9) = √40 = 2√10 ≈ 6.32cm.", "type": "short-answer" },
+    { "id": "ch11-ex-004", "question": "Construct a triangle ABC where BC=8cm, ∠B=45°, ∠C=60°. Construct similar triangle with scale 3:4.", "answer": "Step 1: Draw BC=8cm. Step 2: Draw ∠B=45° and ∠C=60°, meeting at A. Step 3: For scale 3:4, draw ray BX. Mark 4 equal parts. Join B₄ to C. Draw B₃C' parallel. Draw A'C' parallel to AC. Triangle A'BC' has scale 3:4.", "type": "short-answer" },
+    { "id": "ch11-ex-005", "question": "Divide line segment AB = 9cm in ratio 3:2 using construction. Justify your answer.", "answer": "Construction gives AP = 9×3/5 = 5.4cm and PB = 3.6cm. Justification: Since A₃P is drawn parallel to A₅B (by construction), by BPT: AA₃/A₃A₅ = AP/PB = 3/2. Hence AP:PB = 3:2.", "type": "short-answer" },
+    { "id": "ch11-ex-006", "question": "Draw circle of radius 4cm. Mark point 6cm from centre. Construct tangents and verify PA = PB.", "answer": "PA = PB = √(36-16) = √20 = 2√5 cm. Both tangents equal by the theorem that tangents from external point are equal. Measure both with ruler to verify.", "type": "short-answer" },
+    { "id": "ch11-ex-007", "question": "Construct an isosceles triangle with base 6cm and equal sides 8cm. Then construct triangle with scale 5:3.", "answer": "Step 1: Draw BC=6cm. Mark midpoint M. Draw perpendicular MX. Mark A at 8cm from B on the figure. Step 2: Draw ray BX at acute angle. Mark 5 arcs. Join B₃ to C. Draw B₅C' parallel. Draw A'C' parallel to AC. Triangle A'BC' is required.", "type": "short-answer" },
+    { "id": "ch11-ex-008", "question": "Construct tangent to a circle of radius 5cm from a point 13cm from centre. Find its length.", "answer": "Tangent length = √(13²-5²) = √(169-25) = √144 = 12cm. Construction: Join OP(13cm), bisect to get M, draw circle of radius OM = 6.5cm, intersects original circle at T. PT is tangent of length 12cm.", "type": "short-answer" }
+  ],
+  "mcqCount": 15,
+  "exerciseCount": 8
+}

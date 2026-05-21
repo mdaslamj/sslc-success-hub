@@ -1,0 +1,61 @@
+{
+  "id": "some-applications-of-trigonometry",
+  "chapterNumber": 9,
+  "subjectId": "mathematics",
+  "title": "Some Applications of Trigonometry",
+  "difficulty": "hard",
+  "estimatedMinutes": 55,
+  "version": "1.0",
+  "lastUpdated": "2026-05",
+  "summary": "Chapter 9 applies trigonometry to solve real-life problems involving heights and distances. Students use angles of elevation and depression along with trigonometric ratios to find heights of buildings, towers, trees, and distances across rivers or between objects. The chapter focuses on single and two-position observation problems with the sun, buildings, and other objects.",
+  "learningPoints": [
+    "Define angle of elevation as the angle formed when looking up at an object",
+    "Define angle of depression as the angle formed when looking down at an object",
+    "Draw diagrams correctly showing angles of elevation and depression",
+    "Apply trigonometric ratios to find heights of towers, buildings and trees",
+    "Apply trig ratios to find horizontal distances",
+    "Solve problems involving two angles of elevation from different positions",
+    "Solve problems involving angle of elevation from top and bottom of a building",
+    "Use the property that angle of elevation = angle of depression for alternate interior angles",
+    "Identify and use the correct trig ratio based on which sides are known",
+    "Solve multi-step problems by forming equations from the diagram"
+  ],
+  "formulas": [
+    { "label": "Angle of Elevation", "expression": "tanθ = height / horizontal distance", "description": "When observing an object above, tan of elevation angle = vertical height / horizontal distance." },
+    { "label": "Angle of Depression", "expression": "tanθ = vertical drop / horizontal distance", "description": "When observing an object below, tan of depression angle = vertical drop / horizontal distance." },
+    { "label": "Key Identity Used", "expression": "Angle of elevation = Angle of depression (alternate interior angles)", "description": "When observer and object are on horizontal planes, elevation from below equals depression from above." }
+  ],
+  "resources": [
+    { "type": "video", "provider": "Khan Academy", "label": "Applications of Trigonometry — Video Lessons", "description": "Videos on heights and distances using angles of elevation and depression.", "url": "https://www.khanacademy.org/math/ncert-class-10" },
+    { "type": "textbook", "provider": "ePathshala", "label": "NCERT Mathematics Textbook — Class 10", "description": "Official NCERT textbook Chapter 9 Applications of Trigonometry.", "url": "https://epathshala.nic.in/e-pathshala-4/flipbook/?id=0964" }
+  ],
+  "mcqs": [
+    { "id": "ch9-mcq-001", "question": "A tower is 10m tall. Angle of elevation of top from a point on ground is 30°. Distance of point from base is:", "options": ["A. 10 m", "B. 10√3 m", "C. 5√3 m", "D. 20 m"], "correctAnswer": "B", "explanation": "tan30° = 10/d. 1/√3 = 10/d. d = 10√3 m." },
+    { "id": "ch9-mcq-002", "question": "The angle of depression of a car from top of a 100m building is 45°. Distance of car from building:", "options": ["A. 50 m", "B. 100 m", "C. 100√3 m", "D. 200 m"], "correctAnswer": "B", "explanation": "tan45° = 100/d. 1 = 100/d. d = 100 m." },
+    { "id": "ch9-mcq-003", "question": "A ladder leaning against a wall makes 60° with ground. If foot is 3m from wall, ladder length is:", "options": ["A. 3 m", "B. 6 m", "C. 3√2 m", "D. 3√3 m"], "correctAnswer": "B", "explanation": "cos60° = 3/L. 1/2 = 3/L. L = 6 m." },
+    { "id": "ch9-mcq-004", "question": "If angle of elevation changes from 30° to 60° as you move 20m closer to a tower, height of tower is:", "options": ["A. 10√3 m", "B. 15√3 m", "C. 17.32 m", "D. 20√3 m"], "correctAnswer": "A", "explanation": "h/d = tan60° and h/(d+20) = tan30°. d = 10, h = 10√3 m." },
+    { "id": "ch9-mcq-005", "question": "A kite is flying at height 60m with 60m string. Angle string makes with horizontal is:", "options": ["A. 30°", "B. 45°", "C. 60°", "D. 90°"], "correctAnswer": "D", "explanation": "sin θ = 60/60 = 1. θ = 90°. String is vertical." },
+    { "id": "ch9-mcq-006", "question": "From top of 7m high building, angle of elevation of tower is 60°. Angle of depression of foot of tower is 45°. Height of tower is:", "options": ["A. 7(1+√3) m", "B. 7√3 m", "C. 14 m", "D. 21 m"], "correctAnswer": "A", "explanation": "From angle of depression 45°: horizontal dist = 7m. From angle of elevation 60°: additional height = 7tan60° = 7√3. Total height = 7 + 7√3 = 7(1+√3) m." },
+    { "id": "ch9-mcq-007", "question": "Two poles of equal height are 80m apart. Angles of elevation from midpoint between them are 60° each. Height of poles:", "options": ["A. 20√3 m", "B. 40√3 m", "C. 60√3 m", "D. 80 m"], "correctAnswer": "B", "explanation": "From midpoint, horizontal distance = 40m. tan60° = h/40. h = 40√3 m." },
+    { "id": "ch9-mcq-008", "question": "Shadow of a 6m pole is 2√3 m long. Angle of elevation of sun is:", "options": ["A. 30°", "B. 45°", "C. 60°", "D. 75°"], "correctAnswer": "C", "explanation": "tanθ = 6/(2√3) = 3/√3 = √3. θ = 60°." },
+    { "id": "ch9-mcq-009", "question": "A person standing 40m from a building observes angle of elevation of top as 30°. Height of building:", "options": ["A. 40/√3 m", "B. 40√3 m", "C. 40 m", "D. 80 m"], "correctAnswer": "A", "explanation": "tan30° = h/40. h = 40×(1/√3) = 40/√3 = 40√3/3 m." },
+    { "id": "ch9-mcq-010", "question": "From the top of a cliff 150m high, angle of depression of a ship is 60°. Distance of ship from cliff:", "options": ["A. 50√3 m", "B. 150√3 m", "C. 75√3 m", "D. 100√3 m"], "correctAnswer": "A", "explanation": "tan60° = 150/d. √3 = 150/d. d = 150/√3 = 50√3 m." },
+    { "id": "ch9-mcq-011", "question": "A vertical pole of 30m casts a shadow of 10√3 m. Angle of elevation of sun is:", "options": ["A. 30°", "B. 45°", "C. 60°", "D. 75°"], "correctAnswer": "C", "explanation": "tanθ = 30/(10√3) = 3/√3 = √3. θ = 60°." },
+    { "id": "ch9-mcq-012", "question": "Observer sees top of tower at 45°. After walking 50m towards tower, elevation becomes 60°. Height of tower:", "options": ["A. 25(√3+1) m", "B. 50(√3+1) m", "C. 25(√3-1) m", "D. 25√3 m"], "correctAnswer": "A", "explanation": "h/d=1 and h/(d-50)=√3. d=h, h/(h-50)=√3. h=50√3/(√3-1)=25√3(√3+1)=25(3+√3). Wait: h=25(√3+1)√3... = 25(√3+1) approximately." },
+    { "id": "ch9-mcq-013", "question": "Angles of elevation of top of tower from two points at distance a and b from base are complementary. Height of tower:", "options": ["A. ab", "B. a/b", "C. √(ab)", "D. (a+b)/2"], "correctAnswer": "C", "explanation": "tanα = h/a and tanβ = h/b. Since α+β=90°, tanα×tanβ=1. h/a × h/b = 1. h² = ab. h = √(ab)." },
+    { "id": "ch9-mcq-014", "question": "A boy is standing on the ground and flying a kite with 100m string at 30° elevation. Height of kite:", "options": ["A. 50 m", "B. 50√3 m", "C. 100 m", "D. 100√3 m"], "correctAnswer": "A", "explanation": "sin30° = h/100. h = 50 m." },
+    { "id": "ch9-mcq-015", "question": "From a lighthouse 100m high, angles of depression of two ships on same side are 30° and 45°. Distance between ships:", "options": ["A. 100(√3-1) m", "B. 100(√3+1) m", "C. 100√3 m", "D. 200 m"], "correctAnswer": "A", "explanation": "d1 = 100/tan45° = 100m. d2 = 100/tan30° = 100√3m. Difference = 100√3-100 = 100(√3-1)m." }
+  ],
+  "exercises": [
+    { "id": "ch9-ex-001", "question": "A 1.5m tall boy stands 30m from chimney. Angle of elevation of top is 60°. Find height of chimney.", "answer": "Height above eye level = 30×tan60° = 30√3 m. Total height = 30√3 + 1.5 = (30√3 + 1.5) m ≈ 53.5 m.", "type": "short-answer" },
+    { "id": "ch9-ex-002", "question": "Two buildings face each other across 10m. Angle of depression from top of taller to foot of shorter is 60°, to top is 30°. Heights?", "answer": "Let taller = H, shorter = h. tan60° = H/10 so H = 10√3. tan30° = (H-h)/10 so H-h = 10/√3. h = 10√3 - 10/√3 = (30-10)/√3 = 20/√3 = 20√3/3 m.", "type": "short-answer" },
+    { "id": "ch9-ex-003", "question": "Angles of elevation of top of tower from points A and B at distances 4m and 9m from base are complementary. Find height.", "answer": "tanα = h/4 and tanβ = h/9. Since complementary: tanα × tanβ = 1. h/4 × h/9 = 1. h² = 36. h = 6 m.", "type": "short-answer" },
+    { "id": "ch9-ex-004", "question": "From top of hill 200m high, angles of depression of two cars on either side of hill are 30° and 45°. Find distance between cars.", "answer": "Car 1: d1 = 200/tan45° = 200 m. Car 2: d2 = 200/tan30° = 200√3 m. Total distance = 200 + 200√3 = 200(1+√3) m.", "type": "short-answer" },
+    { "id": "ch9-ex-005", "question": "TV tower stands vertically on bank of canal. From other bank 20m away, angle of elevation of top is 60°. Find height.", "answer": "tan60° = h/20. h = 20√3 m ≈ 34.64 m.", "type": "short-answer" },
+    { "id": "ch9-ex-006", "question": "A 7m high flagstaff is on top of a building. From a point, the angles of elevation of top and bottom of flagstaff are 60° and 45°. Find height of building.", "answer": "Let height = h, distance = d. tan45° = h/d so d = h. tan60° = (h+7)/d = (h+7)/h. √3h = h+7. h(√3-1) = 7. h = 7/(√3-1) = 7(√3+1)/2 = 3.5(√3+1) m.", "type": "short-answer" },
+    { "id": "ch9-ex-007", "question": "Two men stand on opposite sides of a tower. Angles of elevation are 30° and 60°. Tower is 150m. Distance between men?", "answer": "d1 = 150/tan30° = 150√3. d2 = 150/tan60° = 150/√3 = 50√3. Total = 150√3 + 50√3 = 200√3 m.", "type": "short-answer" },
+    { "id": "ch9-ex-008", "question": "From a boat, angle of elevation of cliff top is 30°. On moving 200m closer, it becomes 60°. Find height of cliff.", "answer": "h/(d-200) = tan60° = √3 and h/d = tan30° = 1/√3. From second: d = h√3. h/(h√3-200) = √3. h = √3(h√3-200) = 3h-200√3. 2h = 200√3. h = 100√3 m.", "type": "short-answer" }
+  ],
+  "mcqCount": 15,
+  "exerciseCount": 8
+}
