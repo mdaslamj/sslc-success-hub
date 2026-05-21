@@ -141,7 +141,7 @@ function MathChapterHub() {
   if (isChapterLoading) {
     return (
       <DashboardLayout title="Loading…">
-        <div className="mx-auto max-w-5xl space-y-4">
+        <div className="mx-auto max-w-3xl space-y-4">
           <Skeleton className="h-32 w-full rounded-3xl" />
           <Skeleton className="h-10 w-72 rounded-full" />
           <Skeleton className="h-64 w-full rounded-2xl" />
@@ -232,7 +232,7 @@ function MathChapterHub() {
 
   return (
     <DashboardLayout title={chapter.title}>
-      <div className="mx-auto max-w-5xl space-y-4">
+      <div className="mx-auto max-w-3xl space-y-4">
         <nav
           aria-label="Breadcrumb"
           className="flex items-center gap-1 text-xs text-muted-foreground"
@@ -690,7 +690,7 @@ function TestTab({
   questionCount: number;
 }) {
   return (
-    <div className="rounded-2xl border border-border/60 bg-card p-6">
+    <div className="rounded-2xl border border-border/60 bg-card p-4">
       <div className="flex items-center gap-2">
         <Target className="h-4 w-4 text-brand" />
         <h3 className="font-display font-semibold">Chapter mock test</h3>
@@ -738,7 +738,7 @@ function EvaluateTab({
   evaluationScore: number | null;
 }) {
   return (
-    <div className="rounded-2xl border border-border/60 bg-card p-6">
+    <div className="rounded-2xl border border-border/60 bg-card p-4">
       <div className="flex items-center gap-2">
         <FileText className="h-4 w-4 text-brand" />
         <h3 className="font-display font-semibold">AI answer evaluation</h3>
