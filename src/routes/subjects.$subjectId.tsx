@@ -352,11 +352,19 @@ function SubjectDetailPage() {
             {isMath && contentChapter && (
               <ChapterContentOverview chapter={contentChapter} />
             )}
-            <ChaptersSection
-              chapters={chapters}
-              color={subject.color}
-              subjectId={subject.id}
-            />
+            {isMath && manifestQuery.data?.chapters ? (
+              <ManifestChaptersGrid
+                chapters={manifestQuery.data.chapters as ManifestChapter[]}
+                color={subject.color}
+                readyChapterId={readyChapterId}
+              />
+            ) : (
+              <ChaptersSection
+                chapters={chapters}
+                color={subject.color}
+                subjectId={subject.id}
+              />
+            )}
           </TabsContent>
 
           {/* RESOURCES */}
