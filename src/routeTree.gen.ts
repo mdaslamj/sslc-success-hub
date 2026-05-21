@@ -30,6 +30,7 @@ import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
 import { Route as FocusRouteImport } from './routes/focus'
 import { Route as ExamsRouteImport } from './routes/exams'
 import { Route as ExamHallRouteImport } from './routes/exam-hall'
+import { Route as ChapterTestRouteImport } from './routes/chapter-test'
 import { Route as AnswerUploadsRouteImport } from './routes/answer-uploads'
 import { Route as AnalyticsRouteImport } from './routes/analytics'
 import { Route as AchievementsRouteImport } from './routes/achievements'
@@ -152,6 +153,11 @@ const ExamHallRoute = ExamHallRouteImport.update({
   path: '/exam-hall',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ChapterTestRoute = ChapterTestRouteImport.update({
+  id: '/chapter-test',
+  path: '/chapter-test',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AnswerUploadsRoute = AnswerUploadsRouteImport.update({
   id: '/answer-uploads',
   path: '/answer-uploads',
@@ -238,6 +244,7 @@ export interface FileRoutesByFullPath {
   '/achievements': typeof AchievementsRoute
   '/analytics': typeof AnalyticsRoute
   '/answer-uploads': typeof AnswerUploadsRouteWithChildren
+  '/chapter-test': typeof ChapterTestRoute
   '/exam-hall': typeof ExamHallRouteWithChildren
   '/exams': typeof ExamsRouteWithChildren
   '/focus': typeof FocusRoute
@@ -277,6 +284,7 @@ export interface FileRoutesByTo {
   '/achievements': typeof AchievementsRoute
   '/analytics': typeof AnalyticsRoute
   '/answer-uploads': typeof AnswerUploadsRouteWithChildren
+  '/chapter-test': typeof ChapterTestRoute
   '/exam-hall': typeof ExamHallRouteWithChildren
   '/exams': typeof ExamsRouteWithChildren
   '/focus': typeof FocusRoute
@@ -317,6 +325,7 @@ export interface FileRoutesById {
   '/achievements': typeof AchievementsRoute
   '/analytics': typeof AnalyticsRoute
   '/answer-uploads': typeof AnswerUploadsRouteWithChildren
+  '/chapter-test': typeof ChapterTestRoute
   '/exam-hall': typeof ExamHallRouteWithChildren
   '/exams': typeof ExamsRouteWithChildren
   '/focus': typeof FocusRoute
@@ -358,6 +367,7 @@ export interface FileRouteTypes {
     | '/achievements'
     | '/analytics'
     | '/answer-uploads'
+    | '/chapter-test'
     | '/exam-hall'
     | '/exams'
     | '/focus'
@@ -397,6 +407,7 @@ export interface FileRouteTypes {
     | '/achievements'
     | '/analytics'
     | '/answer-uploads'
+    | '/chapter-test'
     | '/exam-hall'
     | '/exams'
     | '/focus'
@@ -436,6 +447,7 @@ export interface FileRouteTypes {
     | '/achievements'
     | '/analytics'
     | '/answer-uploads'
+    | '/chapter-test'
     | '/exam-hall'
     | '/exams'
     | '/focus'
@@ -476,6 +488,7 @@ export interface RootRouteChildren {
   AchievementsRoute: typeof AchievementsRoute
   AnalyticsRoute: typeof AnalyticsRoute
   AnswerUploadsRoute: typeof AnswerUploadsRouteWithChildren
+  ChapterTestRoute: typeof ChapterTestRoute
   ExamHallRoute: typeof ExamHallRouteWithChildren
   ExamsRoute: typeof ExamsRouteWithChildren
   FocusRoute: typeof FocusRoute
@@ -656,6 +669,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ExamHallRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/chapter-test': {
+      id: '/chapter-test'
+      path: '/chapter-test'
+      fullPath: '/chapter-test'
+      preLoaderRoute: typeof ChapterTestRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/answer-uploads': {
       id: '/answer-uploads'
       path: '/answer-uploads'
@@ -820,6 +840,7 @@ const rootRouteChildren: RootRouteChildren = {
   AchievementsRoute: AchievementsRoute,
   AnalyticsRoute: AnalyticsRoute,
   AnswerUploadsRoute: AnswerUploadsRouteWithChildren,
+  ChapterTestRoute: ChapterTestRoute,
   ExamHallRoute: ExamHallRouteWithChildren,
   ExamsRoute: ExamsRouteWithChildren,
   FocusRoute: FocusRoute,
