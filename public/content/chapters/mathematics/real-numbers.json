@@ -209,6 +209,29 @@
       "type": "short-answer"
     }
   ],
+  "resources": [
+    {
+      "type": "video",
+      "provider": "Khan Academy",
+      "label": "Real Numbers — Video Lessons",
+      "description": "Curated video lessons on Real Numbers covering Euclid's Division Lemma, Fundamental Theorem of Arithmetic, irrational numbers, and decimal expansions.",
+      "url": "https://www.khanacademy.org/math/in-in-grade-10-ncert/in-in-chapter-1-real-numbers"
+    },
+    {
+      "type": "course",
+      "provider": "Khan Academy",
+      "label": "Class 10 Mathematics — Full Course",
+      "description": "Complete Class 10 NCERT Mathematics course with videos, practice exercises, and quizzes across all chapters.",
+      "url": "https://www.khanacademy.org/math/in-in-grade-10-ncert"
+    },
+    {
+      "type": "textbook",
+      "provider": "ePathshala (NCERT)",
+      "label": "NCERT Class 10 Maths — Chapter 1: Real Numbers",
+      "description": "Official NCERT textbook chapter on Real Numbers available as a free PDF/flipbook from ePathshala.",
+      "url": "https://epathshala.nic.in/topic-d.php?id=1066ch1"
+    }
+  ],
   "mcqCount": 15,
   "exerciseCount": 8
 }
