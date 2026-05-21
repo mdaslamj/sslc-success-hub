@@ -20,6 +20,10 @@ const KNOWN_SUBJECT_IDS = [
   "kannada",
   "hindi",
 ] as const;
+const SUBJECT_ID_ALIASES: Record<string, string> = {
+  math: "mathematics",
+  social: "social-science",
+};
 
 /** Fetch all subjects from the top-level `subject` collection. */
 export async function fetchSubjects(): Promise<SubjectDoc[]> {
@@ -27,7 +31,10 @@ export async function fetchSubjects(): Promise<SubjectDoc[]> {
   const byId = new Map<string, Record<string, unknown> & { id: string }>();
 
   for (const d of snap.docs) {
-    byId.set(d.id, { id: d.id, ...(d.data() as Record<string, unknown>) });
+    const canonicalId = SUBJECT_ID_ALIASES[d.id] ?? d.id;
+    const next = { id: canonicalId, ...(d.data() as Record<string, unknown>) };
+    const prev = byId.get(canonicalId);
+    byId.set(canonicalId, prev ? { ...prev, ...next } : next);
   }
 
   for (const id of KNOWN_SUBJECT_IDS) {
@@ -95,7 +102,9 @@ function normalizeSubject(raw: Record<string, unknown> & { id: string }): Subjec
     chaptersDone: (raw.chaptersDone as number) ?? 0,
     weakTopics: Array.isArray(raw.weakTopics) ? (raw.weakTopics as string[]) : [],
     strongTopics: Array.isArray(raw.strongTopics) ? (raw.strongTopics as string[]) : [],
-    order: (raw.order as number) ?? 0,
+    order:
+      (raw.order as number) ??
+      KNOWN_SUBJECT_IDS.indexOf(raw.id as (typeof KNOWN_SUBJECT_IDS)[number]),
   };
 }
 
