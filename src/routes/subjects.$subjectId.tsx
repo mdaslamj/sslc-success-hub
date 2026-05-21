@@ -38,6 +38,7 @@ import { useAllChapterMastery } from "@/hooks/use-math-mastery";
 import { tierFor } from "@/lib/math-intelligence/mastery-tiers";
 import { UploadAnswerButton } from "@/components/answer-upload/upload-answer-button";
 import { Library, Sigma } from "lucide-react";
+import { ExternalLink } from "lucide-react";
 import { loadChapter, loadManifest } from "@/lib/contentLoader";
 import {
   normalizeChapterData,
