@@ -28,7 +28,7 @@ import {
   Flame,
   XCircle,
 } from "lucide-react";
-import { subjectMCQs, type MCQ } from "@/lib/mock-data";
+import { type MCQ } from "@/lib/mock-data";
 import { fetchChapters, fetchSubject } from "@/integrations/firebase/subjects";
 import type { ChapterDoc, SubjectDoc, MathChapterDoc } from "@/integrations/firebase/types";
 import { fetchMathChapters } from "@/integrations/firebase/services";
@@ -39,6 +39,13 @@ import { tierFor } from "@/lib/math-intelligence/mastery-tiers";
 import { UploadAnswerButton } from "@/components/answer-upload/upload-answer-button";
 import { Library, Sigma } from "lucide-react";
 import { loadChapter, loadManifest } from "@/lib/contentLoader";
+import {
+  normalizeChapterData,
+  mapContentMcqs,
+  type NormalizedChapter,
+  type ContentFormula,
+  type ContentResource,
+} from "@/lib/normalizeChapterData";
 
 type ManifestChapter = {
   id: string;
@@ -49,56 +56,9 @@ type ManifestChapter = {
   mcqCount?: number;
   exerciseCount?: number;
 };
-type ContentFormula = {
-  label: string;
-  expression: string;
-  description?: string;
-};
-type ContentMCQ = {
-  id: string;
-  question: string;
-  options: string[];
-  correctAnswer: string;
-  explanation?: string;
-};
-type ContentResource = {
-  type: string;
-  provider: string;
-  label: string;
-  description?: string;
-  url: string;
-};
-type ContentChapter = {
-  title: string;
-  summary?: string;
-  difficulty?: string;
-  learningPoints?: string[];
-  formulas?: ContentFormula[];
-  mcqs?: ContentMCQ[];
-  resources?: ContentResource[];
-};
 
 
 const MATH_SUBJECT_IDS = new Set(["mathematics", "math"]);
-
-function mapContentMcqs(mcqs: ContentMCQ[]): MCQ[] {
-  return mcqs.map((m) => {
-    const letter = (m.correctAnswer ?? "A").trim().charAt(0).toUpperCase();
-    const correctIndex = Math.max(0, letter.charCodeAt(0) - 65);
-    const options = m.options.map((opt) =>
-      opt.replace(/^[A-D][.\)]\s*/i, "").trim(),
-    );
-    return {
-      id: m.id,
-      question: m.question,
-      options,
-      correctIndex: Math.min(correctIndex, options.length - 1),
-      explanation: m.explanation ?? "",
-      topic: "Real Numbers",
-      difficulty: "Medium",
-    };
-  });
-}
 
 export const Route = createFileRoute("/subjects/$subjectId")({
   head: ({ params }) => ({
