@@ -7,6 +7,12 @@ import { Progress } from "@/components/ui/progress";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
+import { Link } from "@tanstack/react-router";
+import {
   Tabs,
   TabsList,
   TabsTrigger,
@@ -27,11 +33,13 @@ import {
   Clock,
   Star,
   ExternalLink,
+  ChevronDown,
 } from "lucide-react";
 import { todayTasks, subjects } from "@/lib/mock-data";
 import { toast } from "sonner";
 import { RevisionPlannerCard, type RevisionPick } from "@/components/revision-planner-card";
 import { useAnalytics } from "@/hooks/use-analytics";
+import { getPrepModes } from "@/lib/prep-modes";
 
 export const Route = createFileRoute("/planner")({
   head: () => ({
