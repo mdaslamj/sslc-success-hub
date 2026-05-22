@@ -141,7 +141,7 @@ function Player({ exam }: { exam: MockExamDoc }) {
     <DashboardLayout title={exam.title}>
       <div className="mx-auto max-w-6xl">
         {/* Sticky exam header */}
-        <div className="sticky top-14 z-10 -mx-3 sm:-mx-4 md:-mx-6 lg:-mx-8 mb-4 border-b border-border/60 bg-background/85 px-3 sm:px-4 md:px-6 lg:px-8 py-3 backdrop-blur-xl">
+        <div className="sticky top-14 z-10 -mx-4 sm:-mx-5 md:-mx-6 lg:-mx-8 mb-4 border-b border-border/60 bg-background/85 px-4 sm:px-5 md:px-6 lg:px-8 py-3 backdrop-blur-xl">
           <div className="flex items-center justify-between gap-2">
             <div className="min-w-0">
               <div className="text-[11px] uppercase tracking-widest text-muted-foreground">
