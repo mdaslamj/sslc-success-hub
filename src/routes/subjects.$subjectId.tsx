@@ -315,7 +315,7 @@ function SubjectDetailPage() {
                   <p className="text-white/80">{subject.nameKn}</p>
                 )}
               </div>
-              <div className="grid grid-cols-3 gap-3 min-w-[260px]">
+              <div className="grid grid-cols-3 gap-2 sm:gap-3 w-full sm:w-auto sm:min-w-[260px]">
                 <HeaderStat label="Progress" value={`${overallProgress}%`} />
                 <HeaderStat label="Chapters" value={chapterCountDisplay} />
                 <HeaderStat label="Target" value={`${subject.target}%`} />
@@ -325,7 +325,7 @@ function SubjectDetailPage() {
         </div>
 
         <Tabs defaultValue="chapters" className="w-full">
-          <TabsList className="rounded-full">
+          <TabsList className="rounded-full w-full sm:w-auto overflow-x-auto no-scrollbar flex justify-start sm:inline-flex">
             <TabsTrigger value="chapters" className="rounded-full gap-1.5">
               <BookOpen className="h-3.5 w-3.5" /> Chapters
             </TabsTrigger>
