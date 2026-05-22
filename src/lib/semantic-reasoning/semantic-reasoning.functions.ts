@@ -167,8 +167,8 @@ export const runSemanticReasoning = createServerFn({ method: "POST" })
     try {
       uid = await verifyFirebaseIdToken(data.idToken);
     } catch (err) {
-      const message = err instanceof Error ? err.message : "Invalid token";
-      return { ok: false, status: 401, error: `Unauthorized: ${message}` };
+      console.error("[auth] token verification failed", err);
+      return { ok: false, status: 401, error: "Unauthorized" };
     }
 
     // Server-side per-user rate limit — authoritative cap that cannot be
