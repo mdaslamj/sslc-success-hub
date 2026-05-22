@@ -307,6 +307,9 @@ body {
   overflow-x: hidden;
   overscroll-behavior-y: contain;
 }
+/* Hide scrollbar utility for horizontally-scrollable tab strips */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 /* Smooth reduced-motion fallback */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
