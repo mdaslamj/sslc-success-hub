@@ -36,20 +36,20 @@ function LoginPage() {
     <div className="min-h-screen bg-background grid place-items-center px-4 py-6 sm:py-10 lg:py-12">
       <div className="w-full max-w-md rounded-3xl border border-border/60 bg-card p-6 sm:p-8 shadow-card">
         <div className="flex flex-col items-center text-center">
-          <div className="flex h-12 w-12 items-center justify-center rounded-2xl gradient-brand shadow-glow">
+          <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl gradient-brand shadow-glow">
             <GraduationCap className="h-6 w-6 text-primary-foreground" />
           </div>
-          <h1 className="mt-4 font-display text-2xl font-bold tracking-tight">
+          <h1 className="mt-5 font-display text-2xl font-bold tracking-tight">
             Welcome to VidyaPath
           </h1>
-          <p className="mt-1 text-sm text-muted-foreground">
+          <p className="mt-2 text-sm text-muted-foreground leading-relaxed">
             Sign in to sync your SSLC prep across devices.
           </p>
         </div>
 
         <Button
           variant="outline"
-          className="mt-6 w-full rounded-xl"
+          className="mt-8 w-full rounded-xl"
           onClick={async () => {
             try {
               await signInWithGoogle();
