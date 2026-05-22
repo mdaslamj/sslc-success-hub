@@ -41,6 +41,10 @@ import { RevisionPlannerCard, type RevisionPick } from "@/components/revision-pl
 import { useAnalytics } from "@/hooks/use-analytics";
 import { getPrepModes } from "@/lib/prep-modes";
 import { PlannerCalendar } from "@/components/planner/planner-calendar";
+import {
+  addEvent as addCalendarEvent,
+  toDateKey,
+} from "@/lib/planner-events-store";
 
 export const Route = createFileRoute("/planner")({
   head: () => ({
@@ -90,6 +94,14 @@ function PlannerPage() {
   const [newDuration, setNewDuration] = useState(30);
   const [focusMinutes, setFocusMinutes] = useState(0); // total minutes focused today
   const [hydrated, setHydrated] = useState(false);
+  const [highlightId, setHighlightId] = useState<number | null>(null);
+
+  // Clear the "just added" highlight after a short beat.
+  useEffect(() => {
+    if (highlightId == null) return;
+    const t = setTimeout(() => setHighlightId(null), 2200);
+    return () => clearTimeout(t);
+  }, [highlightId]);
 
   // Hydrate
   useEffect(() => {
@@ -148,6 +160,7 @@ function PlannerPage() {
       },
     ]);
     setNewTask("");
+    setHighlightId(id);
     toast("Task added to today's plan");
   }
 
@@ -168,10 +181,70 @@ function PlannerPage() {
         done: false,
       },
     ]);
+    setHighlightId(id);
     toast.success("Added to today's plan", {
       description: `${pick.subjectName} · ${pick.minutes} min`,
     });
   }
+
+  /**
+   * A prep-mode click should *do* something: schedule a focused study session
+   * for that mode into today's plan, mirror it into the calendar so the daily
+   * balance reflects it, and gently confirm with a highlight pulse.
+   */
+  function addPrepModeSession(parent: Task, mode: { id: string; label: string }) {
+    const id = Math.max(0, ...tasks.map((t) => t.id)) + 1;
+    const durationMin = 25;
+    const title = `${mode.label} — ${parent.task}`;
+    setTasks((prev) => [
+      ...prev,
+      {
+        id,
+        subject: parent.subject,
+        task: title,
+        time: `${durationMin} min`,
+        durationMin,
+        done: false,
+      },
+    ]);
+    try {
+      addCalendarEvent({
+        title,
+        category: mode.id === "pyq" || mode.id === "timed" ? "mock-exam" : "study",
+        date: toDateKey(new Date()),
+        durationMin,
+        subject: parent.subject,
+      });
+    } catch {
+      /* localStorage unavailable — task still added */
+    }
+    setHighlightId(id);
+    toast.success(`${mode.label} scheduled`, {
+      description: `${parent.subject} · ${durationMin} min today`,
+      icon: <Sparkles className="h-4 w-4" />,
+    });
+  }
+
+  /* ----- Academic continuity signals (lightweight, derived only) ----- */
+  const pendingCount = tasks.length - doneCount;
+  const nextUp = useMemo(() => tasks.find((t) => !t.done) ?? null, [tasks]);
+  const overloadHint = tasks.length >= 8;
+  const underloadHint = tasks.length > 0 && tasks.length <= 2;
+  const mentorMessage = useMemo(() => {
+    if (tasks.length === 0)
+      return "Plan one thing — even 25 minutes of focus today builds momentum.";
+    if (doneCount === tasks.length)
+      return "Every task done. Protect this streak — schedule tomorrow now.";
+    if (overloadHint && doneCount === 0)
+      return "Heavy day ahead. Start with the smallest task to build flow.";
+    if (completionPct >= 50)
+      return "You're past halfway — finish the next task before the energy dips.";
+    if (underloadHint)
+      return "Light plan today — perfect window to revise a weak topic.";
+    if (focusMinutes === 0 && doneCount === 0)
+      return "No focus logged yet. A 25-min sprint on the first task will unlock the day.";
+    return "Keep the rhythm — one task, then a short break.";
+  }, [tasks.length, doneCount, completionPct, overloadHint, underloadHint, focusMinutes]);
 
   // Achievements (live)
   const unlocked = useMemo(() => {
@@ -257,6 +330,29 @@ function PlannerPage() {
             </span>
           </div>
           <Progress value={completionPct} className="mt-3" />
+          <div className="mt-4 flex flex-wrap items-center gap-2 text-[11px]">
+            <span className="inline-flex items-center gap-1 rounded-full border border-border/60 bg-background/60 px-2 py-1">
+              <span className="h-1.5 w-1.5 rounded-full bg-warning" />
+              {pendingCount} pending
+            </span>
+            <span className="inline-flex items-center gap-1 rounded-full border border-border/60 bg-background/60 px-2 py-1">
+              <span className="h-1.5 w-1.5 rounded-full bg-success" />
+              {doneCount} done
+            </span>
+            {nextUp && (
+              <span className="inline-flex min-w-0 items-center gap-1 rounded-full border border-brand/30 bg-brand/5 px-2 py-1 text-brand">
+                <Sparkles className="h-3 w-3" />
+                <span className="truncate max-w-[180px] sm:max-w-xs">
+                  Next: {nextUp.task}
+                </span>
+              </span>
+            )}
+          </div>
+          {/* Mentor strip — supportive, concise, never chatty. */}
+          <div className="mt-3 flex items-start gap-2 rounded-2xl border border-brand/20 bg-brand/5 p-3 text-xs text-foreground/90">
+            <Brain className="mt-0.5 h-3.5 w-3.5 shrink-0 text-brand" />
+            <p className="leading-snug">{mentorMessage}</p>
+          </div>
         </section>
 
         {/* Calendar & life-planning layer */}
@@ -282,6 +378,8 @@ function PlannerPage() {
                   <Collapsible
                     key={t.id}
                     className={`group rounded-2xl border transition ${
+                      highlightId === t.id ? "ring-2 ring-brand/50 animate-pulse" : ""
+                    } ${
                       t.done
                         ? "border-success/30 bg-success/5"
                         : "border-border/60 bg-background/40 hover:border-brand/40"
@@ -384,11 +482,7 @@ function PlannerPage() {
                                 key={m.id}
                                 type="button"
                                 className={cls}
-                                onClick={() =>
-                                  toast(`${m.label}`, {
-                                    description: `${t.subject} · coming soon`,
-                                  })
-                                }
+                                onClick={() => addPrepModeSession(t, m)}
                               >
                                 {inner}
                               </button>
