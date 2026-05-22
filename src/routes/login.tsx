@@ -64,7 +64,7 @@ function LoginPage() {
           Continue with Google
         </Button>
 
-        <div className="my-5 flex items-center gap-3 text-[10px] uppercase tracking-widest text-muted-foreground">
+        <div className="my-4 sm:my-5 flex items-center gap-3 text-[10px] uppercase tracking-widest text-muted-foreground">
           <span className="h-px flex-1 bg-border" />
           or
           <span className="h-px flex-1 bg-border" />
@@ -83,7 +83,7 @@ function LoginPage() {
           </TabsContent>
         </Tabs>
 
-        <p className="mt-6 text-center text-xs text-muted-foreground">
+        <p className="mt-5 sm:mt-6 text-center text-xs text-muted-foreground">
           Want to look around first?
         </p>
         <Button
