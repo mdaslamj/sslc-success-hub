@@ -6,8 +6,8 @@
  *
  *   bun scripts/generate-social-science-manifest.mjs
  */
-import { readdir, readFile, writeFile } from "node:fs/promises";
-import { join } from "node:path";
+import { readdir, readFile, writeFile, stat } from "node:fs/promises";
+import { join, relative } from "node:path";
 
 const DIR = "public/content/chapters/social-science";
 
@@ -37,17 +37,49 @@ const SECTION_BLUEPRINT = {
   "Business Studies": 3,
 };
 
-const files = (await readdir(DIR)).filter((f) => f.endsWith(".json") && f !== "manifest.json");
-const chapters = [];
+// Recursive scan — accept ANY .json file regardless of name pattern.
+async function walk(dir) {
+  const out = [];
+  for (const entry of await readdir(dir, { withFileTypes: true })) {
+    const p = join(dir, entry.name);
+    if (entry.isDirectory()) out.push(...(await walk(p)));
+    else if (entry.isFile() && entry.name.toLowerCase().endsWith(".json")) out.push(p);
+  }
+  return out;
+}
 
-for (const f of files) {
-  const id = f.replace(/\.json$/, "");
-  const raw = await readFile(join(DIR, f), "utf8");
+const allJson = (await walk(DIR)).filter((p) => !p.endsWith("manifest.json")).sort();
+console.log(`[manifest] discovered ${allJson.length} .json file(s) under ${DIR}:`);
+for (const p of allJson) console.log(`  • ${relative(DIR, p)}`);
+
+const chapters = [];
+const skipped = [];
+let emptyCount = 0;
+
+for (const fullPath of allJson) {
+  const rel = relative(DIR, fullPath);
+  const id = rel.replace(/\.json$/i, "").replace(/[\\/]/g, "__");
+  let raw;
+  try {
+    raw = await readFile(fullPath, "utf8");
+  } catch (err) {
+    skipped.push({ file: rel, reason: `read error: ${err.message}` });
+    continue;
+  }
+  if (!raw.trim()) {
+    skipped.push({ file: rel, reason: "empty file" });
+    emptyCount++;
+    continue;
+  }
   let doc;
   try {
     doc = JSON.parse(raw);
   } catch (err) {
-    console.warn(`[manifest] skip non-JSON file ${f}:`, err.message);
+    skipped.push({ file: rel, reason: `invalid JSON — ${err.message}` });
+    continue;
+  }
+  if (!doc || typeof doc !== "object" || Array.isArray(doc)) {
+    skipped.push({ file: rel, reason: "JSON root is not an object" });
     continue;
   }
   const section = doc.section ?? "General";
@@ -62,7 +94,7 @@ for (const f of files) {
     difficulty: SECTION_DIFFICULTY[section] ?? "medium",
     blueprintMarks: SECTION_BLUEPRINT[section] ?? 3,
     status: "ready",
-    filePath: `chapters/social-science/${f}`,
+    filePath: `chapters/social-science/${rel.replace(/\\/g, "/")}`,
   });
 }
 
@@ -97,4 +129,14 @@ const manifest = {
 };
 
 await writeFile(join(DIR, "manifest.json"), JSON.stringify(manifest, null, 2) + "\n");
-console.log(`[manifest] wrote ${chapters.length} chapters across ${manifest.sections.length} sections.`);
+
+console.log("\n[manifest] ───── Discovery report ─────");
+console.log(`  Total .json files discovered : ${allJson.length}`);
+console.log(`  Indexed chapters             : ${chapters.length}`);
+console.log(`  Skipped / rejected           : ${skipped.length}`);
+if (skipped.length) {
+  console.log("  Rejection details:");
+  for (const s of skipped) console.log(`    ✗ ${s.file}  →  ${s.reason}`);
+}
+console.log(`  Sections                     : ${manifest.sections.length}`);
+console.log(`[manifest] wrote ${chapters.length} chapters to manifest.json`);
