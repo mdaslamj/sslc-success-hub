@@ -40,6 +40,7 @@ import { toast } from "sonner";
 import { RevisionPlannerCard, type RevisionPick } from "@/components/revision-planner-card";
 import { useAnalytics } from "@/hooks/use-analytics";
 import { getPrepModes } from "@/lib/prep-modes";
+import { PlannerCalendar } from "@/components/planner/planner-calendar";
 
 export const Route = createFileRoute("/planner")({
   head: () => ({
@@ -257,6 +258,9 @@ function PlannerPage() {
           </div>
           <Progress value={completionPct} className="mt-3" />
         </section>
+
+        {/* Calendar & life-planning layer */}
+        <PlannerCalendar />
 
         <div className="grid gap-6 lg:grid-cols-[1.4fr_1fr]">
           {/* LEFT: schedule */}
