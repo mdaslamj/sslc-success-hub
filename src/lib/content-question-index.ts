@@ -61,6 +61,11 @@ export type IndexedChapter = {
   chapterId: string;
   chapterNumber: number;
   title: string;
+  /** Optional Kannada label (e.g. ಭೂಗೋಳಶಾಸ್ತ್ರ). */
+  titleKn?: string | null;
+  /** Optional sub-section ("History", "Geography", …) used by Social Science. */
+  section?: string | null;
+  sectionKn?: string | null;
   difficulty: IndexedDifficulty;
   blueprintWeight: number;
   questions: IndexedQuestion[];
@@ -74,11 +79,15 @@ const CONTENT_TO_RUNTIME: Record<string, string> = {
   mathematics: "math",
   math: "math",
   science: "science",
+  "social-science": "social",
+  social: "social",
 };
 const RUNTIME_TO_CONTENT: Record<string, string> = {
   math: "mathematics",
   mathematics: "mathematics",
   science: "science",
+  social: "social-science",
+  "social-science": "social-science",
 };
 
 export function toContentSubjectId(runtimeId: string): string | null {
@@ -92,6 +101,7 @@ export function toRuntimeSubjectId(contentId: string): string {
 export const CONTENT_SUBJECTS = [
   { contentId: "mathematics", runtimeId: "math" },
   { contentId: "science", runtimeId: "science" },
+  { contentId: "social-science", runtimeId: "social" },
 ] as const;
 
 // ---------------------------------------------------------------------------
@@ -136,10 +146,27 @@ function indexChapter(args: {
   manifestEntry?: Record<string, unknown>;
 }): IndexedChapter {
   const { runtimeSubjectId, chapterDoc, manifestEntry } = args;
-  const chapterId = asString(chapterDoc.id) || asString(manifestEntry?.id);
+  // Accept both the math/science schema (id/title/chapterNumber/mcqs[].id) and
+  // the social-science schema (chapter_id/chapter_name/chapter_number,
+  // mcqs[].q_id with options as { A,B,C,D } + correct letter, plus
+  // one/two/three_mark_questions arrays).
+  const chapterId =
+    asString(chapterDoc.id) ||
+    asString(manifestEntry?.id) ||
+    asString(chapterDoc.chapter_id);
   const chapterNumber =
-    asNumber(chapterDoc.chapterNumber) || asNumber(manifestEntry?.chapterNumber);
-  const title = asString(chapterDoc.title) || asString(manifestEntry?.title);
+    asNumber(chapterDoc.chapterNumber) ||
+    asNumber(manifestEntry?.chapterNumber) ||
+    asNumber(chapterDoc.chapter_number);
+  const title =
+    asString(chapterDoc.title) ||
+    asString(manifestEntry?.title) ||
+    asString(chapterDoc.chapter_name);
+  const titleKn =
+    asString(manifestEntry?.titleKn) || asString(chapterDoc.chapter_name_kn) || null;
+  const section =
+    asString(manifestEntry?.section) || asString(chapterDoc.section) || null;
+  const sectionKn = asString(manifestEntry?.sectionKn) || null;
   const difficulty = normDifficulty(
     chapterDoc.difficulty ?? manifestEntry?.difficulty,
   );
@@ -153,28 +180,39 @@ function indexChapter(args: {
 
   // MCQs ------------------------------------------------------------------
   for (const raw of asArray<Record<string, unknown>>(chapterDoc.mcqs)) {
-    const id = asString(raw.id);
+    const id = asString(raw.id) || asString(raw.q_id);
     if (!id || seen.has(id)) continue;
-    const options = asArray<unknown>(raw.options).map(stripLetterPrefix);
+    // Options may be an array (math/science) or an object keyed A..D (SS).
+    const rawOpts = raw.options;
+    let options: string[] = [];
+    if (Array.isArray(rawOpts)) {
+      options = rawOpts.map(stripLetterPrefix);
+    } else if (rawOpts && typeof rawOpts === "object") {
+      options = ["A", "B", "C", "D", "E"]
+        .map((k) => (rawOpts as Record<string, unknown>)[k])
+        .filter((v) => typeof v === "string")
+        .map(stripLetterPrefix);
+    }
     if (options.length < 2) continue;
     seen.add(id);
+    const answerLetter = asString(raw.correctAnswer) || asString(raw.correct);
     out.push({
       id,
       subjectId: runtimeSubjectId,
       chapterId,
       chapterNumber,
       chapterTitle: title,
-      topic: title,
+      topic: section || title,
       difficulty,
       marks: 1,
       questionType: "mcq",
       question: asString(raw.question),
       options,
       correctIndex: Math.min(
-        letterToIndex(raw.correctAnswer),
+        letterToIndex(answerLetter),
         options.length - 1,
       ),
-      answer: asString(raw.correctAnswer),
+      answer: answerLetter,
       explanation: asString(raw.explanation),
       blueprintWeight,
     });
@@ -191,7 +229,7 @@ function indexChapter(args: {
       chapterId,
       chapterNumber,
       chapterTitle: title,
-      topic: title,
+      topic: section || title,
       difficulty,
       marks: asNumber(raw.marks) || (difficulty === "Hard" ? 3 : 2),
       questionType: "exercise",
@@ -201,6 +239,44 @@ function indexChapter(args: {
       answer: asString(raw.answer),
       explanation: asString(raw.answer),
       blueprintWeight,
+    });
+  }
+
+  // Social-science short/long answer banks ↔ "exercise" slots.
+  const ssBanks: Array<{ key: string; marks: number }> = [
+    { key: "one_mark_questions", marks: 1 },
+    { key: "two_mark_questions", marks: 2 },
+    { key: "three_mark_questions", marks: 3 },
+    { key: "four_mark_questions", marks: 4 },
+  ];
+  for (const bank of ssBanks) {
+    const arr = asArray<Record<string, unknown>>(chapterDoc[bank.key]);
+    arr.forEach((raw, i) => {
+      const id =
+        asString(raw.id) ||
+        asString(raw.q_id) ||
+        `${chapterId}-${bank.key}-${i + 1}`;
+      if (seen.has(id)) return;
+      const q = asString(raw.question);
+      if (!q) return;
+      seen.add(id);
+      out.push({
+        id,
+        subjectId: runtimeSubjectId,
+        chapterId,
+        chapterNumber,
+        chapterTitle: title,
+        topic: section || title,
+        difficulty,
+        marks: bank.marks,
+        questionType: "exercise",
+        question: q,
+        options: [],
+        correctIndex: -1,
+        answer: asString(raw.answer),
+        explanation: asString(raw.answer),
+        blueprintWeight,
+      });
     });
   }
 
@@ -215,7 +291,7 @@ function indexChapter(args: {
       chapterId,
       chapterNumber,
       chapterTitle: title,
-      topic: title,
+      topic: section || title,
       difficulty,
       marks: asNumber(raw.marks) || 1,
       questionType: "pyq",
@@ -233,6 +309,9 @@ function indexChapter(args: {
     chapterId,
     chapterNumber,
     title,
+    titleKn,
+    section,
+    sectionKn,
     difficulty,
     blueprintWeight,
     questions: out,
