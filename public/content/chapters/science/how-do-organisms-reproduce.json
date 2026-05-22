@@ -1,0 +1,349 @@
+{
+  "id": "how-do-organisms-reproduce",
+  "chapterNumber": 7,
+  "subjectId": "science",
+  "title": "How do Organisms Reproduce?",
+  "blueprintMarks": 7,
+  "difficulty": "medium",
+  "estimatedMinutes": 60,
+  "version": "1.0",
+  "lastUpdated": "2026-05",
+  "summary": "Chapter 7 covers reproduction in living organisms \u2014 both asexual and sexual. Asexual reproduction includes fission, budding, fragmentation, regeneration, vegetative propagation, and spore formation. Sexual reproduction involves the fusion of male and female gametes. Reproduction in flowering plants (pollination, fertilisation) and in humans (male and female reproductive systems, menstrual cycle, contraception) are studied in detail.",
+  "learningPoints": [
+    "Define asexual reproduction and list its types: fission, budding, fragmentation, regeneration, vegetative propagation, spore formation",
+    "Distinguish binary fission (Amoeba) from budding (Hydra)",
+    "Explain vegetative propagation with examples and its advantages",
+    "Explain reproduction by spores in fungi and ferns",
+    "Define sexual reproduction and explain why it creates variation",
+    "Describe parts of a flower: sepals, petals, stamens (male), carpels (female)",
+    "Distinguish self-pollination from cross-pollination",
+    "Describe fertilisation in flowers: pollen tube growth, double fertilisation",
+    "Explain changes in flower after fertilisation: seed and fruit formation",
+    "Describe the male reproductive system: testes, vas deferens, prostate gland, penis",
+    "Describe the female reproductive system: ovaries, fallopian tube, uterus",
+    "Explain menstrual cycle and its significance",
+    "List methods of contraception: mechanical, oral, surgical"
+  ],
+  "laws": [],
+  "formulas": [
+    {
+      "label": "Regeneration",
+      "expression": "1 organism piece \u2192 multiple complete organisms",
+      "description": "Planaria can be cut into pieces \u2014 each piece regenerates into a complete organism.",
+      "highlight": true
+    },
+    {
+      "label": "Vegetative Propagation",
+      "expression": "Plant part \u2192 new plant without seeds",
+      "description": "Roots, stems, leaves can produce new plants. Examples: potato (stem), rose (stem cutting), Bryophyllum (leaves).",
+      "highlight": false
+    }
+  ],
+  "diagrams": [
+    {
+      "title": "Structure of a Flower",
+      "description": "Sepal (protect bud), Petal (attract pollinators), Stamen (anther + filament = male), Carpel (stigma + style + ovary = female). Ovary contains ovules.",
+      "highlight": true,
+      "imageUrl": ""
+    },
+    {
+      "title": "Human Male Reproductive System",
+      "description": "Testes (sperm + testosterone), Epididymis (sperm maturation), Vas deferens (transport), Seminal vesicle, Prostate gland (fluid medium), Urethra, Penis.",
+      "highlight": true,
+      "imageUrl": ""
+    },
+    {
+      "title": "Human Female Reproductive System",
+      "description": "Ovaries (eggs + estrogen), Fallopian tube (egg transport, fertilisation), Uterus (implantation, foetal development), Vagina (birth canal).",
+      "highlight": true,
+      "imageUrl": ""
+    }
+  ],
+  "resources": [
+    {
+      "type": "textbook",
+      "provider": "KTBS Karnataka",
+      "label": "Karnataka SSLC Science Textbook",
+      "description": "Official Karnataka SSLC Science textbook Chapter 7.",
+      "url": "https://ktbs.kar.nic.in/new/index.html#!/textbook"
+    },
+    {
+      "type": "textbook",
+      "provider": "ePathshala NCERT",
+      "label": "NCERT Science Textbook Class 10",
+      "description": "NCERT Class 10 Science Chapter 8 How do Organisms Reproduce?",
+      "url": "https://epathshala.nic.in/e-pathshala-4/flipbook/?id=0965"
+    },
+    {
+      "type": "video",
+      "provider": "Khan Academy",
+      "label": "Reproduction \u2014 Video Lessons",
+      "description": "Khan Academy videos on asexual and sexual reproduction.",
+      "url": "https://www.khanacademy.org/science/ncert-class-10"
+    }
+  ],
+  "pyqs": [
+    {
+      "id": "sci7-pyq-001",
+      "source": "Model Paper 1 \u2014 2025-26",
+      "question": "How is binary fission in Amoeba different from budding in Hydra?",
+      "answer": "Binary fission (Amoeba): mother cell divides equally into 2 daughter cells. Budding (Hydra): small bud grows by cell division from a specific part, separates from mother body and grows into new organism.",
+      "marks": 1
+    },
+    {
+      "id": "sci7-pyq-002",
+      "source": "Model Paper 1 \u2014 2025-26",
+      "question": "List 3 methods of contraception, function of vas deferens and prostate gland, and explain menstrual cycle.",
+      "answer": "Contraception: (i) Mechanical (condom, copper-T) (ii) Oral pills (hormone imbalance) (iii) Surgical (blocking vas deferens/fallopian tube). Vas deferens: transports sperm from testes. Prostate gland: provides fluid medium and nutrients for sperm. Menstrual cycle: if egg not fertilised, uterus lining breaks down as blood+mucus every ~28 days.",
+      "marks": 5
+    },
+    {
+      "id": "sci7-pyq-003",
+      "source": "Model Paper 2 \u2014 2025-26",
+      "question": "What is the role of placenta in development of embryo? Why are testes located outside abdomen?",
+      "answer": "Placenta: transports nutrients from mother to foetus, transports waste from foetus to mother. Testes outside: sperm production requires temperature lower than body temperature \u2014 scrotum maintains this lower temperature.",
+      "marks": 3
+    },
+    {
+      "id": "sci7-pyq-004",
+      "source": "Model Paper 2 \u2014 2025-26",
+      "question": "Write two differences between self and cross pollination. What changes occur in flower after fertilisation?",
+      "answer": "Self: pollen to stigma of same flower, more similar offspring. Cross: pollen to stigma of different flower, more variation, media needed. After fertilisation: zygote divides \u2192 embryo; petals/sepals fall; egg \u2192 seed with thick layer; ovary \u2192 fruit.",
+      "marks": 3
+    }
+  ],
+  "mcqs": [
+    {
+      "id": "sci7-mcq-001",
+      "question": "In Amoeba, reproduction occurs by:",
+      "options": [
+        "A. Budding",
+        "B. Binary fission",
+        "C. Fragmentation",
+        "D. Spore formation"
+      ],
+      "correctAnswer": "B",
+      "explanation": "Amoeba divides into two equal daughter cells by binary fission. The nucleus divides first (karyokinesis) then cytoplasm (cytokinesis)."
+    },
+    {
+      "id": "sci7-mcq-002",
+      "question": "Testes are located outside the abdominal cavity because:",
+      "options": [
+        "A. For easy sperm release",
+        "B. Sperm production requires lower temperature than body",
+        "C. Closer to urethra",
+        "D. Better blood supply"
+      ],
+      "correctAnswer": "B",
+      "explanation": "Normal body temperature (37\u00b0C) is too high for sperm production. Scrotum maintains 2-3\u00b0C lower temperature needed for spermatogenesis."
+    },
+    {
+      "id": "sci7-mcq-003",
+      "question": "Placenta functions include:",
+      "options": [
+        "A. Produces gametes",
+        "B. Transports nutrients to foetus and removes waste",
+        "C. Produces eggs",
+        "D. Controls menstrual cycle"
+      ],
+      "correctAnswer": "B",
+      "explanation": "Placenta is the interface between mother and foetus \u2014 transfers O\u2082, nutrients from mother to foetus; CO\u2082, urea from foetus to mother."
+    },
+    {
+      "id": "sci7-mcq-004",
+      "question": "Which of the following is NOT asexual reproduction?",
+      "options": [
+        "A. Budding in Hydra",
+        "B. Binary fission in Amoeba",
+        "C. Cross pollination in flowers",
+        "D. Spore formation in fungi"
+      ],
+      "correctAnswer": "C",
+      "explanation": "Cross pollination is sexual reproduction involving male (pollen) and female (ovule) gametes. Others are asexual."
+    },
+    {
+      "id": "sci7-mcq-005",
+      "question": "Vas deferens transports:",
+      "options": [
+        "A. Eggs from ovary",
+        "B. Urine from kidneys",
+        "C. Sperm from testes",
+        "D. Hormones from testes"
+      ],
+      "correctAnswer": "C",
+      "explanation": "Vas deferens (sperm duct) carries sperm from epididymis (where sperm mature) to urethra for ejaculation."
+    },
+    {
+      "id": "sci7-mcq-006",
+      "question": "The menstrual cycle occurs when:",
+      "options": [
+        "A. Egg is fertilised",
+        "B. Egg is not fertilised",
+        "C. Implantation occurs",
+        "D. Ovulation begins"
+      ],
+      "correctAnswer": "B",
+      "explanation": "If egg not fertilised, thick uterus lining breaks down and flows out as blood and mucus every ~28 days."
+    },
+    {
+      "id": "sci7-mcq-007",
+      "question": "Fragmentation as a mode of reproduction is seen in:",
+      "options": [
+        "A. Amoeba",
+        "B. Hydra",
+        "C. Spirogyra",
+        "D. Yeast"
+      ],
+      "correctAnswer": "C",
+      "explanation": "Spirogyra (green algae) reproduces by fragmentation \u2014 it breaks into pieces, each growing into a new organism."
+    },
+    {
+      "id": "sci7-mcq-008",
+      "question": "The structure X in rhizopus (having thick wall) that grows into new organism is:",
+      "options": [
+        "A. Hypha",
+        "B. Spore",
+        "C. Zygospore",
+        "D. Gamete"
+      ],
+      "correctAnswer": "B",
+      "explanation": "Rhizopus reproduces by spore formation. Spores have thick walls (resistant), produced in sporangia, spread by wind, germinate into new Rhizopus."
+    },
+    {
+      "id": "sci7-mcq-009",
+      "question": "After fertilisation in a flower, the ovary develops into:",
+      "options": [
+        "A. Seed",
+        "B. Fruit",
+        "C. Pollen",
+        "D. Embryo"
+      ],
+      "correctAnswer": "B",
+      "explanation": "After fertilisation: ovary \u2192 fruit, ovule \u2192 seed, zygote \u2192 embryo. Petals, sepals, stamens fall off."
+    },
+    {
+      "id": "sci7-mcq-010",
+      "question": "Advantages of vegetative propagation include:",
+      "options": [
+        "A. Creates more genetic variation",
+        "B. Plants produce flowers and fruit faster",
+        "C. Requires seeds",
+        "D. Reduces disease resistance"
+      ],
+      "correctAnswer": "B",
+      "explanation": "Vegetatively propagated plants flower and fruit quickly (no seed germination wait), genetically identical to parent, useful for plants not producing seeds."
+    },
+    {
+      "id": "sci7-mcq-011",
+      "question": "Regeneration in Planaria means:",
+      "options": [
+        "A. Planaria reproduces by budding",
+        "B. Each cut piece grows into complete organism",
+        "C. Planaria undergoes fission",
+        "D. Planaria forms spores"
+      ],
+      "correctAnswer": "B",
+      "explanation": "Planaria has high regenerative capacity. Each fragment regenerates missing parts to form a complete worm."
+    },
+    {
+      "id": "sci7-mcq-012",
+      "question": "Sexual reproduction creates more variation because:",
+      "options": [
+        "A. Involves only one parent",
+        "B. DNA from two parents combines",
+        "C. It produces more offspring",
+        "D. It is faster than asexual"
+      ],
+      "correctAnswer": "B",
+      "explanation": "Sexual reproduction combines DNA from two parents through fertilisation, creating new gene combinations \u2192 genetic variation \u2192 better adaptability."
+    },
+    {
+      "id": "sci7-mcq-013",
+      "question": "How many chromosomes are in gametes if zygote has 24 pairs?",
+      "options": [
+        "A. 24 pairs",
+        "B. 48",
+        "C. 6 pairs",
+        "D. 24"
+      ],
+      "correctAnswer": "D",
+      "explanation": "Gametes are haploid (n). Zygote has 24 pairs = 48 chromosomes. Gametes have 48/2 = 24 chromosomes."
+    },
+    {
+      "id": "sci7-mcq-014",
+      "question": "Copper-T is a method of contraception that:",
+      "options": [
+        "A. Kills sperm",
+        "B. Prevents implantation of fertilised egg",
+        "C. Prevents ovulation",
+        "D. Blocks fallopian tube surgically"
+      ],
+      "correctAnswer": "B",
+      "explanation": "Copper-T (IUD) is placed in uterus. It prevents implantation of fertilised egg. It also affects sperm motility."
+    },
+    {
+      "id": "sci7-mcq-015",
+      "question": "Double fertilisation in plants refers to:",
+      "options": [
+        "A. Two pollen grains fertilise one egg",
+        "B. One pollen tube with two male gametes \u2014 one fertilises egg, other fuses with polar nuclei",
+        "C. Two eggs are fertilised",
+        "D. Fertilisation occurs twice"
+      ],
+      "correctAnswer": "B",
+      "explanation": "In angiosperms: one male gamete + egg \u2192 zygote. Second male gamete + two polar nuclei \u2192 endosperm (3n). This is double fertilisation, unique to flowering plants."
+    }
+  ],
+  "exercises": [
+    {
+      "id": "sci7-ex-001",
+      "question": "Distinguish between asexual and sexual reproduction with examples.",
+      "answer": "Asexual: one parent, no gametes, offspring identical to parent, no variation. Examples: binary fission (Amoeba), budding (Hydra), vegetative propagation (potato). Sexual: two parents, gametes fuse, offspring have variation. Examples: flowers, humans.",
+      "type": "short-answer"
+    },
+    {
+      "id": "sci7-ex-002",
+      "question": "Explain the process of pollination and fertilisation in a flower.",
+      "answer": "Pollination: transfer of pollen from anther to stigma. Self-pollination (same flower) or cross-pollination (different flower \u2014 by wind, water, insects, birds). Fertilisation: pollen lands on stigma \u2192 pollen tube grows down style \u2192 male gamete enters ovule \u2192 fuses with egg (fertilisation) \u2192 zygote \u2192 embryo.",
+      "type": "short-answer"
+    },
+    {
+      "id": "sci7-ex-003",
+      "question": "Describe the menstrual cycle.",
+      "answer": "Day 1-5: menstruation (uterus lining sheds). Day 6-13: follicle develops in ovary, uterus lining builds up. Day 14: ovulation (egg released). Day 15-28: if egg not fertilised, lining breaks down \u2192 menstruation starts again. If fertilised, implantation occurs \u2192 no menstruation (pregnancy).",
+      "type": "short-answer"
+    },
+    {
+      "id": "sci7-ex-004",
+      "question": "What are the advantages of vegetative propagation?",
+      "answer": "(i) Plants flower and fruit earlier (ii) Genetically identical (clones) \u2014 preserves good traits (iii) Useful for plants that do not produce seeds (banana) (iv) Large number of plants in less time (v) Disease-free plants can be maintained.",
+      "type": "short-answer"
+    },
+    {
+      "id": "sci7-ex-005",
+      "question": "How does the number of chromosomes get re-established in sexual reproduction?",
+      "answer": "In meiosis, sex cells (gametes) are formed with half (haploid, n) the normal number of chromosomes. When male gamete (n) + female gamete (n) fuse during fertilisation \u2192 zygote (2n) with original number restored. Example: Human gametes have 23 chromosomes; zygote has 46.",
+      "type": "short-answer"
+    },
+    {
+      "id": "sci7-ex-006",
+      "question": "List four advantages of sexual reproduction over asexual.",
+      "answer": "(i) Creates genetic variation \u2192 adaptability to changing environment (ii) Eliminates harmful mutations over generations (iii) Drives evolution (iv) Produces more diverse offspring better suited for survival.",
+      "type": "short-answer"
+    },
+    {
+      "id": "sci7-ex-007",
+      "question": "Describe Hydra reproduction by budding.",
+      "answer": "Hydra reproduces asexually by budding. A small bud appears on the body of parent Hydra due to repeated cell division. The bud grows, develops a mouth and tentacles. When fully mature, it detaches from the parent and becomes a new independent Hydra.",
+      "type": "short-answer"
+    },
+    {
+      "id": "sci7-ex-008",
+      "question": "Explain the changes that occur in a flower after fertilisation.",
+      "answer": "After double fertilisation: (i) Zygote divides to form embryo (ii) Ovule develops thick layer \u2192 becomes seed (iii) Ovary grows, matures \u2192 fruit (iv) Petals, sepals, stamens, stigma and style fall off (v) Endosperm (from secondary fertilisation) provides food for growing embryo.",
+      "type": "short-answer"
+    }
+  ],
+  "mcqCount": 15,
+  "exerciseCount": 8
+}

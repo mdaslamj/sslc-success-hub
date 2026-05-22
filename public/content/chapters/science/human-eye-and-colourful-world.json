@@ -1,0 +1,352 @@
+{
+  "id": "human-eye-and-colourful-world",
+  "chapterNumber": 10,
+  "subjectId": "science",
+  "title": "The Human Eye and the Colourful World",
+  "blueprintMarks": 5,
+  "difficulty": "medium",
+  "estimatedMinutes": 50,
+  "version": "1.0",
+  "lastUpdated": "2026-05",
+  "summary": "Chapter 10 studies the structure and function of the human eye, common defects of vision and their correction, and the phenomena of atmospheric refraction including dispersion of light through a prism. The defects myopia, hypermetropia, and presbyopia are explained with their causes and corrections using lenses. The scattering of light explains why the sky is blue and the sun appears red at sunrise and sunset.",
+  "learningPoints": [
+    "Describe the structure and function of the human eye: cornea, iris, pupil, lens, retina",
+    "Define power of accommodation of eye",
+    "Explain near point and far point of the eye",
+    "Define and explain myopia (near-sightedness): cause, symptoms, correction using concave lens",
+    "Define and explain hypermetropia (far-sightedness): cause, symptoms, correction using convex lens",
+    "Define presbyopia and its correction using bifocal lens",
+    "Explain dispersion of white light through prism \u2014 VIBGYOR order",
+    "Explain recombination of white light using an inverted prism",
+    "Explain atmospheric refraction: twinkling of stars, advance sunrise and delayed sunset",
+    "Explain Tyndall effect and scattering of light",
+    "Explain why sky is blue (Rayleigh scattering)",
+    "Explain why sun appears red during sunrise and sunset"
+  ],
+  "laws": [
+    {
+      "name": "Tyndall Effect",
+      "statement": "When light passes through a colloid (fine particles), the particles scatter light. Blue light is scattered more than red. This is why sky appears blue and scattering is visible in smoke/dust.",
+      "highlight": true
+    },
+    {
+      "name": "Rayleigh Scattering",
+      "statement": "Shorter wavelengths (blue, violet) are scattered more than longer wavelengths (red, orange). Sky appears blue because scattered blue light reaches our eyes from all directions.",
+      "highlight": true
+    }
+  ],
+  "formulas": [
+    {
+      "label": "Power of Accommodation",
+      "expression": "Power of accommodation = 1/f_near - 1/f_far",
+      "description": "Ability of eye lens to adjust focal length. Normal eye: near point 25cm, far point infinity.",
+      "highlight": true
+    },
+    {
+      "label": "Order of Spectrum (VIBGYOR)",
+      "expression": "Violet, Indigo, Blue, Green, Yellow, Orange, Red",
+      "description": "Violet has shortest wavelength (most deviated). Red has longest wavelength (least deviated) in prism.",
+      "highlight": true
+    }
+  ],
+  "diagrams": [
+    {
+      "title": "Structure of Human Eye",
+      "description": "Cornea (outer transparent), Iris (coloured, controls pupil size), Pupil (opening for light), Crystalline lens (adjustable, controlled by ciliary muscles), Retina (image formed), Optic nerve (signals to brain), Blind spot (no photoreceptors).",
+      "highlight": true,
+      "imageUrl": ""
+    },
+    {
+      "title": "Correction of Myopia",
+      "description": "Myopic eye: image formed in front of retina. Correction: concave lens diverges light rays so they focus on retina.",
+      "highlight": true,
+      "imageUrl": ""
+    },
+    {
+      "title": "Dispersion through Prism",
+      "description": "White light enters prism \u2192 splits into VIBGYOR spectrum. Violet deviates most, red least. Emerged as coloured band on screen.",
+      "highlight": true,
+      "imageUrl": ""
+    }
+  ],
+  "resources": [
+    {
+      "type": "textbook",
+      "provider": "KTBS Karnataka",
+      "label": "Karnataka SSLC Science Textbook",
+      "description": "Official Karnataka SSLC Science textbook Chapter 10 Human Eye.",
+      "url": "https://ktbs.kar.nic.in/new/index.html#!/textbook"
+    },
+    {
+      "type": "textbook",
+      "provider": "ePathshala NCERT",
+      "label": "NCERT Science Textbook Class 10",
+      "description": "NCERT Class 10 Science Chapter 11 The Human Eye.",
+      "url": "https://epathshala.nic.in/e-pathshala-4/flipbook/?id=0965"
+    },
+    {
+      "type": "video",
+      "provider": "Khan Academy",
+      "label": "Human Eye \u2014 Video Lessons",
+      "description": "Khan Academy videos on eye structure, vision defects, and light scattering.",
+      "url": "https://www.khanacademy.org/science/ncert-class-10"
+    }
+  ],
+  "pyqs": [
+    {
+      "id": "sci10-pyq-001",
+      "source": "Model Paper 1 \u2014 2025-26",
+      "question": "Mention any two symptoms of myopic eye. How can this defect be rectified? What is power of accommodation?",
+      "answer": "Myopia symptoms: (i) High curvature of eye lens (ii) Eyeball longer than usual. Correction: concave lens. Power of accommodation: ability of eye lens to adjust its focal length to see near and distant objects clearly.",
+      "marks": 3
+    },
+    {
+      "id": "sci10-pyq-002",
+      "source": "Model Paper 2 \u2014 2025-26",
+      "question": "What is near-sightedness? How does eye accommodate to see distant objects?",
+      "answer": "Myopia = near-sightedness. Can see nearby clearly, not distant. For distant objects: ciliary muscles relax, lens becomes thin \u2192 focal length increases \u2192 image on retina.",
+      "marks": 3
+    },
+    {
+      "id": "sci10-pyq-003",
+      "source": "Model Paper 2 \u2014 2025-26",
+      "question": "Why do stars twinkle but planets do not?",
+      "answer": "Stars twinkle: light from distant stars refracts continuously in atmosphere (different refractive index layers) making the position of star appear to shift rapidly \u2014 twinkling effect. Planets are closer, appear as extended source \u2014 refraction effects average out \u2014 no twinkling.",
+      "marks": 3
+    }
+  ],
+  "mcqs": [
+    {
+      "id": "sci10-mcq-001",
+      "question": "Symptoms of myopic eye include:",
+      "options": [
+        "A. Cannot see near objects",
+        "B. High curvature of lens and longer eyeball",
+        "C. Ciliary muscles are weak",
+        "D. Near point beyond 25cm"
+      ],
+      "correctAnswer": "B",
+      "explanation": "Myopia causes: lens too curved OR eyeball too long \u2192 image forms in front of retina. Cannot see distant objects."
+    },
+    {
+      "id": "sci10-mcq-002",
+      "question": "Myopia is corrected by:",
+      "options": [
+        "A. Convex lens",
+        "B. Concave lens",
+        "C. Bifocal lens",
+        "D. Cylindrical lens"
+      ],
+      "correctAnswer": "B",
+      "explanation": "Concave lens diverges light so it converges on retina (rather than in front). Hypermetropia corrected by convex lens."
+    },
+    {
+      "id": "sci10-mcq-003",
+      "question": "Power of accommodation of eye is:",
+      "options": [
+        "A. Ability to see only distant objects",
+        "B. Ability to adjust focal length to see near and distant objects",
+        "C. Maximum focal length of lens",
+        "D. Minimum focal length of lens"
+      ],
+      "correctAnswer": "B",
+      "explanation": "Power of accommodation = ability of ciliary muscles to change lens curvature to adjust focal length for near and far vision."
+    },
+    {
+      "id": "sci10-mcq-004",
+      "question": "Sky appears blue because:",
+      "options": [
+        "A. Sky is blue in colour",
+        "B. Blue light is more scattered by atmosphere",
+        "C. Sun emits blue light preferentially",
+        "D. Blue light travels slower"
+      ],
+      "correctAnswer": "B",
+      "explanation": "Rayleigh scattering: shorter wavelengths (blue, violet) scatter more by air molecules. Scattered blue light reaches us from all directions making sky appear blue."
+    },
+    {
+      "id": "sci10-mcq-005",
+      "question": "Sun appears red/orange during sunrise and sunset because:",
+      "options": [
+        "A. Sun emits more red light",
+        "B. Blue light is scattered away; only red/orange reaches us",
+        "C. Atmosphere absorbs red light",
+        "D. Temperature effect"
+      ],
+      "correctAnswer": "B",
+      "explanation": "At sunrise/sunset, sunlight travels longer path through atmosphere. Blue light scattered away. Only longer wavelength red/orange reaches eyes directly."
+    },
+    {
+      "id": "sci10-mcq-006",
+      "question": "Order of colours in spectrum from violet to red represents:",
+      "options": [
+        "A. Increasing wavelength, decreasing deviation",
+        "B. Decreasing wavelength, increasing deviation",
+        "C. Constant wavelength",
+        "D. Violet has longest wavelength"
+      ],
+      "correctAnswer": "A",
+      "explanation": "VIBGYOR: Violet (shortest \u03bb, most deviated) to Red (longest \u03bb, least deviated). Wavelength increases V\u2192R."
+    },
+    {
+      "id": "sci10-mcq-007",
+      "question": "Stars twinkle because:",
+      "options": [
+        "A. Stars emit variable light",
+        "B. Continuous refraction in atmospheric layers",
+        "C. Stars are very far away",
+        "D. Scattering by atmosphere"
+      ],
+      "correctAnswer": "B",
+      "explanation": "Different layers of atmosphere have different refractive indices and temperatures. Starlight continuously refracts \u2192 apparent position shifts rapidly \u2192 twinkling."
+    },
+    {
+      "id": "sci10-mcq-008",
+      "question": "The near point of a normal human eye is:",
+      "options": [
+        "A. At infinity",
+        "B. 25 cm",
+        "C. 50 cm",
+        "D. 10 cm"
+      ],
+      "correctAnswer": "B",
+      "explanation": "Normal near point = 25 cm (distinct vision distance). Objects closer than 25 cm cannot be seen clearly by normal eye."
+    },
+    {
+      "id": "sci10-mcq-009",
+      "question": "Presbyopia occurs due to:",
+      "options": [
+        "A. Elongation of eyeball",
+        "B. Loss of power of accommodation with age",
+        "C. Opaque crystalline lens",
+        "D. Cornea curvature"
+      ],
+      "correctAnswer": "B",
+      "explanation": "With age, ciliary muscles weaken and lens loses flexibility \u2192 reduced power of accommodation. Cannot see near or far clearly. Corrected by bifocal lenses."
+    },
+    {
+      "id": "sci10-mcq-010",
+      "question": "White light recombines when:",
+      "options": [
+        "A. Passed through another prism in same orientation",
+        "B. Passed through an inverted prism",
+        "C. Reflected from mirror",
+        "D. Refracted in water"
+      ],
+      "correctAnswer": "B",
+      "explanation": "Newton's experiment: second inverted prism recombines VIBGYOR spectrum back into white light, proving white light is a mixture of seven colours."
+    },
+    {
+      "id": "sci10-mcq-011",
+      "question": "Tyndall effect explains:",
+      "options": [
+        "A. Dispersion in prism",
+        "B. Scattering of light by colloidal particles",
+        "C. Total internal reflection",
+        "D. Refraction of light"
+      ],
+      "correctAnswer": "B",
+      "explanation": "Tyndall effect: colloidal particles scatter light making the beam visible. Examples: sunlight through trees, headlights in fog, milk appearing white."
+    },
+    {
+      "id": "sci10-mcq-012",
+      "question": "Cataract is:",
+      "options": [
+        "A. Loss of near vision",
+        "B. Opaque crystalline lens blocking vision",
+        "C. Weak ciliary muscles",
+        "D. Elongated eyeball"
+      ],
+      "correctAnswer": "B",
+      "explanation": "Cataract = clouding of crystalline lens, blocking light. Treatment: surgical removal of cloudy lens and replacement with artificial lens."
+    },
+    {
+      "id": "sci10-mcq-013",
+      "question": "During eye accommodation for near objects:",
+      "options": [
+        "A. Ciliary muscles relax, lens flattens",
+        "B. Ciliary muscles contract, lens becomes more curved",
+        "C. Pupil dilates",
+        "D. Iris expands"
+      ],
+      "correctAnswer": "B",
+      "explanation": "For near objects: ciliary muscles contract \u2192 suspensory ligaments loosen \u2192 lens bulges (more curved) \u2192 shorter focal length \u2192 image on retina."
+    },
+    {
+      "id": "sci10-mcq-014",
+      "question": "Why do clouds appear white?",
+      "options": [
+        "A. Clouds reflect sunlight",
+        "B. Clouds scatter all wavelengths equally (larger particles)",
+        "C. Clouds absorb blue light",
+        "D. Clouds are white in colour"
+      ],
+      "correctAnswer": "B",
+      "explanation": "Cloud droplets are much larger than air molecules. They scatter all visible wavelengths (colours) equally \u2192 white appearance."
+    },
+    {
+      "id": "sci10-mcq-015",
+      "question": "Hypermetropia is caused by:",
+      "options": [
+        "A. Too long eyeball",
+        "B. Too curved lens",
+        "C. Too short eyeball or less curved lens",
+        "D. Weak ciliary muscles only"
+      ],
+      "correctAnswer": "C",
+      "explanation": "Hypermetropia: eyeball too short or lens too flat \u2192 image forms behind retina \u2192 cannot see near objects clearly. Corrected by convex lens."
+    }
+  ],
+  "exercises": [
+    {
+      "id": "sci10-ex-001",
+      "question": "Explain myopia with diagram. How is it corrected?",
+      "answer": "Myopia (near-sightedness): image forms in front of retina because eyeball too long or lens too curved. Causes: excessive curvature, genetic, excessive near work. Symptoms: cannot see distant objects clearly. Correction: concave (diverging) lens diverges light so it converges on retina.",
+      "type": "short-answer"
+    },
+    {
+      "id": "sci10-ex-002",
+      "question": "Why do stars twinkle but planets do not?",
+      "answer": "Stars are extremely far away (point sources). Light refracts through different atmospheric layers (varying temperature/density/refractive index) causing apparent position to shift rapidly \u2014 twinkling. Planets are closer \u2014 appear as extended disc source. Average refraction over disc prevents twinkling.",
+      "type": "short-answer"
+    },
+    {
+      "id": "sci10-ex-003",
+      "question": "Explain dispersion of white light through a glass prism.",
+      "answer": "White light (mixture of 7 colours) enters prism. Different wavelengths have different refractive indices \u2192 different deviations. Violet (shortest \u03bb) deviates most; Red (longest \u03bb) deviates least. Result: VIBGYOR spectrum. This proves white light is mixture of colours.",
+      "type": "short-answer"
+    },
+    {
+      "id": "sci10-ex-004",
+      "question": "Describe the structure of human eye and function of each part.",
+      "answer": "Cornea: transparent, first refraction. Iris: coloured, controls pupil size. Pupil: opening, regulates light. Crystalline lens: adjustable converging, focuses light. Ciliary muscles: adjust lens curvature. Retina: screen, contains rods (dim light) and cones (colour, bright light). Optic nerve: signals to brain.",
+      "type": "short-answer"
+    },
+    {
+      "id": "sci10-ex-005",
+      "question": "Explain the Tyndall effect with examples.",
+      "answer": "Tyndall effect: fine particles in colloid scatter light, making beam visible. Examples: (i) Sunbeams visible through forest \u2014 dust particles scatter sunlight (ii) Headlights in fog \u2014 fog particles scatter light (iii) Milk appears white \u2014 fat globules scatter light (iv) Blue sky \u2014 air molecules scatter blue light.",
+      "type": "short-answer"
+    },
+    {
+      "id": "sci10-ex-006",
+      "question": "Why does sun appear red/orange at sunrise and sunset?",
+      "answer": "At sunrise/sunset, sunlight travels through maximum atmosphere thickness (longer path). Blue (short \u03bb) is scattered away in all directions. Mostly red and orange wavelengths (long \u03bb) travel straight to reach our eyes directly \u2014 sun appears red/orange.",
+      "type": "short-answer"
+    },
+    {
+      "id": "sci10-ex-007",
+      "question": "What is power of accommodation? What happens to it with age?",
+      "answer": "Power of accommodation = ability of ciliary muscles to change lens curvature to adjust focal length for near and far vision. Young eye: high power of accommodation (near point ~25cm, far point infinity). With age: ciliary muscles weaken, lens becomes less flexible \u2192 presbyopia \u2014 requires bifocal lenses.",
+      "type": "short-answer"
+    },
+    {
+      "id": "sci10-ex-008",
+      "question": "Distinguish between myopia, hypermetropia and presbyopia.",
+      "answer": "Myopia: cannot see far, image in front of retina, corrected by concave lens. Hypermetropia: cannot see near, image behind retina, corrected by convex lens. Presbyopia: old age, cannot see both near and far, loss of accommodation, corrected by bifocal lens (concave+convex).",
+      "type": "short-answer"
+    }
+  ],
+  "mcqCount": 15,
+  "exerciseCount": 8
+}

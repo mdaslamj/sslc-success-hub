@@ -1,0 +1,403 @@
+{
+  "id": "light-reflection-and-refraction",
+  "chapterNumber": 9,
+  "subjectId": "science",
+  "title": "Light - Reflection and Refraction",
+  "blueprintMarks": 8,
+  "difficulty": "hard",
+  "estimatedMinutes": 70,
+  "version": "1.0",
+  "lastUpdated": "2026-05",
+  "summary": "Chapter 9 covers the reflection and refraction of light. The laws of reflection are stated and applied to spherical mirrors (concave and convex). Ray diagrams are drawn for image formation in mirrors and lenses. The mirror formula and lens formula are derived and applied. Magnification, power of lens, and refractive index are calculated. Refraction through a glass slab and prism \u2014 including the angle of deviation \u2014 are studied.",
+  "learningPoints": [
+    "State laws of reflection: angle of incidence = angle of reflection; all in same plane",
+    "Distinguish concave and convex mirrors with their focal properties",
+    "Draw ray diagrams for image formation in concave and convex mirrors",
+    "Apply mirror formula: 1/v + 1/u = 1/f",
+    "Calculate magnification: m = -v/u = h'/h",
+    "Define and apply Snell's Law of Refraction: sin i / sin r = constant = n",
+    "Explain refraction through glass slab \u2014 lateral displacement",
+    "Explain refraction through prism \u2014 angle of deviation",
+    "Draw ray diagrams for image formation in convex and concave lenses",
+    "Apply lens formula: 1/v - 1/u = 1/f",
+    "Calculate power of lens: P = 1/f (in metres), unit = Dioptre",
+    "State sign convention for mirrors and lenses"
+  ],
+  "laws": [
+    {
+      "name": "Laws of Reflection",
+      "statement": "1st Law: Angle of incidence (\u2220i) = Angle of reflection (\u2220r). 2nd Law: The incident ray, reflected ray, and normal at point of incidence all lie in the same plane.",
+      "highlight": true
+    },
+    {
+      "name": "Snell's Law (Laws of Refraction)",
+      "statement": "1st Law: Incident ray, refracted ray, and normal all lie in same plane. 2nd Law: sin i / sin r = constant (refractive index n). Also n = speed of light in vacuum / speed in medium.",
+      "highlight": true
+    }
+  ],
+  "formulas": [
+    {
+      "label": "Mirror Formula",
+      "expression": "1/v + 1/u = 1/f",
+      "description": "v = image distance, u = object distance, f = focal length. All measured from pole using sign convention.",
+      "highlight": true
+    },
+    {
+      "label": "Magnification (Mirror)",
+      "expression": "m = -v/u = h'/h",
+      "description": "Negative m = real inverted image. Positive m = virtual erect image. m > 1 = magnified.",
+      "highlight": true
+    },
+    {
+      "label": "Lens Formula",
+      "expression": "1/v - 1/u = 1/f",
+      "description": "For both convex and concave lenses. Sign convention applies.",
+      "highlight": true
+    },
+    {
+      "label": "Magnification (Lens)",
+      "expression": "m = v/u = h'/h",
+      "description": "For lenses, positive m = erect virtual image; negative m = inverted real image.",
+      "highlight": false
+    },
+    {
+      "label": "Power of Lens",
+      "expression": "P = 1/f (f in metres), unit = Dioptre (D)",
+      "description": "Convex lens: positive power. Concave lens: negative power. Higher power = shorter focal length.",
+      "highlight": true
+    },
+    {
+      "label": "Refractive Index",
+      "expression": "n = sin i / sin r = c/v",
+      "description": "n = ratio of speed of light in vacuum to speed in medium. Larger n = more optically dense.",
+      "highlight": true
+    },
+    {
+      "label": "Relationship: f and R",
+      "expression": "f = R/2",
+      "description": "Focal length of spherical mirror = half the radius of curvature.",
+      "highlight": true
+    }
+  ],
+  "diagrams": [
+    {
+      "title": "Image formation in Concave Mirror \u2014 Object beyond C",
+      "description": "Object beyond C \u2192 Image between F and C, real, inverted, diminished. Draw incident ray parallel to principal axis (reflects through F) and ray through C (reflects back on itself).",
+      "highlight": true,
+      "imageUrl": ""
+    },
+    {
+      "title": "Refraction through Glass Prism",
+      "description": "Light enters prism, bends toward normal. Exits and bends away. Angle of deviation = angle between incident ray direction and emergent ray. Angle of deviation depends on angle of prism and refractive index.",
+      "highlight": true,
+      "imageUrl": ""
+    },
+    {
+      "title": "Image Formation in Convex Lens",
+      "description": "Object beyond 2F: real, inverted, diminished image between F and 2F on other side. Object at 2F: real, inverted, same size at 2F on other side.",
+      "highlight": true,
+      "imageUrl": ""
+    }
+  ],
+  "resources": [
+    {
+      "type": "textbook",
+      "provider": "KTBS Karnataka",
+      "label": "Karnataka SSLC Science Textbook",
+      "description": "Official Karnataka SSLC Science textbook Chapter 9 Light.",
+      "url": "https://ktbs.kar.nic.in/new/index.html#!/textbook"
+    },
+    {
+      "type": "textbook",
+      "provider": "ePathshala NCERT",
+      "label": "NCERT Science Textbook Class 10",
+      "description": "NCERT Class 10 Science Chapter 10 Light Reflection and Refraction.",
+      "url": "https://epathshala.nic.in/e-pathshala-4/flipbook/?id=0965"
+    },
+    {
+      "type": "video",
+      "provider": "Khan Academy",
+      "label": "Light Reflection and Refraction \u2014 Video Lessons",
+      "description": "Khan Academy videos on mirrors, lenses, Snell's law and ray diagrams.",
+      "url": "https://www.khanacademy.org/science/ncert-class-10"
+    }
+  ],
+  "pyqs": [
+    {
+      "id": "sci9-pyq-001",
+      "source": "Model Paper 1 \u2014 2025-26",
+      "question": "SI unit of potential difference is (A) volt (B) ampere (C) coulomb (D) ohm meter",
+      "answer": "Wait \u2014 this is electricity. For light: Reciprocal of focal length of lens is the power of lens. P = 1/f.",
+      "marks": 1
+    },
+    {
+      "id": "sci9-pyq-002",
+      "source": "Model Paper 1 \u2014 2025-26",
+      "question": "Name the angle of deviation in prism diagram and identify its value.",
+      "answer": "\u2220HGF (angle between incident ray direction and emergent ray direction). Value = 38\u00b0.",
+      "marks": 2
+    },
+    {
+      "id": "sci9-pyq-003",
+      "source": "Model Paper 1 \u2014 2025-26",
+      "question": "Draw ray diagram: object beyond C in front of concave mirror. Nature and position of image.",
+      "answer": "Image: between F and C, real and inverted, diminished.",
+      "marks": 3
+    },
+    {
+      "id": "sci9-pyq-004",
+      "source": "Model Paper 1 \u2014 2025-26",
+      "question": "State laws of refraction of light. Mention two differences between convex mirror and convex lens.",
+      "answer": "Refraction laws: 1st: incident ray, refracted ray, normal in same plane. 2nd: sin i/sin r = constant. Differences: Convex mirror reflects light (diverges); convex lens refracts light (converges). Mirror: always virtual erect image; lens: generally real inverted image.",
+      "marks": 4
+    },
+    {
+      "id": "sci9-pyq-005",
+      "source": "Model Paper 2 \u2014 2025-26",
+      "question": "Convex lens focal length 20cm, image distance 60cm. Find object distance.",
+      "answer": "1/f = 1/v - 1/u. 1/20 = 1/60 - 1/u. 1/u = 1/60 - 1/20 = 1/60 - 3/60 = -2/60 = -1/30. u = -30 cm.",
+      "marks": 4
+    },
+    {
+      "id": "sci9-pyq-006",
+      "source": "Model Paper 2 \u2014 2025-26",
+      "question": "Object distance = -30cm, image distance = -10cm. Type of lens and nature of image.",
+      "answer": "Both distances negative on same side \u2192 concave lens. Nature: virtual and erect (concave lens always forms virtual erect diminished image for real object).",
+      "marks": 2
+    }
+  ],
+  "mcqs": [
+    {
+      "id": "sci9-mcq-001",
+      "question": "The reciprocal of focal length of a lens is:",
+      "options": [
+        "A. Power of lens",
+        "B. Radius of curvature",
+        "C. Magnification",
+        "D. Refractive index"
+      ],
+      "correctAnswer": "A",
+      "explanation": "Power P = 1/f (f in metres). Unit is Dioptre (D). This measures the converging/diverging ability of lens."
+    },
+    {
+      "id": "sci9-mcq-002",
+      "question": "Laws of reflection state that angle of incidence:",
+      "options": [
+        "A. Is greater than angle of reflection",
+        "B. Equals angle of refraction",
+        "C. Equals angle of reflection",
+        "D. Depends on mirror type"
+      ],
+      "correctAnswer": "C",
+      "explanation": "1st law: \u2220i = \u2220r. 2nd law: incident ray, reflected ray, and normal all lie in same plane."
+    },
+    {
+      "id": "sci9-mcq-003",
+      "question": "Mirror formula is:",
+      "options": [
+        "A. 1/v + 1/u = 1/f",
+        "B. 1/v - 1/u = 1/f",
+        "C. v + u = f",
+        "D. v \u00d7 u = f\u00b2"
+      ],
+      "correctAnswer": "A",
+      "explanation": "Mirror formula: 1/v + 1/u = 1/f. Lens formula: 1/v - 1/u = 1/f. Both use sign convention."
+    },
+    {
+      "id": "sci9-mcq-004",
+      "question": "Magnification is negative when the image is:",
+      "options": [
+        "A. Virtual and erect",
+        "B. Real and inverted",
+        "C. Virtual and magnified",
+        "D. Erect and magnified"
+      ],
+      "correctAnswer": "B",
+      "explanation": "m = -v/u (mirrors). Negative magnification = real inverted image. Positive = virtual erect image."
+    },
+    {
+      "id": "sci9-mcq-005",
+      "question": "Which mirror is used as rear-view mirror in vehicles?",
+      "options": [
+        "A. Concave mirror",
+        "B. Convex mirror",
+        "C. Plane mirror",
+        "D. Cylindrical mirror"
+      ],
+      "correctAnswer": "B",
+      "explanation": "Convex mirror is used as rear-view mirror \u2014 always erect, virtual, diminished image giving wider field of view."
+    },
+    {
+      "id": "sci9-mcq-006",
+      "question": "Power of a lens with focal length 25 cm is:",
+      "options": [
+        "A. 25 D",
+        "B. 4 D",
+        "C. 0.25 D",
+        "D. 40 D"
+      ],
+      "correctAnswer": "B",
+      "explanation": "P = 1/f = 1/0.25 = 4 D. Convert cm to m first: 25 cm = 0.25 m."
+    },
+    {
+      "id": "sci9-mcq-007",
+      "question": "Refraction through a glass slab produces:",
+      "options": [
+        "A. Change in direction permanently",
+        "B. Lateral displacement",
+        "C. Angle of deviation",
+        "D. Dispersion of light"
+      ],
+      "correctAnswer": "B",
+      "explanation": "Glass slab: emergent ray is parallel to incident ray but laterally displaced. Prism causes angle of deviation."
+    },
+    {
+      "id": "sci9-mcq-008",
+      "question": "If object is placed at centre of curvature of concave mirror, image is:",
+      "options": [
+        "A. At infinity",
+        "B. At focus",
+        "C. Also at centre of curvature",
+        "D. Between F and C"
+      ],
+      "correctAnswer": "C",
+      "explanation": "Object at C (2f): image also at C \u2014 real, inverted, same size. This is used in some instruments."
+    },
+    {
+      "id": "sci9-mcq-009",
+      "question": "When light travels from denser to rarer medium:",
+      "options": [
+        "A. Bends toward normal",
+        "B. Bends away from normal",
+        "C. Goes straight",
+        "D. Is totally reflected always"
+      ],
+      "correctAnswer": "B",
+      "explanation": "Dense to rare: light speeds up and bends away from normal (\u2220r > \u2220i). Rare to dense: slows down, bends toward normal."
+    },
+    {
+      "id": "sci9-mcq-010",
+      "question": "A concave lens always forms:",
+      "options": [
+        "A. Real inverted image",
+        "B. Virtual erect diminished image",
+        "C. Real erect magnified image",
+        "D. Virtual inverted image"
+      ],
+      "correctAnswer": "B",
+      "explanation": "Concave lens (diverging) always forms virtual, erect, diminished image on same side as object regardless of object position."
+    },
+    {
+      "id": "sci9-mcq-011",
+      "question": "Focal length of a mirror is related to radius of curvature by:",
+      "options": [
+        "A. f = 2R",
+        "B. f = R/2",
+        "C. f = R",
+        "D. f = R\u00b2"
+      ],
+      "correctAnswer": "B",
+      "explanation": "f = R/2. Focal length = half the radius of curvature for spherical mirrors. Pole-F = P-C/2."
+    },
+    {
+      "id": "sci9-mcq-012",
+      "question": "Sign convention: all distances are measured from:",
+      "options": [
+        "A. Focus",
+        "B. Centre of curvature",
+        "C. Pole of mirror / optical centre of lens",
+        "D. Object"
+      ],
+      "correctAnswer": "C",
+      "explanation": "New Cartesian sign convention: all distances from pole (mirror) or optical centre (lens). Distances in direction of incident light = positive."
+    },
+    {
+      "id": "sci9-mcq-013",
+      "question": "Object distance = -30cm, image distance = -10cm. The lens is:",
+      "options": [
+        "A. Convex",
+        "B. Concave",
+        "C. Plane",
+        "D. Cylindrical"
+      ],
+      "correctAnswer": "B",
+      "explanation": "Both object and image on same side (both negative). Concave lens always forms image on same side as object."
+    },
+    {
+      "id": "sci9-mcq-014",
+      "question": "Where is the image formed when object is placed at focus of concave mirror?",
+      "options": [
+        "A. At infinity",
+        "B. At centre of curvature",
+        "C. Between pole and focus",
+        "D. Behind mirror"
+      ],
+      "correctAnswer": "A",
+      "explanation": "Object at F: reflected rays are parallel \u2192 image at infinity. Used in torches and headlights (parallel beam of light)."
+    },
+    {
+      "id": "sci9-mcq-015",
+      "question": "Ability of medium to refract light is expressed as:",
+      "options": [
+        "A. Speed",
+        "B. Refractive index",
+        "C. Focal length",
+        "D. Power"
+      ],
+      "correctAnswer": "B",
+      "explanation": "Refractive index n = sin i/sin r = c/v. Higher n = more optically dense medium. Glass n \u2248 1.5, water n \u2248 1.33."
+    }
+  ],
+  "exercises": [
+    {
+      "id": "sci9-ex-001",
+      "question": "An object is placed at 15cm from a concave mirror of focal length 10cm. Find image distance and magnification.",
+      "answer": "1/v + 1/u = 1/f. u = -15, f = -10. 1/v = 1/f - 1/u = -1/10 - (-1/15) = -1/10 + 1/15 = -3/30 + 2/30 = -1/30. v = -30 cm. Magnification m = -v/u = -(-30)/(-15) = -2. Image is real, inverted, magnified (2\u00d7).",
+      "type": "short-answer"
+    },
+    {
+      "id": "sci9-ex-002",
+      "question": "Convex lens: f = 20cm, v = 60cm. Find u and magnification.",
+      "answer": "1/v - 1/u = 1/f. 1/60 - 1/u = 1/20. 1/u = 1/60 - 1/20 = 1/60 - 3/60 = -2/60 = -1/30. u = -30 cm. m = v/u = 60/(-30) = -2. Real, inverted, magnified image.",
+      "type": "short-answer"
+    },
+    {
+      "id": "sci9-ex-003",
+      "question": "State laws of reflection and draw ray diagram for object beyond C in concave mirror.",
+      "answer": "Laws: 1st: \u2220i = \u2220r. 2nd: incident, reflected, normal in same plane. Object beyond C: Draw (i) ray parallel to PA \u2192 reflects through F (ii) ray through C \u2192 reflects back on itself. Intersection between F and C = real, inverted, diminished image.",
+      "type": "short-answer"
+    },
+    {
+      "id": "sci9-ex-004",
+      "question": "Explain refraction through glass slab. Why does emergent ray come out parallel to incident ray?",
+      "answer": "Light enters top face of slab: bends toward normal. Light exits bottom face: bends away from normal by same angle. Since top and bottom faces are parallel, the net angular deviation is zero. Emergent ray is parallel to incident ray but laterally displaced (shifted sideways).",
+      "type": "short-answer"
+    },
+    {
+      "id": "sci9-ex-005",
+      "question": "Define power of a lens. A doctor prescribes +2.5D lens. What is the focal length and type?",
+      "answer": "Power P = 1/f (f in metres). P = +2.5D \u2192 f = 1/2.5 = 0.4 m = 40 cm. Positive power = convex (converging) lens. Used to correct hypermetropia.",
+      "type": "short-answer"
+    },
+    {
+      "id": "sci9-ex-006",
+      "question": "Compare image formation in convex mirror and concave mirror.",
+      "answer": "Convex mirror: always virtual, erect, diminished image behind mirror. Used as rear-view mirror. Concave mirror: can form real or virtual images depending on object position. Object beyond F \u2192 real inverted image. Object between F and P \u2192 virtual erect magnified image. Used in torches, shaving/makeup mirrors.",
+      "type": "short-answer"
+    },
+    {
+      "id": "sci9-ex-007",
+      "question": "In a prism diagram, the angle of deviation is 38\u00b0. What does this mean?",
+      "answer": "Angle of deviation is the angle between the direction of incident ray (extended) and the direction of emergent ray. It shows how much the light has been deviated/bent by the prism. In the diagram, \u2220HGF = 38\u00b0. The deviation depends on angle of prism and refractive index of glass.",
+      "type": "short-answer"
+    },
+    {
+      "id": "sci9-ex-008",
+      "question": "Mention two differences between convex mirror and convex lens.",
+      "answer": "(i) Convex mirror reflects light and diverges it; convex lens refracts light and converges it. (ii) Convex mirror always forms virtual erect diminished image; convex lens generally forms real inverted image (virtual when object inside F). (iii) Convex mirror: one reflecting surface; convex lens: two refracting surfaces.",
+      "type": "short-answer"
+    }
+  ],
+  "mcqCount": 15,
+  "exerciseCount": 8
+}

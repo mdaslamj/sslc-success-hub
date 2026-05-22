@@ -1,0 +1,389 @@
+{
+  "id": "magnetic-effects-of-electric-current",
+  "chapterNumber": 12,
+  "subjectId": "science",
+  "title": "Magnetic Effects of Electric Current",
+  "blueprintMarks": 6,
+  "difficulty": "medium",
+  "estimatedMinutes": 60,
+  "version": "1.0",
+  "lastUpdated": "2026-05",
+  "summary": "Chapter 12 explores the magnetic effects of electric current \u2014 the foundation of motors and generators. A current-carrying conductor produces a magnetic field (Oersted's discovery). The magnetic field around a straight wire, circular loop, and solenoid are studied. Fleming's Left Hand Rule predicts the direction of force on a current-carrying conductor in a magnetic field (motor principle). Electromagnetic induction (Faraday's law) and Fleming's Right Hand Rule explain generator action. AC and DC are distinguished.",
+  "learningPoints": [
+    "State Oersted's discovery: electric current produces magnetic field",
+    "Draw magnetic field lines around a straight current-carrying conductor",
+    "Apply right-hand thumb rule to find direction of magnetic field",
+    "Draw magnetic field inside a solenoid (acts like bar magnet)",
+    "State Fleming's Left Hand Rule for force on conductor in magnetic field",
+    "Explain the principle and working of an electric motor",
+    "State Faraday's law of electromagnetic induction",
+    "Apply Fleming's Right Hand Rule for direction of induced current",
+    "Explain the working of an AC generator",
+    "Distinguish between AC and DC",
+    "Explain direct current (DC) from battery and alternating current (AC) from generator",
+    "State that frequency of AC in India is 50 Hz"
+  ],
+  "laws": [
+    {
+      "name": "Oersted's Discovery",
+      "statement": "A current-carrying conductor produces a magnetic field around it. Magnetic field is perpendicular to the direction of current.",
+      "highlight": true
+    },
+    {
+      "name": "Fleming's Left Hand Rule (Motor)",
+      "statement": "Stretch thumb, forefinger, and middle finger of LEFT hand perpendicular to each other. Forefinger = direction of magnetic field (B). Middle finger = direction of current (I). Thumb = direction of force/motion on conductor.",
+      "highlight": true
+    },
+    {
+      "name": "Fleming's Right Hand Rule (Generator)",
+      "statement": "Stretch thumb, forefinger, and middle finger of RIGHT hand perpendicular to each other. Thumb = direction of motion of conductor. Forefinger = direction of magnetic field. Middle finger = direction of induced current.",
+      "highlight": true
+    },
+    {
+      "name": "Faraday's Law of Electromagnetic Induction",
+      "statement": "A changing magnetic field (or relative motion between conductor and magnet) induces an EMF (and hence current) in the conductor.",
+      "highlight": true
+    }
+  ],
+  "formulas": [
+    {
+      "label": "Right Hand Thumb Rule",
+      "expression": "Thumb \u2192 current direction; fingers curl \u2192 field direction",
+      "description": "For a straight conductor: thumb points in direction of current, curled fingers show direction of magnetic field lines.",
+      "highlight": true
+    },
+    {
+      "label": "Force on Conductor",
+      "expression": "F = BIL sin\u03b8",
+      "description": "Force on current-carrying conductor in magnetic field. B=field strength, I=current, L=length, \u03b8=angle.",
+      "highlight": false
+    }
+  ],
+  "diagrams": [
+    {
+      "title": "Magnetic Field around Straight Conductor",
+      "description": "Circular field lines centred on wire. Clockwise when current away from you (dot). Anticlockwise when current toward you (cross).",
+      "highlight": true,
+      "imageUrl": ""
+    },
+    {
+      "title": "Magnetic Field in Solenoid",
+      "description": "Solenoid with many turns: field inside is uniform and parallel to axis. One end is N pole, other is S pole (like bar magnet). Right hand rule: fingers curl in direction of current, thumb points to N pole.",
+      "highlight": true,
+      "imageUrl": ""
+    },
+    {
+      "title": "Fleming's Left Hand Rule Diagram",
+      "description": "Left hand: forefinger (field B), middle finger (current I), thumb (force/motion F) \u2014 all perpendicular.",
+      "highlight": true,
+      "imageUrl": ""
+    },
+    {
+      "title": "Electromagnetic Induction Setup",
+      "description": "Magnet moving toward/away from coil \u2192 galvanometer deflects \u2192 induced current. Faster motion = greater deflection. More turns = greater induced EMF.",
+      "highlight": true,
+      "imageUrl": ""
+    }
+  ],
+  "resources": [
+    {
+      "type": "textbook",
+      "provider": "KTBS Karnataka",
+      "label": "Karnataka SSLC Science Textbook",
+      "description": "Official Karnataka SSLC Science textbook Chapter 12 Magnetic Effects.",
+      "url": "https://ktbs.kar.nic.in/new/index.html#!/textbook"
+    },
+    {
+      "type": "textbook",
+      "provider": "ePathshala NCERT",
+      "label": "NCERT Science Textbook Class 10",
+      "description": "NCERT Class 10 Science Chapter 13 Magnetic Effects of Electric Current.",
+      "url": "https://epathshala.nic.in/e-pathshala-4/flipbook/?id=0965"
+    },
+    {
+      "type": "video",
+      "provider": "Khan Academy",
+      "label": "Magnetic Effects \u2014 Video Lessons",
+      "description": "Khan Academy videos on magnetic field, motors, and generators.",
+      "url": "https://www.khanacademy.org/science/ncert-class-10"
+    }
+  ],
+  "pyqs": [
+    {
+      "id": "sci12-pyq-001",
+      "source": "Model Paper 1 \u2014 2025-26",
+      "question": "When switch is closed, does end B of solenoid attract end N of bar magnet? Clarify.",
+      "answer": "No, it repels. When switch closed, end B behaves like N pole (right hand rule). N pole of solenoid repels N pole of bar magnet \u2014 like poles repel.",
+      "marks": 1
+    },
+    {
+      "id": "sci12-pyq-002",
+      "source": "Model Paper 1 \u2014 2025-26",
+      "question": "Explain obtaining magnetic field lines around a bar magnet using compass needle.",
+      "answer": "Fix paper on board, place bar magnet. Put compass near N pole. South pole of compass points to N of magnet. Mark dot where N of compass points. Move compass to dot. Repeat. Join dots \u2192 magnetic field line. Repeat from different positions to get multiple lines.",
+      "marks": 3
+    },
+    {
+      "id": "sci12-pyq-003",
+      "source": "Model Paper 1 \u2014 2025-26",
+      "question": "Explain experiment: current-carrying conductor in magnetic field experiences mechanical force.",
+      "answer": "Suspend aluminium rod between poles of horseshoe magnet. Connect rod in series with battery, key, rheostat. Pass current \u2014 rod deflects (force). Reverse current \u2014 rod deflects opposite. Reverse magnetic field \u2014 same side deflection. Force = F due to magnetic field on current.",
+      "marks": 3
+    },
+    {
+      "id": "sci12-pyq-004",
+      "source": "Model Paper 2 \u2014 2025-26",
+      "question": "Magnetic field at centre C of circular coil: (A) zero (B) I (C) 2I\u2081 (D) 2I\u2082. Answer: (A) zero",
+      "answer": "(A) zero. When two equal currents flow in opposite semicircles (I\u2081 upward, I\u2082 downward), their magnetic fields at centre cancel out.",
+      "marks": 1
+    },
+    {
+      "id": "sci12-pyq-005",
+      "source": "Model Paper 2 \u2014 2025-26",
+      "question": "What is a solenoid?",
+      "answer": "A solenoid is a cylindrical coil of copper wire with many turns wound around it. When current flows, it produces a magnetic field similar to a bar magnet.",
+      "marks": 1
+    },
+    {
+      "id": "sci12-pyq-006",
+      "source": "Model Paper 2 \u2014 2025-26",
+      "question": "State Fleming's Left Hand Rule. What is potential difference between live and neutral wire?",
+      "answer": "Fleming's LHR: left hand thumb, forefinger, middle finger perpendicular. Forefinger=B field direction, middle finger=current direction, thumb=force/motion direction. PD between live and neutral = 220V.",
+      "marks": 3
+    }
+  ],
+  "mcqs": [
+    {
+      "id": "sci12-mcq-001",
+      "question": "Oersted's experiment showed that:",
+      "options": [
+        "A. Magnet produces electric current",
+        "B. Electric current produces magnetic field",
+        "C. Magnetic field produces heat",
+        "D. Current and magnetism are unrelated"
+      ],
+      "correctAnswer": "B",
+      "explanation": "Oersted discovered that a current-carrying wire deflects a compass needle nearby \u2014 proving electric current creates a magnetic field."
+    },
+    {
+      "id": "sci12-mcq-002",
+      "question": "When switch is closed, end B of solenoid:",
+      "options": [
+        "A. Attracts N pole of magnet",
+        "B. Repels N pole of magnet",
+        "C. Has no effect on magnet",
+        "D. Depends on current strength"
+      ],
+      "correctAnswer": "B",
+      "explanation": "When switch closed, end B becomes N pole (by right hand rule). N pole of solenoid repels N pole of magnet \u2014 like poles repel."
+    },
+    {
+      "id": "sci12-mcq-003",
+      "question": "Fleming's Left Hand Rule is used to find:",
+      "options": [
+        "A. Direction of induced current",
+        "B. Direction of force on current in magnetic field",
+        "C. Direction of magnetic field around wire",
+        "D. Magnitude of current"
+      ],
+      "correctAnswer": "B",
+      "explanation": "FLH Rule: applied to motors \u2014 predicts direction of force (motion) on a current-carrying conductor in a magnetic field."
+    },
+    {
+      "id": "sci12-mcq-004",
+      "question": "A solenoid acts like:",
+      "options": [
+        "A. A capacitor",
+        "B. A bar magnet",
+        "C. A resistor",
+        "D. A transformer"
+      ],
+      "correctAnswer": "B",
+      "explanation": "A solenoid with current has uniform magnetic field inside and behaves exactly like a bar magnet with N and S poles."
+    },
+    {
+      "id": "sci12-mcq-005",
+      "question": "Electromagnetic induction was discovered by:",
+      "options": [
+        "A. Oersted",
+        "B. Maxwell",
+        "C. Faraday",
+        "D. Ampere"
+      ],
+      "correctAnswer": "C",
+      "explanation": "Michael Faraday (1831) discovered that changing magnetic flux through a coil induces an EMF and current."
+    },
+    {
+      "id": "sci12-mcq-006",
+      "question": "Fleming's Right Hand Rule applies to:",
+      "options": [
+        "A. Motors",
+        "B. Generators/dynamos",
+        "C. Resistors",
+        "D. Transformers"
+      ],
+      "correctAnswer": "B",
+      "explanation": "FRH Rule: applies to generators \u2014 predicts direction of induced current when conductor moves in magnetic field."
+    },
+    {
+      "id": "sci12-mcq-007",
+      "question": "Frequency of AC supply in India is:",
+      "options": [
+        "A. 60 Hz",
+        "B. 50 Hz",
+        "C. 100 Hz",
+        "D. 25 Hz"
+      ],
+      "correctAnswer": "B",
+      "explanation": "India uses 50 Hz AC at 220V. USA uses 60 Hz at 110V. 50 Hz means current reverses direction 100 times per second."
+    },
+    {
+      "id": "sci12-mcq-008",
+      "question": "Factors that increase the strength of electromagnetic induction:",
+      "options": [
+        "A. Fewer turns, slower motion",
+        "B. More turns, faster motion, stronger magnet",
+        "C. Less flux change",
+        "D. Higher resistance coil"
+      ],
+      "correctAnswer": "B",
+      "explanation": "Induced EMF increases with: more coil turns, faster relative motion, stronger magnet, iron core in solenoid."
+    },
+    {
+      "id": "sci12-mcq-009",
+      "question": "In Fleming's Left Hand Rule, the forefinger points in the direction of:",
+      "options": [
+        "A. Current",
+        "B. Force/Motion",
+        "C. Magnetic field",
+        "D. Induced EMF"
+      ],
+      "correctAnswer": "C",
+      "explanation": "FLH Rule: Forefinger = Magnetic field direction (B). Middle finger = Current direction (I). Thumb = Force direction (F)."
+    },
+    {
+      "id": "sci12-mcq-010",
+      "question": "An electric motor works on the principle that:",
+      "options": [
+        "A. Changing magnetic field induces current",
+        "B. Current-carrying conductor in magnetic field experiences force",
+        "C. Current produces heat",
+        "D. Moving magnet produces current"
+      ],
+      "correctAnswer": "B",
+      "explanation": "Motor principle (FLH Rule): F = BIL. Current + magnetic field \u2192 force/motion. Converts electrical energy to mechanical energy."
+    },
+    {
+      "id": "sci12-mcq-011",
+      "question": "Generator works on the principle of:",
+      "options": [
+        "A. Motor effect",
+        "B. Ohm's Law",
+        "C. Faraday's electromagnetic induction",
+        "D. Joule's heating"
+      ],
+      "correctAnswer": "C",
+      "explanation": "Generator (dynamo): conductor moves in magnetic field \u2192 changing flux \u2192 induced EMF \u2192 current. Converts mechanical energy to electrical energy."
+    },
+    {
+      "id": "sci12-mcq-012",
+      "question": "Difference between AC and DC:",
+      "options": [
+        "A. AC has constant direction; DC changes direction",
+        "B. DC has constant direction; AC changes direction periodically",
+        "C. Both have same direction",
+        "D. AC is produced by batteries"
+      ],
+      "correctAnswer": "B",
+      "explanation": "DC (Direct Current): constant direction (from battery). AC (Alternating Current): direction reverses periodically (from generator/mains supply)."
+    },
+    {
+      "id": "sci12-mcq-013",
+      "question": "Magnetic field lines around a current-carrying wire are:",
+      "options": [
+        "A. Straight lines parallel to wire",
+        "B. Circular concentric rings around wire",
+        "C. Elliptical",
+        "D. Random"
+      ],
+      "correctAnswer": "B",
+      "explanation": "Circular concentric rings centred on wire. Right hand rule: thumb = current, curled fingers = field direction."
+    },
+    {
+      "id": "sci12-mcq-014",
+      "question": "If the direction of current in a conductor is reversed:",
+      "options": [
+        "A. Force direction remains same",
+        "B. Force direction reverses",
+        "C. Force magnitude changes",
+        "D. No effect on force"
+      ],
+      "correctAnswer": "B",
+      "explanation": "By F = BIL and FLH Rule: reversing current reverses force direction. The aluminium rod deflects the other way."
+    },
+    {
+      "id": "sci12-mcq-015",
+      "question": "To increase induced current in electromagnetic induction:",
+      "options": [
+        "A. Move magnet slower",
+        "B. Use fewer turns",
+        "C. Use a weaker magnet",
+        "D. Move magnet faster or use stronger magnet"
+      ],
+      "correctAnswer": "D",
+      "explanation": "Induced EMF \u221d rate of change of magnetic flux. Faster motion, stronger magnet, more turns, iron core \u2192 greater induced current."
+    }
+  ],
+  "exercises": [
+    {
+      "id": "sci12-ex-001",
+      "question": "Explain Oersted's experiment and its significance.",
+      "answer": "Oersted (1820): kept compass near a wire with current flowing. Compass needle deflected showing magnetic field. On reversing current, needle deflected opposite. Significance: proved electric current produces magnetic field \u2014 linked electricity and magnetism (electromagnetism).",
+      "type": "short-answer"
+    },
+    {
+      "id": "sci12-ex-002",
+      "question": "State Fleming's Left Hand Rule and explain how it applies to electric motors.",
+      "answer": "FLH Rule: Left hand thumb, forefinger, middle finger all perpendicular. Forefinger=B, middle finger=I, thumb=force direction. Motor: current flows in coil inside magnetic field \u2192 force on coil \u2192 coil rotates \u2192 shaft rotates. This converts electrical to mechanical energy.",
+      "type": "short-answer"
+    },
+    {
+      "id": "sci12-ex-003",
+      "question": "Explain electromagnetic induction with the experiment of moving magnet near coil.",
+      "answer": "Faraday's experiment: move bar magnet toward coil \u2192 galvanometer deflects (induced current). Move away \u2192 deflects opposite. Hold still \u2192 no deflection. Faster motion \u2192 more deflection. More turns \u2192 more induced current. This proves: changing magnetic flux induces EMF and current.",
+      "type": "short-answer"
+    },
+    {
+      "id": "sci12-ex-004",
+      "question": "Explain the working of an AC generator.",
+      "answer": "AC generator: rectangular coil rotated in magnetic field. When coil rotates, magnetic flux through it changes \u2192 induces EMF. As coil turns 360\u00b0, EMF first increases to max, decreases to zero, reverses, increases again \u2192 sinusoidal AC waveform. Slip rings + brushes collect current. Converts mechanical to electrical energy.",
+      "type": "short-answer"
+    },
+    {
+      "id": "sci12-ex-005",
+      "question": "Why does end B of solenoid repel the N pole of a bar magnet when switch is closed?",
+      "answer": "When switch closes, current flows in solenoid. By right-hand rule, end B becomes N pole. N pole of solenoid + N pole of magnet \u2192 like poles repel. If switch was opposite, B would be S pole and would attract N pole.",
+      "type": "short-answer"
+    },
+    {
+      "id": "sci12-ex-006",
+      "question": "Distinguish between electric motor and electric generator.",
+      "answer": "Motor: uses electrical energy, produces mechanical energy; current in magnetic field \u2192 force (FLH Rule). Generator: uses mechanical energy, produces electrical energy; motion in magnetic field \u2192 induced current (FRH Rule / Faraday's Law). They are reverse processes of each other.",
+      "type": "short-answer"
+    },
+    {
+      "id": "sci12-ex-007",
+      "question": "Describe the magnetic field pattern around a solenoid.",
+      "answer": "Outside solenoid: like a bar magnet \u2014 field lines emerge from N pole, loop around, enter S pole. Inside solenoid: uniform, parallel to axis. The end where current flows anticlockwise = N pole; clockwise = S pole. Field strength increases with more turns and more current.",
+      "type": "short-answer"
+    },
+    {
+      "id": "sci12-ex-008",
+      "question": "How does Faraday's law explain generation of electricity?",
+      "answer": "Faraday's Law: induced EMF = rate of change of magnetic flux. In generator: coil rotates in magnetic field \u2192 flux through coil changes every moment \u2192 continuously varying induced EMF \u2192 AC current. The formula: EMF = -d\u03a6/dt. Negative sign (Lenz's Law) means induced current opposes the change.",
+      "type": "short-answer"
+    }
+  ],
+  "mcqCount": 15,
+  "exerciseCount": 8
+}

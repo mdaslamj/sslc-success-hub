@@ -1,0 +1,94 @@
+{
+  "id": "acids-bases-and-salts",
+  "chapterNumber": 2,
+  "subjectId": "science",
+  "title": "Acids, Bases and Salts",
+  "blueprintMarks": 6,
+  "difficulty": "medium",
+  "estimatedMinutes": 60,
+  "version": "1.0",
+  "lastUpdated": "2026-05",
+  "summary": "Chapter 2 explores the chemical properties of acids, bases, and salts. Students learn how acids produce H⁺ ions and bases produce OH⁻ ions in water. The pH scale is introduced to measure acidity and alkalinity. Important salts like baking soda, washing soda, bleaching powder, and plaster of Paris are studied with their chemical names, formulae, and uses. The concept of acid-base indicators and the preparation of common salts through neutralisation are also covered.",
+  "learningPoints": [
+    "Define acids as substances that produce H⁺ (H₃O⁺) ions in water",
+    "Define bases as substances that produce OH⁻ ions in water",
+    "Distinguish strong acids (HCl, H₂SO₄, HNO₃) from weak acids (CH₃COOH)",
+    "Detect acids and bases using litmus, phenolphthalein, and universal indicator",
+    "Explain pH scale: pH < 7 = acidic, pH = 7 = neutral, pH > 7 = basic",
+    "State the neutralisation reaction: acid + base → salt + water",
+    "Explain reaction of acids with metals, metal oxides, metal carbonates",
+    "Explain reaction of bases with metals and non-metallic oxides",
+    "Identify common salts: NaCl (common salt), NaHCO₃ (baking soda), Na₂CO₃ (washing soda), Ca(OCl)Cl (bleaching powder), CaSO₄·½H₂O (plaster of Paris)",
+    "Explain the chlor-alkali process and its products",
+    "Define water of crystallisation with examples",
+    "Explain hardness of water and its removal"
+  ],
+  "laws": [
+    {
+      "name": "pH Scale",
+      "statement": "pH measures hydrogen ion concentration. pH < 7 = acidic, pH = 7 = neutral, pH > 7 = basic/alkaline. Lower the pH, stronger the acid.",
+      "highlight": true
+    },
+    {
+      "name": "Neutralisation",
+      "statement": "Acid + Base → Salt + Water. This reaction is always exothermic. The products depend on the acid and base used.",
+      "highlight": true
+    }
+  ],
+  "formulas": [
+    {"label":"Neutralisation","expression":"Acid + Base → Salt + Water","description":"HCl + NaOH → NaCl + H₂O. Always exothermic.","highlight":true},
+    {"label":"Acid + Metal","expression":"Acid + Metal → Salt + H₂↑","description":"Zn + H₂SO₄ → ZnSO₄ + H₂. Hydrogen gas is liberated.","highlight":true},
+    {"label":"Acid + Metal Carbonate","expression":"Acid + Metal Carbonate → Salt + H₂O + CO₂↑","description":"Na₂CO₃ + 2HCl → 2NaCl + H₂O + CO₂↑","highlight":true},
+    {"label":"Chlor-Alkali Process","expression":"2NaCl(aq) + 2H₂O → 2NaOH + Cl₂ + H₂","description":"Electrolysis of brine produces NaOH, chlorine and hydrogen.","highlight":true},
+    {"label":"Baking Soda","expression":"NaHCO₃ — Sodium Hydrogen Carbonate","description":"Used in baking, antacids. Reacts with acid to release CO₂.","highlight":true},
+    {"label":"Washing Soda","expression":"Na₂CO₃·10H₂O — Sodium Carbonate Decahydrate","description":"Used in glass, soap, paper industry. Softens hard water.","highlight":true},
+    {"label":"Plaster of Paris","expression":"CaSO₄·½H₂O","description":"Sets hard when mixed with water. Used for plaster casts and sculptures.","highlight":true},
+    {"label":"Bleaching Powder","expression":"Ca(OCl)Cl — Calcium oxychloride","description":"Made by passing Cl₂ over dry Ca(OH)₂. Used as disinfectant.","highlight":false}
+  ],
+  "diagrams": [
+    {"title":"pH Scale","description":"0-14 scale showing colours of universal indicator. Red=strongly acidic, Green=neutral, Violet=strongly basic.","highlight":true,"imageUrl":"https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/Simple_pH_scale.svg/600px-Simple_pH_scale.svg.png"},
+    {"title":"Chlor-Alkali Electrolysis Cell","description":"Electrolysis of brine: Cl₂ at anode (right), H₂ at cathode (left), NaOH formed in solution.","highlight":true,"imageUrl":""}
+  ],
+  "resources": [
+    {"type":"textbook","provider":"KTBS Karnataka","label":"Karnataka SSLC Science Textbook","description":"Official Karnataka State Board Science textbook. Chapter 2 covers Acids, Bases and Salts.","url":"https://ktbs.kar.nic.in/new/index.html#!/textbook"},
+    {"type":"textbook","provider":"ePathshala NCERT","label":"NCERT Science Textbook Class 10","description":"NCERT Class 10 Science Chapter 2.","url":"https://epathshala.nic.in/e-pathshala-4/flipbook/?id=0965"},
+    {"type":"video","provider":"Khan Academy","label":"Acids, Bases and Salts — Video Lessons","description":"Khan Academy videos on pH, neutralisation, and common salts.","url":"https://www.khanacademy.org/science/ncert-class-10"}
+  ],
+  "pyqs": [
+    {"id":"sci2-pyq-001","source":"Model Paper 1 — 2025-26","question":"Four solutions A, B, C and D showed pH as 5, 2, 7 and 11 respectively. Which solution (i) has more hydronium ions? (ii) is neutral? (iii) is the weak acid?","answer":"(i) B (pH 2 — most acidic, most H₃O⁺) (ii) C (pH 7 = neutral) (iii) A (pH 5 — weak acid)","marks":3},
+    {"id":"sci2-pyq-002","source":"Model Paper 1 — 2025-26","question":"How do you detect a base using blue litmus paper?","answer":"The colour of blue litmus paper does not change when dipped in a basic solution. (Blue litmus stays blue in base; red litmus turns blue in base.)","marks":1},
+    {"id":"sci2-pyq-003","source":"Model Paper 1 — 2025-26","question":"Name the salts responsible for the hardness of water.","answer":"Calcium salts (CaSO₄, CaCl₂, Ca(HCO₃)₂) and Magnesium salts (MgSO₄, MgCl₂, Mg(HCO₃)₂).","marks":1},
+    {"id":"sci2-pyq-004","source":"Model Paper 2 — 2025-26","question":"What is acid rain?","answer":"When the pH of rain water is less than 5.6, it is called acid rain. It is caused by SO₂ and NO₂ dissolved in rainwater forming sulphuric and nitric acids.","marks":1},
+    {"id":"sci2-pyq-005","source":"Model Paper 2 — 2025-26","question":"Hydrochloric acid is considered a strong acid. Why?","answer":"In water, hydrochloric acid completely dissociates into H⁺ and Cl⁻ ions. It forms more H⁺ ions in water — hence it is a strong acid.","marks":1},
+    {"id":"sci2-pyq-006","source":"Model Paper 2 — 2025-26","question":"Write the chemical name and molecular formula of baking soda.","answer":"Chemical name: Sodium hydrogen carbonate (or Sodium bicarbonate). Molecular formula: NaHCO₃.","marks":1}
+  ],
+  "mcqs": [
+    {"id":"sci2-mcq-001","question":"Four solutions A(pH=5), B(pH=2), C(pH=7), D(pH=11). Which has more hydronium ions?","options":["A. A","B. B","C. C","D. D"],"correctAnswer":"B","explanation":"Lower pH = more H₃O⁺ ions. pH 2 is most acidic = most hydronium ions."},
+    {"id":"sci2-mcq-002","question":"When pH of rainwater is less than 5.6, it is called:","options":["A. Hard water","B. Soft water","C. Acid rain","D. Neutral rain"],"correctAnswer":"C","explanation":"Normal rainwater has pH ~5.6 due to dissolved CO₂. When pH falls below 5.6 due to SO₂/NO₂, it is acid rain."},
+    {"id":"sci2-mcq-003","question":"The chemical name of bleaching powder is:","options":["A. Calcium carbonate","B. Calcium oxychloride","C. Calcium hydroxide","D. Calcium sulphate"],"correctAnswer":"B","explanation":"Bleaching powder is Ca(OCl)Cl — calcium oxychloride. Made by Cl₂ + Ca(OH)₂."},
+    {"id":"sci2-mcq-004","question":"Which gas is liberated when an acid reacts with a metal carbonate?","options":["A. Hydrogen","B. Oxygen","C. Carbon dioxide","D. Nitrogen"],"correctAnswer":"C","explanation":"Na₂CO₃ + 2HCl → 2NaCl + H₂O + CO₂↑. CO₂ turns lime water milky."},
+    {"id":"sci2-mcq-005","question":"Plaster of Paris sets hard because:","options":["A. It loses water","B. It gains water of crystallisation","C. It decomposes","D. It reacts with CO₂"],"correctAnswer":"B","explanation":"CaSO₄·½H₂O + 1½H₂O → CaSO₄·2H₂O. It absorbs water to form hard gypsum."},
+    {"id":"sci2-mcq-006","question":"The product formed when NaOH reacts with CO₂ is:","options":["A. Na₂O","B. NaCO₃","C. Na₂CO₃","D. NaHCO₃"],"correctAnswer":"C","explanation":"2NaOH + CO₂ → Na₂CO₃ + H₂O. Base reacts with non-metallic oxide to form salt and water."},
+    {"id":"sci2-mcq-007","question":"In the chlor-alkali process, products formed are:","options":["A. NaOH, H₂, O₂","B. NaOH, Cl₂, H₂","C. Na, Cl₂, H₂O","D. NaCl, H₂, O₂"],"correctAnswer":"B","explanation":"2NaCl + 2H₂O → 2NaOH + Cl₂ + H₂. Electrolysis of brine."},
+    {"id":"sci2-mcq-008","question":"pH of a neutral solution is:","options":["A. 0","B. 1","C. 7","D. 14"],"correctAnswer":"C","explanation":"pH = 7 is neutral. Pure water at 25°C has pH = 7."},
+    {"id":"sci2-mcq-009","question":"Washing soda is:","options":["A. NaCl","B. NaHCO₃","C. Na₂CO₃·10H₂O","D. CaSO₄·½H₂O"],"correctAnswer":"C","explanation":"Washing soda is Na₂CO₃·10H₂O (sodium carbonate decahydrate). Used to soften hard water."},
+    {"id":"sci2-mcq-010","question":"Salts responsible for hardness of water are:","options":["A. NaCl and KCl","B. Calcium and magnesium salts","C. Na₂CO₃","D. NaOH"],"correctAnswer":"B","explanation":"Ca²⁺ and Mg²⁺ ions from their bicarbonates, sulphates, and chlorides cause hardness of water."},
+    {"id":"sci2-mcq-011","question":"The simplest hydrocarbon is:","options":["A. Ethane","B. Propane","C. Methane","D. Butane"],"correctAnswer":"C","explanation":"Methane CH₄ is the simplest hydrocarbon — one carbon with four hydrogen atoms."},
+    {"id":"sci2-mcq-012","question":"Antacids work because they:","options":["A. Increase stomach acid","B. Neutralise excess stomach acid","C. Absorb stomach acid","D. Dilute stomach acid"],"correctAnswer":"B","explanation":"Antacids contain Mg(OH)₂ or Al(OH)₃ which neutralise excess HCl in stomach (neutralisation reaction)."},
+    {"id":"sci2-mcq-013","question":"Which indicator turns red in acid and blue in base?","options":["A. Phenolphthalein","B. Methyl orange","C. Litmus","D. Universal indicator"],"correctAnswer":"C","explanation":"Litmus is red in acid and blue in base. Phenolphthalein is colourless in acid and pink in base."},
+    {"id":"sci2-mcq-014","question":"Water of crystallisation in washing soda is:","options":["A. 2","B. 5","C. 7","D. 10"],"correctAnswer":"D","explanation":"Na₂CO₃·10H₂O — washing soda has 10 molecules of water of crystallisation."},
+    {"id":"sci2-mcq-015","question":"Tooth decay is caused by:","options":["A. Alkaline mouth pH","B. Neutral pH","C. Acidic pH below 5.5","D. pH above 7"],"correctAnswer":"C","explanation":"When pH in mouth falls below 5.5, tooth enamel erodes. Bacteria produce acids from sugar — causing decay."}
+  ],
+  "exercises": [
+    {"id":"sci2-ex-001","question":"What happens when dilute HCl is added to zinc? Write the equation and name the type of reaction.","answer":"Zn + 2HCl → ZnCl₂ + H₂↑. Hydrogen gas is evolved (tested by burning — squeaky pop). This is a displacement reaction.","type":"short-answer"},
+    {"id":"sci2-ex-002","question":"Explain the chlor-alkali process. What are the products and their uses?","answer":"2NaCl(aq) + 2H₂O → 2NaOH + Cl₂↑ + H₂↑. Products: (i) NaOH — soap, detergents, paper (ii) Cl₂ — PVC, disinfectants, bleaching powder (iii) H₂ — fuel, margarine.","type":"short-answer"},
+    {"id":"sci2-ex-003","question":"Give three differences between strong acid and weak acid.","answer":"Strong acid: completely dissociates (HCl, H₂SO₄, HNO₃), high H⁺ concentration, low pH. Weak acid: partially dissociates (CH₃COOH), low H⁺ concentration, higher pH.","type":"short-answer"},
+    {"id":"sci2-ex-004","question":"What is plaster of Paris? How is it prepared? Write its uses.","answer":"CaSO₄·½H₂O (calcium sulphate hemihydrate). Prepared by heating gypsum at 100°C: CaSO₄·2H₂O → CaSO₄·½H₂O + 1½H₂O. Uses: Plaster casts for fractures, making statues, sealing joints.","type":"short-answer"},
+    {"id":"sci2-ex-005","question":"Why should bleaching powder not be mixed with acids?","answer":"Ca(OCl)Cl + H₂SO₄ → CaSO₄ + Cl₂ + H₂O. Mixing with acid releases toxic chlorine gas which is harmful.","type":"short-answer"},
+    {"id":"sci2-ex-006","question":"Why does a bee sting cause pain and how can it be treated?","answer":"Bee sting injects formic acid (methanoic acid — acidic) causing pain. It can be treated by rubbing baking soda (NaHCO₃) solution which neutralises the acid.","type":"short-answer"},
+    {"id":"sci2-ex-007","question":"Explain with diagram how pH affects plant growth and soil.","answer":"Most crops grow best at pH 6-7. Acidic soil (pH < 6) is treated with lime (CaO or Ca(OH)₂) to raise pH. Alkaline soil is treated with gypsum (CaSO₄). Farmers test soil pH before choosing crops.","type":"short-answer"},
+    {"id":"sci2-ex-008","question":"What is water of crystallisation? Give two examples.","answer":"The fixed number of water molecules present in a crystalline salt is called water of crystallisation. Examples: (i) CuSO₄·5H₂O — blue vitriol (ii) Na₂CO₃·10H₂O — washing soda (iii) CaSO₄·2H₂O — gypsum.","type":"short-answer"}
+  ],
+  "mcqCount": 15,
+  "exerciseCount": 8
+}

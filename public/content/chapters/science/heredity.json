@@ -1,0 +1,372 @@
+{
+  "id": "heredity",
+  "chapterNumber": 8,
+  "subjectId": "science",
+  "title": "Heredity",
+  "blueprintMarks": 4,
+  "difficulty": "medium",
+  "estimatedMinutes": 55,
+  "version": "1.0",
+  "lastUpdated": "2026-05",
+  "summary": "Chapter 8 introduces heredity \u2014 the passing of traits from parents to offspring. Mendel's experiments with pea plants established the laws of inheritance. The concepts of dominant and recessive traits, genotype, phenotype, homozygous, and heterozygous are explained. The Punnett square is used to predict offspring ratios. Sex determination in humans is explained through sex chromosomes (XX = female, XY = male). The role of DNA and genes in controlling characteristics is covered.",
+  "learningPoints": [
+    "Define heredity and variation",
+    "Explain Mendel's experiments: trait selection, monohybrid and dihybrid crosses",
+    "Define dominant, recessive, homozygous, heterozygous, genotype, phenotype",
+    "State Mendel's Laws: Law of Segregation, Law of Independent Assortment",
+    "Use Punnett square to predict offspring ratios",
+    "Monohybrid cross: F1 all dominant; F2 ratio 3:1 (phenotypic), 1:2:1 (genotypic)",
+    "Dihybrid cross: F2 ratio 9:3:3:1",
+    "Explain sex determination in humans: XX (female), XY (male)",
+    "Explain how the father determines sex of child",
+    "Define gene as a segment of DNA that controls a specific characteristic",
+    "Distinguish between inherited and acquired traits"
+  ],
+  "laws": [
+    {
+      "name": "Mendel's Law of Segregation",
+      "statement": "During gamete formation, alleles of each gene pair separate (segregate) so that each gamete carries only one allele for each gene.",
+      "highlight": true
+    },
+    {
+      "name": "Mendel's Law of Independent Assortment",
+      "statement": "Genes for different traits segregate independently of each other during gamete formation (applicable to genes on different chromosomes).",
+      "highlight": true
+    }
+  ],
+  "formulas": [
+    {
+      "label": "Monohybrid F2 Ratio",
+      "expression": "Phenotypic: 3 dominant : 1 recessive | Genotypic: 1 TT : 2 Tt : 1 tt",
+      "description": "F1 cross Tt \u00d7 Tt gives 3:1 phenotypic and 1:2:1 genotypic ratios.",
+      "highlight": true
+    },
+    {
+      "label": "Dihybrid F2 Ratio",
+      "expression": "Phenotypic: 9 : 3 : 3 : 1",
+      "description": "TTRR \u00d7 ttrr \u2192 F1 TtRr \u2192 F2 shows 9:3:3:1 ratio.",
+      "highlight": true
+    },
+    {
+      "label": "Sex Chromosomes",
+      "expression": "Female: XX | Male: XY | Offspring: 50% XX (girl) : 50% XY (boy)",
+      "description": "Father determines sex \u2014 he provides either X or Y chromosome.",
+      "highlight": true
+    }
+  ],
+  "diagrams": [
+    {
+      "title": "Monohybrid Punnett Square",
+      "description": "Tt \u00d7 Tt: TT, Tt, Tt, tt \u2192 3 tall : 1 dwarf. 1:2:1 genotypic ratio.",
+      "highlight": true,
+      "imageUrl": ""
+    },
+    {
+      "title": "Sex Determination in Humans",
+      "description": "Father (XY) \u2192 X or Y gametes. Mother (XX) \u2192 X gametes only. XX = girl, XY = boy. Father determines sex of child.",
+      "highlight": true,
+      "imageUrl": ""
+    }
+  ],
+  "resources": [
+    {
+      "type": "textbook",
+      "provider": "KTBS Karnataka",
+      "label": "Karnataka SSLC Science Textbook",
+      "description": "Official Karnataka SSLC Science textbook Chapter 8 Heredity.",
+      "url": "https://ktbs.kar.nic.in/new/index.html#!/textbook"
+    },
+    {
+      "type": "textbook",
+      "provider": "ePathshala NCERT",
+      "label": "NCERT Science Textbook Class 10",
+      "description": "NCERT Class 10 Science Chapter 9 Heredity and Evolution.",
+      "url": "https://epathshala.nic.in/e-pathshala-4/flipbook/?id=0965"
+    },
+    {
+      "type": "video",
+      "provider": "Khan Academy",
+      "label": "Heredity \u2014 Video Lessons",
+      "description": "Khan Academy videos on Mendel's experiments, genetics and sex determination.",
+      "url": "https://www.khanacademy.org/science/ncert-class-10"
+    }
+  ],
+  "pyqs": [
+    {
+      "id": "sci8-pyq-001",
+      "source": "Model Paper 1 \u2014 2025-26",
+      "question": "In a zygote there are 24 pairs of chromosomes. Number of chromosomes in gametes: (A) 24 pairs (B) 48 (C) 6 pairs (D) 24",
+      "answer": "(D) 24. Gametes are haploid (n). 24 pairs = 48 chromosomes. Gametes have 48\u00f72 = 24 chromosomes.",
+      "marks": 1
+    },
+    {
+      "id": "sci8-pyq-002",
+      "source": "Model Paper 1 \u2014 2025-26",
+      "question": "Red flowering pea plant (RR) crossed with white (rr). Show F2 with checker board. Write phenotypic and genotypic ratios.",
+      "answer": "F1: all Rr (red). F2 cross Rr \u00d7 Rr: RR, Rr, Rr, rr. Phenotypic: 3 red : 1 white. Genotypic: 1 RR : 2 Rr : 1 rr.",
+      "marks": 3
+    },
+    {
+      "id": "sci8-pyq-003",
+      "source": "Model Paper 1 \u2014 2025-26",
+      "question": "Explain determination of sex of male child in humans.",
+      "answer": "Father has XY, mother has XX. Father produces X or Y sperm; mother produces only X eggs. XX \u2192 girl, XY \u2192 boy. Father determines sex of child \u2014 50% chance each.",
+      "marks": 3
+    },
+    {
+      "id": "sci8-pyq-004",
+      "source": "Model Paper 2 \u2014 2025-26",
+      "question": "DNA replication definition.",
+      "answer": "DNA replication is the process by which the mother cell's DNA copies itself during the preparatory phase of cell division (S phase of interphase).",
+      "marks": 1
+    },
+    {
+      "id": "sci8-pyq-005",
+      "source": "Model Paper 2 \u2014 2025-26",
+      "question": "Correct statements about gene: (A) unit of DNA (B) source of information for protein (C) single gene synthesises several proteins (D) functions as enzyme. Answer: (A) (i) and (ii) only",
+      "answer": "(B) statements (i) and (ii) only. A gene is a unit of DNA that carries information for making a specific protein. One gene = one protein (generally).",
+      "marks": 1
+    },
+    {
+      "id": "sci8-pyq-006",
+      "source": "Model Paper 2 \u2014 2025-26",
+      "question": "Dihybrid cross: Red tall (TTRR) \u00d7 white dwarf (ttrr). Show F2 and write ratio.",
+      "answer": "F1: all TtRr (tall red). F2 cross TtRr \u00d7 TtRr using 4\u00d74 Punnett square: 9 Tall Red : 3 Tall White : 3 Dwarf Red : 1 Dwarf White = 9:3:3:1.",
+      "marks": 3
+    }
+  ],
+  "mcqs": [
+    {
+      "id": "sci8-mcq-001",
+      "question": "Phenotypic ratio in F2 generation of monohybrid cross is:",
+      "options": [
+        "A. 1:1",
+        "B. 3:1",
+        "C. 1:2:1",
+        "D. 9:3:3:1"
+      ],
+      "correctAnswer": "B",
+      "explanation": "Tt \u00d7 Tt \u2192 TT:Tt:tt = 1:2:1 genotypic. Phenotypic (dominant:recessive) = 3:1."
+    },
+    {
+      "id": "sci8-mcq-002",
+      "question": "Genotypic ratio in F2 of monohybrid cross is:",
+      "options": [
+        "A. 3:1",
+        "B. 9:3:3:1",
+        "C. 1:2:1",
+        "D. 1:1"
+      ],
+      "correctAnswer": "C",
+      "explanation": "Tt \u00d7 Tt \u2192 TT : 2Tt : tt = 1:2:1. TT and Tt look same (dominant phenotype) but have different genotypes."
+    },
+    {
+      "id": "sci8-mcq-003",
+      "question": "Sex of child is determined by:",
+      "options": [
+        "A. Mother's X chromosome",
+        "B. Father's X or Y chromosome",
+        "C. Both parents equally",
+        "D. Environmental factors"
+      ],
+      "correctAnswer": "B",
+      "explanation": "Mother provides only X. Father provides X (\u2192girl) or Y (\u2192boy). Father determines sex. XX = girl, XY = boy."
+    },
+    {
+      "id": "sci8-mcq-004",
+      "question": "Dihybrid cross F2 phenotypic ratio is:",
+      "options": [
+        "A. 3:1",
+        "B. 1:2:1",
+        "C. 9:3:3:1",
+        "D. 1:1:1:1"
+      ],
+      "correctAnswer": "C",
+      "explanation": "TtRr \u00d7 TtRr \u2192 9 T_R_ : 3 T_rr : 3 ttR_ : 1 ttrr = 9:3:3:1."
+    },
+    {
+      "id": "sci8-mcq-005",
+      "question": "A gene is:",
+      "options": [
+        "A. A chromosome",
+        "B. A protein",
+        "C. A unit of DNA carrying information",
+        "D. A type of RNA"
+      ],
+      "correctAnswer": "C",
+      "explanation": "A gene is a specific sequence of DNA that codes for a specific protein/trait. Genes are located on chromosomes."
+    },
+    {
+      "id": "sci8-mcq-006",
+      "question": "In Mendel's experiments, the trait that appeared in F1 generation was called:",
+      "options": [
+        "A. Recessive",
+        "B. Dominant",
+        "C. Hybrid",
+        "D. Variable"
+      ],
+      "correctAnswer": "B",
+      "explanation": "Dominant trait appears in F1 (heterozygous). Recessive trait is masked in F1 but reappears in F2 (1/4 of offspring)."
+    },
+    {
+      "id": "sci8-mcq-007",
+      "question": "Chromosomes of female humans are:",
+      "options": [
+        "A. XY",
+        "B. YY",
+        "C. XX",
+        "D. XO"
+      ],
+      "correctAnswer": "C",
+      "explanation": "Human females have XX sex chromosomes. Males have XY. The Y chromosome carries genes for male characteristics."
+    },
+    {
+      "id": "sci8-mcq-008",
+      "question": "Indicator of trait having green seeds (G) and flowers at top of stem (a) is:",
+      "options": [
+        "A. GGaa or Ggaa",
+        "B. ggAA",
+        "C. GGAa",
+        "D. ggaa"
+      ],
+      "correctAnswer": "A",
+      "explanation": "G = green seeds (dominant), a = top of stem (recessive). GGaa (homozygous dominant green, homozygous recessive top) or Ggaa."
+    },
+    {
+      "id": "sci8-mcq-009",
+      "question": "Height of a plant is determined by genes because:",
+      "options": [
+        "A. Genes control all traits directly",
+        "B. Genes secrete specific enzymes that control growth",
+        "C. Genes produce hormones",
+        "D. Genes control cell size only"
+      ],
+      "correctAnswer": "B",
+      "explanation": "Genes secrete specific enzymes. If enzyme works efficiently, plant grows taller. Gene \u2192 enzyme \u2192 trait."
+    },
+    {
+      "id": "sci8-mcq-010",
+      "question": "Law of segregation states that:",
+      "options": [
+        "A. All traits are independent",
+        "B. Alleles separate during gamete formation",
+        "C. Dominant allele always suppresses recessive",
+        "D. F2 ratio is always 3:1"
+      ],
+      "correctAnswer": "B",
+      "explanation": "During meiosis, the two alleles of each gene segregate into different gametes. Each gamete carries one allele."
+    },
+    {
+      "id": "sci8-mcq-011",
+      "question": "Acquired traits are:",
+      "options": [
+        "A. Traits inherited from parents",
+        "B. Traits developed during lifetime, not inherited",
+        "C. Traits coded in DNA",
+        "D. Same as genetic traits"
+      ],
+      "correctAnswer": "B",
+      "explanation": "Acquired traits develop due to environment/use during lifetime and are NOT passed to offspring (e.g., body building muscles, learned skills)."
+    },
+    {
+      "id": "sci8-mcq-012",
+      "question": "Tall pea plant (TT) crossed with dwarf (tt). All F1 plants are:",
+      "options": [
+        "A. TT (tall)",
+        "B. tt (dwarf)",
+        "C. Tt (tall)",
+        "D. Mixed tall and dwarf"
+      ],
+      "correctAnswer": "C",
+      "explanation": "TT \u00d7 tt \u2192 all Tt. Since T is dominant, all F1 are tall. Tt heterozygous shows dominant phenotype."
+    },
+    {
+      "id": "sci8-mcq-013",
+      "question": "The F2 ratio in dihybrid cross shows:",
+      "options": [
+        "A. 2 phenotypes",
+        "B. 3 phenotypes",
+        "C. 4 phenotypes",
+        "D. 1 phenotype"
+      ],
+      "correctAnswer": "C",
+      "explanation": "9 tall+round : 3 tall+wrinkled : 3 dwarf+round : 1 dwarf+wrinkled = 4 distinct phenotype classes."
+    },
+    {
+      "id": "sci8-mcq-014",
+      "question": "DNA is found in:",
+      "options": [
+        "A. Cytoplasm only",
+        "B. Nucleus (chromosomes)",
+        "C. Cell wall",
+        "D. Plasma membrane"
+      ],
+      "correctAnswer": "B",
+      "explanation": "DNA is packaged in chromosomes inside the nucleus. Humans have 46 chromosomes (23 pairs). Each chromosome = one long DNA molecule."
+    },
+    {
+      "id": "sci8-mcq-015",
+      "question": "Mendel chose pea plants for his experiments because:",
+      "options": [
+        "A. Pea plants are easy to grow",
+        "B. Pea plants show clearly distinguishable traits and can be self/cross pollinated",
+        "C. Pea plants grow fast",
+        "D. Pea plants are small"
+      ],
+      "correctAnswer": "B",
+      "explanation": "Pea plants have 7 pairs of clearly contrasting traits, short life cycle, easy to control pollination (self or cross), and large number of offspring."
+    }
+  ],
+  "exercises": [
+    {
+      "id": "sci8-ex-001",
+      "question": "Show F1 and F2 generations when tall (TT) pea plant is crossed with dwarf (tt). Write phenotypic and genotypic ratios.",
+      "answer": "F1: TT \u00d7 tt \u2192 all Tt (all tall). F1 \u00d7 F1: Tt \u00d7 Tt \u2192 TT : 2Tt : tt = 1:2:1 genotypic. Phenotypic: 3 tall : 1 dwarf (3:1).",
+      "type": "short-answer"
+    },
+    {
+      "id": "sci8-ex-002",
+      "question": "Explain sex determination in humans with a diagram.",
+      "answer": "Father XY, Mother XX. Meiosis: Father \u2192 X or Y sperm; Mother \u2192 only X eggs. XX combination = girl (50% chance); XY combination = boy (50% chance). Father determines sex. Society blaming mother for sex of child is scientifically wrong.",
+      "type": "short-answer"
+    },
+    {
+      "id": "sci8-ex-003",
+      "question": "Distinguish between dominant and recessive traits.",
+      "answer": "Dominant trait: expressed in both homozygous (TT) and heterozygous (Tt) condition. Recessive trait: expressed only in homozygous condition (tt), masked by dominant allele in Tt. In F1 cross, dominant appears; in F2, recessive reappears (1 in 4 offspring).",
+      "type": "short-answer"
+    },
+    {
+      "id": "sci8-ex-004",
+      "question": "Show dihybrid cross with F2 generation. Write F2 ratio.",
+      "answer": "TTRR (tall round) \u00d7 ttrr (dwarf wrinkled) \u2192 F1: all TtRr (tall round). F1 \u00d7 F1: 16 combinations. F2: 9 T_R_ : 3 T_rr : 3 ttR_ : 1 ttrr = 9:3:3:1 phenotypic ratio. Demonstrates Law of Independent Assortment.",
+      "type": "short-answer"
+    },
+    {
+      "id": "sci8-ex-005",
+      "question": "Distinguish between genotype and phenotype.",
+      "answer": "Genotype: the actual genetic makeup of an organism (e.g. TT, Tt, tt). Phenotype: the observable physical characteristic determined by genotype (e.g. tall or dwarf). Two organisms with different genotypes (TT and Tt) can have same phenotype (tall).",
+      "type": "short-answer"
+    },
+    {
+      "id": "sci8-ex-006",
+      "question": "Why did Mendel choose 7 pairs of contrasting traits?",
+      "answer": "Mendel chose traits that: (i) showed clear-cut differences (tall vs dwarf) (ii) were stable over generations (iii) could be easily observed and measured (iv) were inherited independently. He studied one trait at a time (monohybrid) then two (dihybrid) to establish clear ratios.",
+      "type": "short-answer"
+    },
+    {
+      "id": "sci8-ex-007",
+      "question": "Explain how genes control traits.",
+      "answer": "Genes (segments of DNA) carry information to make specific proteins (enzymes). Enzymes catalyse specific metabolic reactions. Example: genes for tall pea plants produce more enzymes for auxin synthesis \u2192 more cell elongation \u2192 taller plant. Gene \u2192 mRNA \u2192 protein \u2192 trait.",
+      "type": "short-answer"
+    },
+    {
+      "id": "sci8-ex-008",
+      "question": "Distinguish between inherited and acquired traits. Give examples.",
+      "answer": "Inherited traits: coded in DNA, passed from parents to offspring. Examples: eye colour, blood group, dimples, height. Acquired traits: developed during lifetime due to environment, use, or learning. Not coded in DNA. Not passed to offspring. Examples: bodybuilder's muscles, ability to speak a language, scar from injury.",
+      "type": "short-answer"
+    }
+  ],
+  "mcqCount": 15,
+  "exerciseCount": 8
+}

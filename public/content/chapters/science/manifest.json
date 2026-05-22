@@ -1,0 +1,139 @@
+{
+  "subjectId": "science",
+  "subjectTitle": "Science",
+  "subjectCode": "83-E",
+  "board": "Karnataka SSLC",
+  "totalChapters": 13,
+  "totalBlueprintMarks": 80,
+  "version": "1.0",
+  "lastUpdated": "2026-05",
+  "schemaVersion": "2.0",
+  "features": [
+    "laws",
+    "formulas",
+    "diagrams",
+    "pyqs",
+    "mcqs",
+    "exercises",
+    "resources"
+  ],
+  "chapters": [
+    {
+      "chapterNumber": 1,
+      "id": "chemical-reactions-and-equations",
+      "title": "Chemical Reactions and Equations",
+      "blueprintMarks": 4,
+      "difficulty": "medium",
+      "status": "ready",
+      "filePath": "chapters/science/chemical-reactions-and-equations.json"
+    },
+    {
+      "chapterNumber": 2,
+      "id": "acids-bases-and-salts",
+      "title": "Acids, Bases and Salts",
+      "blueprintMarks": 6,
+      "difficulty": "medium",
+      "status": "ready",
+      "filePath": "chapters/science/acids-bases-and-salts.json"
+    },
+    {
+      "chapterNumber": 3,
+      "id": "metals-and-nonmetals",
+      "title": "Metals and Non-metals",
+      "blueprintMarks": 7,
+      "difficulty": "hard",
+      "status": "ready",
+      "filePath": "chapters/science/metals-and-nonmetals.json"
+    },
+    {
+      "chapterNumber": 4,
+      "id": "carbon-and-its-compounds",
+      "title": "Carbon and its Compounds",
+      "blueprintMarks": 8,
+      "difficulty": "hard",
+      "status": "ready",
+      "filePath": "chapters/science/carbon-and-its-compounds.json"
+    },
+    {
+      "chapterNumber": 5,
+      "id": "life-processes",
+      "title": "Life Processes",
+      "blueprintMarks": 8,
+      "difficulty": "hard",
+      "status": "ready",
+      "filePath": "chapters/science/life-processes.json"
+    },
+    {
+      "chapterNumber": 6,
+      "id": "control-and-coordination",
+      "title": "Control and Coordination",
+      "blueprintMarks": 6,
+      "difficulty": "medium",
+      "status": "ready",
+      "filePath": "chapters/science/control-and-coordination.json"
+    },
+    {
+      "chapterNumber": 7,
+      "id": "how-do-organisms-reproduce",
+      "title": "How do Organisms Reproduce?",
+      "blueprintMarks": 7,
+      "difficulty": "medium",
+      "status": "ready",
+      "filePath": "chapters/science/how-do-organisms-reproduce.json"
+    },
+    {
+      "chapterNumber": 8,
+      "id": "heredity",
+      "title": "Heredity",
+      "blueprintMarks": 4,
+      "difficulty": "medium",
+      "status": "ready",
+      "filePath": "chapters/science/heredity.json"
+    },
+    {
+      "chapterNumber": 9,
+      "id": "light-reflection-and-refraction",
+      "title": "Light - Reflection and Refraction",
+      "blueprintMarks": 8,
+      "difficulty": "hard",
+      "status": "ready",
+      "filePath": "chapters/science/light-reflection-and-refraction.json"
+    },
+    {
+      "chapterNumber": 10,
+      "id": "human-eye-and-colourful-world",
+      "title": "The Human Eye and the Colourful World",
+      "blueprintMarks": 5,
+      "difficulty": "medium",
+      "status": "ready",
+      "filePath": "chapters/science/human-eye-and-colourful-world.json"
+    },
+    {
+      "chapterNumber": 11,
+      "id": "electricity",
+      "title": "Electricity",
+      "blueprintMarks": 8,
+      "difficulty": "hard",
+      "status": "ready",
+      "filePath": "chapters/science/electricity.json"
+    },
+    {
+      "chapterNumber": 12,
+      "id": "magnetic-effects-of-electric-current",
+      "title": "Magnetic Effects of Electric Current",
+      "blueprintMarks": 6,
+      "difficulty": "medium",
+      "status": "ready",
+      "filePath": "chapters/science/magnetic-effects-of-electric-current.json"
+    },
+    {
+      "chapterNumber": 13,
+      "id": "our-environment",
+      "title": "Our Environment",
+      "blueprintMarks": 3,
+      "difficulty": "easy",
+      "status": "ready",
+      "filePath": "chapters/science/our-environment.json"
+    }
+  ]
+}

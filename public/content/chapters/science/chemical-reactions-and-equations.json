@@ -1,0 +1,138 @@
+{
+  "id": "chemical-reactions-and-equations",
+  "chapterNumber": 1,
+  "subjectId": "science",
+  "title": "Chemical Reactions and Equations",
+  "blueprintMarks": 4,
+  "difficulty": "medium",
+  "estimatedMinutes": 50,
+  "version": "1.0",
+  "lastUpdated": "2026-05",
+  "summary": "Chapter 1 introduces chemical reactions and their symbolic representation as balanced chemical equations. Students learn to identify signs of a chemical reaction, write word and chemical equations, and balance them using the law of conservation of mass. Five types of reactions are studied: combination, decomposition, displacement, double displacement, and oxidation-reduction. Exothermic and endothermic reactions are also distinguished.",
+  "learningPoints": [
+    "Identify signs of a chemical reaction: colour change, gas evolution, precipitate formation, temperature change, light emission",
+    "Write word equations and convert them to balanced chemical equations",
+    "Apply the Law of Conservation of Mass to balance chemical equations",
+    "Distinguish between exothermic and endothermic reactions with examples",
+    "Identify combination reactions: A + B → AB (e.g. 2Mg + O₂ → 2MgO)",
+    "Identify decomposition reactions: AB → A + B (thermal, photolytic, electrolytic)",
+    "Identify displacement reactions: more reactive element displaces less reactive",
+    "Identify double displacement reactions involving exchange of ions",
+    "Define oxidation as gain of oxygen or loss of hydrogen",
+    "Define reduction as loss of oxygen or gain of hydrogen",
+    "Identify oxidising agent and reducing agent in redox reactions",
+    "State applications of thermite reaction (joining railway tracks)"
+  ],
+  "laws": [
+    {
+      "name": "Law of Conservation of Mass",
+      "statement": "Mass can neither be created nor destroyed in a chemical reaction. The total mass of reactants equals the total mass of products.",
+      "highlight": true,
+      "example": "In 2H₂ + O₂ → 2H₂O: mass of 4g H₂ + 32g O₂ = 36g H₂O"
+    }
+  ],
+  "formulas": [
+    { "label": "Combination Reaction", "expression": "A + B → AB", "description": "Two substances combine to form a single product.", "highlight": true },
+    { "label": "Decomposition Reaction", "expression": "AB → A + B", "description": "Single substance breaks into two or more products.", "highlight": true },
+    { "label": "Displacement Reaction", "expression": "A + BC → AC + B", "description": "More reactive element displaces less reactive one.", "highlight": true },
+    { "label": "Double Displacement", "expression": "AB + CD → AD + CB", "description": "Exchange of ions between two compounds.", "highlight": true },
+    { "label": "Thermite Reaction", "expression": "Fe₂O₃ + 2Al → Al₂O₃ + 2Fe + Heat", "description": "Highly exothermic. Used to join railway tracks.", "highlight": true },
+    { "label": "Electrolysis of Water", "expression": "2H₂O → 2H₂ + O₂", "description": "Water decomposes on passing electric current.", "highlight": false },
+    { "label": "Burning of Magnesium", "expression": "2Mg + O₂ → 2MgO", "description": "Combination + oxidation reaction. Magnesium burns with bright white light.", "highlight": false }
+  ],
+  "diagrams": [
+    {
+      "title": "Electrolysis of Water Apparatus",
+      "description": "Two electrodes in water — cathode collects H₂ (double volume), anode collects O₂. Hoffmann voltameter setup.",
+      "highlight": true,
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Electrolysis_of_water.svg/400px-Electrolysis_of_water.svg.png"
+    },
+    {
+      "title": "Zinc + Dilute Sulphuric Acid Apparatus",
+      "description": "Zinc granules in a conical flask with dilute H₂SO₄. Delivery tube collects hydrogen gas bubbles.",
+      "highlight": true,
+      "imageUrl": ""
+    },
+    {
+      "title": "Electrolytic Refining of Copper",
+      "description": "Impure copper as anode, pure copper as cathode, CuSO₄ solution as electrolyte.",
+      "highlight": true,
+      "imageUrl": ""
+    }
+  ],
+  "resources": [
+    {
+      "type": "textbook",
+      "provider": "KTBS Karnataka",
+      "label": "Karnataka SSLC Science Textbook — Part 1",
+      "description": "Official Karnataka State Board Science textbook for Class 10. Chapter 1 covers chemical reactions.",
+      "url": "https://ktbs.kar.nic.in/new/index.html#!/textbook"
+    },
+    {
+      "type": "textbook",
+      "provider": "ePathshala NCERT",
+      "label": "NCERT Science Textbook Class 10",
+      "description": "Official NCERT Class 10 Science textbook — Chapter 1 Chemical Reactions and Equations.",
+      "url": "https://epathshala.nic.in/e-pathshala-4/flipbook/?id=0965"
+    },
+    {
+      "type": "video",
+      "provider": "Khan Academy",
+      "label": "Chemical Reactions — Video Lessons",
+      "description": "Khan Academy NCERT Class 10 Science videos on chemical reactions, balancing equations, and reaction types.",
+      "url": "https://www.khanacademy.org/science/ncert-class-10"
+    }
+  ],
+  "pyqs": [
+    {
+      "id": "sci1-pyq-001",
+      "source": "Model Paper 1 — 2025-26",
+      "question": "Write the balanced chemical equations for: (i) Manganese oxide + hydrochloric acid → manganese chloride + chlorine + water (ii) Calcium hydroxide + carbon dioxide → calcium carbonate + water (iii) Zinc carbonate → zinc oxide + Carbon dioxide",
+      "answer": "(i) MnO₂ + 4HCl → MnCl₂ + 2H₂O + Cl₂ (ii) Ca(OH)₂ + CO₂ → CaCO₃ + H₂O (iii) ZnCO₃ → ZnO + CO₂",
+      "marks": 3
+    },
+    {
+      "id": "sci1-pyq-002",
+      "source": "Model Paper 2 — 2025-26",
+      "question": "Balance: (i) Mg + N₂ → Mg₃N₂ (ii) NaOH + H₂SO₄ → Na₂SO₄ + H₂O (iii) Al(OH)₃ → Al₂O₃ + H₂O",
+      "answer": "(i) 3Mg + N₂ → Mg₃N₂ (ii) 2NaOH + H₂SO₄ → Na₂SO₄ + 2H₂O (iii) 2Al(OH)₃ → Al₂O₃ + 3H₂O",
+      "marks": 3
+    },
+    {
+      "id": "sci1-pyq-003",
+      "source": "Model Paper 1 — 2025-26",
+      "question": "What are the applications of the thermite reaction?",
+      "answer": "To join railway tracks. To join broken machine parts.",
+      "marks": 1
+    }
+  ],
+  "mcqs": [
+    {"id":"sci1-mcq-001","question":"Silver chloride turns grey when exposed to sunlight. This is because silver chloride:","options":["A. Decomposes to form silver","B. Decomposes to form chlorine","C. Combines with oxygen","D. Reacts with atmospheric moisture"],"correctAnswer":"A","explanation":"AgCl decomposes by light energy (photolytic decomposition) → Ag (grey) + Cl₂. This is used in photography."},
+    {"id":"sci1-mcq-002","question":"The molecular formulae of solution Y that gives yellow precipitate with KI solution and the other product respectively are:","options":["A. Pb(NO₃)₂ and KNO₃","B. PbI₂ and KNO₃","C. Pb(NO₃)₂ and KI","D. Pb(NO₃)₂ and K₂SO₄"],"correctAnswer":"B","explanation":"Pb(NO₃)₂ + 2KI → PbI₂↓ (yellow) + 2KNO₃. This is a double displacement reaction."},
+    {"id":"sci1-mcq-003","question":"In which type of reaction is heat always released?","options":["A. Decomposition","B. Endothermic","C. Exothermic","D. Photolytic"],"correctAnswer":"C","explanation":"Exothermic reactions release energy as heat. Examples: burning, respiration, neutralisation."},
+    {"id":"sci1-mcq-004","question":"The thermite reaction is used for:","options":["A. Making glass","B. Joining railway tracks","C. Extracting aluminium","D. Making fertilisers"],"correctAnswer":"B","explanation":"Fe₂O₃ + 2Al → Al₂O₃ + 2Fe + Heat. The enormous heat produced melts iron to join railway tracks."},
+    {"id":"sci1-mcq-005","question":"In 2H₂ + O₂ → 2H₂O, hydrogen is:","options":["A. Oxidised","B. Reduced","C. Neither","D. Acts as oxidising agent"],"correctAnswer":"A","explanation":"Hydrogen gains oxygen to form water. Gaining oxygen = oxidation. Hydrogen is oxidised."},
+    {"id":"sci1-mcq-006","question":"Which is an endothermic reaction?","options":["A. Burning of coal","B. Decomposition of CaCO₃ on heating","C. Respiration","D. Neutralisation of acid with base"],"correctAnswer":"B","explanation":"CaCO₃ → CaO + CO₂ requires heat input. Energy is absorbed = endothermic reaction."},
+    {"id":"sci1-mcq-007","question":"In Fe + CuSO₄ → FeSO₄ + Cu, iron:","options":["A. Gets oxidised only","B. Gets reduced only","C. Gets oxidised and acts as reducing agent","D. Gets reduced and acts as oxidising agent"],"correctAnswer":"C","explanation":"Fe loses electrons (oxidised). It donates electrons to Cu²⁺. A substance that causes reduction is a reducing agent."},
+    {"id":"sci1-mcq-008","question":"Rancidity of food is caused by:","options":["A. Reduction of oils","B. Oxidation of oils and fats","C. Decomposition of proteins","D. Addition of antioxidants"],"correctAnswer":"B","explanation":"Oils and fats get oxidised by atmospheric oxygen causing rancidity — bad smell and taste."},
+    {"id":"sci1-mcq-009","question":"What happens when dilute HCl is added to iron filings?","options":["A. FeCl₂ and H₂ formed","B. Cl₂ and Fe(OH)₂ formed","C. No reaction","D. Fe₂O₃ and water formed"],"correctAnswer":"A","explanation":"Fe + 2HCl → FeCl₂ + H₂↑. This is a displacement reaction — iron displaces hydrogen from acid."},
+    {"id":"sci1-mcq-010","question":"Which of the following is a combination reaction?","options":["A. CaCO₃ → CaO + CO₂","B. 2H₂O → 2H₂ + O₂","C. CaO + H₂O → Ca(OH)₂","D. Na₂SO₄ + BaCl₂ → BaSO₄ + 2NaCl"],"correctAnswer":"C","explanation":"CaO + H₂O → Ca(OH)₂. Two substances combine into one product = combination reaction."},
+    {"id":"sci1-mcq-011","question":"Electrolysis of water produces H₂ and O₂ in ratio:","options":["A. 1:1","B. 1:2","C. 2:1","D. 1:3"],"correctAnswer":"C","explanation":"2H₂O → 2H₂ + O₂. Two volumes of H₂ are produced for every one volume of O₂."},
+    {"id":"sci1-mcq-012","question":"Which of these prevents rancidity in food?","options":["A. Heating","B. Adding water","C. Adding antioxidants","D. Decomposition"],"correctAnswer":"C","explanation":"Antioxidants like BHA prevent oxidation of fats. Vacuum packing and nitrogen flushing also help."},
+    {"id":"sci1-mcq-013","question":"The type of reaction in which a single reactant gives two or more products is:","options":["A. Combination","B. Displacement","C. Decomposition","D. Double displacement"],"correctAnswer":"C","explanation":"Decomposition: AB → A + B. One reactant breaks into multiple products."},
+    {"id":"sci1-mcq-014","question":"Which metal displaces copper from copper sulphate solution?","options":["A. Gold","B. Silver","C. Iron","D. Mercury"],"correctAnswer":"C","explanation":"Iron is more reactive than copper in the reactivity series. Fe + CuSO₄ → FeSO₄ + Cu."},
+    {"id":"sci1-mcq-015","question":"The substances formed in a chemical reaction are called:","options":["A. Reactants","B. Products","C. Catalysts","D. Inhibitors"],"correctAnswer":"B","explanation":"In A + B → C + D, A and B are reactants, C and D are products."}
+  ],
+  "exercises": [
+    {"id":"sci1-ex-001","question":"Why should magnesium ribbon be cleaned before burning in air?","answer":"Magnesium ribbon has a layer of magnesium oxide (MgO) on its surface formed by slow oxidation in air. This layer must be removed by rubbing with sandpaper so that the magnesium burns brightly and the reaction can be observed properly.","type":"short-answer"},
+    {"id":"sci1-ex-002","question":"Write the balanced equation for the decomposition of lead nitrate on heating. What type of reaction is this?","answer":"2Pb(NO₃)₂ → 2PbO + 4NO₂ + O₂. This is a thermal decomposition reaction. It is also a redox reaction. The brown fumes of NO₂ are observed.","type":"short-answer"},
+    {"id":"sci1-ex-003","question":"Explain with an example: oxidation and reduction occur simultaneously in a reaction.","answer":"In CuO + H₂ → Cu + H₂O: CuO loses oxygen (reduced to Cu) and H₂ gains oxygen (oxidised to H₂O). This simultaneous occurrence is called a redox reaction. CuO is the oxidising agent and H₂ is the reducing agent.","type":"short-answer"},
+    {"id":"sci1-ex-004","question":"Why does the colour of copper sulphate solution change when iron nails are kept in it?","answer":"Fe + CuSO₄ → FeSO₄ + Cu. Iron (more reactive) displaces copper from the blue copper sulphate solution. FeSO₄ is pale green. The copper deposits on the iron nail. This is a displacement reaction.","type":"short-answer"},
+    {"id":"sci1-ex-005","question":"What is a precipitate? Give an example of a reaction that forms a precipitate.","answer":"An insoluble solid formed in solution during a chemical reaction is called a precipitate. Example: Na₂SO₄ + BaCl₂ → BaSO₄↓ + 2NaCl. BaSO₄ (barium sulphate) is the white precipitate.","type":"short-answer"},
+    {"id":"sci1-ex-006","question":"Balance the following equation and identify the type of reaction: H₂ + Cl₂ → HCl","answer":"H₂ + Cl₂ → 2HCl. This is a combination reaction — two elements combine to form a single compound (hydrogen chloride).","type":"short-answer"},
+    {"id":"sci1-ex-007","question":"What are the applications of the thermite reaction? Write the equation.","answer":"Fe₂O₃ + 2Al → Al₂O₃ + 2Fe + Heat. Applications: (i) Joining railway tracks (ii) Joining broken machine parts. The reaction releases enormous heat that melts iron which solidifies to join the tracks.","type":"short-answer"},
+    {"id":"sci1-ex-008","question":"Give reasons: (i) Respiration is an exothermic reaction. (ii) Decomposition of vegetable matter in compost pits is an exothermic process.","answer":"(i) In respiration: C₆H₁₂O₆ + 6O₂ → 6CO₂ + 6H₂O + Energy. Glucose oxidises to release energy as heat — exothermic. (ii) Bacteria decompose organic matter releasing heat energy — also exothermic. This is why compost pits feel warm.","type":"short-answer"}
+  ],
+  "mcqCount": 15,
+  "exerciseCount": 8
+}

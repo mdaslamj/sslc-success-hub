@@ -1,0 +1,416 @@
+{
+  "id": "electricity",
+  "chapterNumber": 11,
+  "subjectId": "science",
+  "title": "Electricity",
+  "blueprintMarks": 8,
+  "difficulty": "hard",
+  "estimatedMinutes": 70,
+  "version": "1.0",
+  "lastUpdated": "2026-05",
+  "summary": "Chapter 11 covers electric charge, current, potential difference, resistance, and electric circuits. Ohm's Law relates voltage, current, and resistance. Resistances in series and parallel are calculated. Heating effect of electric current (Joule's Law) explains how electrical appliances work. Electric power and energy are calculated. The domestic electric circuit including earthing, fuse, and safety measures are explained.",
+  "learningPoints": [
+    "Define electric charge, current (I = Q/t), and potential difference",
+    "State Ohm's Law: V = IR at constant temperature",
+    "Define resistance and state factors affecting it: length, area, temperature, material",
+    "Calculate resistance in series: R = R\u2081 + R\u2082 + R\u2083",
+    "Calculate resistance in parallel: 1/R = 1/R\u2081 + 1/R\u2082 + 1/R\u2083",
+    "State Joule's Law of heating: H = I\u00b2Rt",
+    "Calculate electric power: P = VI = I\u00b2R = V\u00b2/R",
+    "Calculate electric energy: E = Pt (kWh for billing)",
+    "Draw and interpret circuit diagrams with symbols",
+    "Explain the domestic electric circuit: live, neutral, earth wires",
+    "Explain the need for fuse and MCB in circuits",
+    "List precautions to prevent overloading in domestic circuits"
+  ],
+  "laws": [
+    {
+      "name": "Ohm's Law",
+      "statement": "The potential difference across the ends of a metallic conductor is directly proportional to the current flowing through it at constant temperature. V \u221d I, or V = IR.",
+      "highlight": true
+    },
+    {
+      "name": "Joule's Law of Heating",
+      "statement": "The heat produced in a resistor is directly proportional to: (i) square of current (H \u221d I\u00b2) (ii) resistance (H \u221d R) (iii) time (H \u221d t). So H = I\u00b2Rt.",
+      "highlight": true
+    }
+  ],
+  "formulas": [
+    {
+      "label": "Ohm's Law",
+      "expression": "V = IR",
+      "description": "V = potential difference (volts), I = current (amperes), R = resistance (ohms).",
+      "highlight": true
+    },
+    {
+      "label": "Electric Current",
+      "expression": "I = Q/t",
+      "description": "Current = charge per unit time. SI unit: Ampere (A). 1A = 1 Coulomb/second.",
+      "highlight": true
+    },
+    {
+      "label": "Resistance in Series",
+      "expression": "R = R\u2081 + R\u2082 + R\u2083",
+      "description": "Total resistance in series = sum of individual resistances. Current same through all.",
+      "highlight": true
+    },
+    {
+      "label": "Resistance in Parallel",
+      "expression": "1/R = 1/R\u2081 + 1/R\u2082 + 1/R\u2083",
+      "description": "Total resistance in parallel less than smallest individual resistance. Voltage same across all.",
+      "highlight": true
+    },
+    {
+      "label": "Joule's Law",
+      "expression": "H = I\u00b2Rt = VIt = V\u00b2t/R",
+      "description": "Heat produced in a resistor in time t.",
+      "highlight": true
+    },
+    {
+      "label": "Electric Power",
+      "expression": "P = VI = I\u00b2R = V\u00b2/R",
+      "description": "Power = rate of energy consumption. Unit: Watt (W).",
+      "highlight": true
+    },
+    {
+      "label": "Electric Energy (Commercial)",
+      "expression": "1 kWh = 1000 W \u00d7 3600 s = 3.6 \u00d7 10\u2076 J",
+      "description": "1 unit of electricity = 1 kWh. Used for billing.",
+      "highlight": true
+    },
+    {
+      "label": "Resistivity",
+      "expression": "R = \u03c1L/A",
+      "description": "R depends on length (L), cross-sectional area (A) and material (\u03c1 = resistivity).",
+      "highlight": false
+    }
+  ],
+  "diagrams": [
+    {
+      "title": "Simple Electric Circuit",
+      "description": "Battery (cell), switch (key), ammeter (in series, measures current), voltmeter (in parallel, measures PD), resistor, connecting wires. Direction of current: + terminal to - terminal (conventional).",
+      "highlight": true,
+      "imageUrl": ""
+    },
+    {
+      "title": "Series vs Parallel Circuits",
+      "description": "Series: components end-to-end, same current through all, voltages add. Parallel: components side-by-side, same voltage across all, currents add.",
+      "highlight": true,
+      "imageUrl": ""
+    },
+    {
+      "title": "Domestic Electric Circuit",
+      "description": "Live wire (red/brown, 220V), Neutral wire (black/blue, 0V), Earth wire (green, safety). Main switch, fuse/MCB, individual switches for each appliance.",
+      "highlight": true,
+      "imageUrl": ""
+    }
+  ],
+  "resources": [
+    {
+      "type": "textbook",
+      "provider": "KTBS Karnataka",
+      "label": "Karnataka SSLC Science Textbook",
+      "description": "Official Karnataka SSLC Science textbook Chapter 11 Electricity.",
+      "url": "https://ktbs.kar.nic.in/new/index.html#!/textbook"
+    },
+    {
+      "type": "textbook",
+      "provider": "ePathshala NCERT",
+      "label": "NCERT Science Textbook Class 10",
+      "description": "NCERT Class 10 Science Chapter 12 Electricity.",
+      "url": "https://epathshala.nic.in/e-pathshala-4/flipbook/?id=0965"
+    },
+    {
+      "type": "video",
+      "provider": "Khan Academy",
+      "label": "Electricity \u2014 Video Lessons",
+      "description": "Khan Academy videos on Ohm's law, circuits, power and heating effect.",
+      "url": "https://www.khanacademy.org/science/ncert-class-10"
+    }
+  ],
+  "pyqs": [
+    {
+      "id": "sci11-pyq-001",
+      "source": "Model Paper 1 \u2014 2025-26",
+      "question": "SI unit of potential difference is: (A) volt (B) ampere (C) coulomb (D) ohm meter",
+      "answer": "(A) Volt (V). Potential difference is measured in volts. 1V = 1 J/C.",
+      "marks": 1
+    },
+    {
+      "id": "sci11-pyq-002",
+      "source": "Model Paper 1 \u2014 2025-26",
+      "question": "Mention factors on which resistance of a conductor depend.",
+      "answer": "(i) Length of conductor \u2014 longer = more resistance (ii) Area of cross-section \u2014 wider = less resistance (iii) Nature/material of conductor (resistivity \u03c1) (iv) Temperature \u2014 higher temp = higher resistance (for metals).",
+      "marks": 2
+    },
+    {
+      "id": "sci11-pyq-003",
+      "source": "Model Paper 1 \u2014 2025-26",
+      "question": "TV (250W, 4hrs) vs Toaster (1200W, 1hr). Which consumes more energy? Also: 2\u03a9 and 4\u03a9 in parallel. If 6\u03a9 replaces 4\u03a9, find difference in total resistance.",
+      "answer": "TV: E = 250\u00d74 = 1000Wh = 1kWh. Toaster: E = 1200\u00d71 = 1200Wh = 1.2kWh. Toaster consumes more. Parallel 2\u03a9+4\u03a9: 1/R = 1/2+1/4 = 3/4; R\u2081 = 4/3 = 1.33\u03a9. Parallel 2\u03a9+6\u03a9: 1/R = 1/2+1/6 = 4/6; R\u2082 = 6/4 = 1.5\u03a9. Difference = 1.5-1.33 = 0.17\u03a9.",
+      "marks": 4
+    },
+    {
+      "id": "sci11-pyq-004",
+      "source": "Model Paper 2 \u2014 2025-26",
+      "question": "SI unit of electric current is: (A) ampere (B) ohm (C) volt (D) watt",
+      "answer": "(A) Ampere (A). Current I = Q/t. 1 Ampere = 1 Coulomb per second.",
+      "marks": 1
+    },
+    {
+      "id": "sci11-pyq-005",
+      "source": "Model Paper 2 \u2014 2025-26",
+      "question": "Draw a simple electric circuit. Label ammeter and voltmeter.",
+      "answer": "Circuit: Battery \u2192 Key \u2192 Ammeter (in series) \u2192 Resistor \u2192 back to battery. Voltmeter connected in parallel across resistor. Ammeter symbol: (A), Voltmeter symbol: (V).",
+      "marks": 2
+    },
+    {
+      "id": "sci11-pyq-006",
+      "source": "Model Paper 2 \u2014 2025-26",
+      "question": "Electric motor: 10A current from 220V source. Find power.",
+      "answer": "P = VI = 220 \u00d7 10 = 2200 W = 2.2 kW.",
+      "marks": 2
+    },
+    {
+      "id": "sci11-pyq-007",
+      "source": "Model Paper 2 \u2014 2025-26",
+      "question": "State Joule's law. Name four appliances working on heating effect. Why is tungsten used in bulbs? Why copper/aluminium for transmission?",
+      "answer": "Joule's law: H = I\u00b2Rt. Appliances: iron box, geyser, oven, toaster. Tungsten: high resistivity and very high melting point (3380\u00b0C). Copper/Al: very low resistivity (good conductors) for efficient transmission.",
+      "marks": 4
+    }
+  ],
+  "mcqs": [
+    {
+      "id": "sci11-mcq-001",
+      "question": "SI unit of potential difference is:",
+      "options": [
+        "A. Ampere",
+        "B. Ohm",
+        "C. Volt",
+        "D. Watt"
+      ],
+      "correctAnswer": "C",
+      "explanation": "Potential difference is measured in Volts (V). 1V = 1 J/C. It drives current through a circuit."
+    },
+    {
+      "id": "sci11-mcq-002",
+      "question": "Ohm's Law states:",
+      "options": [
+        "A. V \u221d R at constant I",
+        "B. V \u221d I at constant T and R",
+        "C. I \u221d R at constant V",
+        "D. V = I/R"
+      ],
+      "correctAnswer": "B",
+      "explanation": "Ohm's Law: V \u221d I at constant temperature. The constant of proportionality is resistance R. V = IR."
+    },
+    {
+      "id": "sci11-mcq-003",
+      "question": "Resistance in series of R\u2081=2\u03a9 and R\u2082=4\u03a9 is:",
+      "options": [
+        "A. 2\u03a9",
+        "B. 4/3 \u03a9",
+        "C. 6\u03a9",
+        "D. 8\u03a9"
+      ],
+      "correctAnswer": "C",
+      "explanation": "Series: R = R\u2081 + R\u2082 = 2 + 4 = 6\u03a9. In series, total resistance is always greater than largest individual resistance."
+    },
+    {
+      "id": "sci11-mcq-004",
+      "question": "Resistance in parallel of 2\u03a9 and 4\u03a9 is:",
+      "options": [
+        "A. 6\u03a9",
+        "B. 2\u03a9",
+        "C. 4/3 \u03a9",
+        "D. 8\u03a9"
+      ],
+      "correctAnswer": "C",
+      "explanation": "1/R = 1/2 + 1/4 = 2/4 + 1/4 = 3/4. R = 4/3 = 1.33\u03a9. Parallel resistance is less than smallest."
+    },
+    {
+      "id": "sci11-mcq-005",
+      "question": "Fan with power 880W connected to 220V. Current is:",
+      "options": [
+        "A. 2A",
+        "B. 4A",
+        "C. 8A",
+        "D. 10A"
+      ],
+      "correctAnswer": "B",
+      "explanation": "P = VI. I = P/V = 880/220 = 4A. Resistance = V/I = 220/4 = 55\u03a9."
+    },
+    {
+      "id": "sci11-mcq-006",
+      "question": "Joule's law states heat produced is proportional to:",
+      "options": [
+        "A. Current only",
+        "B. Square of current \u00d7 resistance \u00d7 time",
+        "C. Current \u00d7 voltage",
+        "D. Resistance only"
+      ],
+      "correctAnswer": "B",
+      "explanation": "H = I\u00b2Rt. Joule's law: heat \u221d I\u00b2, heat \u221d R, heat \u221d t."
+    },
+    {
+      "id": "sci11-mcq-007",
+      "question": "Tungsten is used in electric bulb filaments because of:",
+      "options": [
+        "A. Low resistivity",
+        "B. High resistivity and very high melting point",
+        "C. Good conductor of heat",
+        "D. Low cost"
+      ],
+      "correctAnswer": "B",
+      "explanation": "Tungsten: high resistivity (produces heat and light) and very high melting point (3380\u00b0C \u2014 doesn't melt even at white hot temperature)."
+    },
+    {
+      "id": "sci11-mcq-008",
+      "question": "1 kWh equals:",
+      "options": [
+        "A. 1000 J",
+        "B. 3600 J",
+        "C. 3.6 \u00d7 10\u2076 J",
+        "D. 10\u2076 J"
+      ],
+      "correctAnswer": "C",
+      "explanation": "1 kWh = 1000W \u00d7 3600s = 3,600,000 J = 3.6 \u00d7 10\u2076 J. This is the commercial unit of electrical energy."
+    },
+    {
+      "id": "sci11-mcq-009",
+      "question": "Toaster (1200W, 1hr) vs TV (250W, 4hrs). Which consumes more energy?",
+      "options": [
+        "A. TV",
+        "B. Toaster",
+        "C. Equal",
+        "D. Cannot determine"
+      ],
+      "correctAnswer": "B",
+      "explanation": "Toaster: 1200\u00d71 = 1200 Wh = 1.2 kWh. TV: 250\u00d74 = 1000 Wh = 1 kWh. Toaster consumes more."
+    },
+    {
+      "id": "sci11-mcq-010",
+      "question": "The potential difference between live and neutral wire in domestic circuit is:",
+      "options": [
+        "A. 110V",
+        "B. 220V",
+        "C. 440V",
+        "D. 12V"
+      ],
+      "correctAnswer": "B",
+      "explanation": "In India, domestic supply: Live wire at 220V, Neutral wire at 0V. Potential difference = 220V, frequency = 50Hz."
+    },
+    {
+      "id": "sci11-mcq-011",
+      "question": "Factors affecting resistance include all EXCEPT:",
+      "options": [
+        "A. Length",
+        "B. Temperature",
+        "C. Colour",
+        "D. Area of cross-section"
+      ],
+      "correctAnswer": "C",
+      "explanation": "Resistance depends on length (L), area (A), material (\u03c1), temperature. Colour has no effect on electrical resistance."
+    },
+    {
+      "id": "sci11-mcq-012",
+      "question": "Precautions to avoid overload in domestic circuit:",
+      "options": [
+        "A. Use appliances of high wattage",
+        "B. Connect many appliances to one socket",
+        "C. Avoid direct contact of live and neutral wires",
+        "D. Remove fuse for better conduction"
+      ],
+      "correctAnswer": "C",
+      "explanation": "Overload prevention: live and neutral wires should not contact each other, use appropriate fuse rating, don't overload sockets, maintain insulation."
+    },
+    {
+      "id": "sci11-mcq-013",
+      "question": "Ammeter is connected in circuit:",
+      "options": [
+        "A. In parallel",
+        "B. In series",
+        "C. Either",
+        "D. Between battery terminals"
+      ],
+      "correctAnswer": "B",
+      "explanation": "Ammeter (very low resistance) is connected in series to measure current without reducing it. Voltmeter (very high resistance) is connected in parallel."
+    },
+    {
+      "id": "sci11-mcq-014",
+      "question": "Electric power formula is:",
+      "options": [
+        "A. P = V/I",
+        "B. P = I/V",
+        "C. P = VI",
+        "D. P = V+I"
+      ],
+      "correctAnswer": "C",
+      "explanation": "P = VI = I\u00b2R = V\u00b2/R. Power in watts = current in amps \u00d7 voltage in volts."
+    },
+    {
+      "id": "sci11-mcq-015",
+      "question": "The statement 'potential difference between two points is 1V' means:",
+      "options": [
+        "A. 1 joule of work done in moving 1 coulomb of charge",
+        "B. 1 ampere current flows",
+        "C. 1 watt power consumed",
+        "D. 1 ohm resistance"
+      ],
+      "correctAnswer": "A",
+      "explanation": "1 Volt = 1 Joule per Coulomb. Moving 1C of charge between two points requires 1J of work if PD is 1V."
+    }
+  ],
+  "exercises": [
+    {
+      "id": "sci11-ex-001",
+      "question": "A 350W toaster (6hrs/day) and 250W iron (4hrs/day) are used for 30 days. Find total energy cost at \u20b94/kWh.",
+      "answer": "Toaster: 350\u00d76\u00d730 = 63000 Wh = 63 kWh. Iron: 250\u00d74\u00d730 = 30000 Wh = 30 kWh. Total: 93 kWh. Cost: 93\u00d74 = \u20b9372.",
+      "type": "short-answer"
+    },
+    {
+      "id": "sci11-ex-002",
+      "question": "State Ohm's Law. Draw a circuit to verify it.",
+      "answer": "Ohm's Law: V/I = constant = R (at constant temperature). Circuit: Battery + rheostat (to vary current) + ammeter (in series) + resistor under test + voltmeter (in parallel across resistor). Record V and I for different rheostat settings. V/I = constant confirms Ohm's Law.",
+      "type": "short-answer"
+    },
+    {
+      "id": "sci11-ex-003",
+      "question": "2\u03a9 and 4\u03a9 are in parallel. If 4\u03a9 is replaced by 6\u03a9, find difference in total resistance.",
+      "answer": "Case 1 (2\u03a9 \u2225 4\u03a9): 1/R\u2081 = 1/2+1/4 = 3/4; R\u2081 = 4/3 = 1.33\u03a9. Case 2 (2\u03a9 \u2225 6\u03a9): 1/R\u2082 = 1/2+1/6 = 4/6; R\u2082 = 6/4 = 1.5\u03a9. Difference = 1.5-1.33 = 0.17\u03a9.",
+      "type": "short-answer"
+    },
+    {
+      "id": "sci11-ex-004",
+      "question": "Fan: 880W, 220V. Find current and resistance.",
+      "answer": "I = P/V = 880/220 = 4A. R = V/I = 220/4 = 55\u03a9. Check: P = I\u00b2R = 16\u00d755 = 880W \u2713",
+      "type": "short-answer"
+    },
+    {
+      "id": "sci11-ex-005",
+      "question": "State Joule's Law. Why is tungsten used in bulbs and copper in wires?",
+      "answer": "Joule's Law: H = I\u00b2Rt. Tungsten: high resistivity (glows hot, produces light) + very high melting point (3380\u00b0C, doesn't melt). Copper: very low resistivity \u2192 low resistance \u2192 conducts electricity efficiently with minimum heat loss.",
+      "type": "short-answer"
+    },
+    {
+      "id": "sci11-ex-006",
+      "question": "What precautions prevent overload in domestic circuits?",
+      "answer": "(i) Live and neutral wires must not touch directly (ii) Insulation on wires must be intact (iii) No fault in electrical appliances (iv) Do not connect many appliances to one socket (v) Use correct fuse rating for each circuit.",
+      "type": "short-answer"
+    },
+    {
+      "id": "sci11-ex-007",
+      "question": "Three resistors 5\u03a9, 10\u03a9, 15\u03a9 connected in series to 6V battery. Find (i) total resistance (ii) current through circuit (iii) voltage across each resistor.",
+      "answer": "R = 5+10+15 = 30\u03a9. I = V/R = 6/30 = 0.2A. V\u2081 = 0.2\u00d75 = 1V. V\u2082 = 0.2\u00d710 = 2V. V\u2083 = 0.2\u00d715 = 3V. Check: 1+2+3 = 6V \u2713",
+      "type": "short-answer"
+    },
+    {
+      "id": "sci11-ex-008",
+      "question": "Explain the domestic electric circuit with the role of earthing and fuse.",
+      "answer": "Live wire (220V), Neutral (0V), Earth wire (safety). Fuse: thin wire that melts if current exceeds rated value \u2014 breaks circuit preventing damage. MCB: modern switch that trips automatically. Earthing: connects metal bodies of appliances to earth \u2014 if fault occurs, current flows to earth (not through person).",
+      "type": "short-answer"
+    }
+  ],
+  "mcqCount": 15,
+  "exerciseCount": 8
+}

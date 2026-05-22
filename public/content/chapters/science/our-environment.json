@@ -1,0 +1,346 @@
+{
+  "id": "our-environment",
+  "chapterNumber": 13,
+  "subjectId": "science",
+  "title": "Our Environment",
+  "blueprintMarks": 3,
+  "difficulty": "easy",
+  "estimatedMinutes": 40,
+  "version": "1.0",
+  "lastUpdated": "2026-05",
+  "summary": "Chapter 13 covers the ecosystem, food chains, food webs, and environmental issues. Students learn about biotic and abiotic components, decomposers, trophic levels, and energy flow through ecosystems. Biodegradable and non-biodegradable substances are distinguished. Environmental problems such as ozone layer depletion (CFC), biological magnification of chemicals through food chain, and waste management are discussed.",
+  "learningPoints": [
+    "Define ecosystem and its components: biotic and abiotic",
+    "Explain food chain and food web with examples",
+    "Define trophic levels: producers (1st), primary consumers (2nd), secondary consumers (3rd), tertiary consumers (4th)",
+    "State that only 10% of energy transfers to next trophic level (10% law)",
+    "Define biodegradable and non-biodegradable substances with examples",
+    "Explain biological magnification: accumulation of chemicals increases at higher trophic levels",
+    "State that highest trophic level organisms are most affected by biological magnification",
+    "Explain ozone layer and its importance: blocks UV rays",
+    "State that CFC (chlorofluorocarbons) cause ozone depletion",
+    "Explain the 3R principle: Reduce, Reuse, Recycle",
+    "Name decomposers: bacteria and fungi",
+    "Distinguish producers, consumers, and decomposers"
+  ],
+  "laws": [
+    {
+      "name": "10% Energy Flow Law",
+      "statement": "Only 10% of energy at one trophic level is transferred to the next trophic level. 90% is lost as heat, used in metabolism, etc. This limits food chains to 3-4 levels.",
+      "highlight": true
+    },
+    {
+      "name": "Ozone Protection",
+      "statement": "Ozone (O\u2083) layer in stratosphere absorbs harmful UV radiation from sun. CFC gases destroy ozone molecules. UV radiation causes skin cancer, cataracts, and crop damage.",
+      "highlight": true
+    }
+  ],
+  "formulas": [
+    {
+      "label": "Trophic Levels",
+      "expression": "Producers \u2192 Primary consumers \u2192 Secondary consumers \u2192 Tertiary consumers",
+      "description": "Example: Grass \u2192 Grasshopper \u2192 Frog \u2192 Snake \u2192 Hawk. Each level transfers 10% of energy to next.",
+      "highlight": true
+    },
+    {
+      "label": "Ozone Formation",
+      "expression": "O\u2082 + UV \u2192 2O; O + O\u2082 \u2192 O\u2083",
+      "description": "Ozone forms in stratosphere by UV action on oxygen. CFC destroys this balance.",
+      "highlight": false
+    }
+  ],
+  "diagrams": [
+    {
+      "title": "Food Chain and Web",
+      "description": "Food chain: linear sequence (Grass \u2192 Rabbit \u2192 Fox \u2192 Lion). Food web: multiple interconnected food chains. More interconnections = more stable ecosystem.",
+      "highlight": true,
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Aquatic_food_web.jpg/400px-Aquatic_food_web.jpg"
+    },
+    {
+      "title": "Trophic Levels Energy Pyramid",
+      "description": "Energy pyramid: producers at base (widest), each level above is narrower (10% rule). Biomass and energy decrease at each higher trophic level.",
+      "highlight": true,
+      "imageUrl": ""
+    }
+  ],
+  "resources": [
+    {
+      "type": "textbook",
+      "provider": "KTBS Karnataka",
+      "label": "Karnataka SSLC Science Textbook",
+      "description": "Official Karnataka SSLC Science textbook Chapter 13 Our Environment.",
+      "url": "https://ktbs.kar.nic.in/new/index.html#!/textbook"
+    },
+    {
+      "type": "textbook",
+      "provider": "ePathshala NCERT",
+      "label": "NCERT Science Textbook Class 10",
+      "description": "NCERT Class 10 Science Chapter 15 Our Environment.",
+      "url": "https://epathshala.nic.in/e-pathshala-4/flipbook/?id=0965"
+    },
+    {
+      "type": "video",
+      "provider": "Khan Academy",
+      "label": "Our Environment \u2014 Video Lessons",
+      "description": "Khan Academy videos on ecosystems, food chains, and environmental issues.",
+      "url": "https://www.khanacademy.org/science/ncert-class-10"
+    }
+  ],
+  "pyqs": [
+    {
+      "id": "sci13-pyq-001",
+      "source": "Model Paper 1 \u2014 2025-26",
+      "question": "Ozone layer is a boon to life on Earth. Justify. Which trophic level is most affected by biological magnification?",
+      "answer": "Ozone layer: blocks harmful UV radiation from sun protecting life. Without it: skin cancer, cataracts, crop failure. Biological magnification: highest trophic level organisms most affected. Harmful chemicals (DDT, pesticides) accumulate and concentrate at each level. 4th level accumulates most.",
+      "marks": 3
+    },
+    {
+      "id": "sci13-pyq-002",
+      "source": "Model Paper 2 \u2014 2025-26",
+      "question": "What are biodegradable substances? Which synthetic chemical causes ozone depletion? Write two examples of decomposers.",
+      "answer": "Biodegradable: substances that decompose by microorganism activity (e.g. food, paper, cotton). CFC (chlorofluorocarbons) cause ozone depletion. Decomposers: bacteria and fungi.",
+      "marks": 3
+    },
+    {
+      "id": "sci13-pyq-003",
+      "source": "Model Paper 2 \u2014 2025-26",
+      "question": "State events that occur during photosynthesis.",
+      "answer": "(i) Absorption of light energy by chlorophyll (ii) Conversion of light energy to chemical energy (iii) Splitting of water molecules (H\u2082O \u2192 H\u207a + O\u2082) (iv) Reduction of CO\u2082 to carbohydrates (glucose).",
+      "marks": 2
+    }
+  ],
+  "mcqs": [
+    {
+      "id": "sci13-mcq-001",
+      "question": "CFC gases are responsible for:",
+      "options": [
+        "A. Global warming only",
+        "B. Acid rain",
+        "C. Ozone layer depletion",
+        "D. Eutrophication"
+      ],
+      "correctAnswer": "C",
+      "explanation": "CFCs (chlorofluorocarbons) from refrigerants and aerosols rise to stratosphere and destroy ozone molecules \u2192 UV radiation reaches Earth."
+    },
+    {
+      "id": "sci13-mcq-002",
+      "question": "Ozone layer is important because:",
+      "options": [
+        "A. It provides oxygen",
+        "B. It absorbs harmful UV radiation",
+        "C. It blocks cosmic rays",
+        "D. It regulates temperature only"
+      ],
+      "correctAnswer": "B",
+      "explanation": "Ozone (O\u2083) in stratosphere absorbs harmful UV radiation. Without it: skin cancer, cataracts, immune damage, crop failure."
+    },
+    {
+      "id": "sci13-mcq-003",
+      "question": "Organisms most affected by biological magnification are:",
+      "options": [
+        "A. Producers (plants)",
+        "B. Primary consumers",
+        "C. Secondary consumers",
+        "D. Organisms at highest trophic level"
+      ],
+      "correctAnswer": "D",
+      "explanation": "Biological magnification: harmful chemicals (DDT) accumulate and concentrate at each trophic level. Highest level organisms accumulate most."
+    },
+    {
+      "id": "sci13-mcq-004",
+      "question": "Examples of decomposers are:",
+      "options": [
+        "A. Grass and trees",
+        "B. Lions and tigers",
+        "C. Bacteria and fungi",
+        "D. Frogs and fish"
+      ],
+      "correctAnswer": "C",
+      "explanation": "Decomposers break down dead organic matter \u2014 bacteria and fungi. They recycle nutrients back to soil."
+    },
+    {
+      "id": "sci13-mcq-005",
+      "question": "Biodegradable substances are:",
+      "options": [
+        "A. DDT and plastics",
+        "B. Paper, food waste, cotton",
+        "C. Glass and metals",
+        "D. All synthetic materials"
+      ],
+      "correctAnswer": "B",
+      "explanation": "Biodegradable: decomposed by microorganisms. Examples: food, paper, cotton, wood. Non-biodegradable: DDT, plastics, glass, metals."
+    },
+    {
+      "id": "sci13-mcq-006",
+      "question": "The 10% energy law means:",
+      "options": [
+        "A. 10% of organisms survive",
+        "B. 10% of energy transfers to next trophic level",
+        "C. 90% of energy stored as food",
+        "D. Producers have 10% efficiency"
+      ],
+      "correctAnswer": "B",
+      "explanation": "Only 10% of energy at one trophic level is available to the next. 90% lost as heat and in metabolic processes. This limits food chains to 3-4 levels."
+    },
+    {
+      "id": "sci13-mcq-007",
+      "question": "A food chain has 4 trophic levels. If producers have 10000J, energy at 4th level is:",
+      "options": [
+        "A. 1000J",
+        "B. 100J",
+        "C. 10J",
+        "D. 1J"
+      ],
+      "correctAnswer": "C",
+      "explanation": "10000 \u2192 1000 (10%) \u2192 100 (10%) \u2192 10 (10%). Fourth trophic level has 10J by the 10% law."
+    },
+    {
+      "id": "sci13-mcq-008",
+      "question": "Synthetic chemical responsible for ozone depletion:",
+      "options": [
+        "A. CO\u2082",
+        "B. SO\u2082",
+        "C. CFC",
+        "D. NO\u2082"
+      ],
+      "correctAnswer": "C",
+      "explanation": "CFC (chlorofluorocarbons) from refrigerants, air conditioners, spray cans rise to stratosphere and destroy ozone by releasing chlorine radicals."
+    },
+    {
+      "id": "sci13-mcq-009",
+      "question": "Which is NOT a component of an ecosystem?",
+      "options": [
+        "A. Producers",
+        "B. Consumers",
+        "C. Decomposers",
+        "D. None \u2014 all are components"
+      ],
+      "correctAnswer": "D",
+      "explanation": "All three \u2014 producers, consumers, and decomposers \u2014 are biotic components of an ecosystem. Plus abiotic factors (temperature, water, light, soil)."
+    },
+    {
+      "id": "sci13-mcq-010",
+      "question": "The 3R principle for environment protection stands for:",
+      "options": [
+        "A. Reduce, Restrict, Reclaim",
+        "B. Reduce, Reuse, Recycle",
+        "C. Remove, Reuse, Renew",
+        "D. Reduce, Replace, Recycle"
+      ],
+      "correctAnswer": "B",
+      "explanation": "3Rs: Reduce (use less), Reuse (use again), Recycle (convert waste to new material). This minimises waste and environmental damage."
+    },
+    {
+      "id": "sci13-mcq-011",
+      "question": "Which trophic level has maximum energy?",
+      "options": [
+        "A. Tertiary consumers",
+        "B. Secondary consumers",
+        "C. Primary consumers",
+        "D. Producers"
+      ],
+      "correctAnswer": "D",
+      "explanation": "Producers (plants) fix solar energy through photosynthesis \u2014 they have maximum energy. Each level above has 10% of the level below."
+    },
+    {
+      "id": "sci13-mcq-012",
+      "question": "UV radiation can cause:",
+      "options": [
+        "A. Heart disease only",
+        "B. Skin cancer and cataracts",
+        "C. Respiratory problems",
+        "D. Bone fractures"
+      ],
+      "correctAnswer": "B",
+      "explanation": "UV radiation (not blocked by damaged ozone): causes skin cancer (melanoma), cataracts, weakened immune system, reduced crop yields."
+    },
+    {
+      "id": "sci13-mcq-013",
+      "question": "Food web is different from food chain because:",
+      "options": [
+        "A. Food web has one linear path",
+        "B. Food web has multiple interconnected chains",
+        "C. Food web has only 2 trophic levels",
+        "D. Food chain has more stability"
+      ],
+      "correctAnswer": "B",
+      "explanation": "Food web = multiple interconnected food chains in an ecosystem. More interconnections = greater stability (if one organism disappears, others can adapt)."
+    },
+    {
+      "id": "sci13-mcq-014",
+      "question": "DDT accumulated in water is most concentrated in:",
+      "options": [
+        "A. Phytoplankton",
+        "B. Zooplankton",
+        "C. Small fish",
+        "D. Large fish/birds at top"
+      ],
+      "correctAnswer": "D",
+      "explanation": "DDT concentrates at each trophic level through biological magnification. Top predators (eagles, large fish) have the highest DDT concentration."
+    },
+    {
+      "id": "sci13-mcq-015",
+      "question": "The function of decomposers in an ecosystem is:",
+      "options": [
+        "A. Produce food by photosynthesis",
+        "B. Eat other animals",
+        "C. Break down dead matter and recycle nutrients",
+        "D. Convert CO\u2082 to oxygen"
+      ],
+      "correctAnswer": "C",
+      "explanation": "Decomposers (bacteria, fungi) break down dead plants and animals \u2192 release nutrients back to soil \u2192 used by producers \u2192 completes nutrient cycle."
+    }
+  ],
+  "exercises": [
+    {
+      "id": "sci13-ex-001",
+      "question": "What is biological magnification? Which trophic level is most affected?",
+      "answer": "Biological magnification: accumulation and increasing concentration of harmful chemicals (DDT, pesticides) at each successive trophic level in a food chain. Water (0.003 ppm) \u2192 phytoplankton (0.04 ppm) \u2192 zooplankton (0.5 ppm) \u2192 fish (2 ppm) \u2192 birds (25 ppm). Highest trophic level organisms are most affected.",
+      "type": "short-answer"
+    },
+    {
+      "id": "sci13-ex-002",
+      "question": "Explain why ozone layer is called a boon for life on Earth.",
+      "answer": "Ozone (O\u2083) in stratosphere absorbs 97-99% of harmful UV radiation from sun. Without ozone: (i) UV causes skin cancer and melanoma (ii) Cataracts and blindness (iii) Weakened immune system (iv) Reduced crop yields and phytoplankton damage. CFC gases destroy ozone \u2014 international ban under Montreal Protocol.",
+      "type": "short-answer"
+    },
+    {
+      "id": "sci13-ex-003",
+      "question": "Distinguish between biodegradable and non-biodegradable substances with examples.",
+      "answer": "Biodegradable: decomposed by microorganisms (bacteria, fungi) in nature. Examples: food waste, paper, leather, cotton, wood, agricultural waste. Non-biodegradable: NOT broken down by microorganisms, persist in environment. Examples: DDT, plastics, glass, metals, synthetic fibres. Non-biodegradable substances cause long-term environmental pollution.",
+      "type": "short-answer"
+    },
+    {
+      "id": "sci13-ex-004",
+      "question": "Explain the 10% energy flow law with an example food chain.",
+      "answer": "Only 10% of energy at one trophic level passes to the next \u2014 90% is lost as heat, used in respiration, excretion. Example: Grass (100,000J) \u2192 Grasshopper (10,000J) \u2192 Frog (1,000J) \u2192 Snake (100J) \u2192 Eagle (10J). This limits food chains to 3-4 levels as very little energy remains.",
+      "type": "short-answer"
+    },
+    {
+      "id": "sci13-ex-005",
+      "question": "What is the 3R principle? How does it help the environment?",
+      "answer": "3Rs: Reduce (use fewer resources, avoid waste), Reuse (use items multiple times instead of discarding), Recycle (convert waste into new usable material \u2014 paper, glass, metal). Benefits: reduces landfill waste, saves natural resources, reduces pollution, saves energy, protects ecosystem.",
+      "type": "short-answer"
+    },
+    {
+      "id": "sci13-ex-006",
+      "question": "Construct a food chain with 4 trophic levels. If producers have 10000J, calculate energy at each level.",
+      "answer": "Food chain: Grass \u2192 Grasshopper \u2192 Frog \u2192 Hawk. Energy: Grass = 10000J. Grasshopper = 10% = 1000J. Frog = 10% = 100J. Hawk = 10% = 10J. Only 0.1% of original energy reaches the top predator.",
+      "type": "short-answer"
+    },
+    {
+      "id": "sci13-ex-007",
+      "question": "What are decomposers? Why are they essential in an ecosystem?",
+      "answer": "Decomposers: organisms (bacteria, fungi) that break down dead and decaying organic matter into simple inorganic substances. Essential because: (i) Recycle nutrients back to soil for producers to use (ii) Prevent accumulation of dead matter (iii) Maintain nutrient cycle (carbon, nitrogen cycle) (iv) Essential for ecosystem functioning.",
+      "type": "short-answer"
+    },
+    {
+      "id": "sci13-ex-008",
+      "question": "How are food chains and food webs related? Why is a food web more stable than a food chain?",
+      "answer": "Food chain: linear sequence of organisms where each eats the next. Food web: network of many interconnected food chains in an ecosystem. Food web is more stable because if one species disappears, other food pathways exist. In a single food chain, loss of one species could collapse the entire chain.",
+      "type": "short-answer"
+    }
+  ],
+  "mcqCount": 15,
+  "exerciseCount": 8
+}
