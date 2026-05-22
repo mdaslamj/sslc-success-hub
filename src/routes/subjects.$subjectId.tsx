@@ -58,8 +58,16 @@ type ManifestChapter = {
   exerciseCount?: number;
 };
 
+type ManifestDoc = { chapters?: ManifestChapter[] };
 
 const MATH_SUBJECT_IDS = new Set(["mathematics", "math"]);
+const SCIENCE_SUBJECT_IDS = new Set(["science"]);
+
+function contentFolderFor(subjectId: string): string | null {
+  if (MATH_SUBJECT_IDS.has(subjectId)) return "mathematics";
+  if (SCIENCE_SUBJECT_IDS.has(subjectId)) return "science";
+  return null;
+}
 
 export const Route = createFileRoute("/subjects/$subjectId")({
   head: ({ params }) => ({
@@ -105,6 +113,9 @@ export const Route = createFileRoute("/subjects/$subjectId")({
 function SubjectDetailPage() {
   const { subjectId } = Route.useParams();
   const isMath = MATH_SUBJECT_IDS.has(subjectId);
+  const isScience = SCIENCE_SUBJECT_IDS.has(subjectId);
+  const contentFolder = contentFolderFor(subjectId);
+  const isContentDriven = contentFolder != null;
 
   const [subjectQuery, chaptersQuery, mathChaptersQuery] = useQueries({
     queries: [
@@ -126,14 +137,14 @@ function SubjectDetailPage() {
   });
 
   const manifestQuery = useQuery({
-    queryKey: ["content", "manifest", "mathematics"],
-    queryFn: loadManifest,
-    enabled: isMath,
+    queryKey: ["content", "manifest", contentFolder ?? "none"],
+    queryFn: () => loadManifest(contentFolder ?? undefined) as Promise<ManifestDoc>,
+    enabled: isContentDriven,
     staleTime: 60 * 60 * 1000,
   });
 
   const readyChapters = useMemo<ManifestChapter[]>(() => {
-    const list = (manifestQuery.data?.chapters ?? []) as ManifestChapter[];
+    const list = ((manifestQuery.data as ManifestDoc | undefined)?.chapters ?? []) as ManifestChapter[];
     return list
       .filter((c) => c.status === "ready")
       .sort((a, b) => (a.chapterNumber ?? 0) - (b.chapterNumber ?? 0));
@@ -144,22 +155,22 @@ function SubjectDetailPage() {
   // Load every ready chapter in parallel; loadChapter is already cached.
   const chapterQueries = useQueries({
     queries: readyChapters.map((c) => ({
-      queryKey: ["content", "chapter", "mathematics", c.id],
-      queryFn: () => loadChapter("mathematics", c.id),
-      enabled: isMath,
+      queryKey: ["content", "chapter", contentFolder ?? "none", c.id],
+      queryFn: () => loadChapter(contentFolder ?? "", c.id),
+      enabled: isContentDriven && contentFolder != null,
       staleTime: 60 * 60 * 1000,
     })),
   });
 
   const normalizedChapters = useMemo<NormalizedChapter[]>(() => {
-    if (!isMath) return [];
+    if (!isContentDriven) return [];
     return readyChapters.map((entry, i) => {
       const raw = chapterQueries[i]?.data;
       // Merge manifest skeleton with full chapter JSON when available.
       const merged = raw ? { ...entry, ...(raw as object) } : entry;
       return normalizeChapterData(merged);
     });
-  }, [isMath, readyChapters, chapterQueries]);
+  }, [isContentDriven, readyChapters, chapterQueries]);
 
   const normalizedById = useMemo(() => {
     const map = new Map<string, NormalizedChapter>();
@@ -256,16 +267,16 @@ function SubjectDetailPage() {
   }
 
   const mcqs: MCQ[] = useMemo(() => {
-    if (!isMath || !activeChapter) return [];
+    if (!isContentDriven || !activeChapter) return [];
     return mapContentMcqs(activeChapter.mcqs ?? [], activeChapter.title);
-  }, [isMath, activeChapter]);
+  }, [isContentDriven, activeChapter]);
 
   const manifestReady = useMemo(() => {
-    if (!isMath) return null;
-    const list = (manifestQuery.data?.chapters ?? []) as ManifestChapter[];
+    if (!isContentDriven) return null;
+    const list = ((manifestQuery.data as ManifestDoc | undefined)?.chapters ?? []) as ManifestChapter[];
     const ready = list.filter((c) => c.status === "ready").length;
     return ready > 0 ? ready : null;
-  }, [isMath, manifestQuery.data]);
+  }, [isContentDriven, manifestQuery.data]);
 
   const doneChapters = chapters.filter((c) => c.done).length;
   const chapterCountDisplay =
@@ -323,7 +334,7 @@ function SubjectDetailPage() {
             <TabsTrigger value="resources" className="rounded-full gap-1.5">
               <Library className="h-3.5 w-3.5" /> Resources
             </TabsTrigger>
-            {isMath && (
+            {isContentDriven && (
               <TabsTrigger value="formulas" className="rounded-full gap-1.5">
                 <Sigma className="h-3.5 w-3.5" /> Formulas
               </TabsTrigger>
@@ -338,7 +349,7 @@ function SubjectDetailPage() {
 
           {/* CHAPTERS */}
           <TabsContent value="chapters" className="mt-4">
-            {isMath && manifestQuery.data?.chapters ? (
+            {isContentDriven && (manifestQuery.data as ManifestDoc | undefined)?.chapters ? (
               chapterDetailOpen && activeChapter ? (
                 <ChapterDetailView
                   chapter={activeChapter}
@@ -347,7 +358,7 @@ function SubjectDetailPage() {
                 />
               ) : (
                 <ManifestChaptersGrid
-                  chapters={manifestQuery.data.chapters as ManifestChapter[]}
+                  chapters={(manifestQuery.data as ManifestDoc).chapters as ManifestChapter[]}
                   color={subject.color}
                   onSelect={(id) => {
                     setSelectedContentId(id);
@@ -366,7 +377,7 @@ function SubjectDetailPage() {
 
           {/* RESOURCES */}
           <TabsContent value="resources" className="mt-4 space-y-4">
-            {isMath ? (
+            {isContentDriven ? (
               <ContentChapterPane
                 chapters={normalizedChapters}
                 activeId={activeContentId}
@@ -384,7 +395,7 @@ function SubjectDetailPage() {
           </TabsContent>
 
 
-          {isMath && (
+          {isContentDriven && (
             <TabsContent value="formulas" className="mt-4">
               <ContentChapterPane
                 chapters={normalizedChapters}
@@ -405,7 +416,7 @@ function SubjectDetailPage() {
 
           {/* TOPICS */}
           <TabsContent value="topics" className="mt-4">
-            {isMath ? (
+            {isContentDriven ? (
               <div className="space-y-4">
                 <ContentChapterPane
                   chapters={normalizedChapters}
@@ -447,7 +458,7 @@ function SubjectDetailPage() {
                 label="Upload answers"
               />
             </div>
-            {isMath ? (
+            {isContentDriven ? (
               <ContentChapterPane
                 chapters={normalizedChapters}
                 activeId={activeContentId}
