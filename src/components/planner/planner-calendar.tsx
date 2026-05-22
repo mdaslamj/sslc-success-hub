@@ -34,6 +34,7 @@ import {
   startOfMonth,
   startOfWeek,
   toDateKey,
+  subscribeEvents,
   type PlannerEvent,
   type PlannerEventCategory,
 } from "@/lib/planner-events-store";
@@ -138,6 +139,13 @@ export function PlannerCalendar() {
   useEffect(() => {
     setEvents(listEvents());
     setHydrated(true);
+  }, []);
+
+  // Live-refresh whenever any other surface (planner tasks, prep modes,
+  // recommendation cards) writes to the events store.
+  useEffect(() => {
+    const unsub = subscribeEvents(() => setEvents(listEvents()));
+    return unsub;
   }, []);
 
   function refresh() {

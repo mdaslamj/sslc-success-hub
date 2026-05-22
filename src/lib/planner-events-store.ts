@@ -75,6 +75,29 @@ function writeAll(events: PlannerEvent[]) {
   } catch {
     /* quota — ignore */
   }
+  notify();
+}
+
+/* ------------------------------------------------------------------ */
+/* Tiny pub/sub so any consumer (calendar, mentor strip) refreshes     */
+/* instantly when an event is added/removed from anywhere in the app.  */
+/* ------------------------------------------------------------------ */
+
+const listeners = new Set<() => void>();
+
+function notify() {
+  listeners.forEach((fn) => {
+    try {
+      fn();
+    } catch {
+      /* ignore */
+    }
+  });
+}
+
+export function subscribeEvents(fn: () => void): () => void {
+  listeners.add(fn);
+  return () => listeners.delete(fn);
 }
 
 export function listEvents(): PlannerEvent[] {
