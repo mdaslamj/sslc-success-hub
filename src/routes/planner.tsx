@@ -273,15 +273,17 @@ function PlannerPage() {
             <div className="space-y-2">
               {tasks.map((t) => {
                 const subj = subjects.find((s) => s.name.startsWith(t.subject)) ?? subjects[0];
+                const prepModes = getPrepModes(t.subject);
                 return (
-                  <div
+                  <Collapsible
                     key={t.id}
-                    className={`group flex items-center gap-3 rounded-2xl border p-3 transition ${
+                    className={`group rounded-2xl border transition ${
                       t.done
                         ? "border-success/30 bg-success/5"
                         : "border-border/60 bg-background/40 hover:border-brand/40"
                     }`}
                   >
+                    <div className="flex items-center gap-3 p-3">
                     <Checkbox
                       checked={t.done}
                       onCheckedChange={() => toggleTask(t.id)}
@@ -296,7 +298,12 @@ function PlannerPage() {
                     >
                       {subj.emoji}
                     </div>
-                    <div className="min-w-0 flex-1">
+                    <CollapsibleTrigger asChild>
+                      <button
+                        type="button"
+                        className="min-w-0 flex-1 text-left [&[data-state=open]_.prep-chev]:rotate-180"
+                        aria-label="Show preparation modes"
+                      >
                       <div
                         className={`truncate text-sm font-medium ${
                           t.done ? "line-through text-muted-foreground" : ""
@@ -320,7 +327,18 @@ function PlannerPage() {
                           </a>
                         )}
                       </div>
-                    </div>
+                      </button>
+                    </CollapsibleTrigger>
+                    <CollapsibleTrigger asChild>
+                      <Button
+                        size="icon"
+                        variant="ghost"
+                        className="h-7 w-7 shrink-0 [&[data-state=open]_svg]:rotate-180"
+                        aria-label="Toggle preparation modes"
+                      >
+                        <ChevronDown className="prep-chev h-4 w-4 transition-transform" />
+                      </Button>
+                    </CollapsibleTrigger>
                     <Button
                       size="icon"
                       variant="ghost"
@@ -330,7 +348,52 @@ function PlannerPage() {
                     >
                       <Trash2 className="h-3.5 w-3.5" />
                     </Button>
-                  </div>
+                    </div>
+                    <CollapsibleContent>
+                      <div className="border-t border-border/60 px-3 py-3">
+                        <div className="mb-2 text-[10px] uppercase tracking-widest text-muted-foreground">
+                          Preparation modes
+                        </div>
+                        <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+                          {prepModes.map((m) => {
+                            const inner = (
+                              <>
+                                <span className="text-base leading-none">{m.icon}</span>
+                                <span className="min-w-0 flex-1">
+                                  <span className="block truncate text-xs font-medium">
+                                    {m.label}
+                                  </span>
+                                  <span className="block truncate text-[10px] text-muted-foreground">
+                                    {m.hint}
+                                  </span>
+                                </span>
+                              </>
+                            );
+                            const cls =
+                              "flex items-center gap-2 rounded-xl border border-border/60 bg-background/60 p-2 text-left transition hover:border-brand/40 hover:bg-brand/5";
+                            return m.to ? (
+                              <Link key={m.id} to={m.to} className={cls}>
+                                {inner}
+                              </Link>
+                            ) : (
+                              <button
+                                key={m.id}
+                                type="button"
+                                className={cls}
+                                onClick={() =>
+                                  toast(`${m.label}`, {
+                                    description: `${t.subject} · coming soon`,
+                                  })
+                                }
+                              >
+                                {inner}
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    </CollapsibleContent>
+                  </Collapsible>
                 );
               })}
               {tasks.length === 0 && (
