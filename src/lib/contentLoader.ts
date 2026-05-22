@@ -1,9 +1,13 @@
-export const loadManifest = async () => {
-
-  const res = await fetch("/content/manifest.json");
-
+export const loadManifest = async (subjectId?: string) => {
+  // Backwards compatible: no subjectId (or "mathematics"/"math") loads the
+  // legacy top-level manifest used by the math pipeline. Other subjects load
+  // their per-subject manifest from public/content/chapters/{subjectId}/manifest.json.
+  const isMath = !subjectId || subjectId === "mathematics" || subjectId === "math";
+  const url = isMath
+    ? "/content/manifest.json"
+    : `/content/chapters/${subjectId}/manifest.json`;
+  const res = await fetch(url);
   return res.json();
-
 };
 
 export const loadChapter = async (subjectId: string, chapterId: string) => {
