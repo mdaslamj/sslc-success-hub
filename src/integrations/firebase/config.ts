@@ -10,16 +10,30 @@ import {
 
 // Firebase web config — these values are publishable (safe in client code).
 // Security is enforced via Firestore Security Rules in the Firebase Console.
-// Values come from VITE_FIREBASE_* env vars (set in .env). A safe fallback
-// keeps the legacy project working if env vars are not configured yet.
+// Values come from VITE_FIREBASE_* env vars (set in .env). We intentionally
+// do NOT ship hardcoded fallbacks — a stale fallback to a decommissioned
+// project would cause silent auth-project mismatches against the server-side
+// JWT verifier (which expects FIREBASE_PROJECT_ID). Misconfiguration must
+// fail loudly at startup instead.
 const env = (import.meta as unknown as { env?: Record<string, string | undefined> }).env ?? {};
+
+function requireEnv(name: string): string {
+  const v = env[name];
+  if (!v) {
+    throw new Error(
+      `Missing required env var ${name}. Set all VITE_FIREBASE_* values to match the active Firebase project.`,
+    );
+  }
+  return v;
+}
+
 export const firebaseConfig = {
-  apiKey: env.VITE_FIREBASE_API_KEY ?? "AIzaSyBwzkv0doLXzw2zKkOINOS2zS7IzuybwQM",
-  authDomain: env.VITE_FIREBASE_AUTH_DOMAIN ?? "c-success-hub.firebaseapp.com",
-  projectId: env.VITE_FIREBASE_PROJECT_ID ?? "c-success-hub",
-  storageBucket: env.VITE_FIREBASE_STORAGE_BUCKET ?? "c-success-hub.firebasestorage.app",
-  messagingSenderId: env.VITE_FIREBASE_MESSAGING_SENDER_ID ?? "428486835894",
-  appId: env.VITE_FIREBASE_APP_ID ?? "1:428486835894:web:f4d422ae1a7a183d34b017",
+  apiKey: requireEnv("VITE_FIREBASE_API_KEY"),
+  authDomain: requireEnv("VITE_FIREBASE_AUTH_DOMAIN"),
+  projectId: requireEnv("VITE_FIREBASE_PROJECT_ID"),
+  storageBucket: requireEnv("VITE_FIREBASE_STORAGE_BUCKET"),
+  messagingSenderId: requireEnv("VITE_FIREBASE_MESSAGING_SENDER_ID"),
+  appId: requireEnv("VITE_FIREBASE_APP_ID"),
 };
 
 export const firebaseApp: FirebaseApp = getApps().length

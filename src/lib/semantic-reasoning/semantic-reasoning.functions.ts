@@ -33,8 +33,15 @@ type AllowedModel = (typeof ALLOWED_MODELS)[number];
  * securetoken JWKS, plus issuer/audience claims tied to the Firebase
  * project ID.
  */
-const FIREBASE_PROJECT_ID =
-  process.env.FIREBASE_PROJECT_ID ?? "aura-57e48";
+const FIREBASE_PROJECT_ID = process.env.FIREBASE_PROJECT_ID;
+if (!FIREBASE_PROJECT_ID) {
+  // Fail loudly at module load if the server is misconfigured — avoids the
+  // silent auth-project-mismatch class of bugs where the client and server
+  // disagree about which Firebase project to trust.
+  throw new Error(
+    "FIREBASE_PROJECT_ID env var is required for token verification.",
+  );
+}
 const FIREBASE_ISSUER = `https://securetoken.google.com/${FIREBASE_PROJECT_ID}`;
 const FIREBASE_JWKS = createRemoteJWKSet(
   new URL(
