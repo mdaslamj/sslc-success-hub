@@ -112,8 +112,6 @@ export const Route = createFileRoute("/subjects/$subjectId")({
 
 function SubjectDetailPage() {
   const { subjectId } = Route.useParams();
-  const isMath = MATH_SUBJECT_IDS.has(subjectId);
-  const isScience = SCIENCE_SUBJECT_IDS.has(subjectId);
   const contentFolder = contentFolderFor(subjectId);
   const isContentDriven = contentFolder != null;
 
