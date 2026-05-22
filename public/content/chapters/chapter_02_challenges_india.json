@@ -1,0 +1,107 @@
+{
+  "chapter_id": "SS-GEO-08",
+  "subject": "Social Science",
+  "section": "Geography",
+  "chapter_number": 8,
+  "chapter_name": "India Transport and Communication",
+  "learning_outcomes": [
+    "Understand the importance of transport in India",
+    "Understand types of road transport",
+    "Understand rail, air and water transport",
+    "Understand mass media"
+  ],
+  "key_terms": [
+    {
+      "term": "Transport",
+      "definition": "The movement of goods and passengers from one place to another"
+    },
+    {
+      "term": "GPS",
+      "definition": "Global Positioning System \u2014 route finder or path finder"
+    },
+    {
+      "term": "Navik",
+      "definition": "India's regional and independent GPS system"
+    },
+    {
+      "term": "Remote Sensing",
+      "definition": "Collecting information related to objects from a distance without physically touching them"
+    },
+    {
+      "term": "GIS",
+      "definition": "Geographic Information System \u2014 collects, stores, uses, modifies and displays data about earth's surface"
+    },
+    {
+      "term": "Mass Media",
+      "definition": "A means of communication that reaches all people"
+    }
+  ],
+  "mcqs": [
+    {
+      "q_id": "SS-GEO-08-MCQ-01",
+      "question": "The port which is known as the 'Gateway of India'",
+      "options": {
+        "A": "Kolkata",
+        "B": "New Mangalore",
+        "C": "Goa",
+        "D": "Mumbai"
+      },
+      "correct": "D",
+      "explanation": "Mumbai port is known as the Gateway of India"
+    },
+    {
+      "q_id": "SS-GEO-08-MCQ-02",
+      "question": "The longest national highway in India",
+      "options": {
+        "A": "National Highway 44",
+        "B": "National Highway 37",
+        "C": "National Highway 47",
+        "D": "National Highway 54"
+      },
+      "correct": "A",
+      "explanation": "National Highway 44 (Srinagar to Kanyakumari) is the longest national highway"
+    },
+    {
+      "q_id": "SS-GEO-08-MCQ-03",
+      "question": "The regional and independent GPS system of India is",
+      "options": {
+        "A": "Map info",
+        "B": "Swadeshi",
+        "C": "Navik",
+        "D": "Arc info"
+      },
+      "correct": "C",
+      "explanation": "NavIC (Navigation with Indian Constellation) / Navik is India's own GPS system"
+    },
+    {
+      "q_id": "SS-GEO-08-MCQ-04",
+      "question": "The 'Tea Port of India' is",
+      "options": {
+        "A": "Mumbai",
+        "B": "New Mangalore",
+        "C": "Marmagoa",
+        "D": "Kolkata"
+      },
+      "correct": "D",
+      "explanation": "Kolkata is called the Tea Port of India"
+    }
+  ],
+  "one_mark_questions": [
+    {
+      "question": "What is transport?",
+      "answer": "Transportation is the movement of goods and passengers from one place to another"
+    },
+    {
+      "question": "In which year was NHAI established?",
+      "answer": "1988"
+    },
+    {
+      "question": "What is remote sensing technology?",
+      "answer": "Collecting information related to objects from a distance without physically touching them"
+    },
+    {
+      "question": "What is mass media?",
+      "answer": "Mass media is a means of communication that reaches all people"
+    }
+  ]
+}

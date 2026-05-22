@@ -1,0 +1,110 @@
+{
+  "chapter_id": "SS-GEO-02",
+  "subject": "Social Science",
+  "section": "Geography",
+  "chapter_number": 2,
+  "chapter_name": "India \u2013 Seasons",
+  "learning_outcomes": [
+    "Identify the main features of the climate of India",
+    "Analyse the climatic conditions of the seasons of India",
+    "Explain the distribution and effects of seasonal rainfall"
+  ],
+  "key_terms": [
+    {
+      "term": "Southwest Monsoon",
+      "definition": "Seasonal winds that bring rainfall to India from June to September"
+    },
+    {
+      "term": "Retreating Monsoon",
+      "definition": "October-November season when monsoon withdraws from India, causing cyclones in Bay of Bengal"
+    },
+    {
+      "term": "Kala Baisakhi",
+      "definition": "Pre-monsoon rainfall in West Bengal during April-May"
+    },
+    {
+      "term": "Coffee Blossoms",
+      "definition": "Pre-monsoon rainfall in Karnataka during April-May"
+    },
+    {
+      "term": "Mango Showers",
+      "definition": "Pre-monsoon rainfall in Kerala during April-May"
+    },
+    {
+      "term": "Andhis",
+      "definition": "Pre-monsoon rainfall in Uttar Pradesh during April-May"
+    }
+  ],
+  "mcqs": [
+    {
+      "q_id": "SS-GEO-02-MCQ-01",
+      "question": "The eastern parts of western ghats get less rainfall than the western parts because",
+      "options": {
+        "A": "They lie in the south",
+        "B": "They are rain shadow regions",
+        "C": "They get heavy snow fall",
+        "D": "There are dense forests"
+      },
+      "correct": "B",
+      "explanation": "Eastern parts of Western Ghats are rain shadow regions"
+    },
+    {
+      "q_id": "SS-GEO-02-MCQ-02",
+      "question": "During the Retreating Monsoon season cyclones occur in the Bay of Bengal due to",
+      "options": {
+        "A": "Difference in temperature and pressure between land and ocean",
+        "B": "Vertical rays of sun",
+        "C": "These areas lie high from sea level",
+        "D": "North Indian areas are far from sea"
+      },
+      "correct": "A",
+      "explanation": "Cyclones occur due to differences in temperature and pressure of land and sea"
+    },
+    {
+      "q_id": "SS-GEO-02-MCQ-03",
+      "question": "The period of Retreating Monsoons season in India",
+      "options": {
+        "A": "March-May",
+        "B": "June-September",
+        "C": "October-November",
+        "D": "December-February"
+      },
+      "correct": "C",
+      "explanation": "The Retreating Monsoon season is October-November in India"
+    }
+  ],
+  "one_mark_questions": [
+    {
+      "question": "Which are the two branches of the southwest monsoon?",
+      "answer": "Arabian Sea branch and Bay of Bengal branch"
+    },
+    {
+      "question": "Which state does not receive rain during the southwest monsoon season?",
+      "answer": "Tamil Nadu"
+    },
+    {
+      "question": "Which place in India receives the highest rainfall?",
+      "answer": "Mawsynram (Meghalaya)"
+    },
+    {
+      "question": "Which region receives the lowest rainfall in India?",
+      "answer": "Ruyli (Rajasthan)"
+    },
+    {
+      "question": "What are the main climatic seasons of India?",
+      "answer": "Summer (March-May), Southwest Monsoon (June-September), Retreating Monsoon (October-November), Winter (December-February)"
+    }
+  ],
+  "three_mark_questions": [
+    {
+      "question": "Indian agriculture is a gambling with the monsoon. Justify.",
+      "answer": [
+        "The main occupation of the people of India is agriculture",
+        "Agriculture is controlled by the monsoon winds",
+        "Failure of rainfall leads to drought",
+        "Heavy rainfall causes loss of life and damage to property",
+        "Hence Indian agriculture is called a gamble with the monsoons"
+      ]
+    }
+  ]
+}

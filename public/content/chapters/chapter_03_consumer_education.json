@@ -1,0 +1,152 @@
+{
+  "chapter_id": "SS-BUS-01",
+  "subject": "Social Science",
+  "section": "Business Studies",
+  "chapter_number": 1,
+  "chapter_name": "Banking Transactions",
+  "learning_outcomes": [
+    "Understand the role of banks and post offices in financial transactions",
+    "Understand the characteristics of banks and services provided",
+    "List the different accounts that can be opened in banks",
+    "Understand the procedure for opening accounts"
+  ],
+  "key_terms": [
+    {
+      "term": "Bank",
+      "definition": "A financial institution that accepts deposits from the public, grants loans, and performs financial services"
+    },
+    {
+      "term": "Savings Account",
+      "definition": "Account opened by salaried employees, students, senior citizens \u2014 pays interest on deposits"
+    },
+    {
+      "term": "Current Account",
+      "definition": "Account used by businessmen \u2014 no interest paid, service fee charged, unlimited transactions daily"
+    },
+    {
+      "term": "Recurring Deposit Account",
+      "definition": "Account to save a fixed amount every month for a specific period \u2014 opened for future needs"
+    },
+    {
+      "term": "Fixed Deposit Account",
+      "definition": "Account opened by senior citizens and pensioners \u2014 fixed income, pays highest interest"
+    },
+    {
+      "term": "Reserve Bank of India",
+      "definition": "Central bank of India \u2014 controls all banking activities \u2014 called 'Bank of Banks'"
+    },
+    {
+      "term": "ATM",
+      "definition": "Automated Teller Machine"
+    }
+  ],
+  "mcqs": [
+    {
+      "q_id": "SS-BUS-01-MCQ-01",
+      "question": "The word 'bank' is derived from which Italian word",
+      "options": {
+        "A": "Banker",
+        "B": "Banque",
+        "C": "Banco",
+        "D": "Bench"
+      },
+      "correct": "C",
+      "explanation": "The word 'bank' is derived from the Italian word 'Banco' meaning bench"
+    },
+    {
+      "q_id": "SS-BUS-01-MCQ-02",
+      "question": "This is called the central bank of India",
+      "options": {
+        "A": "Reserve Bank of India",
+        "B": "Syndicate Bank",
+        "C": "State Bank of India",
+        "D": "Commercial Bank"
+      },
+      "correct": "A",
+      "explanation": "Reserve Bank of India is the central bank of India"
+    },
+    {
+      "q_id": "SS-BUS-01-MCQ-03",
+      "question": "Senior citizens and pensioners with a fixed income usually open this account",
+      "options": {
+        "A": "Savings account",
+        "B": "Current account",
+        "C": "Recurring deposit account",
+        "D": "Fixed deposit account"
+      },
+      "correct": "D",
+      "explanation": "Fixed deposit account gives the highest interest \u2014 preferred by senior citizens"
+    },
+    {
+      "q_id": "SS-BUS-01-MCQ-04",
+      "question": "The bank account that allows depositing and withdrawing money as many times as necessary in a day",
+      "options": {
+        "A": "Current account",
+        "B": "Savings account",
+        "C": "Recurring deposit account",
+        "D": "Fixed deposit account"
+      },
+      "correct": "A",
+      "explanation": "Current account allows unlimited daily transactions"
+    },
+    {
+      "q_id": "SS-BUS-01-MCQ-05",
+      "question": "This type of bank account is generally opened by students",
+      "options": {
+        "A": "Recurring deposit account",
+        "B": "Fixed deposit account",
+        "C": "Current account",
+        "D": "Savings account"
+      },
+      "correct": "D",
+      "explanation": "Savings account is generally opened by students, salaried employees and senior citizens"
+    }
+  ],
+  "one_mark_questions": [
+    {
+      "question": "Which bank controls the activities of all banks in India?",
+      "answer": "Reserve Bank of India"
+    },
+    {
+      "question": "Why is RBI called 'Bank of banks'?",
+      "answer": "Because all the banking transactions in India are controlled by the Reserve Bank of India"
+    },
+    {
+      "question": "What is the expanded form of ATM?",
+      "answer": "Automated Teller Machine"
+    },
+    {
+      "question": "From which French word has the word 'bank' been derived?",
+      "answer": "Banque"
+    }
+  ],
+  "three_mark_questions": [
+    {
+      "question": "What are the financial transactions of post offices?",
+      "answer": [
+        "Issuing National Savings Certificates",
+        "Has started postal savings accounts",
+        "Issuing Kisan Vikas Certificates",
+        "Postal Insurance Scheme",
+        "Retirement Scheme",
+        "Transferring money",
+        "ATM Facility"
+      ]
+    },
+    {
+      "question": "What are the functions of banks / services of banks?",
+      "answer": [
+        "Accepts deposits from the public",
+        "Grants loans",
+        "Transfers money",
+        "Rents out safes",
+        "Issuing debit cards and credit cards",
+        "They make money transactions",
+        "They maintain the security of money",
+        "Taking responsibility for signatures",
+        "Issuing promissory notes and letter of guarantee",
+        "Handling government financial transactions"
+      ]
+    }
+  ]
+}

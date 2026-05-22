@@ -1,0 +1,159 @@
+{
+  "chapter_id": "SS-HIS-05",
+  "subject": "Social Science",
+  "section": "History",
+  "chapter_number": 5,
+  "chapter_name": "Social and Religious Reform Movements",
+  "learning_outcomes": [
+    "The 19th century is known as the period of 'Indian Renaissance'",
+    "The establishment and reforms of Brahma Samaj, Arya Samaj, Prathana Samaj, Satyashodhaka Samaj will be known",
+    "The Young Bengali and Aligarh Movements will be explained",
+    "The teachings of Ramakrishna Mission will be understood",
+    "The ideas of Narayana Guru's Dharmaparipalana Yogam and Periyar will be understood"
+  ],
+  "key_terms": [
+    {
+      "term": "Indian Renaissance",
+      "definition": "The 19th century period of social and religious reform awakening in India"
+    },
+    {
+      "term": "Brahma Samaj",
+      "definition": "Social reform organization founded by Raja Ram Mohan Roy in 1828"
+    },
+    {
+      "term": "Arya Samaj",
+      "definition": "Reform organization founded by Dayanand Saraswati with the slogan 'Back to the Vedas'"
+    },
+    {
+      "term": "Satyashodhak Samaj",
+      "definition": "Social reform organization founded by Jyotiba Phule against caste discrimination"
+    },
+    {
+      "term": "Shuddhi Movement",
+      "definition": "Movement started by Arya Samaj for reconversion of people who had left Hinduism"
+    },
+    {
+      "term": "Aligarh Movement",
+      "definition": "Muslim reform movement started by Sir Syed Ahmed Khan to promote modern education"
+    }
+  ],
+  "mcqs": [
+    {
+      "q_id": "SS-HIS-05-MCQ-01",
+      "question": "The social reform organization based on the principle 'service to humanity is service to God'",
+      "options": {
+        "A": "Satya Shodhak Samaj",
+        "B": "Prathana Samaj",
+        "C": "Arya Samaj",
+        "D": "Ramakrishna Mission"
+      },
+      "correct": "D",
+      "explanation": "Ramakrishna Mission founded by Swami Vivekananda was based on this principle"
+    },
+    {
+      "q_id": "SS-HIS-05-MCQ-02",
+      "question": "The Theosophical Society was founded by",
+      "options": {
+        "A": "Ram Mohan Roy",
+        "B": "Mahatma Gandhiji",
+        "C": "Annie Besant",
+        "D": "Colonel H.S.Olcott and Madam Blavatsky"
+      },
+      "correct": "D",
+      "explanation": "The Theosophical Society was founded in 1875 by Colonel H.S. Olcott and Madam Blavatsky"
+    },
+    {
+      "q_id": "SS-HIS-05-MCQ-03",
+      "question": "The Call 'Back to the Vedas' was given by",
+      "options": {
+        "A": "Dayanand Saraswati",
+        "B": "Atmaram Pandurang",
+        "C": "Swami Vivekananda",
+        "D": "Rajaram Mohan Roy"
+      },
+      "correct": "A",
+      "explanation": "Dayanand Saraswati, founder of Arya Samaj, gave the call 'Back to the Vedas'"
+    },
+    {
+      "q_id": "SS-HIS-05-MCQ-04",
+      "question": "The newspaper 'New India' was started by",
+      "options": {
+        "A": "Rajaram Mohan Roy",
+        "B": "Mahatma Gandhi",
+        "C": "Annie Besant",
+        "D": "Dayanand Saraswati"
+      },
+      "correct": "C",
+      "explanation": "Annie Besant started the newspaper 'New India'"
+    },
+    {
+      "q_id": "SS-HIS-05-MCQ-05",
+      "question": "'Purification Ritual' was the main activity of",
+      "options": {
+        "A": "Prarthana Samaj",
+        "B": "Brahmo Samaj",
+        "C": "Satyashodak Samaj",
+        "D": "Arya Samaj"
+      },
+      "correct": "D",
+      "explanation": "Arya Samaj conducted Shuddhi (purification) ritual ceremonies"
+    }
+  ],
+  "one_mark_questions": [
+    {
+      "question": "How is the 19th century in Indian history called?",
+      "answer": "Indian Renaissance"
+    },
+    {
+      "question": "Who started the Self Respect Movement?",
+      "answer": "E.V. Ramaswami Naiker (Periyar)"
+    },
+    {
+      "question": "Who was the founder of the Prarthana Samaj?",
+      "answer": "Atmaram Panduranga"
+    },
+    {
+      "question": "Who was the teacher of Swami Vivekananda?",
+      "answer": "Ramakrishna Paramahamsa"
+    },
+    {
+      "question": "Who started the Young Bengali Movement?",
+      "answer": "Henry Vivian Derozio"
+    },
+    {
+      "question": "Who started the Anglo Oriental College?",
+      "answer": "Syed Ahmed Khan"
+    },
+    {
+      "question": "Who said 'There is one caste, one religion and one God for the human race'?",
+      "answer": "Narayana Guru"
+    }
+  ],
+  "three_mark_questions": [
+    {
+      "question": "State the reforms of Dayananda Saraswati / Objectives of Arya Samaj.",
+      "answer": [
+        "Founded the Arya Samaj",
+        "Said that the Vedas are the source of truth and knowledge",
+        "Declared 'Return to the Vedas'",
+        "Condemned idol worship and caste system",
+        "Encouraged widow remarriage",
+        "Called for the use of swadeshi goods",
+        "Wrote the book 'Satyartha Prakasha'",
+        "Started the 'Shuddhi Movement'",
+        "Declared that 'India is for Indians'"
+      ]
+    },
+    {
+      "question": "Analyse the objectives of the Aligarh Movement.",
+      "answer": [
+        "Promoting harmony of Eastern and Western ideas",
+        "Transformation of Muslims in their political, social, educational, and religious philosophical beliefs",
+        "Sir Syed Ahmed Khan started Anglo-Oriental College to provide modern education to Muslims",
+        "Providing religious education along with modern education",
+        "Creating a modern society through western education",
+        "Supported female literacy and condemned polygamy and ideas against widow marriage"
+      ]
+    }
+  ]
+}

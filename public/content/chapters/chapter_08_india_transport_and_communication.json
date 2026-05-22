@@ -1,0 +1,133 @@
+{
+  "chapter_id": "SS-GEO-01",
+  "subject": "Social Science",
+  "section": "Geography",
+  "chapter_number": 1,
+  "chapter_name": "India \u2013 Geographical Position and Physical Features",
+  "learning_outcomes": [
+    "Explain the geographical location, area, land and water borders of India",
+    "Describe the natural features of India",
+    "Name the natural divisions of India"
+  ],
+  "key_terms": [
+    {
+      "term": "Himadri",
+      "definition": "The Great Himalayas \u2014 always covered with snow"
+    },
+    {
+      "term": "Dunes",
+      "definition": "Flat narrow plains in the foothills of the Himalayas"
+    },
+    {
+      "term": "Peninsular Plateau",
+      "definition": "The oldest and largest geographical division of India \u2014 rich in minerals"
+    },
+    {
+      "term": "Indira Point",
+      "definition": "The extreme southern tip of India"
+    },
+    {
+      "term": "Indian Standard Time",
+      "definition": "Based on 82\u00bd East longitude"
+    }
+  ],
+  "mcqs": [
+    {
+      "q_id": "SS-GEO-01-MCQ-01",
+      "question": "The largest geographical division of India is",
+      "options": {
+        "A": "Northern greater Plain",
+        "B": "Himalayan mountains",
+        "C": "Coastal Plain and Islands",
+        "D": "Peninsular Plateau"
+      },
+      "correct": "D",
+      "explanation": "The Peninsular Plateau is the largest geographical division of India"
+    },
+    {
+      "q_id": "SS-GEO-01-MCQ-02",
+      "question": "Highest mountain peak of India",
+      "options": {
+        "A": "Godwin Austin/K2",
+        "B": "Mount Everest",
+        "C": "Anaimudi",
+        "D": "Guru Shikhara"
+      },
+      "correct": "A",
+      "explanation": "K2 (Godwin Austin) at 8611m is the highest peak in India"
+    },
+    {
+      "q_id": "SS-GEO-01-MCQ-03",
+      "question": "The Eastern Coastal Plain is",
+      "options": {
+        "A": "long",
+        "B": "wide",
+        "C": "steep",
+        "D": "narrow"
+      },
+      "correct": "B",
+      "explanation": "The Eastern Coastal Plain is wide and flat"
+    },
+    {
+      "q_id": "SS-GEO-01-MCQ-04",
+      "question": "Mount Everest lies between",
+      "options": {
+        "A": "India-Pakistan",
+        "B": "India-China",
+        "C": "Nepal-Tibet",
+        "D": "Nepal-Bhutan"
+      },
+      "correct": "C",
+      "explanation": "Mount Everest lies on the border between Nepal and Tibet"
+    }
+  ],
+  "one_mark_questions": [
+    {
+      "question": "Where do the Eastern and Western Ghats meet?",
+      "answer": "Nilgiri Hills"
+    },
+    {
+      "question": "Why is the North Indian Plain called the 'deposition plain'?",
+      "answer": "It is formed by the deposition of alluvial soils brought by the rivers of Himalayas"
+    },
+    {
+      "question": "Which is the extreme southern tip of India?",
+      "answer": "Indira Point"
+    },
+    {
+      "question": "On which longitude is the Indian Standard Time based?",
+      "answer": "82\u00bd East longitude"
+    },
+    {
+      "question": "By what name are the Western Ghats called in Maharashtra and Karnataka?",
+      "answer": "Sahyadri Ranges"
+    },
+    {
+      "question": "Which is the highest mountain peak in South India?",
+      "answer": "Anaimudi"
+    }
+  ],
+  "three_mark_questions": [
+    {
+      "question": "Which are the major natural divisions of India?",
+      "answer": [
+        "Northern Mountains",
+        "Northern Great Plain",
+        "Peninsular Plateau",
+        "Coastal Plain & Islands"
+      ]
+    },
+    {
+      "question": "How are the Himalayas useful for Indians?",
+      "answer": [
+        "Provide protection to India",
+        "Block the cold winds from North Asia",
+        "Are the source of rivers",
+        "Are suitable for hydroelectric power generation",
+        "Have mineral resources",
+        "Are famous for tourism and religious sites",
+        "Are a haven for flora and fauna"
+      ]
+    }
+  ]
+}
