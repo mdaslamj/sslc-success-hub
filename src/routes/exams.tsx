@@ -21,6 +21,12 @@ import { SEED_MOCK_EXAMS } from "@/lib/mock-exam-seed";
 import { cacheExam, listLocalResults } from "@/lib/mock-exam-store";
 import { fetchMockExams } from "@/integrations/firebase/services/mock-exams";
 import type { MockExamDoc, MockExamKind } from "@/integrations/firebase/types";
+import { useContentCatalog } from "@/hooks/use-content-catalog";
+import {
+  buildChapterMockExam,
+  buildMixedMockExam,
+  buildSubjectMockExam,
+} from "@/lib/content-exam-builder";
 
 export const Route = createFileRoute("/exams")({
   head: () => ({
@@ -53,9 +59,46 @@ function ExamsPage() {
     queryFn: fetchMockExams,
     staleTime: 5 * 60_000,
   });
+  const content = useContentCatalog();
+
+  // Build content-driven exams: one full subject mock + per-chapter tests +
+  // one mixed paper. Falls back to legacy seed when no content has loaded.
+  const contentExams = useMemo<MockExamDoc[]>(() => {
+    const out: MockExamDoc[] = [];
+    for (const s of content.subjects) {
+      if (s.chapters.length === 0) continue;
+      const full = buildSubjectMockExam({
+        subjectId: s.runtimeId,
+        subjectName: s.name,
+        chapters: s.chapters,
+      });
+      if (full) out.push(full);
+      for (const ch of s.chapters) {
+        const ct = buildChapterMockExam({
+          subjectId: s.runtimeId,
+          chapter: ch,
+        });
+        if (ct) out.push(ct);
+      }
+    }
+    const ready = content.subjects.filter((s) => s.chapters.length > 0);
+    if (ready.length > 1) {
+      const mixed = buildMixedMockExam({
+        bySubject: ready.map((s) => ({
+          subjectId: s.runtimeId,
+          chapters: s.chapters,
+        })),
+      });
+      if (mixed) out.push(mixed);
+    }
+    return out;
+  }, [content.subjects]);
+
   const catalog = useMemo<MockExamDoc[]>(() => {
-    return remote && remote.length > 0 ? remote : SEED_MOCK_EXAMS;
-  }, [remote]);
+    if (contentExams.length > 0) return contentExams;
+    if (remote && remote.length > 0) return remote;
+    return SEED_MOCK_EXAMS;
+  }, [contentExams, remote]);
 
   const visible = useMemo(
     () => (filter === "all" ? catalog : catalog.filter((e) => e.kind === filter)),

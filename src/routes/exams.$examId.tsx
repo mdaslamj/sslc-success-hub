@@ -36,6 +36,8 @@ import { SEED_MOCK_EXAMS } from "@/lib/mock-exam-seed";
 import { fetchMockExam } from "@/integrations/firebase/services/mock-exams";
 import type { MockExamDoc } from "@/integrations/firebase/types";
 import { UploadAnswerButton } from "@/components/answer-upload/upload-answer-button";
+import { useContentCatalog } from "@/hooks/use-content-catalog";
+import { rebuildContentExamById } from "@/lib/content-exam-builder";
 
 export const Route = createFileRoute("/exams/$examId")({
   head: ({ params }) => ({
@@ -54,11 +56,24 @@ function ExamPlayerPage() {
   const { examId } = Route.useParams();
   const [exam, setExam] = useState<MockExamDoc | null>(null);
   const [missing, setMissing] = useState(false);
+  const content = useContentCatalog();
 
   useEffect(() => {
     const cached = readCachedExam(examId);
     if (cached) {
       setExam(cached);
+      return;
+    }
+    // Try to rebuild from content (subject mock, chapter test, mixed).
+    const built = rebuildContentExamById(examId, {
+      subjects: content.subjects.map((s) => ({
+        runtimeId: s.runtimeId,
+        name: s.name,
+        chapters: s.chapters,
+      })),
+    });
+    if (built) {
+      setExam(built);
       return;
     }
     const seed = SEED_MOCK_EXAMS.find((e) => e.id === examId);
@@ -69,7 +84,7 @@ function ExamPlayerPage() {
     fetchMockExam(examId)
       .then((e) => (e ? setExam(e) : setMissing(true)))
       .catch(() => setMissing(true));
-  }, [examId]);
+  }, [examId, content.subjects]);
 
   if (missing) {
     return (

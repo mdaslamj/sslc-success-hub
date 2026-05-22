@@ -1,15 +1,19 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
-import { Brain, Clock, Sparkles, Target, Trophy } from "lucide-react";
+import { Brain, Clock, Loader2, Sparkles, Target, Trophy } from "lucide-react";
 import { DashboardLayout } from "@/components/dashboard-layout";
 import { StatCard } from "@/components/widgets/stat-card";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { subjects } from "@/lib/mock-data";
-import { SEED_MCQS } from "@/lib/quiz-seed";
-import { buildQuizFromMcqs } from "@/lib/quiz-engine";
 import { cacheQuiz } from "@/lib/quiz-store";
 import { useQuizStats } from "@/hooks/use-quiz-stats";
+import { useContentCatalog } from "@/hooks/use-content-catalog";
+import {
+  buildChapterTestQuiz,
+  chapterTestQuizId,
+  type ChapterTestLevel,
+} from "@/lib/content-exam-builder";
 
 export const Route = createFileRoute("/quizzes")({
   head: () => ({
@@ -25,44 +29,55 @@ export const Route = createFileRoute("/quizzes")({
   component: QuizzesPage,
 });
 
-type Mode = "practice" | "timed";
+const LEVELS: { id: ChapterTestLevel; label: string; hint: string }[] = [
+  { id: "easy", label: "Easy", hint: "8 questions · untimed" },
+  { id: "board", label: "Board", hint: "15 questions · 20 min" },
+  { id: "challenge", label: "Challenge", hint: "20 questions · 25 min" },
+];
 
 function QuizzesPage() {
   const stats = useQuizStats();
-  const [subjectId, setSubjectId] = useState<string>(subjects[0]?.id ?? "math");
-  const [mode, setMode] = useState<Mode>("practice");
+  const catalog = useContentCatalog();
+  const contentSubjects = catalog.subjects.filter((s) => s.chapters.length > 0);
+  const defaultSubjectId =
+    contentSubjects[0]?.runtimeId ?? subjects[0]?.id ?? "math";
+  const [subjectId, setSubjectId] = useState<string>(defaultSubjectId);
+  const [level, setLevel] = useState<ChapterTestLevel>("board");
 
   const subject = subjects.find((s) => s.id === subjectId);
+  const activeContent = contentSubjects.find((s) => s.runtimeId === subjectId);
+  const chapters = useMemo(
+    () => activeContent?.chapters ?? [],
+    [activeContent],
+  );
 
-  // Group seed MCQs into chapter-wise quizzes for the active subject.
-  const groups = useMemo(() => {
-    const pool = SEED_MCQS.filter((m) => m.subjectId === subjectId);
-    const byChapter = new Map<string, typeof pool>();
-    for (const m of pool) {
-      const key = m.chapterId ?? "general";
-      const arr = byChapter.get(key) ?? [];
-      arr.push(m);
-      byChapter.set(key, arr);
-    }
-    return Array.from(byChapter.entries()).map(([chapterId, mcqs]) => ({
-      chapterId,
-      mcqs,
-    }));
-  }, [subjectId]);
-
-  function startChapterQuiz(chapterId: string, mcqs: typeof SEED_MCQS) {
-    const quiz = buildQuizFromMcqs(mcqs, {
-      subjectId,
-      chapterId: chapterId === "general" ? undefined : chapterId,
-      title: `${subject?.name ?? subjectId} · ${prettyChapter(chapterId)}`,
-      mode,
-      durationSeconds: mode === "timed" ? Math.max(60, mcqs.length * 45) : 0,
-      shuffle: true,
-      source: "system",
-    });
+  /**
+   * Build (or rebuild) the quiz for this chapter+level, cache it under a
+   * deterministic id, and return that id so the <Link> can route to it.
+   * Empty chapters return null so we render a disabled card instead of a
+   * dead-end Start button (prevents empty exams).
+   */
+  function ensureChapterQuizId(
+    chapter: (typeof chapters)[number],
+  ): string | null {
+    const quiz = buildChapterTestQuiz({ chapter, level });
+    if (!quiz) return null;
     cacheQuiz(quiz);
     return quiz.id;
   }
+
+  // Pre-compute ids so we don't rebuild during render.
+  const chapterRows = useMemo(
+    () =>
+      chapters.map((c) => {
+        const id = chapterTestQuizId(c.subjectId, c.chapterId, level);
+        const mcqCount = c.questions.filter(
+          (q) => q.questionType === "mcq",
+        ).length;
+        return { chapter: c, id, mcqCount };
+      }),
+    [chapters, level],
+  );
 
   return (
     <DashboardLayout title="Quizzes">
@@ -106,24 +121,24 @@ function QuizzesPage() {
           </button>
         ))}
         <div className="ml-auto inline-flex rounded-full border border-border/60 bg-card p-1 text-xs">
-          {(["practice", "timed"] as Mode[]).map((m) => (
+          {LEVELS.map((l) => (
             <button
-              key={m}
-              onClick={() => setMode(m)}
+              key={l.id}
+              onClick={() => setLevel(l.id)}
               className={cn(
-                "rounded-full px-3 py-1 capitalize transition-colors",
-                mode === m
+                "rounded-full px-3 py-1 transition-colors",
+                level === l.id
                   ? "bg-foreground text-background"
                   : "text-muted-foreground hover:text-foreground",
               )}
             >
-              {m === "timed" ? (
+              {l.id === "board" ? (
                 <span className="inline-flex items-center gap-1">
                   <Clock className="h-3 w-3" />
-                  Timed
+                  {l.label}
                 </span>
               ) : (
-                "Practice"
+                l.label
               )}
             </button>
           ))}
@@ -131,40 +146,44 @@ function QuizzesPage() {
       </div>
 
       <div className="mt-4 grid gap-3 md:grid-cols-2">
-        {groups.length === 0 && (
-          <div className="rounded-3xl border border-dashed border-border/60 p-8 text-sm text-muted-foreground">
-            No quizzes yet for this subject. Once admins import MCQs into
-            Firestore, chapter-wise quizzes appear here automatically.
+        {catalog.isLoading && chapterRows.length === 0 && (
+          <div className="col-span-full flex items-center gap-2 rounded-3xl border border-dashed border-border/60 p-8 text-sm text-muted-foreground">
+            <Loader2 className="h-4 w-4 animate-spin" /> Loading chapters…
           </div>
         )}
-        {groups.map((g) => (
+        {!catalog.isLoading && chapterRows.length === 0 && (
+          <div className="rounded-3xl border border-dashed border-border/60 p-8 text-sm text-muted-foreground">
+            No chapter content available yet for {subject?.name ?? subjectId}.
+            Add a chapter JSON under <code>public/content/chapters/</code> and
+            it will appear here automatically.
+          </div>
+        )}
+        {chapterRows.map(({ chapter, mcqCount }) => (
           <div
-            key={g.chapterId}
+            key={chapter.chapterId}
             className="rounded-3xl border border-border/60 bg-card p-5 shadow-card"
           >
             <div className="flex items-start justify-between gap-3">
               <div>
                 <p className="text-xs uppercase tracking-widest text-muted-foreground">
-                  {subject?.name}
+                  Ch {chapter.chapterNumber} · {subject?.name}
                 </p>
                 <h3 className="mt-1 font-display text-lg font-semibold">
-                  {prettyChapter(g.chapterId)}
+                  {chapter.title}
                 </h3>
                 <p className="mt-1 text-xs text-muted-foreground">
-                  {g.mcqs.length} questions ·{" "}
-                  {mode === "timed"
-                    ? `${Math.max(1, Math.round((g.mcqs.length * 45) / 60))} min`
-                    : "Untimed"}
+                  {mcqCount} MCQs available · {LEVELS.find((l) => l.id === level)?.hint}
                 </p>
               </div>
-              <Link
-                to="/quiz/$quizId"
-                params={{ quizId: startChapterQuiz(g.chapterId, g.mcqs) }}
-              >
-                <Button size="sm" className="rounded-full">
-                  Start
+              {mcqCount === 0 ? (
+                <Button size="sm" disabled className="rounded-full">
+                  No MCQs
                 </Button>
-              </Link>
+              ) : (
+                <StartChapterTestButton
+                  ensureId={() => ensureChapterQuizId(chapter)}
+                />
+              )}
             </div>
           </div>
         ))}
@@ -173,10 +192,29 @@ function QuizzesPage() {
   );
 }
 
-function prettyChapter(id: string): string {
-  if (id === "general") return "Mixed Practice";
-  return id
-    .replace(/_/g, " ")
-    .replace(/\bch(\d+)\b/i, "Chapter $1")
-    .replace(/\b\w/g, (c) => c.toUpperCase());
+/**
+ * Defers quiz construction until the user actually clicks "Start" — keeps
+ * the catalog render cheap and avoids writing 30+ quizzes to localStorage
+ * just because the user opened the Quizzes page.
+ */
+function StartChapterTestButton({ ensureId }: { ensureId: () => string | null }) {
+  const [id, setId] = useState<string | null>(null);
+  if (id) {
+    return (
+      <Link to="/quiz/$quizId" params={{ quizId: id }}>
+        <Button size="sm" className="rounded-full">
+          Start
+        </Button>
+      </Link>
+    );
+  }
+  return (
+    <Button
+      size="sm"
+      className="rounded-full"
+      onClick={() => setId(ensureId())}
+    >
+      Start
+    </Button>
+  );
 }
