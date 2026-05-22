@@ -1,0 +1,13 @@
+{
+  "id": "test",
+  "chapterNumber": 0,
+  "subjectId": "science",
+  "title": "Test",
+  "difficulty": "easy",
+  "summary": "Test",
+  "learningPoints": [],
+  "formulas": [],
+  "resources": [],
+  "mcqs": [],
+  "exercises": []
+}
