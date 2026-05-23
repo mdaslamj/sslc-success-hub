@@ -41,6 +41,19 @@ export type ContentKeyTerm = {
 
 export type Difficulty = "easy" | "medium" | "hard";
 
+export type ContentMapLabel = {
+  label: string;
+  description?: string;
+};
+
+export type ContentMap = {
+  image: string;
+  title?: string;
+  caption?: string;
+  topics: string[];
+  labels: ContentMapLabel[];
+};
+
 export type NormalizedChapter = {
   id: string;
   chapterNumber: number;
@@ -58,6 +71,7 @@ export type NormalizedChapter = {
   sectionKn?: string;
   importantDates: ContentImportantDate[];
   keyTerms: ContentKeyTerm[];
+  map?: ContentMap;
 };
 
 function asArray<T>(v: unknown): T[] {
@@ -154,6 +168,31 @@ export function normalizeChapterData(raw: unknown): NormalizedChapter {
       definition: asString(t.definition),
     }))
     .filter((t) => t.term && t.definition);
+  const mapImage = asString(r.mapImage ?? r.map_image);
+  const mapTopics = asArray<unknown>(r.mapTopics ?? r.map_topics)
+    .map((v) => asString(v))
+    .filter(Boolean);
+  const mapLabels: ContentMapLabel[] = asArray<unknown>(
+    r.mapLabels ?? r.map_labels,
+  )
+    .map((l) => {
+      if (typeof l === "string") return { label: l };
+      const obj = (l ?? {}) as Record<string, unknown>;
+      return {
+        label: asString(obj.label) || asString(obj.name),
+        description: asString(obj.description) || asString(obj.note) || undefined,
+      };
+    })
+    .filter((l) => l.label);
+  const map: ContentMap | undefined = mapImage
+    ? {
+        image: mapImage,
+        title: asString(r.mapTitle ?? r.map_title) || undefined,
+        caption: asString(r.mapCaption ?? r.map_caption) || undefined,
+        topics: mapTopics,
+        labels: mapLabels,
+      }
+    : undefined;
   return {
     id: asString(r.id) || asString(r.chapter_id),
     chapterNumber: asNumber(r.chapterNumber) || asNumber(r.chapter_number),
@@ -174,6 +213,7 @@ export function normalizeChapterData(raw: unknown): NormalizedChapter {
     sectionKn: asString(r.sectionKn) || asString(r.section_kn) || undefined,
     importantDates,
     keyTerms,
+    map,
   };
 }
 

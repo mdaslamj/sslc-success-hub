@@ -49,6 +49,7 @@ import {
   type ContentResource,
   type ContentImportantDate,
   type ContentKeyTerm,
+  type ContentMap,
 } from "@/lib/normalizeChapterData";
 
 type ManifestChapter = {
@@ -945,8 +946,8 @@ function SocialMapsView({
       />
 
       <div className="rounded-2xl border border-dashed border-border/60 bg-muted/20 p-3 text-[11px] text-muted-foreground">
-        Interactive map layers are coming soon. For now, explore each geography
-        chapter's regions, resources and key terms below.
+        Tap a chapter to open its map and key regions. Clickable regions and
+        map quizzes are planned for the next phase.
       </div>
 
       {loading && chapters.length === 0 ? (
@@ -970,6 +971,17 @@ function SocialMapsView({
                     : "border-dashed border-border/60 bg-muted/30 opacity-75 cursor-not-allowed"
                 }`}
               >
+                {c.map?.image && (
+                  <div className="mb-3 overflow-hidden rounded-xl border border-border/50 bg-muted/30">
+                    <img
+                      src={c.map.image}
+                      alt={c.map.title || `${c.title} map`}
+                      loading="lazy"
+                      decoding="async"
+                      className="h-32 w-full object-contain bg-white"
+                    />
+                  </div>
+                )}
                 <div className="flex items-center gap-2 text-[11px] text-muted-foreground">
                   <span>Chapter {c.chapterNumber || "—"}</span>
                   <Badge
@@ -978,6 +990,14 @@ function SocialMapsView({
                   >
                     Geography
                   </Badge>
+                  {c.map?.image && (
+                    <Badge
+                      variant="outline"
+                      className="h-4 rounded-full border-brand/40 px-1.5 text-[9px] text-brand"
+                    >
+                      Map
+                    </Badge>
+                  )}
                 </div>
                 <div
                   className="font-display font-semibold"
@@ -985,6 +1005,18 @@ function SocialMapsView({
                 >
                   {c.title}
                 </div>
+                {c.map && c.map.topics.length > 0 && (
+                  <div className="mt-2 flex flex-wrap gap-1">
+                    {c.map.topics.slice(0, 4).map((t) => (
+                      <span
+                        key={t}
+                        className="rounded-full bg-brand/10 px-2 py-0.5 text-[10px] text-brand"
+                      >
+                        {t}
+                      </span>
+                    ))}
+                  </div>
+                )}
                 {topTerms.length > 0 && (
                   <div className="mt-2 flex flex-wrap gap-1">
                     {topTerms.map((t) => (
@@ -1008,6 +1040,93 @@ function SocialMapsView({
         </div>
       )}
     </div>
+  );
+}
+
+function ChapterMap({
+  map,
+  chapterTitle,
+  color,
+}: {
+  map: ContentMap;
+  chapterTitle: string;
+  color: string;
+}) {
+  const [errored, setErrored] = useState(false);
+  return (
+    <section className="rounded-2xl border border-border/60 bg-card p-4 shadow-soft">
+      <div className="mb-3 flex items-center gap-2">
+        <MapIcon className="h-4 w-4" style={{ color }} />
+        <h3 className="font-display font-semibold">
+          {map.title || "Chapter Map"}
+        </h3>
+        {map.topics.length > 0 && (
+          <Badge variant="outline" className="rounded-full text-[10px]">
+            {map.topics.length} topics
+          </Badge>
+        )}
+      </div>
+
+      <div className="overflow-hidden rounded-xl border border-border/50 bg-white">
+        {errored ? (
+          <div className="flex h-48 items-center justify-center text-xs text-muted-foreground">
+            Map image unavailable
+          </div>
+        ) : (
+          <img
+            src={map.image}
+            alt={map.title || `${chapterTitle} map`}
+            loading="lazy"
+            decoding="async"
+            onError={() => setErrored(true)}
+            className="max-h-[480px] w-full object-contain"
+          />
+        )}
+      </div>
+
+      {map.caption && (
+        <p className="mt-2 text-[11px] text-muted-foreground">{map.caption}</p>
+      )}
+
+      {map.topics.length > 0 && (
+        <div className="mt-3">
+          <div className="mb-1 text-[11px] font-medium text-muted-foreground">
+            Map topics
+          </div>
+          <div className="flex flex-wrap gap-1">
+            {map.topics.map((t) => (
+              <span
+                key={t}
+                className="rounded-full bg-brand/10 px-2 py-0.5 text-[11px] text-brand"
+              >
+                {t}
+              </span>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {map.labels.length > 0 && (
+        <div className="mt-3">
+          <div className="mb-1 text-[11px] font-medium text-muted-foreground">
+            Highlighted regions / labels
+          </div>
+          <ul className="grid gap-1 sm:grid-cols-2">
+            {map.labels.map((l) => (
+              <li
+                key={l.label}
+                className="rounded-lg border border-border/50 bg-muted/20 px-2 py-1 text-[11px]"
+              >
+                <span className="font-semibold text-foreground">{l.label}</span>
+                {l.description && (
+                  <span className="text-muted-foreground"> — {l.description}</span>
+                )}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </section>
   );
 }
 
@@ -1361,6 +1480,10 @@ function ChapterDetailViewInner({
       </div>
 
       <ChapterContentOverview chapter={chapter} />
+
+      {chapter.map && (
+        <ChapterMap map={chapter.map} chapterTitle={chapter.title} color={color} />
+      )}
 
       {chapter.importantDates.length > 0 && (
         <ChapterTimeline chapter={chapter} color={color} />
