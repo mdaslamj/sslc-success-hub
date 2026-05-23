@@ -24,6 +24,7 @@ import { Route as PredictionsRouteImport } from './routes/predictions'
 import { Route as PlannerRouteImport } from './routes/planner'
 import { Route as ParentRouteImport } from './routes/parent'
 import { Route as OnboardingRouteImport } from './routes/onboarding'
+import { Route as MockTestRouteImport } from './routes/mock-test'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as LogRouteImport } from './routes/log'
 import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
@@ -39,6 +40,7 @@ import { Route as SubjectsIndexRouteImport } from './routes/subjects.index'
 import { Route as SubjectsSubjectIdRouteImport } from './routes/subjects.$subjectId'
 import { Route as ScanScanIdRouteImport } from './routes/scan.$scanId'
 import { Route as QuizQuizIdRouteImport } from './routes/quiz.$quizId'
+import { Route as MockTestTestIdRouteImport } from './routes/mock-test.$testId'
 import { Route as ExamsExamIdRouteImport } from './routes/exams.$examId'
 import { Route as ExamResultsAttemptIdRouteImport } from './routes/exam-results.$attemptId'
 import { Route as ExamHallSessionIdRouteImport } from './routes/exam-hall.$sessionId'
@@ -123,6 +125,11 @@ const OnboardingRoute = OnboardingRouteImport.update({
   path: '/onboarding',
   getParentRoute: () => rootRouteImport,
 } as any)
+const MockTestRoute = MockTestRouteImport.update({
+  id: '/mock-test',
+  path: '/mock-test',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
@@ -198,6 +205,11 @@ const QuizQuizIdRoute = QuizQuizIdRouteImport.update({
   path: '/quiz/$quizId',
   getParentRoute: () => rootRouteImport,
 } as any)
+const MockTestTestIdRoute = MockTestTestIdRouteImport.update({
+  id: '/$testId',
+  path: '/$testId',
+  getParentRoute: () => MockTestRoute,
+} as any)
 const ExamsExamIdRoute = ExamsExamIdRouteImport.update({
   id: '/$examId',
   path: '/$examId',
@@ -251,6 +263,7 @@ export interface FileRoutesByFullPath {
   '/forgot-password': typeof ForgotPasswordRoute
   '/log': typeof LogRoute
   '/login': typeof LoginRoute
+  '/mock-test': typeof MockTestRouteWithChildren
   '/onboarding': typeof OnboardingRoute
   '/parent': typeof ParentRoute
   '/planner': typeof PlannerRoute
@@ -273,6 +286,7 @@ export interface FileRoutesByFullPath {
   '/exam-hall/$sessionId': typeof ExamHallSessionIdRoute
   '/exam-results/$attemptId': typeof ExamResultsAttemptIdRoute
   '/exams/$examId': typeof ExamsExamIdRoute
+  '/mock-test/$testId': typeof MockTestTestIdRoute
   '/quiz/$quizId': typeof QuizQuizIdRoute
   '/scan/$scanId': typeof ScanScanIdRoute
   '/subjects/$subjectId': typeof SubjectsSubjectIdRoute
@@ -291,6 +305,7 @@ export interface FileRoutesByTo {
   '/forgot-password': typeof ForgotPasswordRoute
   '/log': typeof LogRoute
   '/login': typeof LoginRoute
+  '/mock-test': typeof MockTestRouteWithChildren
   '/onboarding': typeof OnboardingRoute
   '/parent': typeof ParentRoute
   '/planner': typeof PlannerRoute
@@ -313,6 +328,7 @@ export interface FileRoutesByTo {
   '/exam-hall/$sessionId': typeof ExamHallSessionIdRoute
   '/exam-results/$attemptId': typeof ExamResultsAttemptIdRoute
   '/exams/$examId': typeof ExamsExamIdRoute
+  '/mock-test/$testId': typeof MockTestTestIdRoute
   '/quiz/$quizId': typeof QuizQuizIdRoute
   '/scan/$scanId': typeof ScanScanIdRoute
   '/subjects/$subjectId': typeof SubjectsSubjectIdRoute
@@ -332,6 +348,7 @@ export interface FileRoutesById {
   '/forgot-password': typeof ForgotPasswordRoute
   '/log': typeof LogRoute
   '/login': typeof LoginRoute
+  '/mock-test': typeof MockTestRouteWithChildren
   '/onboarding': typeof OnboardingRoute
   '/parent': typeof ParentRoute
   '/planner': typeof PlannerRoute
@@ -354,6 +371,7 @@ export interface FileRoutesById {
   '/exam-hall/$sessionId': typeof ExamHallSessionIdRoute
   '/exam-results/$attemptId': typeof ExamResultsAttemptIdRoute
   '/exams/$examId': typeof ExamsExamIdRoute
+  '/mock-test/$testId': typeof MockTestTestIdRoute
   '/quiz/$quizId': typeof QuizQuizIdRoute
   '/scan/$scanId': typeof ScanScanIdRoute
   '/subjects/$subjectId': typeof SubjectsSubjectIdRoute
@@ -374,6 +392,7 @@ export interface FileRouteTypes {
     | '/forgot-password'
     | '/log'
     | '/login'
+    | '/mock-test'
     | '/onboarding'
     | '/parent'
     | '/planner'
@@ -396,6 +415,7 @@ export interface FileRouteTypes {
     | '/exam-hall/$sessionId'
     | '/exam-results/$attemptId'
     | '/exams/$examId'
+    | '/mock-test/$testId'
     | '/quiz/$quizId'
     | '/scan/$scanId'
     | '/subjects/$subjectId'
@@ -414,6 +434,7 @@ export interface FileRouteTypes {
     | '/forgot-password'
     | '/log'
     | '/login'
+    | '/mock-test'
     | '/onboarding'
     | '/parent'
     | '/planner'
@@ -436,6 +457,7 @@ export interface FileRouteTypes {
     | '/exam-hall/$sessionId'
     | '/exam-results/$attemptId'
     | '/exams/$examId'
+    | '/mock-test/$testId'
     | '/quiz/$quizId'
     | '/scan/$scanId'
     | '/subjects/$subjectId'
@@ -454,6 +476,7 @@ export interface FileRouteTypes {
     | '/forgot-password'
     | '/log'
     | '/login'
+    | '/mock-test'
     | '/onboarding'
     | '/parent'
     | '/planner'
@@ -476,6 +499,7 @@ export interface FileRouteTypes {
     | '/exam-hall/$sessionId'
     | '/exam-results/$attemptId'
     | '/exams/$examId'
+    | '/mock-test/$testId'
     | '/quiz/$quizId'
     | '/scan/$scanId'
     | '/subjects/$subjectId'
@@ -495,6 +519,7 @@ export interface RootRouteChildren {
   ForgotPasswordRoute: typeof ForgotPasswordRoute
   LogRoute: typeof LogRoute
   LoginRoute: typeof LoginRoute
+  MockTestRoute: typeof MockTestRouteWithChildren
   OnboardingRoute: typeof OnboardingRoute
   ParentRoute: typeof ParentRoute
   PlannerRoute: typeof PlannerRoute
@@ -627,6 +652,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OnboardingRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/mock-test': {
+      id: '/mock-test'
+      path: '/mock-test'
+      fullPath: '/mock-test'
+      preLoaderRoute: typeof MockTestRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/login': {
       id: '/login'
       path: '/login'
@@ -732,6 +764,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof QuizQuizIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/mock-test/$testId': {
+      id: '/mock-test/$testId'
+      path: '/$testId'
+      fullPath: '/mock-test/$testId'
+      preLoaderRoute: typeof MockTestTestIdRouteImport
+      parentRoute: typeof MockTestRoute
+    }
     '/exams/$examId': {
       id: '/exams/$examId'
       path: '/$examId'
@@ -825,6 +864,18 @@ const ExamsRouteChildren: ExamsRouteChildren = {
 
 const ExamsRouteWithChildren = ExamsRoute._addFileChildren(ExamsRouteChildren)
 
+interface MockTestRouteChildren {
+  MockTestTestIdRoute: typeof MockTestTestIdRoute
+}
+
+const MockTestRouteChildren: MockTestRouteChildren = {
+  MockTestTestIdRoute: MockTestTestIdRoute,
+}
+
+const MockTestRouteWithChildren = MockTestRoute._addFileChildren(
+  MockTestRouteChildren,
+)
+
 interface ScanRouteChildren {
   ScanScanIdRoute: typeof ScanScanIdRoute
 }
@@ -847,6 +898,7 @@ const rootRouteChildren: RootRouteChildren = {
   ForgotPasswordRoute: ForgotPasswordRoute,
   LogRoute: LogRoute,
   LoginRoute: LoginRoute,
+  MockTestRoute: MockTestRouteWithChildren,
   OnboardingRoute: OnboardingRoute,
   ParentRoute: ParentRoute,
   PlannerRoute: PlannerRoute,
@@ -874,13 +926,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
