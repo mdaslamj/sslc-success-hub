@@ -1,6 +1,9 @@
 /**
  * Lightweight QA diagnostics for navigation/action failures and dead clicks.
- * Buffered in-memory + mirrored to console; surfaces via `window.__auraQA`.
+ * Buffered in-memory + mirrored to console. In development builds only, the
+ * buffer is also surfaced via `window.__auraQA` for debugging. Production
+ * builds never expose the buffer globally and sanitize sensitive details
+ * (file paths, document paths, UIDs) before storing.
  */
 export type QAEvent =
   | "NAVIGATION_FAILED"
@@ -19,13 +22,44 @@ export interface QARecord {
 const BUFFER: QARecord[] = [];
 const MAX = 200;
 
+const IS_DEV =
+  typeof import.meta !== "undefined" &&
+  Boolean((import.meta as unknown as { env?: { DEV?: boolean } }).env?.DEV);
+
+const SENSITIVE_KEYS = new Set(["filename", "source", "url", "stack", "lineno", "colno"]);
+
+function sanitizeString(value: string): string {
+  // Strip URLs/paths and Firestore-style document paths that can leak
+  // internal structure or user identifiers.
+  return value
+    .replace(/https?:\/\/\S+/g, "[url]")
+    .replace(/\/(databases|documents|users)\/[^\s"')]+/gi, "/$1/[redacted]")
+    .replace(/\b[A-Za-z0-9_-]{20,}\b/g, "[id]")
+    .slice(0, 300);
+}
+
+function sanitizeDetails(details: Record<string, unknown>): Record<string, unknown> {
+  if (IS_DEV) return details;
+  const out: Record<string, unknown> = {};
+  for (const [key, value] of Object.entries(details)) {
+    if (SENSITIVE_KEYS.has(key)) continue;
+    if (typeof value === "string") out[key] = sanitizeString(value);
+    else if (typeof value === "number" || typeof value === "boolean" || value == null) out[key] = value;
+    else out[key] = "[object]";
+  }
+  return out;
+}
+
 export function logQADiagnostic(type: QAEvent, details: Record<string, unknown> = {}) {
-  const record: QARecord = { type, at: Date.now(), details };
+  const safeDetails = sanitizeDetails(details);
+  const record: QARecord = { type, at: Date.now(), details: safeDetails };
   BUFFER.push(record);
   if (BUFFER.length > MAX) BUFFER.splice(0, BUFFER.length - MAX);
-  // eslint-disable-next-line no-console
-  console.warn(`[QA:${type}]`, details);
-  if (typeof window !== "undefined") {
+  if (IS_DEV) {
+    // eslint-disable-next-line no-console
+    console.warn(`[QA:${type}]`, safeDetails);
+  }
+  if (IS_DEV && typeof window !== "undefined") {
     (window as unknown as { __auraQA?: QARecord[] }).__auraQA = BUFFER;
   }
 }
