@@ -37,27 +37,6 @@ function MockTestRunner() {
   const { testId } = Route.useParams();
   const navigate = useNavigate();
   const [test] = useState<MockTest | null>(() => readCachedTest(testId));
-  const [answers, setAnswers] = useState<(number | null)[]>(() =>
-    test ? test.questions.map(() => null) : [],
-  );
-  const [idx, setIdx] = useState(0);
-  const [phase, setPhase] = useState<Phase>("test");
-  const [secondsLeft, setSecondsLeft] = useState<number>(test?.durationSeconds ?? 0);
-  const [result, setResult] = useState<MockTestResult | null>(null);
-  const [startedAt] = useState<number>(() => Date.now());
-
-  // Countdown timer
-  useEffect(() => {
-    if (!test || phase !== "test") return;
-    if (secondsLeft <= 0) {
-      submit();
-      return;
-    }
-    const t = setTimeout(() => setSecondsLeft((s) => s - 1), 1000);
-    return () => clearTimeout(t);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [secondsLeft, phase, test]);
-
   if (!test) {
     return (
       <DashboardLayout title="Mock Test">
@@ -73,6 +52,30 @@ function MockTestRunner() {
       </DashboardLayout>
     );
   }
+  return <ActiveRunner test={test} onExit={() => navigate({ to: "/mock-test" })} />;
+}
+
+function ActiveRunner({ test, onExit }: { test: MockTest; onExit: () => void }) {
+  const [answers, setAnswers] = useState<(number | null)[]>(() =>
+    test ? test.questions.map(() => null) : [],
+  );
+  const [idx, setIdx] = useState(0);
+  const [phase, setPhase] = useState<Phase>("test");
+  const [secondsLeft, setSecondsLeft] = useState<number>(test.durationSeconds);
+  const [result, setResult] = useState<MockTestResult | null>(null);
+  const [startedAt] = useState<number>(() => Date.now());
+
+  // Countdown timer
+  useEffect(() => {
+    if (phase !== "test") return;
+    if (secondsLeft <= 0) {
+      submit();
+      return;
+    }
+    const t = setTimeout(() => setSecondsLeft((s) => s - 1), 1000);
+    return () => clearTimeout(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [secondsLeft, phase]);
 
   const total = test.questions.length;
   const q = test.questions[idx];
@@ -105,7 +108,7 @@ function MockTestRunner() {
   }
 
   if (phase === "review" && result) {
-    return <ReviewView test={test} answers={answers} result={result} onRestart={() => navigate({ to: "/mock-test" })} />;
+    return <ReviewView test={test} answers={answers} result={result} onRestart={onExit} />;
   }
 
   return (
