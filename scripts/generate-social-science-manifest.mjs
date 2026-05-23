@@ -37,6 +37,45 @@ const SECTION_BLUEPRINT = {
   "Business Studies": 3,
 };
 
+// Official Karnataka SSLC Social Science chapter sequence (1–33).
+// Maps file basename (without .json) → fixed official chapter number.
+// DO NOT derive numbering from folders, sections, or filename prefixes.
+const OFFICIAL_ORDER = {
+  chapter_01_advent_of_europeans: 1,
+  chapter_02_extension_british_rule: 2,
+  chapter_03_impact_british_rule: 3,
+  chapter_04_opposition_british_karnataka: 4,
+  chapter_05_social_religious_reform: 5,
+  chapter_01_public_administration: 6,
+  chapter_02_challenges_india: 7,
+  chapter_01_social_stratification: 8,
+  chapter_02_work_economic_life: 9,
+  chapter_01_india__geographical_position_and_physica: 10,
+  chapter_02_india__seasons: 11,
+  chapter_03_india__soils: 12,
+  chapter_04_india_forest_resources: 13,
+  chapter_05_india__water_resources: 14,
+  chapter_01_economy_government: 15,
+  chapter_01_banking_transactions: 16,
+  chapter_06_first_war_independence: 17,
+  chapter_07_freedom_struggle: 18,
+  chapter_08_india_after_independence: 19,
+  chapter_09_world_wars: 20,
+  chapter_03_foreign_policy: 21,
+  chapter_04_world_organisations: 22,
+  chapter_03_collective_behaviour: 23,
+  chapter_04_social_challenges: 24,
+  chapter_06_india__land_use_and_agriculture: 25,
+  chapter_07_india__mineral_and_power_resources: 26,
+  chapter_08_india_transport_and_communication: 27,
+  chapter_09_india__major_industries: 28,
+  chapter_10_india__natural_disasters: 29,
+  chapter_02_rural_development: 30,
+  chapter_03_public_finance_budget: 31,
+  chapter_02_entrepreneurship: 32,
+  chapter_03_consumer_education: 33,
+};
+
 // Recursive scan — accept ANY .json file regardless of name pattern.
 async function walk(dir) {
   const out = [];
@@ -83,10 +122,15 @@ for (const fullPath of allJson) {
     continue;
   }
   const section = doc.section ?? "General";
+  const officialNumber = OFFICIAL_ORDER[id];
+  if (officialNumber === undefined) {
+    skipped.push({ file: rel, reason: `not in OFFICIAL_ORDER (id=${id})` });
+    continue;
+  }
   chapters.push({
     id,
     chapterRef: doc.chapter_id ?? id,
-    chapterNumber: typeof doc.chapter_number === "number" ? doc.chapter_number : 0,
+    chapterNumber: officialNumber,
     title: doc.chapter_name ?? id,
     titleKn: doc.chapter_name_kn ?? null,
     section,
@@ -98,15 +142,9 @@ for (const fullPath of allJson) {
   });
 }
 
-// Stable order: section → chapter_number → title
-const SECTION_ORDER = ["History", "Geography", "Economics", "Sociology", "Business Studies"];
-chapters.sort((a, b) => {
-  const sa = SECTION_ORDER.indexOf(a.section);
-  const sb = SECTION_ORDER.indexOf(b.section);
-  if (sa !== sb) return (sa < 0 ? 99 : sa) - (sb < 0 ? 99 : sb);
-  if (a.chapterNumber !== b.chapterNumber) return a.chapterNumber - b.chapterNumber;
-  return a.title.localeCompare(b.title);
-});
+// Strict official order 1–33 (never re-derived from section/folder).
+const SECTION_ORDER = ["History", "Political Science", "Sociology", "Geography", "Economics", "Business Studies"];
+chapters.sort((a, b) => a.chapterNumber - b.chapterNumber);
 
 const manifest = {
   subjectId: "social-science",
