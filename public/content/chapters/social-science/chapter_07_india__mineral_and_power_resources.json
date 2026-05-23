@@ -4,6 +4,18 @@
   "section": "Geography",
   "chapter_number": 7,
   "chapter_name": "India \u2013 Mineral and Power Resources",
+  "mapImage": "/content/maps/india-outline.svg",
+  "mapTitle": "India \u2013 Mineral & Power Resources",
+  "mapCaption": "Locate key mineral belts and power plants on this outline while revising.",
+  "mapTopics": ["Iron Ore", "Coal", "Petroleum", "Mica", "Bauxite", "Solar", "Hydro"],
+  "mapLabels": [
+    { "label": "Bombay High", "description": "India's largest offshore oil deposit (Arabian Sea)" },
+    { "label": "Digboi (Assam)", "description": "First petroleum discovery in India" },
+    { "label": "Jharkhand \u2013 Odisha belt", "description": "Iron ore, coal, mica" },
+    { "label": "Pavagada (Tumkur)", "description": "Major solar park in Karnataka" },
+    { "label": "Kolar / KGF", "description": "Historic gold mining region" },
+    { "label": "Damodar Valley", "description": "Coal and hydroelectric power" }
+  ],
   "learning_outcomes": [
     "Know the distribution and production of major minerals in India",
     "Know the need for non-conventional energy sources",
