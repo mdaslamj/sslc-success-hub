@@ -1058,15 +1058,55 @@ function SocialMapsView({
 }
 
 function ChapterMap({
-  map,
-  chapterTitle,
+  chapter,
   color,
 }: {
-  map: ContentMap;
-  chapterTitle: string;
+  chapter: NormalizedChapter;
   color: string;
 }) {
+  const map = chapter.map!;
+  const chapterTitle = chapter.title;
   const [errored, setErrored] = useState(false);
+  const [activeTopic, setActiveTopic] = useState<string | null>(null);
+
+  const labelMap = useMemo(() => {
+    const m = new Map<string, string>();
+    for (const l of map.labels) {
+      if (l.description) m.set(l.label.toLowerCase(), l.description);
+    }
+    return m;
+  }, [map.labels]);
+
+  const topicMcqs = useMemo(() => {
+    if (!activeTopic) return [];
+    const needle = activeTopic.toLowerCase();
+    const tokens = needle.split(/\s+/).filter((t) => t.length > 2);
+    const mcqs = mapContentMcqs(chapter.mcqs ?? [], chapter.title);
+    const matches = mcqs.filter((q) => {
+      const hay = [
+        q.question,
+        q.explanation ?? "",
+        ...(q.options ?? []),
+      ]
+        .join(" ")
+        .toLowerCase();
+      if (hay.includes(needle)) return true;
+      return tokens.some((t) => hay.includes(t));
+    });
+    return matches.length > 0 ? matches : mcqs.slice(0, 5);
+  }, [activeTopic, chapter]);
+
+  const topicExplanation = useMemo(() => {
+    if (!activeTopic) return "";
+    const direct = labelMap.get(activeTopic.toLowerCase());
+    if (direct) return direct;
+    const term = chapter.keyTerms.find(
+      (t) => t.term.toLowerCase() === activeTopic.toLowerCase(),
+    );
+    if (term) return term.definition;
+    return `Quick revision for "${activeTopic}" — review related MCQs below.`;
+  }, [activeTopic, labelMap, chapter.keyTerms]);
+
   return (
     <section className="rounded-2xl border border-border/60 bg-card p-4 shadow-soft">
       <div className="mb-3 flex items-center gap-2">
@@ -1105,16 +1145,18 @@ function ChapterMap({
       {map.topics.length > 0 && (
         <div className="mt-3">
           <div className="mb-1 text-[11px] font-medium text-muted-foreground">
-            Map topics
+            Tap a topic to revise & practice
           </div>
           <div className="flex flex-wrap gap-1">
             {map.topics.map((t) => (
-              <span
+              <button
                 key={t}
-                className="rounded-full bg-brand/10 px-2 py-0.5 text-[11px] text-brand"
+                type="button"
+                onClick={() => setActiveTopic(t)}
+                className="rounded-full bg-brand/10 px-2.5 py-1 text-[11px] font-medium text-brand transition hover:bg-brand/20 active:scale-95"
               >
                 {t}
-              </span>
+              </button>
             ))}
           </div>
         </div>
@@ -1129,7 +1171,8 @@ function ChapterMap({
             {map.labels.map((l) => (
               <li
                 key={l.label}
-                className="rounded-lg border border-border/50 bg-muted/20 px-2 py-1 text-[11px]"
+                className="rounded-lg border border-border/50 bg-muted/20 px-2 py-1 text-[11px] cursor-pointer hover:border-brand/40 hover:bg-brand/5 transition"
+                onClick={() => setActiveTopic(l.label)}
               >
                 <span className="font-semibold text-foreground">{l.label}</span>
                 {l.description && (
@@ -1140,7 +1183,208 @@ function ChapterMap({
           </ul>
         </div>
       )}
+
+      <TopicPracticeDialog
+        topic={activeTopic}
+        explanation={topicExplanation}
+        mcqs={topicMcqs}
+        onClose={() => setActiveTopic(null)}
+        color={color}
+      />
     </section>
+  );
+}
+
+function TopicPracticeDialog({
+  topic,
+  explanation,
+  mcqs,
+  onClose,
+  color,
+}: {
+  topic: string | null;
+  explanation: string;
+  mcqs: MCQ[];
+  onClose: () => void;
+  color: string;
+}) {
+  const [mode, setMode] = useState<"intro" | "practice" | "done">("intro");
+  const [idx, setIdx] = useState(0);
+  const [picked, setPicked] = useState<number | null>(null);
+  const [revealed, setRevealed] = useState(false);
+  const [score, setScore] = useState(0);
+
+  useEffect(() => {
+    if (topic) {
+      setMode("intro");
+      setIdx(0);
+      setPicked(null);
+      setRevealed(false);
+      setScore(0);
+    }
+  }, [topic]);
+
+  const q = mcqs[idx];
+
+  function check() {
+    if (picked === null || !q) return;
+    const correctIdx = q.options.findIndex((o) => o === q.answer);
+    const ok = picked === correctIdx;
+    if (ok) setScore((s) => s + 1);
+    setRevealed(true);
+  }
+
+  function next() {
+    if (idx + 1 >= mcqs.length) {
+      setMode("done");
+      return;
+    }
+    setIdx((i) => i + 1);
+    setPicked(null);
+    setRevealed(false);
+  }
+
+  return (
+    <Dialog open={!!topic} onOpenChange={(o) => !o && onClose()}>
+      <DialogContent className="max-w-md p-0 gap-0 overflow-hidden">
+        <DialogHeader className="p-4 pb-3 border-b border-border/60">
+          <DialogTitle className="flex items-center gap-2 text-base">
+            <MapIcon className="h-4 w-4" style={{ color }} />
+            <span className="truncate">{topic}</span>
+          </DialogTitle>
+          <DialogDescription className="text-xs">
+            Quick explanation · {mcqs.length} related MCQ{mcqs.length === 1 ? "" : "s"}
+          </DialogDescription>
+        </DialogHeader>
+
+        <div className="max-h-[70vh] overflow-y-auto p-4 space-y-4">
+          {mode === "intro" && (
+            <>
+              <p className="text-sm leading-relaxed text-foreground/90">
+                {explanation}
+              </p>
+              {mcqs.length === 0 ? (
+                <div className="rounded-xl border border-dashed border-border/60 bg-muted/30 p-3 text-xs text-muted-foreground">
+                  No related MCQs in this chapter yet. Try another topic.
+                </div>
+              ) : (
+                <>
+                  <div className="text-[11px] font-medium text-muted-foreground">
+                    Preview ({Math.min(3, mcqs.length)} of {mcqs.length})
+                  </div>
+                  <ul className="space-y-2">
+                    {mcqs.slice(0, 3).map((m, i) => (
+                      <li
+                        key={m.id ?? i}
+                        className="rounded-lg border border-border/50 bg-muted/20 p-2 text-xs leading-snug"
+                      >
+                        {m.question}
+                      </li>
+                    ))}
+                  </ul>
+                  <Button
+                    onClick={() => setMode("practice")}
+                    className="w-full rounded-full"
+                    style={{ background: color, color: "white" }}
+                  >
+                    Start quick practice →
+                  </Button>
+                </>
+              )}
+            </>
+          )}
+
+          {mode === "practice" && q && (
+            <div className="space-y-3">
+              <div className="flex items-center justify-between text-[11px] text-muted-foreground">
+                <span>
+                  Question {idx + 1} / {mcqs.length}
+                </span>
+                <span>Score: {score}</span>
+              </div>
+              <div className="text-sm font-medium leading-snug">{q.question}</div>
+              <div className="space-y-2">
+                {q.options.map((opt, i) => {
+                  const correctIdx = q.options.findIndex((o) => o === q.answer);
+                  const isPicked = picked === i;
+                  const isCorrect = revealed && i === correctIdx;
+                  const isWrong = revealed && isPicked && i !== correctIdx;
+                  return (
+                    <button
+                      key={i}
+                      type="button"
+                      disabled={revealed}
+                      onClick={() => setPicked(i)}
+                      className={`w-full rounded-xl border px-3 py-2 text-left text-xs transition ${
+                        isCorrect
+                          ? "border-emerald-400 bg-emerald-50 text-emerald-900"
+                          : isWrong
+                          ? "border-red-300 bg-red-50 text-red-900"
+                          : isPicked
+                          ? "border-brand bg-brand/10"
+                          : "border-border/60 bg-card hover:border-brand/40"
+                      }`}
+                    >
+                      {opt}
+                    </button>
+                  );
+                })}
+              </div>
+              {revealed && q.explanation && (
+                <div className="rounded-lg border border-border/50 bg-muted/30 p-2 text-[11px] text-muted-foreground">
+                  <strong className="text-foreground">Why:</strong> {q.explanation}
+                </div>
+              )}
+              <div className="flex gap-2">
+                {!revealed ? (
+                  <Button
+                    onClick={check}
+                    disabled={picked === null}
+                    className="flex-1 rounded-full"
+                  >
+                    Check
+                  </Button>
+                ) : (
+                  <Button onClick={next} className="flex-1 rounded-full">
+                    {idx + 1 >= mcqs.length ? "Finish" : "Next →"}
+                  </Button>
+                )}
+              </div>
+            </div>
+          )}
+
+          {mode === "done" && (
+            <div className="space-y-3 text-center py-4">
+              <Trophy className="h-10 w-10 text-amber-500 mx-auto" />
+              <div className="font-display text-lg font-semibold">
+                {score} / {mcqs.length} correct
+              </div>
+              <p className="text-xs text-muted-foreground">
+                Topic: {topic}
+              </p>
+              <div className="flex gap-2">
+                <Button
+                  variant="outline"
+                  className="flex-1 rounded-full"
+                  onClick={() => {
+                    setMode("practice");
+                    setIdx(0);
+                    setPicked(null);
+                    setRevealed(false);
+                    setScore(0);
+                  }}
+                >
+                  <RotateCcw className="mr-1 h-3.5 w-3.5" /> Retry
+                </Button>
+                <Button onClick={onClose} className="flex-1 rounded-full">
+                  Done
+                </Button>
+              </div>
+            </div>
+          )}
+        </div>
+      </DialogContent>
+    </Dialog>
   );
 }
 
