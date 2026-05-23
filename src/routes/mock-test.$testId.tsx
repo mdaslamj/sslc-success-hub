@@ -8,6 +8,7 @@ import {
   Flag,
   RotateCcw,
   XCircle,
+  Heart,
 } from "lucide-react";
 import { DashboardLayout } from "@/components/dashboard-layout";
 import { Button } from "@/components/ui/button";
@@ -27,6 +28,7 @@ import {
   recordAttempt,
 } from "@/lib/mock-test/store";
 import { recordAttemptSignals } from "@/lib/weakAreaTracker";
+import { getEmotionalSummary } from "@/lib/emotionalProgress";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/mock-test/$testId")({
@@ -260,6 +262,7 @@ function ReviewView({
     return n + (a == null || a !== q.correctIndex ? 1 : 0);
   }, 0);
   const supportive = supportiveMessage(result.scorePct);
+  const emotional = useMemo(() => getEmotionalSummary(), []);
   const weakChapters = breakdown
     .filter((b) => b.accuracyPct < 60)
     .sort((a, b) => a.accuracyPct - b.accuracyPct);
