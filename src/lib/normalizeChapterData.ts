@@ -138,6 +138,22 @@ export function normalizeChapterData(raw: unknown): NormalizedChapter {
     })),
   );
   const exercises = [...baseExercises, ...bankExercises].filter((e) => e.question);
+  const importantDates: ContentImportantDate[] = asArray<Record<string, unknown>>(
+    r.important_dates ?? r.importantDates,
+  )
+    .map((d) => ({
+      year: asString(d.year) || asString(d.date),
+      event: asString(d.event) || asString(d.description),
+    }))
+    .filter((d) => d.year && d.event);
+  const keyTerms: ContentKeyTerm[] = asArray<Record<string, unknown>>(
+    r.key_terms ?? r.keyTerms,
+  )
+    .map((t) => ({
+      term: asString(t.term),
+      definition: asString(t.definition),
+    }))
+    .filter((t) => t.term && t.definition);
   return {
     id: asString(r.id) || asString(r.chapter_id),
     chapterNumber: asNumber(r.chapterNumber) || asNumber(r.chapter_number),
@@ -154,6 +170,10 @@ export function normalizeChapterData(raw: unknown): NormalizedChapter {
     exercises,
     mcqCount: mcqs.length || asNumber(r.mcqCount),
     exerciseCount: exercises.length || asNumber(r.exerciseCount),
+    section: asString(r.section) || undefined,
+    sectionKn: asString(r.sectionKn) || asString(r.section_kn) || undefined,
+    importantDates,
+    keyTerms,
   };
 }
 
