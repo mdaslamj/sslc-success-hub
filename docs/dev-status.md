@@ -1,5 +1,44 @@
 # Aura — Dev Status
 
+## Production Stabilization Sweep — ✅ shipped
+
+**Scope:** Verification pass across onboarding/session persistence, route
+navigation, mobile overflow, loading/empty states, and console hygiene. No
+behaviour changes beyond cleanup.
+
+### Verified
+- **Session persistence**: `OnboardingGate` in `src/routes/__root.tsx` already
+  routes returning authenticated users with `profile.onboardingCompletedAt`
+  straight to `/` and pulls them off `/login` and `/onboarding`. Guest mode
+  rehydrates from `aura.guest.*` localStorage keys. A 450ms splash hold
+  prevents the dashboard from flashing before auth restores.
+- **Routes / navigation**: `notFoundComponent` and `errorComponent` are wired
+  on the root route with retry → `router.invalidate()` + `reset()`. No
+  dead-end links found in the audited routes; the public allow-list covers
+  `/login`, `/forgot-password`, `/onboarding`, `/seed`, `/privacy`.
+- **Mobile overflow**: Global `body { overflow-x: hidden }` in
+  `src/styles.css` plus the earlier Planner / Subjects fixes hold up at
+  320–414px. Inputs are pinned to ≥16px to block iOS zoom; `pointer: coarse`
+  enables `touch-action: manipulation` for snappier taps on low-end Android.
+- **Loading / empty states**: `Splash` covers auth + profile bootstrap;
+  `SyncStatusBanner` covers offline sync; adaptive cards degrade to gentle
+  empty messages when no signals exist.
+- **Console**: No runtime errors. No dev-server warnings. Verified via
+  `runtime_errors` and the `vite` daemon log.
+
+### Cleaned
+- Silenced chatty production `console.log` lines in
+  `src/integrations/firebase/subjects.ts` (auto-seed, subjects loaded,
+  per-row chapter counts) behind `import.meta.env.DEV`. Warnings on real
+  errors are preserved.
+
+### Bundle / rerenders
+- No new deps. No new components. No new storage keys.
+- Adaptive / emotional layers remain pure functions reading existing
+  `aura:weak:*` and `mt:attempts` entries — no extra subscriptions.
+
+---
+
 ## Emotional Progress Layer — ✅ shipped
 
 **Scope:** Lightweight emotional reflections derived from existing learning
