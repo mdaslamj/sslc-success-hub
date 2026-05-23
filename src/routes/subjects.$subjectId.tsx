@@ -378,6 +378,13 @@ function SubjectDetailPage() {
           </div>
         </div>
 
+        {isSocial && chapterDetailOpen && activeChapter ? (
+          <ChapterDetailView
+            chapter={activeChapter}
+            color={subject.color}
+            onBack={() => setChapterDetailOpen(false)}
+          />
+        ) : (
         <Tabs defaultValue="chapters" className="w-full">
           <TabsList className="rounded-full w-full sm:w-auto overflow-x-auto no-scrollbar flex justify-start sm:inline-flex">
             <TabsTrigger value="chapters" className="rounded-full gap-1.5">
@@ -608,6 +615,7 @@ function SubjectDetailPage() {
             )}
           </TabsContent>
         </Tabs>
+        )}
       </div>
     </DashboardLayout>
   );
