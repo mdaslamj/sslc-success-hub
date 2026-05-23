@@ -115,7 +115,7 @@ const manifest = {
   subjectCode: "85-E",
   board: "Karnataka SSLC",
   totalChapters: chapters.length,
-  version: "1.0",
+  version: "1.1",
   lastUpdated: new Date().toISOString().slice(0, 7),
   schemaVersion: "1.0",
   features: ["mcqs", "one-mark", "two-mark", "three-mark", "key-terms", "kannada-labels"],
