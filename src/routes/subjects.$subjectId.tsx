@@ -720,114 +720,244 @@ function ManifestChaptersGrid({
   );
 }
 
-/* ---------------- Social Science section view (Timeline / Maps / Civics) ---------------- */
+/* ---------------- Social Science: Timeline / Maps / Civics / Practice ---------------- */
 
-function SocialSectionView({
+function SocialHeader({
+  icon: Icon,
   title,
   description,
-  emptyLabel,
-  chapters,
   color,
-  variant,
-  onSelect,
 }: {
+  icon: typeof Clock;
   title: string;
   description: string;
-  emptyLabel: string;
-  chapters: ManifestChapter[];
   color: string;
-  variant: "timeline" | "maps" | "civics";
+}) {
+  return (
+    <div
+      className="rounded-2xl border border-border/60 p-4"
+      style={{
+        background: `linear-gradient(135deg, color-mix(in oklab, ${color} 14%, transparent), transparent)`,
+      }}
+    >
+      <div className="flex items-center gap-2">
+        <div
+          className="flex h-9 w-9 items-center justify-center rounded-xl text-white"
+          style={{ background: color }}
+        >
+          <Icon className="h-4 w-4" />
+        </div>
+        <div>
+          <h2 className="font-display text-lg font-bold leading-tight">{title}</h2>
+          <p className="text-xs text-muted-foreground leading-snug">{description}</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function EmptyBlock({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="rounded-2xl border border-dashed border-border/60 p-10 text-center text-sm text-muted-foreground">
+      {children}
+    </div>
+  );
+}
+
+function parseYear(y: string): number {
+  // Handles "1498", "1757 AD", "c. 1600", "1857-58", "300 BC"
+  const isBC = /b\.?c\.?/i.test(y);
+  const m = y.match(/-?\d{1,4}/);
+  if (!m) return Number.POSITIVE_INFINITY;
+  const n = parseInt(m[0], 10);
+  return isBC ? -n : n;
+}
+
+type AggregatedDate = ContentImportantDate & {
+  chapterId: string;
+  chapterTitle: string;
+  chapterNumber: number;
+};
+
+function SocialTimelineView({
+  chapters,
+  readyIds,
+  color,
+  loading,
+  onSelect,
+}: {
+  chapters: NormalizedChapter[];
+  readyIds: Set<string>;
+  color: string;
+  loading: boolean;
   onSelect: (id: string) => void;
 }) {
-  const sorted = [...chapters].sort(
-    (a, b) => (a.chapterNumber ?? 0) - (b.chapterNumber ?? 0),
+  const aggregated: AggregatedDate[] = useMemo(() => {
+    const out: AggregatedDate[] = [];
+    for (const c of chapters) {
+      for (const d of c.importantDates ?? []) {
+        out.push({
+          ...d,
+          chapterId: c.id,
+          chapterTitle: c.title,
+          chapterNumber: c.chapterNumber,
+        });
+      }
+    }
+    out.sort((a, b) => parseYear(a.year) - parseYear(b.year));
+    return out;
+  }, [chapters]);
+
+  const sortedChapters = useMemo(
+    () => [...chapters].sort((a, b) => a.chapterNumber - b.chapterNumber),
+    [chapters],
   );
-
-  const Icon = variant === "timeline" ? Clock : variant === "maps" ? MapIcon : Landmark;
-
-  if (sorted.length === 0) {
-    return (
-      <div className="rounded-2xl border border-dashed border-border/60 p-10 text-center text-sm text-muted-foreground">
-        {emptyLabel}
-      </div>
-    );
-  }
 
   return (
     <div className="space-y-4">
-      <div
-        className="rounded-2xl border border-border/60 p-4"
-        style={{
-          background: `linear-gradient(135deg, color-mix(in oklab, ${color} 14%, transparent), transparent)`,
-        }}
-      >
-        <div className="flex items-center gap-2">
-          <div
-            className="flex h-9 w-9 items-center justify-center rounded-xl text-white"
-            style={{ background: color }}
-          >
-            <Icon className="h-4 w-4" />
-          </div>
+      <SocialHeader
+        icon={Clock}
+        title="History Timeline"
+        description="Chronological flow of events across History chapters — pulled live from the textbook JSON."
+        color={color}
+      />
+
+      {loading && chapters.length === 0 ? (
+        <Skeleton className="h-40 w-full rounded-2xl" />
+      ) : chapters.length === 0 ? (
+        <EmptyBlock>No history chapters available yet.</EmptyBlock>
+      ) : (
+        <>
+          {aggregated.length > 0 && (
+            <div className="rounded-2xl border border-border/60 bg-card p-4">
+              <div className="mb-3 flex items-center gap-2">
+                <Clock className="h-4 w-4 text-brand" />
+                <h3 className="font-display font-semibold">Key Dates & Events</h3>
+                <Badge variant="outline" className="rounded-full text-[10px]">
+                  {aggregated.length}
+                </Badge>
+              </div>
+              <ol className="relative space-y-3 border-l border-border/60 pl-5">
+                {aggregated.map((d, i) => (
+                  <li key={`${d.chapterId}-${i}`} className="relative">
+                    <span
+                      className="absolute -left-[27px] top-2 flex h-3 w-3 items-center justify-center rounded-full ring-4 ring-background"
+                      style={{ background: color }}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => readyIds.has(d.chapterId) && onSelect(d.chapterId)}
+                      className="block w-full text-left"
+                    >
+                      <div className="flex flex-wrap items-baseline gap-2">
+                        <span
+                          className="font-display text-base font-bold"
+                          style={{ color }}
+                        >
+                          {d.year}
+                        </span>
+                        <span className="text-sm text-foreground/90">{d.event}</span>
+                      </div>
+                      <div className="mt-0.5 text-[11px] text-muted-foreground">
+                        Ch {d.chapterNumber} · {d.chapterTitle}
+                      </div>
+                    </button>
+                  </li>
+                ))}
+              </ol>
+            </div>
+          )}
+
           <div>
-            <h2 className="font-display text-lg font-bold leading-tight">{title}</h2>
-            <p className="text-xs text-muted-foreground leading-snug">{description}</p>
+            <div className="mb-2 flex items-center gap-2">
+              <BookOpen className="h-4 w-4 text-brand" />
+              <h3 className="font-display font-semibold">Chapter chronology</h3>
+            </div>
+            <ol className="relative space-y-3 border-l border-border/60 pl-5">
+              {sortedChapters.map((c) => {
+                const isReady = readyIds.has(c.id);
+                return (
+                  <li key={c.id} className="relative">
+                    <span
+                      className="absolute -left-[27px] top-3 flex h-4 w-4 items-center justify-center rounded-full ring-4 ring-background"
+                      style={{ background: isReady ? color : "var(--muted)" }}
+                    />
+                    <button
+                      type="button"
+                      disabled={!isReady}
+                      onClick={() => isReady && onSelect(c.id)}
+                      className={`w-full rounded-2xl border p-3 text-left transition ${
+                        isReady
+                          ? "border-border/60 bg-card hover:border-brand/40 cursor-pointer"
+                          : "border-dashed border-border/60 bg-muted/30 opacity-75 cursor-not-allowed"
+                      }`}
+                    >
+                      <div className="flex items-center gap-2 text-[11px] text-muted-foreground">
+                        <span>Chapter {c.chapterNumber || "—"}</span>
+                        <span>·</span>
+                        <span>{c.importantDates.length} dates</span>
+                        <span>·</span>
+                        <span>{c.keyTerms.length} terms</span>
+                      </div>
+                      <div
+                        className="font-display font-semibold"
+                        style={isReady ? { color } : undefined}
+                      >
+                        {c.title}
+                      </div>
+                    </button>
+                  </li>
+                );
+              })}
+            </ol>
           </div>
-        </div>
+        </>
+      )}
+    </div>
+  );
+}
+
+function SocialMapsView({
+  chapters,
+  readyIds,
+  color,
+  loading,
+  onSelect,
+}: {
+  chapters: NormalizedChapter[];
+  readyIds: Set<string>;
+  color: string;
+  loading: boolean;
+  onSelect: (id: string) => void;
+}) {
+  const sortedChapters = useMemo(
+    () => [...chapters].sort((a, b) => a.chapterNumber - b.chapterNumber),
+    [chapters],
+  );
+
+  return (
+    <div className="space-y-4">
+      <SocialHeader
+        icon={MapIcon}
+        title="Geography & Maps"
+        description="Physical features, climate, resources, industries, transport and natural disasters of India — aggregated from chapter JSON."
+        color={color}
+      />
+
+      <div className="rounded-2xl border border-dashed border-border/60 bg-muted/20 p-3 text-[11px] text-muted-foreground">
+        Interactive map layers are coming soon. For now, explore each geography
+        chapter's regions, resources and key terms below.
       </div>
 
-      {variant === "timeline" ? (
-        <ol className="relative space-y-3 border-l border-border/60 pl-5">
-          {sorted.map((c) => {
-            const isReady = c.status === "ready";
-            return (
-              <li key={c.id} className="relative">
-                <span
-                  className="absolute -left-[27px] top-3 flex h-4 w-4 items-center justify-center rounded-full ring-4 ring-background"
-                  style={{ background: isReady ? color : "var(--muted)" }}
-                />
-                <button
-                  type="button"
-                  disabled={!isReady}
-                  onClick={() => isReady && onSelect(c.id)}
-                  className={`w-full rounded-2xl border p-3 text-left transition ${
-                    isReady
-                      ? "border-border/60 bg-card hover:border-brand/40 cursor-pointer"
-                      : "border-dashed border-border/60 bg-muted/30 opacity-75 cursor-not-allowed"
-                  }`}
-                >
-                  <div className="flex items-center gap-2 text-[11px] text-muted-foreground">
-                    <span>Chapter {c.chapterNumber ?? "—"}</span>
-                    {isReady ? (
-                      <Badge
-                        variant="outline"
-                        className="h-4 rounded-full border-transparent bg-success/15 px-1.5 text-[9px] text-success"
-                      >
-                        Available
-                      </Badge>
-                    ) : (
-                      <Badge
-                        variant="outline"
-                        className="h-4 rounded-full border-transparent bg-muted px-1.5 text-[9px] text-muted-foreground"
-                      >
-                        Coming soon
-                      </Badge>
-                    )}
-                  </div>
-                  <div
-                    className="font-display font-semibold"
-                    style={isReady ? { color } : undefined}
-                  >
-                    {c.title ?? c.id}
-                  </div>
-                </button>
-              </li>
-            );
-          })}
-        </ol>
+      {loading && chapters.length === 0 ? (
+        <Skeleton className="h-40 w-full rounded-2xl" />
+      ) : chapters.length === 0 ? (
+        <EmptyBlock>No geography chapters available yet.</EmptyBlock>
       ) : (
         <div className="grid gap-3 md:grid-cols-2">
-          {sorted.map((c) => {
-            const isReady = c.status === "ready";
+          {sortedChapters.map((c) => {
+            const isReady = readyIds.has(c.id);
+            const topTerms = (c.keyTerms ?? []).slice(0, 4);
             return (
               <button
                 key={c.id}
@@ -841,36 +971,292 @@ function SocialSectionView({
                 }`}
               >
                 <div className="flex items-center gap-2 text-[11px] text-muted-foreground">
-                  <span>Chapter {c.chapterNumber ?? "—"}</span>
-                  {c.section && (
-                    <Badge
-                      variant="outline"
-                      className="h-4 rounded-full border-border/60 px-1.5 text-[9px]"
-                    >
-                      {c.section}
-                    </Badge>
-                  )}
-                  {!isReady && (
-                    <Badge
-                      variant="outline"
-                      className="h-4 rounded-full border-transparent bg-muted px-1.5 text-[9px] text-muted-foreground"
-                    >
-                      Coming soon
-                    </Badge>
-                  )}
+                  <span>Chapter {c.chapterNumber || "—"}</span>
+                  <Badge
+                    variant="outline"
+                    className="h-4 rounded-full border-border/60 px-1.5 text-[9px]"
+                  >
+                    Geography
+                  </Badge>
                 </div>
                 <div
                   className="font-display font-semibold"
                   style={isReady ? { color } : undefined}
                 >
-                  {c.title ?? c.id}
+                  {c.title}
                 </div>
+                {topTerms.length > 0 && (
+                  <div className="mt-2 flex flex-wrap gap-1">
+                    {topTerms.map((t) => (
+                      <span
+                        key={t.term}
+                        className="rounded-full bg-muted px-2 py-0.5 text-[10px] text-muted-foreground"
+                      >
+                        {t.term}
+                      </span>
+                    ))}
+                    {c.keyTerms.length > topTerms.length && (
+                      <span className="text-[10px] text-muted-foreground">
+                        +{c.keyTerms.length - topTerms.length} more
+                      </span>
+                    )}
+                  </div>
+                )}
               </button>
             );
           })}
         </div>
       )}
     </div>
+  );
+}
+
+const CIVICS_GROUPS: { key: string; label: string }[] = [
+  { key: "Political Science", label: "Political Science" },
+  { key: "Sociology", label: "Sociology" },
+  { key: "Economics", label: "Economics" },
+  { key: "Business Studies", label: "Business Studies" },
+];
+
+function SocialCivicsView({
+  chapters,
+  readyIds,
+  color,
+  loading,
+  onSelect,
+}: {
+  chapters: NormalizedChapter[];
+  readyIds: Set<string>;
+  color: string;
+  loading: boolean;
+  onSelect: (id: string) => void;
+}) {
+  const grouped = useMemo(() => {
+    const m = new Map<string, NormalizedChapter[]>();
+    for (const g of CIVICS_GROUPS) m.set(g.key, []);
+    for (const c of chapters) {
+      if (c.section && m.has(c.section)) m.get(c.section)!.push(c);
+    }
+    for (const arr of m.values()) arr.sort((a, b) => a.chapterNumber - b.chapterNumber);
+    return m;
+  }, [chapters]);
+
+  return (
+    <div className="space-y-4">
+      <SocialHeader
+        icon={Landmark}
+        title="Civics, Society & Economy"
+        description="Governance, social structures, economic life and entrepreneurship — grouped by discipline."
+        color={color}
+      />
+
+      {loading && chapters.length === 0 ? (
+        <Skeleton className="h-40 w-full rounded-2xl" />
+      ) : chapters.length === 0 ? (
+        <EmptyBlock>No civics chapters available yet.</EmptyBlock>
+      ) : (
+        CIVICS_GROUPS.map((g) => {
+          const items = grouped.get(g.key) ?? [];
+          if (items.length === 0) return null;
+          return (
+            <div key={g.key} className="space-y-2">
+              <div className="flex items-center gap-2">
+                <h3 className="font-display text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+                  {g.label}
+                </h3>
+                <Badge variant="outline" className="rounded-full text-[10px]">
+                  {items.length}
+                </Badge>
+              </div>
+              <div className="grid gap-3 md:grid-cols-2">
+                {items.map((c) => {
+                  const isReady = readyIds.has(c.id);
+                  const topTerms = (c.keyTerms ?? []).slice(0, 3);
+                  return (
+                    <button
+                      key={c.id}
+                      type="button"
+                      disabled={!isReady}
+                      onClick={() => isReady && onSelect(c.id)}
+                      className={`rounded-2xl border p-4 text-left transition ${
+                        isReady
+                          ? "border-border/60 bg-card hover:border-brand/40 cursor-pointer"
+                          : "border-dashed border-border/60 bg-muted/30 opacity-75 cursor-not-allowed"
+                      }`}
+                    >
+                      <div className="text-[11px] text-muted-foreground">
+                        Chapter {c.chapterNumber || "—"}
+                      </div>
+                      <div
+                        className="font-display font-semibold"
+                        style={isReady ? { color } : undefined}
+                      >
+                        {c.title}
+                      </div>
+                      {topTerms.length > 0 && (
+                        <div className="mt-2 space-y-1">
+                          {topTerms.map((t) => (
+                            <div
+                              key={t.term}
+                              className="text-[11px] text-muted-foreground leading-snug"
+                            >
+                              <span className="font-semibold text-foreground/80">
+                                {t.term}:
+                              </span>{" "}
+                              {t.definition.length > 90
+                                ? `${t.definition.slice(0, 90)}…`
+                                : t.definition}
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          );
+        })
+      )}
+    </div>
+  );
+}
+
+type SocialPracticeBank = "mcq" | "one_mark" | "two_mark" | "three_mark";
+
+function SocialPracticeView({
+  chapters,
+  color,
+  loading,
+}: {
+  chapters: NormalizedChapter[];
+  color: string;
+  loading: boolean;
+}) {
+  const allMcqs = useMemo<MCQ[]>(() => {
+    const out: MCQ[] = [];
+    for (const c of chapters) out.push(...mapContentMcqs(c.mcqs ?? [], c.title));
+    return out;
+  }, [chapters]);
+
+  const banks = useMemo(() => {
+    const groups: Record<Exclude<SocialPracticeBank, "mcq">, Array<{
+      chapterTitle: string;
+      chapterNumber: number;
+      question: string;
+      answer?: string;
+      id: string;
+    }>> = {
+      one_mark: [],
+      two_mark: [],
+      three_mark: [],
+    };
+    for (const c of chapters) {
+      for (const ex of c.exercises ?? []) {
+        const t = ex.type;
+        if (t === "one_mark" || t === "two_mark" || t === "three_mark") {
+          groups[t].push({
+            id: `${c.id}-${ex.id}`,
+            question: ex.question,
+            answer: ex.answer,
+            chapterTitle: c.title,
+            chapterNumber: c.chapterNumber,
+          });
+        }
+      }
+    }
+    return groups;
+  }, [chapters]);
+
+  if (loading && chapters.length === 0) {
+    return <Skeleton className="h-40 w-full rounded-2xl" />;
+  }
+
+  const totalCount =
+    allMcqs.length + banks.one_mark.length + banks.two_mark.length + banks.three_mark.length;
+  if (totalCount === 0) {
+    return <EmptyBlock>Practice content for Social Science coming soon.</EmptyBlock>;
+  }
+
+  return (
+    <Tabs defaultValue="mcq" className="w-full">
+      <TabsList className="rounded-full w-full sm:w-auto overflow-x-auto no-scrollbar flex justify-start sm:inline-flex">
+        <TabsTrigger value="mcq" className="rounded-full">
+          MCQs <span className="ml-1 text-[10px] text-muted-foreground">({allMcqs.length})</span>
+        </TabsTrigger>
+        <TabsTrigger value="one_mark" className="rounded-full">
+          1-mark <span className="ml-1 text-[10px] text-muted-foreground">({banks.one_mark.length})</span>
+        </TabsTrigger>
+        <TabsTrigger value="two_mark" className="rounded-full">
+          2-mark <span className="ml-1 text-[10px] text-muted-foreground">({banks.two_mark.length})</span>
+        </TabsTrigger>
+        <TabsTrigger value="three_mark" className="rounded-full">
+          3-mark <span className="ml-1 text-[10px] text-muted-foreground">({banks.three_mark.length})</span>
+        </TabsTrigger>
+      </TabsList>
+
+      <TabsContent value="mcq" className="mt-4">
+        {allMcqs.length > 0 ? (
+          <PracticeQuiz mcqs={allMcqs} color={color} />
+        ) : (
+          <EmptyBlock>MCQs coming soon.</EmptyBlock>
+        )}
+      </TabsContent>
+
+      {(["one_mark", "two_mark", "three_mark"] as const).map((bank) => (
+        <TabsContent key={bank} value={bank} className="mt-4">
+          <WrittenAnswerBank items={banks[bank]} />
+        </TabsContent>
+      ))}
+    </Tabs>
+  );
+}
+
+function WrittenAnswerBank({
+  items,
+}: {
+  items: Array<{
+    id: string;
+    question: string;
+    answer?: string;
+    chapterTitle: string;
+    chapterNumber: number;
+  }>;
+}) {
+  if (items.length === 0) {
+    return <EmptyBlock>No questions in this set yet.</EmptyBlock>;
+  }
+  return (
+    <ol className="space-y-2">
+      {items.map((q, i) => (
+        <li
+          key={q.id}
+          className="rounded-2xl border border-border/60 bg-card p-3 text-sm"
+        >
+          <div className="flex items-baseline gap-2">
+            <span className="font-mono text-[11px] text-muted-foreground">
+              {String(i + 1).padStart(2, "0")}
+            </span>
+            <div className="min-w-0 flex-1">
+              <div className="text-foreground/90">{q.question}</div>
+              <div className="mt-1 text-[10px] text-muted-foreground">
+                Ch {q.chapterNumber} · {q.chapterTitle}
+              </div>
+              {q.answer && (
+                <details className="mt-2">
+                  <summary className="cursor-pointer text-[11px] font-medium text-brand">
+                    Show answer
+                  </summary>
+                  <div className="mt-1 whitespace-pre-line text-xs text-muted-foreground">
+                    {q.answer}
+                  </div>
+                </details>
+              )}
+            </div>
+          </div>
+        </li>
+      ))}
+    </ol>
   );
 }
 
