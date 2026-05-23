@@ -1557,8 +1557,9 @@ function SocialPracticeView({
   }
 
   return (
-    <Tabs defaultValue="mcq" className="w-full">
-      <TabsList className="rounded-full w-full sm:w-auto overflow-x-auto no-scrollbar flex justify-start sm:inline-flex">
+    <Tabs defaultValue="mcq" className="w-full min-w-0">
+      <div className="-mx-4 overflow-x-auto px-4 pb-1 sm:mx-0 sm:px-0">
+      <TabsList className="h-auto min-w-max rounded-full w-max max-w-none flex-nowrap justify-start sm:w-auto sm:min-w-0 sm:max-w-full sm:flex-wrap sm:inline-flex">
         <TabsTrigger value="mcq" className="rounded-full">
           MCQs <span className="ml-1 text-[10px] text-muted-foreground">({allMcqs.length})</span>
         </TabsTrigger>
@@ -1572,6 +1573,7 @@ function SocialPracticeView({
           3-mark <span className="ml-1 text-[10px] text-muted-foreground">({banks.three_mark.length})</span>
         </TabsTrigger>
       </TabsList>
+      </div>
 
       <TabsContent value="mcq" className="mt-4">
         {allMcqs.length > 0 ? (
