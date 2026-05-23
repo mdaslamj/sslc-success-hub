@@ -1300,6 +1300,10 @@ function ChapterDetailView({
 
       <ChapterContentOverview chapter={chapter} />
 
+      {chapter.importantDates.length > 0 && (
+        <ChapterTimeline chapter={chapter} color={color} />
+      )}
+
       {chapter.formulas.length > 0 && (
         <div>
           <div className="mb-2 flex items-center gap-2">
