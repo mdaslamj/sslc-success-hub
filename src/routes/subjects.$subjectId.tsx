@@ -949,13 +949,12 @@ function SocialMapsView({
       <SocialHeader
         icon={MapIcon}
         title="Geography & Maps"
-        description="Physical features, climate, resources, industries, transport and natural disasters of India — aggregated from chapter JSON."
+        description="Explore geography concepts visually."
         color={color}
       />
 
       <div className="rounded-2xl border border-dashed border-border/60 bg-muted/20 p-3 text-[11px] text-muted-foreground">
-        Tap a chapter to open its map and key regions. Clickable regions and
-        map quizzes are planned for the next phase.
+        Tap a chapter to open its map and key regions.
       </div>
 
       {loading && chapters.length === 0 ? (
