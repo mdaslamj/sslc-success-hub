@@ -31,12 +31,43 @@ function SubjectsPage() {
     queryFn: fetchSubjects,
   });
 
+  // Load per-subject manifests in parallel so chapter totals reflect real
+  // manifest data instead of stale seeded counts.
+  const manifestQueries = useQueries({
+    queries: (subjects ?? []).map((s) => {
+      const folder = contentFolderFor(s.id);
+      return {
+        queryKey: ["content", "manifest", folder ?? "none"],
+        queryFn: () => loadManifest(folder ?? undefined) as Promise<{ totalChapters?: number; chapters?: unknown[] }>,
+        enabled: !!folder,
+        staleTime: 60 * 60 * 1000,
+      };
+    }),
+  });
+
+  const manifestMeta = useMemo(() => {
+    const map = new Map<string, number>();
+    if (!subjects) return map;
+    for (let i = 0; i < subjects.length; i++) {
+      const data = manifestQueries[i]?.data;
+      if (!data) continue;
+      const total =
+        (data as { totalChapters?: number }).totalChapters ??
+        (data as { chapters?: unknown[] }).chapters?.length ??
+        0;
+      if (total > 0) map.set(subjects[i].id, total);
+    }
+    return map;
+  }, [subjects, manifestQueries]);
+
   return (
     <DashboardLayout title="Subjects">
       <div className="mx-auto max-w-3xl">
         <header className="mb-6">
           <h1 className="font-display text-3xl font-bold tracking-tight">All Subjects</h1>
-          <p className="text-sm text-muted-foreground">Karnataka SSLC Class 10 syllabus · 6 subjects</p>
+          <p className="text-sm text-muted-foreground">
+            Karnataka SSLC Class 10 syllabus · {subjects?.length ?? 0} subjects
+          </p>
         </header>
 
         {isLoading && (
