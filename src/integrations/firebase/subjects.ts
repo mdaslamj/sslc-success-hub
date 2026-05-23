@@ -52,7 +52,9 @@ async function autoSeedChapters(subjectId: string): Promise<number> {
   const mockKey = MOCK_KEY_FOR[subjectId] ?? subjectId;
   const chapters: Chapter[] = mockSubjectChapters[mockKey] ?? [];
   if (!chapters.length) return 0;
-  console.log(`[subjects] auto-seeding ${chapters.length} chapters for ${subjectId}`);
+  if (import.meta.env.DEV) {
+    console.log(`[subjects] auto-seeding ${chapters.length} chapters for ${subjectId}`);
+  }
   let written = 0;
   for (let j = 0; j < chapters.length; j++) {
     const c = chapters[j];
@@ -98,7 +100,9 @@ export async function fetchSubjects(): Promise<SubjectDoc[]> {
   }
 
   const rows = Array.from(byId.values()).map(normalizeSubject);
-  console.log("[subjects] subjects loaded", rows.map((r) => r.id));
+  if (import.meta.env.DEV) {
+    console.log("[subjects] subjects loaded", rows.map((r) => r.id));
+  }
 
   // Fetch live chapter counts from `subject/{id}/chapters` in parallel so
   // each card shows the real total instead of a stale `chaptersTotal` field.
@@ -109,7 +113,9 @@ export async function fetchSubjects(): Promise<SubjectDoc[]> {
           collection(db, SUBJECT_COLLECTION, row.id, CHAPTERS_SUBCOLLECTION),
         );
         let count = c.data().count;
-        console.log(`[subjects] chapters fetched for ${row.id}: ${count}`);
+        if (import.meta.env.DEV) {
+          console.log(`[subjects] chapters fetched for ${row.id}: ${count}`);
+        }
         if (count === 0) {
           const seeded = await autoSeedChapters(row.id);
           if (seeded > 0) count = seeded;
@@ -118,7 +124,9 @@ export async function fetchSubjects(): Promise<SubjectDoc[]> {
           row.chaptersTotal = count;
         }
         if (row.chaptersDone > row.chaptersTotal) row.chaptersDone = row.chaptersTotal;
-        console.log(`[subjects] chapter count for ${row.id}: ${row.chaptersDone}/${row.chaptersTotal}`);
+        if (import.meta.env.DEV) {
+          console.log(`[subjects] chapter count for ${row.id}: ${row.chaptersDone}/${row.chaptersTotal}`);
+        }
       } catch (err) {
         console.warn(`[subjects] chapter count failed for ${row.id}`, err);
       }
