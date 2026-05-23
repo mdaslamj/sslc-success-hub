@@ -1,0 +1,114 @@
+{
+  "chapter_id": "SS-ECO-01",
+  "subject": "Social Science",
+  "section": "Economics",
+  "chapter_number": 1,
+  "chapter_name": "Economy and Government",
+  "learning_outcomes": [
+    "Analyze the relationship between economy and government",
+    "Understand the importance of planning in India",
+    "Analyze the five-year plans and achievements",
+    "Understand the Green Revolution"
+  ],
+  "key_terms": [
+    {
+      "term": "Economic Planning",
+      "definition": "The process where the government consciously and wisely implements economic planning to maximize people's happiness by efficiently utilizing resources"
+    },
+    {
+      "term": "Green Revolution",
+      "definition": "The rapid progress in the production of food grains \u2014 inspired by Dr. Norman Borlaug's research"
+    },
+    {
+      "term": "Post-harvest Technology",
+      "definition": "Advanced technology used in the collection, processing and marketing of agricultural products"
+    },
+    {
+      "term": "NITI Aayog",
+      "definition": "National Institution for Transforming India \u2014 replaced Planning Commission, headed by Prime Minister"
+    },
+    {
+      "term": "Second Green Revolution",
+      "definition": "Using eco-friendly techniques to double agricultural production; also called Evergreen Revolution"
+    }
+  ],
+  "mcqs": [
+    {
+      "q_id": "SS-ECO-01-MCQ-01",
+      "question": "Father of Green Revolution in India",
+      "options": {
+        "A": "Dr. Norman Borlaug",
+        "B": "Verghese Kurien",
+        "C": "Dr. M. S. Swaminathan",
+        "D": "Sir M. Visvesvaraya"
+      },
+      "correct": "C",
+      "explanation": "Dr. M.S. Swaminathan is called the Father of Green Revolution in India"
+    },
+    {
+      "q_id": "SS-ECO-01-MCQ-02",
+      "question": "While NITI Aayog is headed by the Prime Minister, its day-to-day administration is handled by",
+      "options": {
+        "A": "President",
+        "B": "Secretariate",
+        "C": "Deputy Prime Minister",
+        "D": "Vice-Chairmen"
+      },
+      "correct": "D",
+      "explanation": "The Vice-Chairmen of NITI Aayog handles its day-to-day administration"
+    },
+    {
+      "q_id": "SS-ECO-01-MCQ-03",
+      "question": "The body which approves five-year plans in India",
+      "options": {
+        "A": "National Development Council",
+        "B": "Planning Commission",
+        "C": "NITI Ayog",
+        "D": "Social welfare commission"
+      },
+      "correct": "A",
+      "explanation": "The National Development Council approves the Five-Year Plans in India"
+    }
+  ],
+  "one_mark_questions": [
+    {
+      "question": "What is Green Revolution?",
+      "answer": "The rapid progress in the production of food grains is called the Green Revolution"
+    },
+    {
+      "question": "Who is called the 'Father of Indian Economic Planning'?",
+      "answer": "Sir M. Visveswaraiah"
+    },
+    {
+      "question": "What is 'Second Green Revolution' or 'Perpetual Green Revolution'?",
+      "answer": "An attempt to double agricultural production by using all kinds of eco-friendly techniques in agriculture"
+    },
+    {
+      "question": "Which body approves the Five-Year Plans?",
+      "answer": "National Development Council"
+    }
+  ],
+  "two_mark_questions": [
+    {
+      "question": "What are the objectives of NITI Aayog?",
+      "answer": [
+        "To act as the highest public policy think tank of the Government of India",
+        "To evolve a shared vision of national development priorities with the active involvement of states",
+        "To promote cooperative union through the involvement of state governments in economic policy formulation"
+      ]
+    }
+  ],
+  "three_mark_questions": [
+    {
+      "question": "List the achievements of Five-Year Plans.",
+      "answer": [
+        "The pace of growth of national income has gradually increased",
+        "Self-sufficiency in food grain production has been achieved",
+        "Employment opportunities have increased",
+        "There has been immense progress in the field of science and technology",
+        "Life expectancy and literacy rate are increasing",
+        "Infant mortality and maternal mortality rates are decreasing"
+      ]
+    }
+  ]
+}

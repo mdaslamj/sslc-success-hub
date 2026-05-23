@@ -1,0 +1,112 @@
+{
+  "chapter_id": "SS-SOC-02",
+  "subject": "Social Science",
+  "section": "Sociology",
+  "chapter_number": 2,
+  "chapter_name": "Work and Economic Life",
+  "learning_outcomes": [
+    "Understand the division of labour",
+    "Understand the difference between waged and unwaged labour",
+    "Understand the causes, effects and solutions of unemployment",
+    "Understand the difference between organized and unorganized workers"
+  ],
+  "key_terms": [
+    {
+      "term": "Labour",
+      "definition": "If a person gets financial or material reward from expenditure of energy or effort, it is called labour"
+    },
+    {
+      "term": "Division of Labour",
+      "definition": "Division of work between people on the basis of interests, aptitudes, abilities, age, special expertise, skills and gender differences"
+    },
+    {
+      "term": "Paid Labour",
+      "definition": "Work activity that provides wages, salary or any other material form of reward"
+    },
+    {
+      "term": "Unpaid Labour",
+      "definition": "Activity that a human being engages in for the sake of mental happiness without financial reward"
+    },
+    {
+      "term": "Specialization",
+      "definition": "Acquiring sufficient in-depth expertise, training or skills in a particular field"
+    },
+    {
+      "term": "Unemployment",
+      "definition": "The situation where a person is unable to find a job despite having the working age, ability, interest and qualification"
+    }
+  ],
+  "mcqs": [
+    {
+      "q_id": "SS-SOC-02-MCQ-01",
+      "question": "An example for organized workers is",
+      "options": {
+        "A": "Vegetable sellers",
+        "B": "Daily wage labour",
+        "C": "Domestic workers",
+        "D": "Teachers"
+      },
+      "correct": "D",
+      "explanation": "Teachers work in an organized sector with fixed rules and regulations"
+    },
+    {
+      "q_id": "SS-SOC-02-MCQ-02",
+      "question": "An example for Unorganized sector workers is",
+      "options": {
+        "A": "Doctors",
+        "B": "Agricultural workers",
+        "C": "Insurance company workers",
+        "D": "Soldiers"
+      },
+      "correct": "B",
+      "explanation": "Agricultural workers are in the unorganized sector without fixed wages or job security"
+    },
+    {
+      "q_id": "SS-SOC-02-MCQ-03",
+      "question": "Best example of unpaid labour is",
+      "options": {
+        "A": "Serf",
+        "B": "Bonded labour",
+        "C": "Driver",
+        "D": "Mother's love"
+      },
+      "correct": "D",
+      "explanation": "Mother's love and care is the best example of unpaid labour"
+    },
+    {
+      "q_id": "SS-SOC-02-MCQ-04",
+      "question": "Reason for class system in modern times is",
+      "options": {
+        "A": "Industrialization",
+        "B": "Colonialism",
+        "C": "Imperialism",
+        "D": "Globalization"
+      },
+      "correct": "A",
+      "explanation": "Industrialization created the modern class system by separating workers from means of production"
+    }
+  ],
+  "one_mark_questions": [
+    {
+      "question": "What is division of labour?",
+      "answer": "Division of work between people on the basis of their interests, aptitudes, abilities, age, special expertise, skills and gender differences"
+    },
+    {
+      "question": "Why was the Equal Wages Act-1976 enacted?",
+      "answer": "The Equal Wages Act was enacted to eliminate discrimination in employment"
+    },
+    {
+      "question": "What is unemployment?",
+      "answer": "The situation where a person is unable to find a job despite having the working age, ability, interest and qualification"
+    }
+  ],
+  "three_mark_questions": [
+    {
+      "question": "Explain the differences between organized and unorganized workers.",
+      "answer": [
+        "Organized: Have specific laws and regulations, work in a specific workplace, have fixed hours, have fixed wages and allowances, have medical facilities, have specialized skills",
+        "Unorganized: Do not have laws and regulations, do not work in a specific workplace, do not have fixed hours, do not have fixed wages, do not have medical facilities, no job security"
+      ]
+    }
+  ]
+}

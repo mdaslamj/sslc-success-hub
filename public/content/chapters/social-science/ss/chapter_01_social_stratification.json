@@ -1,0 +1,113 @@
+{
+  "chapter_id": "SS-SOC-01",
+  "subject": "Social Science",
+  "section": "Sociology",
+  "chapter_number": 1,
+  "chapter_name": "Social Stratification",
+  "learning_outcomes": [
+    "Understand social stratification",
+    "Understand social inequality",
+    "Understand prejudice",
+    "Understand that untouchability is a social evil",
+    "Understand measures to eliminate untouchability"
+  ],
+  "key_terms": [
+    {
+      "term": "Social Stratification",
+      "definition": "The division of people into upper and lower classes on the basis of income, education, caste, colour, gender, occupation, intelligence etc."
+    },
+    {
+      "term": "Prejudice",
+      "definition": "A pre-determined attitude that can be held towards an individual or a group"
+    },
+    {
+      "term": "Untouchability",
+      "definition": "An inhuman practice that denied lower castes access to social, cultural, religious, educational and political opportunities"
+    },
+    {
+      "term": "Article 17",
+      "definition": "Constitutional provision that prohibits the practice of untouchability"
+    },
+    {
+      "term": "Civil Rights Protection Act",
+      "definition": "1976 act renaming the 1955 Untouchability Offences Act, strengthening legal protection"
+    }
+  ],
+  "mcqs": [
+    {
+      "q_id": "SS-SOC-01-MCQ-01",
+      "question": "The Article of our Constitution which prohibits the practice of untouchability is",
+      "options": {
+        "A": "Article 24",
+        "B": "Article 42",
+        "C": "Article 17",
+        "D": "Article 30"
+      },
+      "correct": "C",
+      "explanation": "Article 17 of the Indian Constitution abolishes untouchability"
+    },
+    {
+      "q_id": "SS-SOC-01-MCQ-02",
+      "question": "'Untouchability is a stigma on the Hindu society' was said by",
+      "options": {
+        "A": "Ambedkar",
+        "B": "Jyotibha Phule",
+        "C": "Mahatma Gandhiji",
+        "D": "Vivekananda"
+      },
+      "correct": "C",
+      "explanation": "Mahatma Gandhi said untouchability was a stigma on Hindu society"
+    },
+    {
+      "q_id": "SS-SOC-01-MCQ-03",
+      "question": "Social Stratification in India can be seen in",
+      "options": {
+        "A": "Apartheid",
+        "B": "Slavery",
+        "C": "Caste system",
+        "D": "Plebians and Patricians"
+      },
+      "correct": "C",
+      "explanation": "The caste system is the primary form of social stratification in India"
+    },
+    {
+      "q_id": "SS-SOC-01-MCQ-04",
+      "question": "The Untouchability Crime Act was changed as Civil Rights Protection Act in the year",
+      "options": {
+        "A": "1989",
+        "B": "1976",
+        "C": "1955",
+        "D": "1950"
+      },
+      "correct": "B",
+      "explanation": "The Untouchability Offences Act 1955 was renamed Civil Rights Protection Act in 1976"
+    }
+  ],
+  "one_mark_questions": [
+    {
+      "question": "What is social stratification?",
+      "answer": "Stratification is the division of people into upper and lower classes on the basis of income, education, caste, colour, gender, occupation, intelligence etc."
+    },
+    {
+      "question": "What is prejudice?",
+      "answer": "A pre-determined attitude that can be held towards an individual or a group"
+    },
+    {
+      "question": "Which legislation gives special responsibility for the eradication of untouchability to state governments?",
+      "answer": "1989 Scheduled Castes and Scheduled Tribes (Prevention of Atrocities) Act"
+    }
+  ],
+  "three_mark_questions": [
+    {
+      "question": "What are the constitutional and legislative measures to eradicate untouchability?",
+      "answer": [
+        "Article 17 prohibits the practice of untouchability",
+        "Untouchability Offences Act, 1955",
+        "Protection of Civil Rights Act, 1976",
+        "Universal suffrage is given to all",
+        "Reservation in educational jobs",
+        "1989 abolition of untouchability is the responsibility of the respective states"
+      ]
+    }
+  ]
+}

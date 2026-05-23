@@ -1,0 +1,222 @@
+{
+  "chapter_id": "SS-HIS-01",
+  "subject": "Social Science",
+  "section": "History",
+  "chapter_number": 1,
+  "chapter_name": "The Advent of Europeans to India",
+  "learning_outcomes": [
+    "Understand the trade and commercial relations that India had with Europeans",
+    "List the Europeans who came to India for trade",
+    "Understand the background of the political rivalry of Europeans leading to the Carnatic Wars",
+    "Explain the causes and effects of the Battle of Plassey and Battle of Buxar",
+    "Explain the dual-government system"
+  ],
+  "key_terms": [
+    {
+      "term": "Blue Water Policy",
+      "definition": "The policy of strengthening naval power to monopolize the sea instead of dominating the land"
+    },
+    {
+      "term": "Dual Government",
+      "definition": "A system introduced by Robert Clive in Bengal where the British had the right to collect land revenue while the Nawab performed administrative functions"
+    },
+    {
+      "term": "Diwani Rights",
+      "definition": "Rights to collect land revenue, granted by Shah Alam II to the East India Company after the Battle of Buxar"
+    },
+    {
+      "term": "Carnatic Wars",
+      "definition": "Three wars fought between British and French in India during 1746-1763"
+    },
+    {
+      "term": "Gateway to European Trade",
+      "definition": "Constantinople \u2014 the city that controlled the land trade route between Europe and Asia"
+    }
+  ],
+  "important_dates": [
+    {
+      "year": "1453",
+      "event": "Ottoman Turks captured Constantinople"
+    },
+    {
+      "year": "1498",
+      "event": "Vasco da Gama landed at Kappad near Calicut"
+    },
+    {
+      "year": "1757",
+      "event": "Battle of Plassey"
+    },
+    {
+      "year": "1764",
+      "event": "Battle of Buxar"
+    },
+    {
+      "year": "1748-1754",
+      "event": "Second Carnatic War"
+    },
+    {
+      "year": "1756-1763",
+      "event": "Third Carnatic War ended with Treaty of Paris"
+    }
+  ],
+  "mcqs": [
+    {
+      "q_id": "SS-HIS-01-MCQ-01",
+      "question": "The 'Gateway to European Trade' was",
+      "options": {
+        "A": "Rome",
+        "B": "Constantinople",
+        "C": "Paris",
+        "D": "Venice"
+      },
+      "correct": "B",
+      "explanation": "Constantinople controlled the land trade route between Europe and Asia until 1453"
+    },
+    {
+      "q_id": "SS-HIS-01-MCQ-02",
+      "question": "The person who discovered a new sea route to India was",
+      "options": {
+        "A": "Vasco da Gama",
+        "B": "Dupleix",
+        "C": "Almeida",
+        "D": "Albuquerque"
+      },
+      "correct": "A",
+      "explanation": "Vasco da Gama discovered the sea route to India and landed at Kappad near Calicut in 1498"
+    },
+    {
+      "q_id": "SS-HIS-01-MCQ-03",
+      "question": "The Portuguese Viceroy who implemented the 'Blue Water Policy' was",
+      "options": {
+        "A": "Vasco da Gama",
+        "B": "Francisco de Almeida",
+        "C": "Alfonso de Albuquerque",
+        "D": "Dupleix"
+      },
+      "correct": "B",
+      "explanation": "Francisco de Almeida implemented the Blue Water Policy to control the seas"
+    },
+    {
+      "q_id": "SS-HIS-01-MCQ-04",
+      "question": "The First Carnatic War ended with the treaty of",
+      "options": {
+        "A": "Pondicherry",
+        "B": "Aix-la-Chapelle",
+        "C": "Paris",
+        "D": "Wandiwash"
+      },
+      "correct": "B",
+      "explanation": "The First Carnatic War (1748) ended with the Treaty of Aix-la-Chapelle"
+    },
+    {
+      "q_id": "SS-HIS-01-MCQ-05",
+      "question": "The Mughal emperor who gave permission to the British to trade freely in Bengal was",
+      "options": {
+        "A": "Jahangir",
+        "B": "Shah Alam II",
+        "C": "Bahadur Shah",
+        "D": "Farooq Siyar"
+      },
+      "correct": "D",
+      "explanation": "Farooq Siyar gave the British the Farman (royal order) to trade freely in Bengal in 1717"
+    }
+  ],
+  "one_mark_questions": [
+    {
+      "question": "Who introduced the Dual Government in Bengal?",
+      "answer": "Robert Clive"
+    },
+    {
+      "question": "What is meant by Blue Water Policy?",
+      "answer": "The policy of strengthening naval power to monopolize the sea instead of dominating the land"
+    },
+    {
+      "question": "Who captured Constantinople in 1453?",
+      "answer": "Ottoman Turks"
+    },
+    {
+      "question": "Who was the real founder of the Portuguese Empire in India?",
+      "answer": "Alfonso de Albuquerque"
+    },
+    {
+      "question": "Which treaty ended the Third Carnatic War?",
+      "answer": "Treaty of Paris"
+    },
+    {
+      "question": "Which was the capital of the French in India?",
+      "answer": "Pondicherry"
+    },
+    {
+      "question": "Where did Vasco da Gama land in India?",
+      "answer": "Kappad near Calicut"
+    },
+    {
+      "question": "Which was the princely state ruled by Marthanda Varma?",
+      "answer": "Wynad (Travancore)"
+    }
+  ],
+  "two_mark_questions": [
+    {
+      "question": "Discuss the factors that led to the discovery of a new sea route to India.",
+      "answer": [
+        "The Turks captured Constantinople and began to impose taxes on trade",
+        "This made trade unprofitable for the merchants",
+        "Encouragement given by the European kings to the sailors",
+        "Scientific inventions such as the compass, astrolabe, and gunpowder"
+      ]
+    },
+    {
+      "question": "Explain the system of 'Dual Government'.",
+      "answer": [
+        "Robert Clive introduced it in Bengal",
+        "The British had the right to collect land revenue",
+        "The Nawab of Bengal performed administrative functions such as administration and justice"
+      ]
+    },
+    {
+      "question": "What were the consequences of the Second Carnatic War?",
+      "answer": [
+        "Ended with the 'Treaty of Pondicherry'",
+        "The French recalled Dupleix",
+        "It gave the French a political setback",
+        "It gave the British prestige"
+      ]
+    },
+    {
+      "question": "State the causes of the Battle of Buxar.",
+      "answer": [
+        "Mir Qasim made all trade in Bengal duty-free",
+        "As a result, British trade suffered a blow",
+        "They deposed Mir Qasim and made Mir Jafar the Nawab",
+        "Mir Qasim led an organized struggle against the British"
+      ]
+    }
+  ],
+  "three_mark_questions": [
+    {
+      "question": "The Battle of Buxar helped the British to gain control over Bengal. Justify.",
+      "answer": [
+        "Shah Alam II granted the East India Company the 'Diwani' right over Bengal",
+        "Shah Alam had to give up his right over Bengal after receiving an annual salary of 26 lakh rupees",
+        "The company had to pay 50 lakh rupees as war compensation",
+        "Mir Jafar's son was given a pension",
+        "The complete administration of Bengal came under the control of the company",
+        "Robert Clive introduced Dual Government"
+      ]
+    },
+    {
+      "question": "How did Marthanda Varma control the Dutch?",
+      "answer": [
+        "He ruled the Wayanad princely state until 1758",
+        "He protected his princely state from the Dutch",
+        "He shifted the capital to Thiruvananthapuram",
+        "He stopped the Dutch from gaining control over the black pepper trade",
+        "He defeated the Dutch force when the Dutch attacked Travancore",
+        "He captured the trading posts of Nedumangad and Kottarakkara",
+        "In 1741, the Dutch declared war on Thiruvananthapuram",
+        "Marthanda Varma repelled them",
+        "According to the treaty of 1753, the Dutch surrendered the full power"
+      ]
+    }
+  ]
+}

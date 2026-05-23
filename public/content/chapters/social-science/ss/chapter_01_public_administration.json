@@ -1,0 +1,193 @@
+{
+  "chapter_id": "SS-POL-01",
+  "subject": "Social Science",
+  "section": "Political Science",
+  "chapter_number": 1,
+  "chapter_name": "Public Administration \u2013 An Introduction",
+  "learning_outcomes": [
+    "Understand the meaning of public administration",
+    "Understand the scope of public administration (POSDCORB)",
+    "Understand the meaning of recruitment and differentiate the methods",
+    "Understand the structure of UPSC and KPSC and list their functions",
+    "List the armed forces of the Union Home Ministry"
+  ],
+  "key_terms": [
+    {
+      "term": "Public Administration",
+      "definition": "The systematic implementation of law for public welfare \u2014 Woodrow Wilson"
+    },
+    {
+      "term": "POSDCORB",
+      "definition": "Planning, Organizing, Supply of personnel, Directing, Coordinating, Reporting, Budgeting \u2014 Luther Gulick's scope of public administration"
+    },
+    {
+      "term": "Recruitment",
+      "definition": "The process of selecting suitable persons for suitable posts"
+    },
+    {
+      "term": "Direct Recruitment",
+      "definition": "Selecting eligible candidates through competitive examinations"
+    },
+    {
+      "term": "Indirect Recruitment",
+      "definition": "Promotion of those already in government service to higher posts"
+    },
+    {
+      "term": "UPSC",
+      "definition": "Union Public Service Commission \u2014 conducts civil services examinations for central government"
+    },
+    {
+      "term": "KPSC",
+      "definition": "Karnataka Public Service Commission \u2014 conducts state-level recruitment"
+    }
+  ],
+  "mcqs": [
+    {
+      "q_id": "SS-POL-01-MCQ-01",
+      "question": "Father of Public Administration",
+      "options": {
+        "A": "Woodrow Wilson",
+        "B": "Piffner",
+        "C": "Luther Gulick",
+        "D": "F.M. Marx"
+      },
+      "correct": "A",
+      "explanation": "Woodrow Wilson is considered the Father of Public Administration"
+    },
+    {
+      "q_id": "SS-POL-01-MCQ-02",
+      "question": "The concept of POSDCORB was given by",
+      "options": {
+        "A": "L.D. White",
+        "B": "Luther Gulick",
+        "C": "Herbert A Simon",
+        "D": "O Glen Stall"
+      },
+      "correct": "B",
+      "explanation": "Luther Gulick gave the concept of POSDCORB to explain the scope of public administration"
+    },
+    {
+      "q_id": "SS-POL-01-MCQ-03",
+      "question": "The Article of our Constitution which makes provision for UPSC/KPSC is",
+      "options": {
+        "A": "Article 356",
+        "B": "Article 326",
+        "C": "Article 315",
+        "D": "Article 314"
+      },
+      "correct": "C",
+      "explanation": "Article 315 of the Constitution provides for the establishment of Public Service Commissions"
+    },
+    {
+      "q_id": "SS-POL-01-MCQ-04",
+      "question": "The process of selecting suitable persons for suitable posts is called",
+      "options": {
+        "A": "Promotion",
+        "B": "Disciplinary Action",
+        "C": "Increment",
+        "D": "Recruitment"
+      },
+      "correct": "D",
+      "explanation": "Recruitment is the process of selecting suitable persons for suitable posts"
+    },
+    {
+      "q_id": "SS-POL-01-MCQ-05",
+      "question": "The person who used the term public administration for the first time was",
+      "options": {
+        "A": "Woodrow Wilson",
+        "B": "F.M. Marx",
+        "C": "Alexander Hamilton",
+        "D": "Luther Gulick"
+      },
+      "correct": "C",
+      "explanation": "Alexander Hamilton used the term 'public administration' for the first time"
+    }
+  ],
+  "one_mark_questions": [
+    {
+      "question": "What is public administration?",
+      "answer": "Public administration is the thorough and systematic implementation of the law"
+    },
+    {
+      "question": "Who appoints the members of the Central Public Service Commission?",
+      "answer": "The President of India"
+    },
+    {
+      "question": "What is Recruitment?",
+      "answer": "Recruitment is the process of selecting suitable persons for suitable posts"
+    },
+    {
+      "question": "Where is the head office of UPSC located?",
+      "answer": "New Delhi"
+    },
+    {
+      "question": "Where is the head office of KPSC located?",
+      "answer": "Bengaluru"
+    },
+    {
+      "question": "Which article of the constitution mentions about the functions of UPSC?",
+      "answer": "Article 320"
+    },
+    {
+      "question": "Under which Department does the State police system work?",
+      "answer": "Home Ministry"
+    },
+    {
+      "question": "Who is the administrative head of the Home Ministry?",
+      "answer": "The Home Secretary"
+    }
+  ],
+  "two_mark_questions": [
+    {
+      "question": "How is direct recruitment different from indirect recruitment?",
+      "answer": [
+        "Direct Recruitment: Selecting eligible candidates through competitive examinations; scientific and popular method",
+        "Indirect Recruitment: Recruitment of those already in government service to higher posts based on educational qualifications; also called promotion method"
+      ]
+    },
+    {
+      "question": "Explain the functions of the Union Public Service Commission.",
+      "answer": [
+        "Conducting competitive examinations for A and B posts of Union Government",
+        "Conducting personality tests",
+        "Advising the government regarding promotions and transfers",
+        "Recommending disciplinary action against officers who have shown misconduct"
+      ]
+    },
+    {
+      "question": "List the armed forces of the Union Home Ministry.",
+      "answer": [
+        "Central Reserve Force",
+        "Border Security Force",
+        "Railway Protection Force",
+        "Central Industrial Security Force"
+      ]
+    }
+  ],
+  "three_mark_questions": [
+    {
+      "question": "Explain the scope of public administration according to the POSDCORB concept of Luther Gulick.",
+      "answer": [
+        "Planning",
+        "Organizing",
+        "Supply of personnel",
+        "Directing",
+        "Coordinating",
+        "Reporting",
+        "Budgeting"
+      ]
+    },
+    {
+      "question": "Public Administration strengthens social security. Justify.",
+      "answer": [
+        "Welfare of poor and weaker section",
+        "Implementation of Social security policies",
+        "Youth fund",
+        "National food security Mission",
+        "Security to the needy people",
+        "Eradication of unemployment",
+        "Food security (BPL)"
+      ]
+    }
+  ]
+}

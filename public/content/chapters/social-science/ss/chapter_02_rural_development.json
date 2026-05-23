@@ -1,0 +1,82 @@
+{
+  "chapter_id": "SS-ECO-02",
+  "subject": "Social Science",
+  "section": "Economics",
+  "chapter_number": 2,
+  "chapter_name": "Rural Development",
+  "learning_outcomes": [
+    "Explain the meaning and importance of rural development",
+    "Explain the importance of Panchayat Raj system",
+    "Explain the role of women in rural development"
+  ],
+  "key_terms": [
+    {
+      "term": "Rural Development",
+      "definition": "The process of improving the socio-economic and educational status of rural people by efficiently utilizing local resources"
+    },
+    {
+      "term": "Gram Swaraj",
+      "definition": "Gandhiji's concept of giving power and responsibility of village development to village people to develop self-reliant villages"
+    },
+    {
+      "term": "Decentralization",
+      "definition": "The process of achieving village development by providing power and responsibility of the village to village people"
+    },
+    {
+      "term": "Panchayat Raj",
+      "definition": "Three-tier system of local self-government at village, taluk and district levels \u2014 implemented by 73rd Amendment"
+    }
+  ],
+  "mcqs": [
+    {
+      "q_id": "SS-ECO-02-MCQ-01",
+      "question": "'The real development of India is the development of villages' was said by",
+      "options": {
+        "A": "Gandhiji",
+        "B": "Visvesvaraya",
+        "C": "Nehru",
+        "D": "Ambedkar"
+      },
+      "correct": "A",
+      "explanation": "Mahatma Gandhi said the real development of India is the development of villages"
+    },
+    {
+      "q_id": "SS-ECO-02-MCQ-02",
+      "question": "The Panchayat Raj system has been implemented through this amendment",
+      "options": {
+        "A": "42nd",
+        "B": "46th",
+        "C": "73rd",
+        "D": "74th"
+      },
+      "correct": "C",
+      "explanation": "The 73rd Constitutional Amendment Act (1992) implemented the Panchayat Raj system"
+    },
+    {
+      "q_id": "SS-ECO-02-MCQ-03",
+      "question": "The system brought into practice as per the 73rd amendment",
+      "options": {
+        "A": "Two tier system",
+        "B": "Three tier system",
+        "C": "Single tier system",
+        "D": "Four tier system"
+      },
+      "correct": "B",
+      "explanation": "The 73rd Amendment established the three-tier Panchayat Raj system"
+    }
+  ],
+  "one_mark_questions": [
+    {
+      "question": "What is Gram Swaraj?",
+      "answer": "Gram Swaraj is the process of giving the power and responsibility of village development to the people of the village and developing the village into self-sufficient and prosperous villages"
+    },
+    {
+      "question": "What is decentralization of power?",
+      "answer": "Decentralization is the process of achieving village development by providing the power and responsibility of the village to the people of the village"
+    },
+    {
+      "question": "Name the three levels of Panchayat Raj institutions.",
+      "answer": "Zilla Panchayat, Taluk Panchayat, Grama Panchayat"
+    }
+  ]
+}

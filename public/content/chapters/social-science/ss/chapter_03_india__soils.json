@@ -1,0 +1,117 @@
+{
+  "chapter_id": "SS-GEO-03",
+  "subject": "Social Science",
+  "section": "Geography",
+  "chapter_number": 3,
+  "chapter_name": "India \u2013 Soils",
+  "learning_outcomes": [
+    "Explain the types of soil in India",
+    "Explain the distribution of soil and the crops grown in them",
+    "Understand the causes of soil erosion and prevention measures"
+  ],
+  "key_terms": [
+    {
+      "term": "Black Soil",
+      "definition": "Also called Regur Soil/Black Cotton Soil \u2014 formed from weathering of igneous rocks, best suited for cotton"
+    },
+    {
+      "term": "Alluvial Soil",
+      "definition": "Most extensively spread soil in India \u2014 formed by river deposits, fertile for rice, wheat, sugarcane"
+    },
+    {
+      "term": "Red Soil",
+      "definition": "Widely distributed in peninsular plateau \u2014 deficient in nitrogen and salts"
+    },
+    {
+      "term": "Laterite Soil",
+      "definition": "Found in areas with more than 200 cm of rainfall, red in colour, low fertility"
+    },
+    {
+      "term": "Soil Erosion",
+      "definition": "Transportation of surface soil by various natural forces"
+    },
+    {
+      "term": "Soil Conservation",
+      "definition": "Preventing soil erosion and maintaining its fertility"
+    }
+  ],
+  "mcqs": [
+    {
+      "q_id": "SS-GEO-03-MCQ-01",
+      "question": "The most extensively spread soil in India",
+      "options": {
+        "A": "Mountain soil",
+        "B": "Black soil",
+        "C": "Alluvial soil",
+        "D": "Red soil"
+      },
+      "correct": "C",
+      "explanation": "Alluvial soil is the most extensively spread soil in India, covering the Indo-Gangetic plains"
+    },
+    {
+      "q_id": "SS-GEO-03-MCQ-02",
+      "question": "The soil which is also called Regur Soil is",
+      "options": {
+        "A": "Black soil",
+        "B": "Desert soil",
+        "C": "Laterite soil",
+        "D": "Alluvial soil"
+      },
+      "correct": "A",
+      "explanation": "Black soil is also called Regur Soil and Black Cotton Soil"
+    },
+    {
+      "q_id": "SS-GEO-03-MCQ-03",
+      "question": "The soil found in the Deccan Trap region is",
+      "options": {
+        "A": "Black soil",
+        "B": "Laterite soil",
+        "C": "Red soil",
+        "D": "Desert soil"
+      },
+      "correct": "A",
+      "explanation": "Black soil is found in the Deccan Trap region formed by volcanic activity"
+    },
+    {
+      "q_id": "SS-GEO-03-MCQ-04",
+      "question": "Deficiency of nitrogen and salts is found in this soil",
+      "options": {
+        "A": "Black soil",
+        "B": "Laterite soil",
+        "C": "Red soil",
+        "D": "Mountain soil"
+      },
+      "correct": "C",
+      "explanation": "Red soil is deficient in nitrogen and salts"
+    }
+  ],
+  "one_mark_questions": [
+    {
+      "question": "Why is black soil called 'black cotton soil'?",
+      "answer": "Black soil is best suited for cotton cultivation so it is also called Black Cotton Soil"
+    },
+    {
+      "question": "What is meant by soil erosion?",
+      "answer": "Transportation of surface soil by various natural forces is called soil erosion"
+    },
+    {
+      "question": "The soil largely found in Rajasthan?",
+      "answer": "Desert soil"
+    }
+  ],
+  "three_mark_questions": [
+    {
+      "question": "How can we prevent soil erosion?",
+      "answer": [
+        "Counter Ploughing",
+        "Construction of bunds",
+        "Terraced agricultural fields",
+        "Preventing deforestation",
+        "Encouraging the growth of forests",
+        "Controlling livestock grazing",
+        "Planned use of water",
+        "Construction of check dams"
+      ]
+    }
+  ]
+}

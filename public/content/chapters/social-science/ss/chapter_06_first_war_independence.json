@@ -1,0 +1,110 @@
+{
+  "chapter_id": "SS-HIS-06",
+  "subject": "Social Science",
+  "section": "History",
+  "chapter_number": 6,
+  "chapter_name": "The First War of Indian Independence (1857)",
+  "learning_outcomes": [
+    "Explain the reasons for the First War of Independence",
+    "Understand the immediate cause of the First War of Independence",
+    "Understand the expansion and nature of the struggle",
+    "Analyze the failure and consequences of the First War of Independence"
+  ],
+  "key_terms": [
+    {
+      "term": "First War of Independence",
+      "definition": "The 1857 revolt against British rule, known to Indian historians as the First War of Independence"
+    },
+    {
+      "term": "Sepoy Mutiny",
+      "definition": "The British name for the 1857 revolt, viewing it as a mere military mutiny"
+    },
+    {
+      "term": "Magna Carta of India",
+      "definition": "The Queen's Proclamation of 1858 which announced various rights to Indians"
+    },
+    {
+      "term": "Greased Cartridges",
+      "definition": "The immediate cause \u2014 Royal Enfield rifle cartridges rumoured to be greased with pig and cow fat"
+    }
+  ],
+  "important_dates": [
+    {
+      "year": "1857",
+      "event": "First War of Indian Independence began"
+    },
+    {
+      "year": "1858",
+      "event": "British Crown took over India from East India Company; Queen's Proclamation (Magna Carta)"
+    }
+  ],
+  "mcqs": [
+    {
+      "q_id": "SS-HIS-06-MCQ-01",
+      "question": "The leader who rose against the British in Kanpur was",
+      "options": {
+        "A": "Mangal Pandey",
+        "B": "Dondia Wagh",
+        "C": "Nana Saheb",
+        "D": "Bahadur Shah II"
+      },
+      "correct": "C",
+      "explanation": "Nana Saheb led the revolt against the British in Kanpur"
+    },
+    {
+      "q_id": "SS-HIS-06-MCQ-02",
+      "question": "One of the reasons for the failure of the first Indian war of independence was",
+      "options": {
+        "A": "It was spread across the country",
+        "B": "It was a well-organized rebellion",
+        "C": "It did not have a strong leader",
+        "D": "Many Indian kings were disloyal to the British"
+      },
+      "correct": "C",
+      "explanation": "Lack of a strong unified leader was a major reason for the failure of the 1857 revolt"
+    },
+    {
+      "q_id": "SS-HIS-06-MCQ-03",
+      "question": "The event that triggered the first Indian War of Independence in 1857 was",
+      "options": {
+        "A": "Doctrine of Lapse",
+        "B": "Use of greased cartridges",
+        "C": "Partition of Bengal",
+        "D": "Subsidiary Alliance"
+      },
+      "correct": "B",
+      "explanation": "The immediate cause was the introduction of Enfield rifles with cartridges rumoured to be greased with pig and cow fat"
+    }
+  ],
+  "one_mark_questions": [
+    {
+      "question": "What did Indian historians call the 1857 struggle?",
+      "answer": "First War of Independence"
+    },
+    {
+      "question": "Who killed a British officer at Barrackpur during the 1857 struggle?",
+      "answer": "Mangal Pandey"
+    },
+    {
+      "question": "What was the name of the proclamation issued by the Queen of Britain in India in 1858?",
+      "answer": "Magna Carta"
+    }
+  ],
+  "three_mark_questions": [
+    {
+      "question": "The First War of Independence of 1857 failed due to various reasons. Substantiate.",
+      "answer": [
+        "The mutiny did not spread throughout India",
+        "It was done for the self-interest of the kings and queens",
+        "It was not a planned rebellion",
+        "There was no unity among the Indian soldiers",
+        "There was no proper guidance for the rebellion",
+        "There was a lack of organization",
+        "There was a lack of proper military leadership",
+        "There was no definite goal among the fighters",
+        "Many native kings showed loyalty to the British",
+        "They lost the trust of the people due to the looting and robberies committed by the sepoys"
+      ]
+    }
+  ]
+}

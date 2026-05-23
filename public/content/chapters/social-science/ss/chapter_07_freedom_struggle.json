@@ -1,0 +1,198 @@
+{
+  "chapter_id": "SS-HIS-07",
+  "subject": "Social Science",
+  "section": "History",
+  "chapter_number": 7,
+  "chapter_name": "The Freedom Struggle",
+  "learning_outcomes": [
+    "To know about the Indian National Congress",
+    "To identify Moderates, Extremists and Revolutionaries",
+    "To know about the Gandhian era in the freedom struggle",
+    "To know the role of the leaders of the important freedom fighters",
+    "To know about the partition of India"
+  ],
+  "key_terms": [
+    {
+      "term": "Moderates",
+      "definition": "Early Congress leaders who believed in petitions and prayers \u2014 Dadabhai Naoroji, Gopal Krishna Gokhale"
+    },
+    {
+      "term": "Extremists",
+      "definition": "Congress leaders who demanded complete Swaraj \u2014 Bal Gangadhar Tilak, Lala Lajpat Rai, Bipin Chandra Pal"
+    },
+    {
+      "term": "Drain Theory",
+      "definition": "Theory by Dadabhai Naoroji that India's wealth was being drained to England"
+    },
+    {
+      "term": "Swaraj",
+      "definition": "Self-rule / Independence \u2014 declared as birthright by Bal Gangadhar Tilak"
+    },
+    {
+      "term": "Non-Cooperation Movement",
+      "definition": "Gandhi's first major movement (1920) \u2014 boycott of British institutions"
+    },
+    {
+      "term": "Civil Disobedience Movement",
+      "definition": "Gandhi's second major movement (1930) \u2014 began with Dandi Salt March"
+    },
+    {
+      "term": "Quit India Movement",
+      "definition": "Gandhi's 1942 movement with the call 'Do or Die'"
+    },
+    {
+      "term": "Khilafat Movement",
+      "definition": "Movement by Ali brothers to protect the Turkish Khalif; supported by Gandhi"
+    }
+  ],
+  "important_dates": [
+    {
+      "year": "1885",
+      "event": "Indian National Congress founded by A.O. Hume"
+    },
+    {
+      "year": "1905",
+      "event": "Partition of Bengal"
+    },
+    {
+      "year": "1920",
+      "event": "Non-Cooperation Movement"
+    },
+    {
+      "year": "1923",
+      "event": "Swarajya Party established"
+    },
+    {
+      "year": "1930",
+      "event": "Civil Disobedience Movement \u2014 Dandi Salt March"
+    },
+    {
+      "year": "1942",
+      "event": "Quit India Movement"
+    },
+    {
+      "year": "1947",
+      "event": "India gained Independence"
+    }
+  ],
+  "mcqs": [
+    {
+      "q_id": "SS-HIS-07-MCQ-01",
+      "question": "The Founder of Indian National Congress was",
+      "options": {
+        "A": "Mahatma Gandhiji",
+        "B": "A.O. Hume",
+        "C": "Bal Gangadhar Tilak",
+        "D": "Gopalakrishna Gokhale"
+      },
+      "correct": "B",
+      "explanation": "A.O. Hume founded the Indian National Congress in 1885"
+    },
+    {
+      "q_id": "SS-HIS-07-MCQ-02",
+      "question": "The Haripura session of Indian National Congress was presided over by",
+      "options": {
+        "A": "Jawaharlal Nehru",
+        "B": "Dr. B.R. Ambedkar",
+        "C": "Lal Lajpat Rai",
+        "D": "Subhash Chandra Bose"
+      },
+      "correct": "D",
+      "explanation": "Subhash Chandra Bose presided over the Haripura Congress session in 1938"
+    },
+    {
+      "q_id": "SS-HIS-07-MCQ-03",
+      "question": "Gandhiji started the Champaran Movement to support the",
+      "options": {
+        "A": "Indigo farmers",
+        "B": "Cotton farmers",
+        "C": "Wine palm planters",
+        "D": "Tea estate workers"
+      },
+      "correct": "A",
+      "explanation": "Gandhi launched the Champaran Movement in 1917 to support indigo farmers"
+    },
+    {
+      "q_id": "SS-HIS-07-MCQ-04",
+      "question": "The Drain theory of wealth was propagated by",
+      "options": {
+        "A": "Dada Bai Naoroji",
+        "B": "Aurobindo Ghosh",
+        "C": "Lal Lajpat Roy",
+        "D": "Subhash Chandra Bose"
+      },
+      "correct": "A",
+      "explanation": "Dadabhai Naoroji propagated the Drain Theory in his book 'Poverty and Un-British Rule in India'"
+    },
+    {
+      "q_id": "SS-HIS-07-MCQ-05",
+      "question": "The movement led by the Ali brothers was",
+      "options": {
+        "A": "Non-cooperation Movement",
+        "B": "Khilafat Movement",
+        "C": "Civil Disobedience Movement",
+        "D": "Quit India Movement"
+      },
+      "correct": "B",
+      "explanation": "Muhammad Ali and Shaukat Ali (the Ali brothers) led the Khilafat Movement"
+    }
+  ],
+  "one_mark_questions": [
+    {
+      "question": "When was the Indian National Congress founded?",
+      "answer": "1885"
+    },
+    {
+      "question": "Who composed 'Gita Rahasya'?",
+      "answer": "Bal Gangadhar Tilak"
+    },
+    {
+      "question": "Who was the President of the Lahore Session of Congress?",
+      "answer": "Pandit Jawaharlal Nehru"
+    },
+    {
+      "question": "In which year did the Quit India Movement take place?",
+      "answer": "1942"
+    },
+    {
+      "question": "Who was the founder of the Forward Block Party?",
+      "answer": "Subhash Chandra Bose"
+    },
+    {
+      "question": "Who was the last Viceroy of India?",
+      "answer": "Lord Mountbatten"
+    },
+    {
+      "question": "Who declared 'Swaraj is my birthright'?",
+      "answer": "Bal Gangadhar Tilak"
+    }
+  ],
+  "three_mark_questions": [
+    {
+      "question": "Explain the role of the Moderates in the freedom struggle of India.",
+      "answer": [
+        "Presenting demands to the government through prayers and petitions",
+        "Leaders: Dadabhai Naoroji, M.G. Ranade, Gopal Krishna Gokhale, Surendranath Banerjee",
+        "Believed in British rule and justice",
+        "Providing political education to Indians",
+        "Reducing military expenditure",
+        "Developing the country's industries",
+        "Demanding that relief programs be implemented",
+        "Said that India's wealth was flowing to England"
+      ]
+    },
+    {
+      "question": "Explain the Quit India Movement.",
+      "answer": [
+        "Congress called for the Quit India Movement in 1942",
+        "Slogan: 'Britishers, quit India'",
+        "Gandhiji gave the call of 'Do or Die'",
+        "Gandhiji and many leaders were arrested by the British government",
+        "Rise of new leaders",
+        "Jayaprakash Narayan took over the leadership",
+        "He engaged in revolutionary activities",
+        "Muslim League did not participate in the movement"
+      ]
+    }
+  ]
+}

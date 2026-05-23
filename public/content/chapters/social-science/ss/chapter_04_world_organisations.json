@@ -1,0 +1,189 @@
+{
+  "chapter_id": "SS-POL-04",
+  "subject": "Social Science",
+  "section": "Political Science",
+  "chapter_number": 4,
+  "chapter_name": "World Organisations",
+  "learning_outcomes": [
+    "Explain the structure and functions of United Nations affiliates",
+    "List the achievements of the United Nations",
+    "Recall the achievements of the World Health Organization",
+    "Recall the services of FAO, ILO, UNICEF, UNESCO",
+    "Understand the role of IMF, IBRD and WTO in global economy"
+  ],
+  "key_terms": [
+    {
+      "term": "United Nations",
+      "definition": "International organization established in 1945 to maintain peace and security"
+    },
+    {
+      "term": "General Assembly",
+      "definition": "The World Parliament of the UN \u2014 all member states, one vote each"
+    },
+    {
+      "term": "Security Council",
+      "definition": "The Cabinet of UN \u2014 15 members including 5 permanent members with veto power"
+    },
+    {
+      "term": "WHO",
+      "definition": "World Health Organization \u2014 headquartered in Geneva, founded in 1948"
+    },
+    {
+      "term": "FAO",
+      "definition": "Food and Agriculture Organization \u2014 headquartered in Rome, Italy"
+    },
+    {
+      "term": "UNICEF",
+      "definition": "Organization established for welfare of children after World War II"
+    },
+    {
+      "term": "UNESCO",
+      "definition": "United Nations Educational, Scientific and Cultural Organization"
+    },
+    {
+      "term": "IMF",
+      "definition": "International Monetary Fund \u2014 called the central bank of central banks"
+    },
+    {
+      "term": "WTO",
+      "definition": "World Trade Organization \u2014 third economic pillar of world trade and commerce"
+    },
+    {
+      "term": "SAARC",
+      "definition": "South Asian Association for Regional Cooperation \u2014 headquarters in Kathmandu, established 1985"
+    }
+  ],
+  "mcqs": [
+    {
+      "q_id": "SS-POL-04-MCQ-01",
+      "question": "The United Nations was established in the year",
+      "options": {
+        "A": "1950",
+        "B": "1945",
+        "C": "1919",
+        "D": "1948"
+      },
+      "correct": "B",
+      "explanation": "The United Nations was established on October 24, 1945"
+    },
+    {
+      "q_id": "SS-POL-04-MCQ-02",
+      "question": "The headquarters of the United Nations is located in",
+      "options": {
+        "A": "The Hague",
+        "B": "Geneva",
+        "C": "Washington",
+        "D": "New York"
+      },
+      "correct": "D",
+      "explanation": "The headquarters of the United Nations is in New York, USA"
+    },
+    {
+      "q_id": "SS-POL-04-MCQ-03",
+      "question": "The subsidiary body called the 'Cabinet of UN' is",
+      "options": {
+        "A": "General Assembly",
+        "B": "Secretariat",
+        "C": "Security Council",
+        "D": "Trusteeship Committee"
+      },
+      "correct": "C",
+      "explanation": "The Security Council is called the Cabinet of the UN as it is the most powerful executive body"
+    },
+    {
+      "q_id": "SS-POL-04-MCQ-04",
+      "question": "The headquarters of the World Health Organization is located in",
+      "options": {
+        "A": "New York",
+        "B": "Paris",
+        "C": "Rome",
+        "D": "Geneva"
+      },
+      "correct": "D",
+      "explanation": "WHO headquarters is in Geneva, Switzerland"
+    },
+    {
+      "q_id": "SS-POL-04-MCQ-05",
+      "question": "The organ of UN known as 'World Parliament' is",
+      "options": {
+        "A": "Secretariat",
+        "B": "Security Council",
+        "C": "General Assembly",
+        "D": "Trusteeship Council"
+      },
+      "correct": "C",
+      "explanation": "The General Assembly is called the World Parliament as all member states participate"
+    },
+    {
+      "q_id": "SS-POL-04-MCQ-06",
+      "question": "World Health Organization was founded in the year",
+      "options": {
+        "A": "1945",
+        "B": "1948",
+        "C": "1950",
+        "D": "1965"
+      },
+      "correct": "B",
+      "explanation": "WHO was founded in 1948"
+    }
+  ],
+  "one_mark_questions": [
+    {
+      "question": "Where is the headquarters of the Food and Agriculture Organization located?",
+      "answer": "Rome, Italy"
+    },
+    {
+      "question": "Which organization was established after World War II for the welfare of children?",
+      "answer": "UNICEF"
+    },
+    {
+      "question": "Which organization is called the Central Bank of the Central Banks of various nations?",
+      "answer": "IMF (International Monetary Fund)"
+    },
+    {
+      "question": "When was SAARC established?",
+      "answer": "1985"
+    },
+    {
+      "question": "Where is the headquarters of the European Union located?",
+      "answer": "Brussels, Belgium"
+    },
+    {
+      "question": "The headquarters of the International Court of Justice is located in",
+      "answer": "The Hague"
+    }
+  ],
+  "three_mark_questions": [
+    {
+      "question": "Which are the organs of the United Nations?",
+      "answer": [
+        "General Assembly",
+        "Security Council",
+        "Economic and Social Committee",
+        "Trusteeship council",
+        "International Court of Justice",
+        "Secretariat"
+      ]
+    },
+    {
+      "question": "What are the aims and objectives of the United Nations?",
+      "answer": [
+        "To maintain international peace and security",
+        "To develop mutual understanding among nations",
+        "To promote faith in fundamental human rights",
+        "To find cooperative solutions to international economic, social, cultural and humanitarian problems",
+        "To ensure the observance of international law",
+        "To act as a centre of mutual understanding among nations"
+      ]
+    },
+    {
+      "question": "What are the objectives of the Food and Agriculture Organization?",
+      "answer": [
+        "Development of the agricultural sector",
+        "Provision of nutritious food",
+        "Liberation of the global population from hunger",
+        "Improvement of the living standards of people in rural areas"
+      ]
+    }
+  ]
+}

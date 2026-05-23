@@ -1,0 +1,146 @@
+{
+  "chapter_id": "SS-SOC-04",
+  "subject": "Social Science",
+  "section": "Sociology",
+  "chapter_number": 4,
+  "chapter_name": "Social Challenges",
+  "learning_outcomes": [
+    "List social challenges",
+    "Understand causes, effects and elimination of child labour",
+    "Understand the causes, effects, control measures for child marriage",
+    "Understand dowry \u2014 nature, effects, remedial measures",
+    "Understand female foeticide, female infanticide and control measures"
+  ],
+  "key_terms": [
+    {
+      "term": "Child Labour",
+      "definition": "The employment of minor children in work"
+    },
+    {
+      "term": "Child Marriage",
+      "definition": "Marriage of a girl before the age of 18 and a boy before the age of 21"
+    },
+    {
+      "term": "Female Foeticide",
+      "definition": "Killing the female foetus in the womb"
+    },
+    {
+      "term": "Female Infanticide",
+      "definition": "The cruel practice of killing a female child after birth"
+    },
+    {
+      "term": "POCSO Act",
+      "definition": "Protection of Children from Sexual Offences Act, 2012"
+    },
+    {
+      "term": "Dowry",
+      "definition": "Property/money paid by the bride's family to the groom's family at marriage"
+    }
+  ],
+  "mcqs": [
+    {
+      "q_id": "SS-SOC-04-MCQ-01",
+      "question": "The Child helpline number is",
+      "options": {
+        "A": "1081",
+        "B": "1098",
+        "C": "1033",
+        "D": "1086"
+      },
+      "correct": "B",
+      "explanation": "1098 is the national child helpline number"
+    },
+    {
+      "q_id": "SS-SOC-04-MCQ-02",
+      "question": "The Dowry Prohibition Act was enacted by the Government of India in",
+      "options": {
+        "A": "1960",
+        "B": "1984",
+        "C": "1961",
+        "D": "1985"
+      },
+      "correct": "C",
+      "explanation": "The Dowry Prohibition Act was enacted in 1961"
+    },
+    {
+      "q_id": "SS-SOC-04-MCQ-03",
+      "question": "The Prenatal Sex Testing Prohibition Act was enacted in",
+      "options": {
+        "A": "1994",
+        "B": "1985",
+        "C": "2006",
+        "D": "2019"
+      },
+      "correct": "A",
+      "explanation": "The Pre-Natal Diagnostic Techniques Act was enacted in 1994"
+    },
+    {
+      "q_id": "SS-SOC-04-MCQ-04",
+      "question": "The year in which the Child Labour Prohibition and Control Act was implemented",
+      "options": {
+        "A": "1988",
+        "B": "1994",
+        "C": "1986",
+        "D": "2006"
+      },
+      "correct": "C",
+      "explanation": "The Child Labour (Prohibition and Regulation) Act was enacted in 1986"
+    },
+    {
+      "q_id": "SS-SOC-04-MCQ-05",
+      "question": "The Act that made provision for free and compulsory education for children between 6 to 14 years",
+      "options": {
+        "A": "Right to Education Act-2009",
+        "B": "National policy for child labour-1987",
+        "C": "Protection of children from sexual harassment-2012",
+        "D": "Child labour eradication Act-2006"
+      },
+      "correct": "A",
+      "explanation": "The Right to Education Act 2009 provides free and compulsory education for children 6-14 years"
+    }
+  ],
+  "one_mark_questions": [
+    {
+      "question": "What is female foeticide?",
+      "answer": "If the foetus in the womb is female, killing it in the womb is called female foeticide"
+    },
+    {
+      "question": "Why was the Prenatal Sex Testing (Prohibition) Act (1994) implemented?",
+      "answer": "To prevent female foeticide"
+    },
+    {
+      "question": "When was the Child Marriage Prohibition Act implemented?",
+      "answer": "2006"
+    },
+    {
+      "question": "When did the POCSO Act come into force?",
+      "answer": "2012"
+    }
+  ],
+  "three_mark_questions": [
+    {
+      "question": "What are the measures taken to eliminate child labour?",
+      "answer": [
+        "Child Labor Prohibition & Control Act has been enacted",
+        "Penalty of Rs.20,000 for those who violate this act",
+        "Article 24 has banned child labour",
+        "1988 - National Child Labour Scheme launched",
+        "Child Labour Rehabilitation Welfare Fund established",
+        "In 2006, 'Child Labour Abolition and Rehabilitation Act' was enacted",
+        "Drudgery to School programme",
+        "Right to Education Act-2009"
+      ]
+    },
+    {
+      "question": "How can the problem of Dowry be solved?",
+      "answer": [
+        "Dowry Prohibition Act enacted in 1961",
+        "Dowry-related marriages were banned",
+        "Those who violate this act can be fined Rs.5000, or imprisoned for 6 months, or both",
+        "Dowry death case included in 'Indian Code of Criminal Procedure'",
+        "It can be eliminated through public awareness, inter-caste marriages, and media",
+        "It can be eliminated through women's organizations"
+      ]
+    }
+  ]
+}

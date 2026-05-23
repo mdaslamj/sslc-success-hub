@@ -1,0 +1,152 @@
+{
+  "chapter_id": "SS-POL-02",
+  "subject": "Social Science",
+  "section": "Political Science",
+  "chapter_number": 2,
+  "chapter_name": "Challenges of India and Their Remedies",
+  "learning_outcomes": [
+    "Understand the meaning of communalism and list measures to control it",
+    "Differentiate between regionalism and sub-regionalism",
+    "Understand the steps taken to eliminate illiteracy",
+    "Give suggestions for improving the status of women",
+    "Recall the steps taken by the government to eliminate corruption"
+  ],
+  "key_terms": [
+    {
+      "term": "Communalism",
+      "definition": "The division of society on the basis of religion and the development of mutual enmity on that basis"
+    },
+    {
+      "term": "Regionalism",
+      "definition": "The deep-rooted pride that a particular community has for the region in which they live"
+    },
+    {
+      "term": "Sub-regionalism",
+      "definition": "Regionalism in different regions within a state"
+    },
+    {
+      "term": "Corruption",
+      "definition": "Inciting illegal actions through bribery or any other means"
+    },
+    {
+      "term": "Profiteering",
+      "definition": "The excess profit earning trend at the cost of general public or consumers"
+    },
+    {
+      "term": "Smuggling",
+      "definition": "Secretly importing/exporting goods without paying import/export duties"
+    },
+    {
+      "term": "Demographic Dividend",
+      "definition": "When the majority of the population of a country is in the working age group"
+    },
+    {
+      "term": "Poverty",
+      "definition": "The state in which people are unable to meet their minimum needs"
+    }
+  ],
+  "mcqs": [
+    {
+      "q_id": "SS-POL-02-MCQ-01",
+      "question": "The year in which the Right to Information Act was implemented",
+      "options": {
+        "A": "2010",
+        "B": "2008",
+        "C": "2018",
+        "D": "2005"
+      },
+      "correct": "D",
+      "explanation": "The Right to Information Act was implemented in 2005"
+    },
+    {
+      "q_id": "SS-POL-02-MCQ-02",
+      "question": "The first woman judge of the Supreme Court of India",
+      "options": {
+        "A": "Smt. Pratibhadevi Sing Patil",
+        "B": "Fatima Beevi",
+        "C": "V. S. Ramadevi",
+        "D": "Sarojini Naidu"
+      },
+      "correct": "B",
+      "explanation": "Fatima Beevi was the first woman judge of the Supreme Court of India"
+    },
+    {
+      "q_id": "SS-POL-02-MCQ-03",
+      "question": "Article 21A of our Constitution pertains to",
+      "options": {
+        "A": "Right to Religious Freedom",
+        "B": "Right against Exploitation",
+        "C": "Right to constitutional Remedies",
+        "D": "Right to Education"
+      },
+      "correct": "D",
+      "explanation": "Article 21A guarantees the Right to Education for children between 6-14 years"
+    },
+    {
+      "q_id": "SS-POL-02-MCQ-04",
+      "question": "Dr. D.M. Nanjundappa Committee was formed in order to",
+      "options": {
+        "A": "Stop Communalism",
+        "B": "Control Regionalism",
+        "C": "Eradicate Illiteracy",
+        "D": "Curb corruption"
+      },
+      "correct": "B",
+      "explanation": "The Nanjundappa Committee was formed to address regional imbalances in Karnataka"
+    }
+  ],
+  "one_mark_questions": [
+    {
+      "question": "What is sub-regionalism?",
+      "answer": "Regionalism in different regions within a state is called sub-regionalism"
+    },
+    {
+      "question": "What is smuggling?",
+      "answer": "The act of secretly importing and sending goods from foreign countries without paying any import and export duties"
+    },
+    {
+      "question": "Which are the institutions established to prevent corruption in India?",
+      "answer": "Lokpal and Lokayukta"
+    },
+    {
+      "question": "What is communalism?",
+      "answer": "The division of society on the basis of religion and identification of mutual enmity on that basis"
+    },
+    {
+      "question": "What is profiteering?",
+      "answer": "Profiteering means the excess profit earning trend at the cost of general public or consumers"
+    }
+  ],
+  "three_mark_questions": [
+    {
+      "question": "Analyse the measures taken to control corruption.",
+      "answer": [
+        "Political administrative will",
+        "Lokpal and Lokayukta institutions",
+        "Public cooperation",
+        "Good political leadership",
+        "Central Vigilance Commission",
+        "Right to Information Act-2005",
+        "Very severe punishment",
+        "CC cameras",
+        "Sakala, Janaspandan, Janasevak",
+        "Complaint boxes",
+        "Prevention of Corruption Act"
+      ]
+    },
+    {
+      "question": "What are the measures taken to improve the status of women?",
+      "answer": [
+        "Formation of the Department of Women and Child Welfare",
+        "Reservation in education and employment",
+        "Establishment of Women's Commissions",
+        "Protection of Women from Domestic Violence Act (2005)",
+        "Nari Shakti Vandana Abhiyan",
+        "Sakhi One stop centres",
+        "50% reservation for women in local bodies",
+        "Women's helpline 1091",
+        "33% reservation for women in Lok Sabha and Legislative Assemblies"
+      ]
+    }
+  ]
+}

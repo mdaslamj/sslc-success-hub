@@ -1,0 +1,124 @@
+{
+  "chapter_id": "SS-ECO-03",
+  "subject": "Social Science",
+  "section": "Economics",
+  "chapter_number": 3,
+  "chapter_name": "Public Finance and Budget",
+  "learning_outcomes": [
+    "Explain the meaning and importance of public finance",
+    "Explain the concept and importance of budget",
+    "Identify expenditure and revenue",
+    "Understand the relevance of deficit finance"
+  ],
+  "key_terms": [
+    {
+      "term": "Public Finance",
+      "definition": "Finance of the government \u2014 management of government income, expenditure and debt"
+    },
+    {
+      "term": "Personal Finance",
+      "definition": "The management of income, expenditure and debt of an individual or family"
+    },
+    {
+      "term": "Budget",
+      "definition": "The estimated list of income and expenditure of the government for a year"
+    },
+    {
+      "term": "Deficit Budget",
+      "definition": "Budget where expenditure is more than income"
+    },
+    {
+      "term": "Fiscal Policy",
+      "definition": "The policy followed by the government in relation to its income and expenditure"
+    },
+    {
+      "term": "Direct Tax",
+      "definition": "A tax whose burden cannot be transferred \u2014 e.g., income tax, corporate tax"
+    },
+    {
+      "term": "Indirect Tax",
+      "definition": "A tax whose burden can be transferred to consumers \u2014 e.g., GST"
+    },
+    {
+      "term": "Progressive Taxation",
+      "definition": "Higher tax on high-income group, lower tax on low-income group"
+    }
+  ],
+  "mcqs": [
+    {
+      "q_id": "SS-ECO-03-MCQ-01",
+      "question": "The financial year in India ends on",
+      "options": {
+        "A": "April 1",
+        "B": "January 1",
+        "C": "March 31",
+        "D": "December 31"
+      },
+      "correct": "C",
+      "explanation": "India's financial year runs from April 1 to March 31"
+    },
+    {
+      "q_id": "SS-ECO-03-MCQ-02",
+      "question": "The central budget is presented in the Lok Sabha by the",
+      "options": {
+        "A": "Chief Minister",
+        "B": "Prime Minister",
+        "C": "State Finance Minister",
+        "D": "Union Finance Minister"
+      },
+      "correct": "D",
+      "explanation": "The Union Finance Minister presents the central budget in the Lok Sabha"
+    },
+    {
+      "q_id": "SS-ECO-03-MCQ-03",
+      "question": "Developing Countries usually present",
+      "options": {
+        "A": "Surplus Budget",
+        "B": "Balanced Budget",
+        "C": "Deficit Budget",
+        "D": "Developmental Budget"
+      },
+      "correct": "C",
+      "explanation": "Developing countries usually present deficit budgets to fund development expenditure"
+    },
+    {
+      "q_id": "SS-ECO-03-MCQ-04",
+      "question": "An example for direct tax is",
+      "options": {
+        "A": "Import export tax",
+        "B": "Goods and services tax",
+        "C": "Corporate Tax",
+        "D": "Foreign Travel Tax"
+      },
+      "correct": "C",
+      "explanation": "Corporate Tax is a direct tax \u2014 the burden cannot be transferred"
+    }
+  ],
+  "one_mark_questions": [
+    {
+      "question": "What is budget?",
+      "answer": "The estimated list of income and expenditure of the government for a year is called budget"
+    },
+    {
+      "question": "What is deficit budget?",
+      "answer": "If the expenditure is more than the income of the government in the budget, it is called deficit budget"
+    },
+    {
+      "question": "What is direct tax?",
+      "answer": "A tax whose burden cannot be transferred is called direct tax"
+    },
+    {
+      "question": "What is progressive taxation?",
+      "answer": "The government imposes higher rate of taxes on high-income group and lower rate on low-income group \u2014 called progressive taxation"
+    }
+  ],
+  "three_mark_questions": [
+    {
+      "question": "What the differences between public finance and personal finance?",
+      "answer": [
+        "Personal Finance: Related to income expenditure of an individual or family; expenditure made according to income; will be kept confidential",
+        "Public Finance: Related to income expenditure of government; revenue is earned according to expenditure; will be publicized; when government saves money, growth is stunned"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,156 @@
+{
+  "chapter_id": "SS-POL-03",
+  "subject": "Social Science",
+  "section": "Political Science",
+  "chapter_number": 3,
+  "chapter_name": "India's Foreign Policy and Global Challenges",
+  "learning_outcomes": [
+    "Understand the stages of development of India's foreign policy",
+    "Understand the fundamental principles of India's foreign policy",
+    "Recall the struggles for the protection of human rights globally",
+    "Explain the steps taken by India for the protection of human rights",
+    "Understand the consequences of arms race and terrorism"
+  ],
+  "key_terms": [
+    {
+      "term": "Foreign Policy",
+      "definition": "The policy followed by a country in its dealings with other countries"
+    },
+    {
+      "term": "Non-Alignment",
+      "definition": "India's policy of remaining neutral by not joining any power block led by America or Russia"
+    },
+    {
+      "term": "Disarmament",
+      "definition": "The direct process of reducing or completely giving up certain or all weapons"
+    },
+    {
+      "term": "Terrorism",
+      "definition": "A political strategy aimed at creating an atmosphere of fear and achieving the objectives of extremist organizations"
+    },
+    {
+      "term": "Panchasheela",
+      "definition": "Five principles of peaceful coexistence signed between India and China in 1954"
+    },
+    {
+      "term": "Human Rights",
+      "definition": "Humane, just and social conditions conducive to the development of an individual's personality"
+    },
+    {
+      "term": "Third World",
+      "definition": "Term used for developing/non-aligned countries \u2014 first used by Alfred Savage"
+    }
+  ],
+  "important_dates": [
+    {
+      "year": "1947-1959",
+      "event": "Jawaharlal Nehru's Idealistic Phase of India's foreign policy"
+    },
+    {
+      "year": "1948",
+      "event": "Universal Declaration of Human Rights \u2014 December 10"
+    },
+    {
+      "year": "1954",
+      "event": "Panchasheela agreement signed with China"
+    },
+    {
+      "year": "1955",
+      "event": "Bandung Conference \u2014 Non-Aligned Movement founded"
+    }
+  ],
+  "mcqs": [
+    {
+      "q_id": "SS-POL-03-MCQ-01",
+      "question": "He is called the 'Father of India's Foreign Policy'",
+      "options": {
+        "A": "Dr. B.R. Ambedkar",
+        "B": "Jawaharlal Nehru",
+        "C": "M.S. Swaminathan",
+        "D": "Sir M. Visvesvaraya"
+      },
+      "correct": "B",
+      "explanation": "Jawaharlal Nehru is called the Father of India's Foreign Policy"
+    },
+    {
+      "q_id": "SS-POL-03-MCQ-02",
+      "question": "The UN declared the Universal Declaration of Human Rights on",
+      "options": {
+        "A": "10 December 1950",
+        "B": "15 March 1948",
+        "C": "10 December 1948",
+        "D": "10 December 1945"
+      },
+      "correct": "C",
+      "explanation": "The Universal Declaration of Human Rights was adopted on December 10, 1948"
+    },
+    {
+      "q_id": "SS-POL-03-MCQ-03",
+      "question": "World Human Rights Day is observed on",
+      "options": {
+        "A": "December 10",
+        "B": "March 15",
+        "C": "June 6",
+        "D": "July 11"
+      },
+      "correct": "A",
+      "explanation": "World Human Rights Day is observed on December 10 every year"
+    },
+    {
+      "q_id": "SS-POL-03-MCQ-04",
+      "question": "In 1954, the nation that signed Panchasheela Principles with India was",
+      "options": {
+        "A": "China",
+        "B": "Indonesia",
+        "C": "Pakistan",
+        "D": "Sri Lanka"
+      },
+      "correct": "A",
+      "explanation": "India and China signed the Panchasheela agreement in 1954"
+    }
+  ],
+  "one_mark_questions": [
+    {
+      "question": "Define foreign policy.",
+      "answer": "Foreign policy is the policy followed by a country in its dealings with other countries"
+    },
+    {
+      "question": "What is disarmament?",
+      "answer": "Disarmament is the direct process of reducing or completely giving up certain or all weapons"
+    },
+    {
+      "question": "What are human rights?",
+      "answer": "Human rights are humane, just and social conditions conducive to the development of an individual's personality"
+    },
+    {
+      "question": "What is terrorism?",
+      "answer": "Terrorism is a political strategy aimed at creating an atmosphere of fear and achieving the objectives of extremist organizations"
+    }
+  ],
+  "three_mark_questions": [
+    {
+      "question": "What are the fundamental principles of India's foreign policy?",
+      "answer": [
+        "Opposition to colonialism",
+        "Opposition to imperialism",
+        "Opposition to apartheid",
+        "Non-alignment",
+        "Support for disarmament",
+        "Support for the United Nations and world peace",
+        "Policy for the progress of Asia and African countries"
+      ]
+    },
+    {
+      "question": "What steps has India taken to address the challenge of terrorism?",
+      "answer": [
+        "Establishment of the National Investigation Agency (NIA)",
+        "Formation of special task forces",
+        "Strong opposition to terrorism globally",
+        "Anti-Terrorism Squads (ATS) by state governments",
+        "Intelligence Bureau (IB) and RAW",
+        "Establishment and strengthening of intelligence units",
+        "Financial intelligence unit"
+      ]
+    }
+  ]
+}
