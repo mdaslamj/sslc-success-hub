@@ -42,6 +42,13 @@ import { Library, Sigma } from "lucide-react";
 import { ExternalLink } from "lucide-react";
 import { loadChapter, loadManifest } from "@/lib/contentLoader";
 import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
+import {
   normalizeChapterData,
   mapContentMcqs,
   type NormalizedChapter,
