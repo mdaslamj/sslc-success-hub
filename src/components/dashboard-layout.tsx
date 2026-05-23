@@ -58,7 +58,7 @@ export function DashboardLayout({ children, title }: { children: ReactNode; titl
               </Link>
               <div className="min-w-0 flex-1 leading-tight">
                 <div className="text-[11px] text-muted-foreground">Aura</div>
-                <h2 className="max-w-[32vw] truncate font-display text-[15px] font-semibold text-foreground xs:max-w-[36vw]">
+                <h2 className="max-w-[32vw] truncate font-display text-[15px] font-semibold text-foreground sm:max-w-[40vw]">
                   {title ?? "Today"}
                 </h2>
               </div>
