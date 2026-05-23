@@ -1,10 +1,19 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useQuery } from "@tanstack/react-query";
+import { useMemo } from "react";
+import { useQuery, useQueries } from "@tanstack/react-query";
 import { DashboardLayout } from "@/components/dashboard-layout";
 import { ArrowRight, BookOpen, FileText, ListChecks, Sparkles, AlertTriangle, Database } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { fetchSubjects } from "@/integrations/firebase/subjects";
+import { loadManifest } from "@/lib/contentLoader";
+
+function contentFolderFor(subjectId: string): string | null {
+  if (subjectId === "math" || subjectId === "mathematics") return "mathematics";
+  if (subjectId === "science") return "science";
+  if (subjectId === "social" || subjectId === "social-science" || subjectId === "socialscience") return "social-science";
+  return null;
+}
 
 export const Route = createFileRoute("/subjects/")({
   head: () => ({
