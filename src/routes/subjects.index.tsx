@@ -200,7 +200,8 @@ function SubjectsPage() {
                 </div>
               </div>
             </article>
-          ))}
+          );
+        })}
         </div>
         )}
 
