@@ -49,6 +49,7 @@ import {
   type ContentResource,
   type ContentImportantDate,
   type ContentKeyTerm,
+  type ContentMap,
 } from "@/lib/normalizeChapterData";
 
 type ManifestChapter = {
