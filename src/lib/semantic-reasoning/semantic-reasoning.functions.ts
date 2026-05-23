@@ -33,16 +33,9 @@ type AllowedModel = (typeof ALLOWED_MODELS)[number];
  * securetoken JWKS, plus issuer/audience claims tied to the Firebase
  * project ID.
  */
-const FIREBASE_PROJECT_ID = process.env.FIREBASE_PROJECT_ID;
-if (!FIREBASE_PROJECT_ID) {
-  // Fail loudly at module load if the server is misconfigured — avoids the
-  // silent auth-project-mismatch class of bugs where the client and server
-  // disagree about which Firebase project to trust.
-  throw new Error(
-    "FIREBASE_PROJECT_ID env var is required for token verification.",
-  );
-}
-const FIREBASE_ISSUER = `https://securetoken.google.com/${FIREBASE_PROJECT_ID}`;
+// NOTE: Do NOT read process.env at module scope — this file gets imported into
+// the client bundle by TanStack's serverFn transform, and `process.env.X` is
+// undefined in the browser. Read inside the handler instead.
 const FIREBASE_JWKS = createRemoteJWKSet(
   new URL(
     "https://www.googleapis.com/service_accounts/v1/jwk/securetoken@system.gserviceaccount.com",
@@ -50,9 +43,15 @@ const FIREBASE_JWKS = createRemoteJWKSet(
 );
 
 async function verifyFirebaseIdToken(idToken: string): Promise<string> {
+  const projectId = process.env.FIREBASE_PROJECT_ID;
+  if (!projectId) {
+    throw new Error(
+      "FIREBASE_PROJECT_ID env var is required for token verification.",
+    );
+  }
   const { payload } = await jwtVerify(idToken, FIREBASE_JWKS, {
-    issuer: FIREBASE_ISSUER,
-    audience: FIREBASE_PROJECT_ID,
+    issuer: `https://securetoken.google.com/${projectId}`,
+    audience: projectId,
   });
   if (!payload.sub) throw new Error("Token missing subject");
   return payload.sub;
