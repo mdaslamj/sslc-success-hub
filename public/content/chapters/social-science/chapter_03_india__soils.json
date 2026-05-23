@@ -4,6 +4,18 @@
   "section": "Geography",
   "chapter_number": 3,
   "chapter_name": "India \u2013 Soils",
+  "mapImage": "/content/maps/india-outline.svg",
+  "mapTitle": "India \u2013 Soil Distribution",
+  "mapCaption": "Schematic India outline. Use chapter notes to mark soil belts on this map for revision.",
+  "mapTopics": ["Alluvial", "Black (Regur)", "Red", "Laterite", "Desert", "Mountain"],
+  "mapLabels": [
+    { "label": "Northern Plains", "description": "Alluvial soil belt — Punjab, UP, Bihar, WB" },
+    { "label": "Deccan Plateau", "description": "Black cotton soil — Maharashtra, MP, Gujarat" },
+    { "label": "Peninsular Plateau", "description": "Red soil — Karnataka, Tamil Nadu, Odisha" },
+    { "label": "Western Ghats & NE", "description": "Laterite soil — Kerala, Goa, Assam" },
+    { "label": "Rajasthan", "description": "Desert / arid soil" },
+    { "label": "Himalayas", "description": "Mountain / forest soil" }
+  ],
   "learning_outcomes": [
     "Explain the types of soil in India",
     "Explain the distribution of soil and the crops grown in them",
