@@ -8,6 +8,7 @@ import {
   Flag,
   RotateCcw,
   XCircle,
+  Heart,
 } from "lucide-react";
 import { DashboardLayout } from "@/components/dashboard-layout";
 import { Button } from "@/components/ui/button";
@@ -27,6 +28,7 @@ import {
   recordAttempt,
 } from "@/lib/mock-test/store";
 import { recordAttemptSignals } from "@/lib/weakAreaTracker";
+import { getEmotionalSummary } from "@/lib/emotionalProgress";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/mock-test/$testId")({
@@ -260,6 +262,7 @@ function ReviewView({
     return n + (a == null || a !== q.correctIndex ? 1 : 0);
   }, 0);
   const supportive = supportiveMessage(result.scorePct);
+  const emotional = useMemo(() => getEmotionalSummary(), []);
   const weakChapters = breakdown
     .filter((b) => b.accuracyPct < 60)
     .sort((a, b) => a.accuracyPct - b.accuracyPct);
@@ -284,6 +287,14 @@ function ReviewView({
           <ResultCard label="Score" value={`${result.scorePct}%`} />
           <ResultCard label="Correct" value={`${result.correct}/${result.total}`} />
           <ResultCard label="To revisit" value={String(wrongCount)} />
+        </div>
+
+        {/* Emotional progress note — calm, learning-signal aware */}
+        <div className="flex items-start gap-2 rounded-2xl border border-border/60 bg-card/60 p-3 text-xs text-muted-foreground">
+          <Heart className="mt-0.5 h-3.5 w-3.5 shrink-0 text-rose-400" />
+          <p className="leading-snug">
+            {emotional.headline} {emotional.confidence}
+          </p>
         </div>
 
         {/* Action row — retry wrong + back */}

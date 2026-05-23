@@ -15,11 +15,12 @@
 import { useMemo } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Brain, Plus, Sparkles, LifeBuoy, Target } from "lucide-react";
+import { Brain, Plus, Sparkles, LifeBuoy, Target, Heart } from "lucide-react";
 import {
   buildAdaptiveDailyPlan,
   type AdaptivePlanItem,
 } from "@/lib/adaptivePlannerBridge";
+import { getEmotionalSummary } from "@/lib/emotionalProgress";
 
 export type AdaptiveGuidanceCardProps = {
   subjectId?: string;
@@ -40,6 +41,7 @@ const KIND_META: Record<
 export function AdaptiveGuidanceCard({ subjectId, onAdd }: AdaptiveGuidanceCardProps) {
   // Build once per render; pure & deterministic for the current snapshot.
   const plan = useMemo(() => buildAdaptiveDailyPlan({ subjectId }), [subjectId]);
+  const emotional = useMemo(() => getEmotionalSummary(), []);
 
   const items: AdaptivePlanItem[] = [
     ...(plan.dailyFocus ? [plan.dailyFocus] : []),
@@ -65,6 +67,12 @@ export function AdaptiveGuidanceCard({ subjectId, onAdd }: AdaptiveGuidanceCardP
       <p className="mt-2 text-xs sm:text-sm text-muted-foreground leading-snug">
         {plan.message}
       </p>
+
+      {/* Emotional progress strip */}
+      <div className="mt-2 flex items-start gap-2 text-[11px] text-muted-foreground">
+        <Heart className="mt-0.5 h-3 w-3 shrink-0 text-rose-400" />
+        <span className="leading-snug">{emotional.headline}</span>
+      </div>
 
       {plan.empty ? (
         <div className="mt-4 rounded-2xl border border-dashed border-border/60 p-4 text-xs text-muted-foreground">
