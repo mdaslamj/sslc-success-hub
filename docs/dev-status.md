@@ -1,5 +1,48 @@
 # Aura — Dev Status
 
+## Adaptive Revision Engine — ✅ shipped
+
+**Scope:** Lightweight, local-only revision suggestions derived from
+`weakAreaTracker` signals. No backend, no new storage keys.
+
+### What changed
+- New module `src/lib/adaptiveRevision.ts` exposes pure helpers:
+  - `getTodaysRevision({ subjectId?, limit? })` — mix of high/medium
+    priority chapter picks for today.
+  - `getRecoveryChapters({ subjectId?, limit? })` — high-priority only,
+    sorted by lowest accuracy.
+  - `getRevisionPriority(chapterId)` — `"high" | "medium" | "low"` for
+    a single chapter; defaults to `"low"` for unseen chapters.
+  - `getSuggestedPractice({ subjectId?, limit? })` — wrong-answer-driven
+    topic clusters with `questionIds[]` ready for the retry/practice flow.
+  - `getRevisionSummary()` — `{ total, high, medium, low, message }` for
+    dashboard widgets.
+- Priority logic (lightweight):
+  - **High** — ≥3 repeated wrong answers, low confidence, or recently
+    failed (≤2d & <60% accuracy).
+  - **Medium** — not revised in ≥5d, or medium confidence.
+  - **Low** — consistently correct chapters.
+- Calm messaging — supportive copy only, e.g. "A quick revision of this
+  chapter may help strengthen confidence." / "You’re improving steadily
+  chapter by chapter." No pressure or failure wording, no gamification.
+- Inputs reused as-is: `listChapterAccuracy`, `listConfidence`,
+  `listWrongAnswers` from `weakAreaTracker`. No duplicate records written.
+
+### Future hooks
+- Planner integration — `getTodaysRevision()` can feed daily plan cards.
+- Emotional progress summaries — `getRevisionSummary().message` is the
+  seed string for tone-aware summaries.
+- Personalized mock exams — `getSuggestedPractice().questionIds` feeds
+  directly into `mockExamGenerator.generateWeakAreaTest`.
+
+### Verification
+- ✅ Pure functions; deterministic for a given snapshot.
+- ✅ No new `localStorage` keys; reads existing `aura:weak:*` entries.
+- ✅ Empty-state safe — returns `[]` with no signals.
+- ✅ No UI changes; bundle impact ~1 KB gzipped.
+
+---
+
 ## Interactive Maps (Phase 1) — ✅ shipped
 
 **Scope:** Lightweight clickable map experience inside Social Science → Maps tab.
