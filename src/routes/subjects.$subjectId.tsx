@@ -28,6 +28,7 @@ import {
   Flame,
   XCircle,
 } from "lucide-react";
+import { Clock, Map as MapIcon, Landmark } from "lucide-react";
 import { type MCQ } from "@/lib/mock-data";
 import { fetchChapters, fetchSubject } from "@/integrations/firebase/subjects";
 import type { ChapterDoc, SubjectDoc, MathChapterDoc } from "@/integrations/firebase/types";
@@ -56,6 +57,8 @@ type ManifestChapter = {
   difficulty?: string;
   mcqCount?: number;
   exerciseCount?: number;
+  section?: string;
+  sectionKn?: string;
 };
 
 type ManifestDoc = { chapters?: ManifestChapter[] };
@@ -287,6 +290,18 @@ function SubjectDetailPage() {
     ? Math.round(chapters.reduce((a, c) => a + c.progress, 0) / chapters.length)
     : subject.completion;
 
+  const isSocial = SOCIAL_SUBJECT_IDS.has(subjectId);
+  const manifestChaptersAll =
+    ((manifestQuery.data as ManifestDoc | undefined)?.chapters ?? []) as ManifestChapter[];
+  const HISTORY_SECTIONS = new Set(["History"]);
+  const MAPS_SECTIONS = new Set(["Geography"]);
+  const CIVICS_SECTIONS = new Set([
+    "Political Science",
+    "Sociology",
+    "Economics",
+    "Business Studies",
+  ]);
+
   return (
     <DashboardLayout title={subject.name}>
       <div className="mx-auto max-w-3xl space-y-4">
@@ -331,20 +346,39 @@ function SubjectDetailPage() {
             <TabsTrigger value="chapters" className="rounded-full gap-1.5">
               <BookOpen className="h-3.5 w-3.5" /> Chapters
             </TabsTrigger>
-            <TabsTrigger value="resources" className="rounded-full gap-1.5">
-              <Library className="h-3.5 w-3.5" /> Resources
-            </TabsTrigger>
-            {isContentDriven && (
-              <TabsTrigger value="formulas" className="rounded-full gap-1.5">
-                <Sigma className="h-3.5 w-3.5" /> Formulas
-              </TabsTrigger>
+            {isSocial ? (
+              <>
+                <TabsTrigger value="timeline" className="rounded-full gap-1.5">
+                  <Clock className="h-3.5 w-3.5" /> Timeline
+                </TabsTrigger>
+                <TabsTrigger value="maps" className="rounded-full gap-1.5">
+                  <MapIcon className="h-3.5 w-3.5" /> Maps
+                </TabsTrigger>
+                <TabsTrigger value="civics" className="rounded-full gap-1.5">
+                  <Landmark className="h-3.5 w-3.5" /> Civics
+                </TabsTrigger>
+                <TabsTrigger value="practice" className="rounded-full gap-1.5">
+                  <Brain className="h-3.5 w-3.5" /> Practice
+                </TabsTrigger>
+              </>
+            ) : (
+              <>
+                <TabsTrigger value="resources" className="rounded-full gap-1.5">
+                  <Library className="h-3.5 w-3.5" /> Resources
+                </TabsTrigger>
+                {isContentDriven && (
+                  <TabsTrigger value="formulas" className="rounded-full gap-1.5">
+                    <Sigma className="h-3.5 w-3.5" /> Formulas
+                  </TabsTrigger>
+                )}
+                <TabsTrigger value="topics" className="rounded-full gap-1.5">
+                  <Sparkles className="h-3.5 w-3.5" /> Topics
+                </TabsTrigger>
+                <TabsTrigger value="practice" className="rounded-full gap-1.5">
+                  <Brain className="h-3.5 w-3.5" /> Practice MCQs
+                </TabsTrigger>
+              </>
             )}
-            <TabsTrigger value="topics" className="rounded-full gap-1.5">
-              <Sparkles className="h-3.5 w-3.5" /> Topics
-            </TabsTrigger>
-            <TabsTrigger value="practice" className="rounded-full gap-1.5">
-              <Brain className="h-3.5 w-3.5" /> Practice MCQs
-            </TabsTrigger>
           </TabsList>
 
           {/* CHAPTERS */}
@@ -376,6 +410,7 @@ function SubjectDetailPage() {
           </TabsContent>
 
           {/* RESOURCES */}
+          {!isSocial && (
           <TabsContent value="resources" className="mt-4 space-y-4">
             {isContentDriven ? (
               <ContentChapterPane
@@ -393,9 +428,10 @@ function SubjectDetailPage() {
               <ResourcesSection chapters={chapters} />
             )}
           </TabsContent>
+          )}
 
 
-          {isContentDriven && (
+          {isContentDriven && !isSocial && (
             <TabsContent value="formulas" className="mt-4">
               <ContentChapterPane
                 chapters={normalizedChapters}
@@ -415,6 +451,7 @@ function SubjectDetailPage() {
           )}
 
           {/* TOPICS */}
+          {!isSocial && (
           <TabsContent value="topics" className="mt-4">
             {isContentDriven ? (
               <div className="space-y-4">
@@ -441,6 +478,63 @@ function SubjectDetailPage() {
               />
             )}
           </TabsContent>
+          )}
+
+          {/* SOCIAL-SCIENCE: TIMELINE / MAPS / CIVICS */}
+          {isSocial && (
+            <>
+              <TabsContent value="timeline" className="mt-4">
+                <SocialSectionView
+                  title="History Timeline"
+                  description="Chronological flow of events from European arrival through India's independence and beyond. Tap a chapter to enter the story."
+                  emptyLabel="No history chapters available yet."
+                  chapters={manifestChaptersAll.filter(
+                    (c) => c.section && HISTORY_SECTIONS.has(c.section),
+                  )}
+                  color={subject.color}
+                  variant="timeline"
+                  onSelect={(id) => {
+                    setSelectedContentId(id);
+                    setChapterDetailOpen(true);
+                  }}
+                />
+              </TabsContent>
+
+              <TabsContent value="maps" className="mt-4">
+                <SocialSectionView
+                  title="Geography & Maps"
+                  description="Physical features, climate, resources and human geography of India. Visual learning starts here."
+                  emptyLabel="No geography chapters available yet."
+                  chapters={manifestChaptersAll.filter(
+                    (c) => c.section && MAPS_SECTIONS.has(c.section),
+                  )}
+                  color={subject.color}
+                  variant="maps"
+                  onSelect={(id) => {
+                    setSelectedContentId(id);
+                    setChapterDetailOpen(true);
+                  }}
+                />
+              </TabsContent>
+
+              <TabsContent value="civics" className="mt-4">
+                <SocialSectionView
+                  title="Civics, Society & Economy"
+                  description="Political Science, Sociology, Economics and Business Studies — how India is governed, organised and powered."
+                  emptyLabel="No civics chapters available yet."
+                  chapters={manifestChaptersAll.filter(
+                    (c) => c.section && CIVICS_SECTIONS.has(c.section),
+                  )}
+                  color={subject.color}
+                  variant="civics"
+                  onSelect={(id) => {
+                    setSelectedContentId(id);
+                    setChapterDetailOpen(true);
+                  }}
+                />
+              </TabsContent>
+            </>
+          )}
 
           {/* PRACTICE */}
           <TabsContent value="practice" className="mt-4">
@@ -592,6 +686,160 @@ function ManifestChaptersGrid({
           </div>
         );
       })}
+    </div>
+  );
+}
+
+/* ---------------- Social Science section view (Timeline / Maps / Civics) ---------------- */
+
+function SocialSectionView({
+  title,
+  description,
+  emptyLabel,
+  chapters,
+  color,
+  variant,
+  onSelect,
+}: {
+  title: string;
+  description: string;
+  emptyLabel: string;
+  chapters: ManifestChapter[];
+  color: string;
+  variant: "timeline" | "maps" | "civics";
+  onSelect: (id: string) => void;
+}) {
+  const sorted = [...chapters].sort(
+    (a, b) => (a.chapterNumber ?? 0) - (b.chapterNumber ?? 0),
+  );
+
+  const Icon = variant === "timeline" ? Clock : variant === "maps" ? MapIcon : Landmark;
+
+  if (sorted.length === 0) {
+    return (
+      <div className="rounded-2xl border border-dashed border-border/60 p-10 text-center text-sm text-muted-foreground">
+        {emptyLabel}
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-4">
+      <div
+        className="rounded-2xl border border-border/60 p-4"
+        style={{
+          background: `linear-gradient(135deg, color-mix(in oklab, ${color} 14%, transparent), transparent)`,
+        }}
+      >
+        <div className="flex items-center gap-2">
+          <div
+            className="flex h-9 w-9 items-center justify-center rounded-xl text-white"
+            style={{ background: color }}
+          >
+            <Icon className="h-4 w-4" />
+          </div>
+          <div>
+            <h2 className="font-display text-lg font-bold leading-tight">{title}</h2>
+            <p className="text-xs text-muted-foreground leading-snug">{description}</p>
+          </div>
+        </div>
+      </div>
+
+      {variant === "timeline" ? (
+        <ol className="relative space-y-3 border-l border-border/60 pl-5">
+          {sorted.map((c) => {
+            const isReady = c.status === "ready";
+            return (
+              <li key={c.id} className="relative">
+                <span
+                  className="absolute -left-[27px] top-3 flex h-4 w-4 items-center justify-center rounded-full ring-4 ring-background"
+                  style={{ background: isReady ? color : "var(--muted)" }}
+                />
+                <button
+                  type="button"
+                  disabled={!isReady}
+                  onClick={() => isReady && onSelect(c.id)}
+                  className={`w-full rounded-2xl border p-3 text-left transition ${
+                    isReady
+                      ? "border-border/60 bg-card hover:border-brand/40 cursor-pointer"
+                      : "border-dashed border-border/60 bg-muted/30 opacity-75 cursor-not-allowed"
+                  }`}
+                >
+                  <div className="flex items-center gap-2 text-[11px] text-muted-foreground">
+                    <span>Chapter {c.chapterNumber ?? "—"}</span>
+                    {isReady ? (
+                      <Badge
+                        variant="outline"
+                        className="h-4 rounded-full border-transparent bg-success/15 px-1.5 text-[9px] text-success"
+                      >
+                        Available
+                      </Badge>
+                    ) : (
+                      <Badge
+                        variant="outline"
+                        className="h-4 rounded-full border-transparent bg-muted px-1.5 text-[9px] text-muted-foreground"
+                      >
+                        Coming soon
+                      </Badge>
+                    )}
+                  </div>
+                  <div
+                    className="font-display font-semibold"
+                    style={isReady ? { color } : undefined}
+                  >
+                    {c.title ?? c.id}
+                  </div>
+                </button>
+              </li>
+            );
+          })}
+        </ol>
+      ) : (
+        <div className="grid gap-3 md:grid-cols-2">
+          {sorted.map((c) => {
+            const isReady = c.status === "ready";
+            return (
+              <button
+                key={c.id}
+                type="button"
+                disabled={!isReady}
+                onClick={() => isReady && onSelect(c.id)}
+                className={`rounded-2xl border p-4 text-left transition ${
+                  isReady
+                    ? "border-border/60 bg-card hover:border-brand/40 cursor-pointer"
+                    : "border-dashed border-border/60 bg-muted/30 opacity-75 cursor-not-allowed"
+                }`}
+              >
+                <div className="flex items-center gap-2 text-[11px] text-muted-foreground">
+                  <span>Chapter {c.chapterNumber ?? "—"}</span>
+                  {c.section && (
+                    <Badge
+                      variant="outline"
+                      className="h-4 rounded-full border-border/60 px-1.5 text-[9px]"
+                    >
+                      {c.section}
+                    </Badge>
+                  )}
+                  {!isReady && (
+                    <Badge
+                      variant="outline"
+                      className="h-4 rounded-full border-transparent bg-muted px-1.5 text-[9px] text-muted-foreground"
+                    >
+                      Coming soon
+                    </Badge>
+                  )}
+                </div>
+                <div
+                  className="font-display font-semibold"
+                  style={isReady ? { color } : undefined}
+                >
+                  {c.title ?? c.id}
+                </div>
+              </button>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 }
