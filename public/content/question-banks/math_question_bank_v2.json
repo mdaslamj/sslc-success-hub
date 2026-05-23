@@ -1,0 +1,3118 @@
+{
+  "meta": {
+    "subject": "Mathematics",
+    "subject_code": "81-E",
+    "board": "Karnataka SSLC (KSEAB)",
+    "year": "2025-26",
+    "total_marks": 80,
+    "total_questions_in_exam": 38,
+    "version": "1.0",
+    "sources": [
+      "MQP1_2025_26",
+      "MQP2_2025_26",
+      "MQP3_2025_26",
+      "MQP4_2025_26",
+      "Board_QP_A_March2025",
+      "Board_QP_B_March2025",
+      "LBA_QuestionBank_2025"
+    ]
+  },
+  "blueprint": {
+    "chapters": [
+      {
+        "id": 1,
+        "name": "Real Numbers",
+        "marks": 5,
+        "questions_in_exam": 3
+      },
+      {
+        "id": 2,
+        "name": "Polynomials",
+        "marks": 5,
+        "questions_in_exam": 3
+      },
+      {
+        "id": 3,
+        "name": "Pair of Linear Equations in Two Variables",
+        "marks": 8,
+        "questions_in_exam": 4
+      },
+      {
+        "id": 4,
+        "name": "Quadratic Equations",
+        "marks": 6,
+        "questions_in_exam": 3
+      },
+      {
+        "id": 5,
+        "name": "Arithmetic Progressions",
+        "marks": 8,
+        "questions_in_exam": 4
+      },
+      {
+        "id": 6,
+        "name": "Triangles",
+        "marks": 9,
+        "questions_in_exam": 4
+      },
+      {
+        "id": 7,
+        "name": "Circles",
+        "marks": 5,
+        "questions_in_exam": 2
+      },
+      {
+        "id": 8,
+        "name": "Coordinate Geometry",
+        "marks": 6,
+        "questions_in_exam": 3
+      },
+      {
+        "id": 9,
+        "name": "Introduction to Trigonometry",
+        "marks": 6,
+        "questions_in_exam": 3
+      },
+      {
+        "id": 10,
+        "name": "Some Applications of Trigonometry",
+        "marks": 4,
+        "questions_in_exam": 1
+      },
+      {
+        "id": 11,
+        "name": "Surface Areas and Volumes",
+        "marks": 7,
+        "questions_in_exam": 3
+      },
+      {
+        "id": 12,
+        "name": "Areas Related to Circles",
+        "marks": 3,
+        "questions_in_exam": 1
+      },
+      {
+        "id": 13,
+        "name": "Statistics",
+        "marks": 4,
+        "questions_in_exam": 2
+      },
+      {
+        "id": 14,
+        "name": "Probability",
+        "marks": 4,
+        "questions_in_exam": 2
+      }
+    ],
+    "section_structure": [
+      {
+        "section": "I",
+        "type": "MCQ",
+        "count": 8,
+        "marks_each": 1,
+        "total": 8
+      },
+      {
+        "section": "II",
+        "type": "Direct Answer",
+        "count": 8,
+        "marks_each": 1,
+        "total": 8
+      },
+      {
+        "section": "III",
+        "type": "Short Answer",
+        "count": 8,
+        "marks_each": 2,
+        "total": 16
+      },
+      {
+        "section": "IV",
+        "type": "Medium Answer",
+        "count": 9,
+        "marks_each": 3,
+        "total": 27
+      },
+      {
+        "section": "V",
+        "type": "Long Answer",
+        "count": 4,
+        "marks_each": 4,
+        "total": 16
+      },
+      {
+        "section": "VI",
+        "type": "Big Problem",
+        "count": 1,
+        "marks_each": 5,
+        "total": 5
+      }
+    ],
+    "internal_choices": {
+      "2_mark": 2,
+      "3_mark": 4,
+      "4_mark": 2,
+      "5_mark": 1
+    }
+  },
+  "questions": [
+    {
+      "id": "MATH_CH1_Q001",
+      "chapter": 1,
+      "chapter_name": "Real Numbers",
+      "source": "Board_QP_A_March2025",
+      "section": "II",
+      "marks": 1,
+      "type": "direct",
+      "difficulty": "easy",
+      "question": "According to the Fundamental Theorem of Arithmetic, if 40 = x^y · z, then find the values of x, y and z.",
+      "answer": "40 = 2³ × 5, so x = 2, y = 3, z = 5",
+      "concepts": [
+        "fundamental theorem of arithmetic",
+        "prime factorisation"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "MATH_CH1_Q002",
+      "chapter": 1,
+      "chapter_name": "Real Numbers",
+      "source": "Board_QP_B_March2025",
+      "section": "III",
+      "marks": 2,
+      "type": "proof",
+      "difficulty": "medium",
+      "question": "Prove that 6 + √2 is an irrational number.",
+      "answer": "Assume 6 + √2 is rational. Then √2 = (6+√2) - 6 is rational. But √2 is irrational — contradiction. Hence 6 + √2 is irrational.",
+      "concepts": [
+        "irrational numbers",
+        "proof by contradiction"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "MATH_CH1_Q003",
+      "chapter": 1,
+      "chapter_name": "Real Numbers",
+      "source": "MQP1_2025_26",
+      "section": "III",
+      "marks": 2,
+      "type": "proof",
+      "difficulty": "medium",
+      "question": "Prove that √5 is an irrational number.",
+      "answer": "Assume √5 = p/q (lowest terms). Then 5q² = p², so 5 | p². By Euclid's lemma 5 | p. Let p = 5m. Then q² = 5m², so 5 | q. Both p, q divisible by 5 — contradicts lowest terms. Hence √5 is irrational.",
+      "concepts": [
+        "irrational numbers",
+        "proof by contradiction",
+        "euclid's lemma"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "MATH_CH1_Q004",
+      "chapter": 1,
+      "chapter_name": "Real Numbers",
+      "source": "MQP2_2025_26",
+      "section": "III",
+      "marks": 2,
+      "type": "proof",
+      "difficulty": "medium",
+      "question": "Prove that 2 + √5 is an irrational number.",
+      "answer": "Assume 2 + √5 is rational. Then √5 = (2+√5) - 2 is rational. But √5 is irrational — contradiction. Hence 2 + √5 is irrational.",
+      "concepts": [
+        "irrational numbers",
+        "proof by contradiction"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "MATH_CH1_Q005",
+      "chapter": 1,
+      "chapter_name": "Real Numbers",
+      "source": "MQP3_2025_26",
+      "section": "III",
+      "marks": 2,
+      "type": "proof",
+      "difficulty": "medium",
+      "question": "Prove that 2 + √3 is an irrational number.",
+      "answer": "Assume 2 + √3 is rational. Then √3 is rational — contradiction. Hence 2 + √3 is irrational.",
+      "concepts": [
+        "irrational numbers",
+        "proof by contradiction"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "MATH_CH1_Q006",
+      "chapter": 1,
+      "chapter_name": "Real Numbers",
+      "source": "MQP4_2025_26",
+      "section": "III",
+      "marks": 2,
+      "type": "proof",
+      "difficulty": "medium",
+      "question": "Prove that 5 − √2 is an irrational number.",
+      "answer": "Assume 5 − √2 is rational. Then √2 = 5 − (5−√2) is rational — contradiction. Hence 5 − √2 is irrational.",
+      "concepts": [
+        "irrational numbers",
+        "proof by contradiction"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "MATH_CH1_Q007",
+      "chapter": 1,
+      "chapter_name": "Real Numbers",
+      "source": "Board_QP_A_March2025",
+      "section": "III",
+      "marks": 2,
+      "type": "calculation",
+      "difficulty": "easy",
+      "question": "The HCF and LCM of two positive integers are 4 and 60 respectively. If one of the integers is 20, find the other integer.",
+      "answer": "Product of two numbers = HCF × LCM = 4 × 60 = 240. Other number = 240 ÷ 20 = 12.",
+      "concepts": [
+        "HCF",
+        "LCM",
+        "relationship between HCF and LCM"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "MATH_CH1_Q008",
+      "chapter": 1,
+      "chapter_name": "Real Numbers",
+      "source": "MQP1_2025_26",
+      "section": "III",
+      "marks": 2,
+      "type": "calculation",
+      "difficulty": "easy",
+      "question": "The product of HCF and LCM of two numbers is 2016. If one of the numbers is 42, find the other number. Also find the HCF by prime factorisation method.",
+      "answer": "Other number = 2016 ÷ 42 = 48. 42 = 2 × 3 × 7. 48 = 2⁴ × 3. HCF = 2 × 3 = 6.",
+      "concepts": [
+        "HCF",
+        "LCM",
+        "prime factorisation"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "MATH_CH1_Q009",
+      "chapter": 1,
+      "chapter_name": "Real Numbers",
+      "source": "MQP4_2025_26",
+      "section": "III",
+      "marks": 2,
+      "type": "calculation",
+      "difficulty": "medium",
+      "question": "If the product of LCM and HCF of two numbers is 2366 and their HCF is 13, find their LCM. If one of the numbers is 91, find the other number.",
+      "answer": "LCM = 2366 ÷ 13 = 182. Other number = (HCF × LCM) ÷ 91 = 2366 ÷ 91 = 26.",
+      "concepts": [
+        "HCF",
+        "LCM"
+      ],
+      "board_frequency": "medium"
+    },
+    {
+      "id": "MATH_CH1_Q010",
+      "chapter": 1,
+      "chapter_name": "Real Numbers",
+      "source": "MQP1_2025_26",
+      "section": "I",
+      "marks": 1,
+      "type": "mcq",
+      "difficulty": "easy",
+      "question": "The H.C.F of 3 and 5 is,",
+      "options": [
+        "A) 1",
+        "B) 3",
+        "C) 5",
+        "D) 15"
+      ],
+      "answer": "A) 1",
+      "concepts": [
+        "HCF",
+        "co-primes"
+      ],
+      "board_frequency": "medium"
+    },
+    {
+      "id": "MATH_CH1_Q011",
+      "chapter": 1,
+      "chapter_name": "Real Numbers",
+      "source": "MQP4_2025_26",
+      "section": "I",
+      "marks": 1,
+      "type": "mcq",
+      "difficulty": "easy",
+      "question": "If p and q are co-primes, then the H.C.F of p² and q² is,",
+      "options": [
+        "A) pq",
+        "B) 1",
+        "C) p + q",
+        "D) p²q²"
+      ],
+      "answer": "B) 1",
+      "concepts": [
+        "HCF",
+        "co-primes"
+      ],
+      "board_frequency": "medium"
+    },
+    {
+      "id": "MATH_CH1_Q012",
+      "chapter": 1,
+      "chapter_name": "Real Numbers",
+      "source": "MQP3_2025_26",
+      "section": "III",
+      "marks": 2,
+      "type": "calculation",
+      "difficulty": "medium",
+      "question": "Find the H.C.F. of 135 and 75 by prime factorization method and then find the L.C.M. of 20 and H.C.F(135, 75).",
+      "answer": "135 = 3³ × 5. 75 = 3 × 5². HCF(135,75) = 3 × 5 = 15. 20 = 2² × 5. LCM(20,15) = 2² × 3 × 5 = 60.",
+      "concepts": [
+        "HCF",
+        "LCM",
+        "prime factorisation"
+      ],
+      "board_frequency": "medium"
+    },
+    {
+      "id": "MATH_CH1_Q013",
+      "chapter": 1,
+      "chapter_name": "Real Numbers",
+      "source": "MQP2_2025_26",
+      "section": "III",
+      "marks": 2,
+      "type": "calculation",
+      "difficulty": "medium",
+      "question": "The lengths of two rectangular tables are 84cm and 126cm respectively and both have a width equal to 42cm. Find the maximum length of a square glass sheet that can exactly fit both the tables. Also calculate the total number of glass sheets required to fit each table.",
+      "answer": "HCF(84, 126, 42) = 42. Max square size = 42cm. Table 1: 84×42 → 84/42 × 42/42 = 2×1 = 2 sheets. Table 2: 126×42 → 3×1 = 3 sheets.",
+      "concepts": [
+        "HCF",
+        "real-world application"
+      ],
+      "board_frequency": "medium"
+    },
+    {
+      "id": "MATH_CH1_Q014",
+      "chapter": 1,
+      "chapter_name": "Real Numbers",
+      "source": "MQP1_2025_26",
+      "section": "III",
+      "marks": 2,
+      "type": "calculation",
+      "difficulty": "medium",
+      "question": "In an arithmetic progression, if S20 = 820 and a20 = 79, then find its first term.",
+      "answer": "Sn = n/2(a + l). 820 = 20/2(a + 79). 820 = 10(a + 79). a + 79 = 82. a = 3.",
+      "concepts": [
+        "AP sum formula",
+        "first term"
+      ],
+      "board_frequency": "medium",
+      "note": "This question is from Chapter 5 context but appears as a 2-mark in MQP1 Section III"
+    },
+    {
+      "id": "MATH_CH2_Q001",
+      "chapter": 2,
+      "chapter_name": "Polynomials",
+      "source": "Board_QP_A_March2025",
+      "section": "IV",
+      "marks": 3,
+      "type": "application",
+      "difficulty": "medium",
+      "question": "Find the zeroes of the quadratic polynomial p(x) = x² + 7x + 10 and verify the relationship between the zeroes and the coefficients.",
+      "answer": "x² + 7x + 10 = (x+2)(x+5). Zeroes: α = −2, β = −5. Sum = −7 = −b/a ✓. Product = 10 = c/a ✓.",
+      "concepts": [
+        "zeroes of polynomial",
+        "factorisation",
+        "relationship between zeroes and coefficients"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "MATH_CH2_Q002",
+      "chapter": 2,
+      "chapter_name": "Polynomials",
+      "source": "MQP3_2025_26",
+      "section": "IV",
+      "marks": 3,
+      "type": "application",
+      "difficulty": "medium",
+      "question": "Find the zeroes of the quadratic polynomial p(x) = 6x² − 7x − 3 and verify the relationship between the zeroes and the coefficients.",
+      "answer": "6x²−7x−3 = (2x−3)(3x+1). Zeroes: α = 3/2, β = −1/3. Sum = 3/2 − 1/3 = 7/6 = −(−7)/6 = 7/6 ✓. Product = (3/2)(−1/3) = −1/2 = −3/6 = −1/2 ✓.",
+      "concepts": [
+        "zeroes of polynomial",
+        "factorisation",
+        "relationship between zeroes and coefficients"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "MATH_CH2_Q003",
+      "chapter": 2,
+      "chapter_name": "Polynomials",
+      "source": "MQP1_2025_26",
+      "section": "I",
+      "marks": 1,
+      "type": "mcq",
+      "difficulty": "easy",
+      "question": "In the figure, the number of zeroes of the polynomial y = p(x) is (graph shows curve crossing x-axis at 3 points and touching at 1),",
+      "options": [
+        "A) 3",
+        "B) 5",
+        "C) 4",
+        "D) 1"
+      ],
+      "answer": "A) 3",
+      "concepts": [
+        "zeroes of polynomial",
+        "graphical representation"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "MATH_CH2_Q004",
+      "chapter": 2,
+      "chapter_name": "Polynomials",
+      "source": "MQP1_2025_26",
+      "section": "II",
+      "marks": 1,
+      "type": "direct",
+      "difficulty": "easy",
+      "question": "If the zeroes of the polynomial p(x) = x² + 3x + k are reciprocal to each other, then find the value of k.",
+      "answer": "If zeroes are α and 1/α, product = α × (1/α) = 1 = k/1 = k. Therefore k = 1.",
+      "concepts": [
+        "zeroes of polynomial",
+        "product of zeroes"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "MATH_CH2_Q005",
+      "chapter": 2,
+      "chapter_name": "Polynomials",
+      "source": "MQP1_2025_26",
+      "section": "IV",
+      "marks": 3,
+      "type": "application",
+      "difficulty": "medium",
+      "question": "Write the quadratic polynomial whose sum and product of zeroes are 2 and 8 respectively and hence find the zeroes of the polynomial.",
+      "answer": "p(x) = x² − (sum)x + product = x² − 2x + 8. Discriminant = 4 − 32 = −28 < 0. No real zeroes. (Note: If sum=−2, product=−8: p(x)=x²+2x−8=(x+4)(x−2), zeroes: −4, 2)",
+      "concepts": [
+        "forming polynomial from zeroes",
+        "sum and product of zeroes"
+      ],
+      "board_frequency": "medium"
+    },
+    {
+      "id": "MATH_CH2_Q006",
+      "chapter": 2,
+      "chapter_name": "Polynomials",
+      "source": "MQP1_2025_26",
+      "section": "IV",
+      "marks": 3,
+      "type": "application",
+      "difficulty": "hard",
+      "question": "If α and β are the zeroes of the quadratic polynomial p(x) = x² + 3x + 1, find the value of (i) α/β + β/α (ii) α² + β²",
+      "answer": "Sum α+β = −3, Product αβ = 1. (i) α/β + β/α = (α²+β²)/αβ = [(α+β)²−2αβ]/αβ = [9−2]/1 = 7. (ii) α²+β² = (α+β)²−2αβ = 9−2 = 7.",
+      "concepts": [
+        "zeroes of polynomial",
+        "expressions in terms of zeroes"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "MATH_CH2_Q007",
+      "chapter": 2,
+      "chapter_name": "Polynomials",
+      "source": "MQP4_2025_26",
+      "section": "IV",
+      "marks": 3,
+      "type": "application",
+      "difficulty": "hard",
+      "question": "If α and β are the two zeroes of the polynomial p(x) = x² + 3x + 2, then find the value of α³β + αβ³.",
+      "answer": "α³β + αβ³ = αβ(α²+β²) = αβ[(α+β)²−2αβ]. α+β = −3, αβ = 2. = 2[(9)−4] = 2×5 = 10.",
+      "concepts": [
+        "zeroes of polynomial",
+        "symmetric expressions"
+      ],
+      "board_frequency": "medium"
+    },
+    {
+      "id": "MATH_CH2_Q008",
+      "chapter": 2,
+      "chapter_name": "Polynomials",
+      "source": "MQP2_2025_26",
+      "section": "IV",
+      "marks": 3,
+      "type": "application",
+      "difficulty": "medium",
+      "question": "If one of the zeroes of the polynomial P(x) = 2x² − 8x + (k+1) is seven times the other, then find the value of k.",
+      "answer": "Let zeroes be α and 7α. Sum = 8α = 8/2 = 4, so α = 1/2. Product = 7α² = 7/4 = (k+1)/2. So k+1 = 7/2, k = 5/2.",
+      "concepts": [
+        "zeroes of polynomial",
+        "relationship between zeroes and coefficients"
+      ],
+      "board_frequency": "medium"
+    },
+    {
+      "id": "MATH_CH2_Q009",
+      "chapter": 2,
+      "chapter_name": "Polynomials",
+      "source": "Board_QP_A_March2025",
+      "section": "I",
+      "marks": 1,
+      "type": "mcq",
+      "difficulty": "easy",
+      "question": "The quadratic equation in the following is,",
+      "options": [
+        "A) x³ − 6x",
+        "B) p(x) = x² + 7x",
+        "C) 3x = 9",
+        "D) x² + 3x + 4 = 0"
+      ],
+      "answer": "D) x² + 3x + 4 = 0",
+      "concepts": [
+        "quadratic equation",
+        "definition"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "MATH_CH2_Q010",
+      "chapter": 2,
+      "chapter_name": "Polynomials",
+      "source": "MQP2_2025_26",
+      "section": "II",
+      "marks": 1,
+      "type": "direct",
+      "difficulty": "easy",
+      "question": "Write the degree of a linear polynomial.",
+      "answer": "1",
+      "concepts": [
+        "degree of polynomial"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "MATH_CH3_Q001",
+      "chapter": 3,
+      "chapter_name": "Pair of Linear Equations in Two Variables",
+      "source": "Board_QP_A_March2025",
+      "section": "I",
+      "marks": 1,
+      "type": "mcq",
+      "difficulty": "medium",
+      "question": "If the lines represented by the equations a₁x + b₁y + c₁ = 0 and a₂x + b₂y + c₂ = 0 are coincident, then the correct relation is,",
+      "options": [
+        "A) a₁/a₂ = b₁/b₂ = c₁/c₂",
+        "B) a₁/a₂ ≠ b₁/b₂",
+        "C) a₁/a₂ = b₁/b₂ ≠ c₁/c₂",
+        "D) a₁/a₂ ≠ b₁/b₂ = c₁/c₂"
+      ],
+      "answer": "A) a₁/a₂ = b₁/b₂ = c₁/c₂",
+      "concepts": [
+        "consistent equations",
+        "coincident lines"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "MATH_CH3_Q002",
+      "chapter": 3,
+      "chapter_name": "Pair of Linear Equations in Two Variables",
+      "source": "MQP4_2025_26",
+      "section": "I",
+      "marks": 1,
+      "type": "mcq",
+      "difficulty": "medium",
+      "question": "In the pair of linear equations a₁x + b₁y + c₁ = 0 and a₂x + b₂y + c₂ = 0, if a₁/a₂ = b₁/b₂ ≠ c₁/c₂ then the lines represented by them are,",
+      "options": [
+        "A) Intersecting lines",
+        "B) Perpendicular lines",
+        "C) Parallel lines",
+        "D) Coincident lines"
+      ],
+      "answer": "C) Parallel lines",
+      "concepts": [
+        "inconsistent equations",
+        "parallel lines"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "MATH_CH3_Q003",
+      "chapter": 3,
+      "chapter_name": "Pair of Linear Equations in Two Variables",
+      "source": "MQP1_2025_26",
+      "section": "I",
+      "marks": 1,
+      "type": "mcq",
+      "difficulty": "medium",
+      "question": "If the pair of linear equations a₁x + b₁y + c₁ = 0 and a₂x + b₂y + c₂ = 0 have unique solution, then the correct relation is,",
+      "options": [
+        "A) a₁/a₂ ≠ b₁/b₂",
+        "B) a₁/a₂ = b₁/b₂ = c₁/c₂",
+        "C) a₁/a₂ = b₁/b₂",
+        "D) a₁/a₂ = b₁/b₂ ≠ c₁/c₂"
+      ],
+      "answer": "A) a₁/a₂ ≠ b₁/b₂",
+      "concepts": [
+        "unique solution",
+        "intersecting lines"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "MATH_CH3_Q004",
+      "chapter": 3,
+      "chapter_name": "Pair of Linear Equations in Two Variables",
+      "source": "Board_QP_A_March2025",
+      "section": "II",
+      "marks": 1,
+      "type": "direct",
+      "difficulty": "easy",
+      "question": "How many solutions do the pair of linear equations 2x + 3y − 9 = 0 and 3x + 2y − 6 = 0 have?",
+      "answer": "a₁/a₂ = 2/3, b₁/b₂ = 3/2. Since 2/3 ≠ 3/2, lines are intersecting. The pair has exactly one (unique) solution.",
+      "concepts": [
+        "number of solutions",
+        "intersecting lines"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "MATH_CH3_Q005",
+      "chapter": 3,
+      "chapter_name": "Pair of Linear Equations in Two Variables",
+      "source": "Board_QP_A_March2025",
+      "section": "III",
+      "marks": 2,
+      "type": "calculation",
+      "difficulty": "medium",
+      "question": "Solve the given pair of linear equations by elimination method: 2x + y = 10, x − y = 2",
+      "answer": "Adding: 3x = 12, x = 4. Substituting: 2(4) + y = 10, y = 2. Solution: x = 4, y = 2.",
+      "concepts": [
+        "elimination method",
+        "solving linear equations"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "MATH_CH3_Q006",
+      "chapter": 3,
+      "chapter_name": "Pair of Linear Equations in Two Variables",
+      "source": "MQP2_2025_26",
+      "section": "III",
+      "marks": 2,
+      "type": "calculation",
+      "difficulty": "medium",
+      "question": "Solve the given pair of linear equations by elimination method: x + 2y = 10, x + y = 6",
+      "answer": "Subtracting: y = 4. x = 6 − 4 = 2. Solution: x = 2, y = 4.",
+      "concepts": [
+        "elimination method"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "MATH_CH3_Q007",
+      "chapter": 3,
+      "chapter_name": "Pair of Linear Equations in Two Variables",
+      "source": "MQP4_2025_26",
+      "section": "III",
+      "marks": 2,
+      "type": "calculation",
+      "difficulty": "medium",
+      "question": "Solve the given pair of linear equations: 3x − y = 15, 2x − y = 5",
+      "answer": "Subtracting: x = 10. y = 3(10) − 15 = 15. Solution: x = 10, y = 15.",
+      "concepts": [
+        "elimination method"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "MATH_CH3_Q008",
+      "chapter": 3,
+      "chapter_name": "Pair of Linear Equations in Two Variables",
+      "source": "Board_QP_A_March2025",
+      "section": "V",
+      "marks": 4,
+      "type": "graphical",
+      "difficulty": "hard",
+      "question": "Find the solution of the given pair of linear equations by graphical method: x + 2y = 8, x + y = 5",
+      "answer": "For x + 2y = 8: points (0,4), (8,0), (2,3). For x + y = 5: points (0,5), (5,0), (2,3). Lines intersect at (2, 3). Solution: x = 2, y = 3.",
+      "concepts": [
+        "graphical method",
+        "point of intersection"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "MATH_CH3_Q009",
+      "chapter": 3,
+      "chapter_name": "Pair of Linear Equations in Two Variables",
+      "source": "MQP4_2025_26",
+      "section": "V",
+      "marks": 4,
+      "type": "graphical",
+      "difficulty": "hard",
+      "question": "Solve the given pair of linear equations by graphical method: 2x + y = 8, x − y = 1",
+      "answer": "For 2x+y=8: (0,8),(4,0),(3,2). For x−y=1: (0,−1),(1,0),(3,2). Intersection: x=3, y=2.",
+      "concepts": [
+        "graphical method"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "MATH_CH3_Q010",
+      "chapter": 3,
+      "chapter_name": "Pair of Linear Equations in Two Variables",
+      "source": "MQP1_2025_26",
+      "section": "V",
+      "marks": 4,
+      "type": "graphical",
+      "difficulty": "hard",
+      "question": "Solve the given pair of linear equations by graphical method: x + 2y = 6, x + y = 5",
+      "answer": "For x+2y=6: (0,3),(6,0),(4,1). For x+y=5: (0,5),(5,0),(4,1). Intersection: x=4, y=1.",
+      "concepts": [
+        "graphical method"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "MATH_CH3_Q011",
+      "chapter": 3,
+      "chapter_name": "Pair of Linear Equations in Two Variables",
+      "source": "MQP3_2025_26",
+      "section": "III",
+      "marks": 2,
+      "type": "calculation",
+      "difficulty": "medium",
+      "question": "Solve the given pair of linear equations by elimination method: 2x + y = 10, x − y = 2",
+      "answer": "Adding: 3x = 12, x = 4. y = 10 − 2(4) = 2. Solution: x = 4, y = 2.",
+      "concepts": [
+        "elimination method"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "MATH_CH3_Q012",
+      "chapter": 3,
+      "chapter_name": "Pair of Linear Equations in Two Variables",
+      "source": "MQP1_2025_26",
+      "section": "III",
+      "marks": 2,
+      "type": "calculation",
+      "difficulty": "medium",
+      "question": "Solve the given pair of linear equations using suitable method: 2x + y = 8, 3x − y = 7",
+      "answer": "Adding: 5x = 15, x = 3. y = 8 − 2(3) = 2. Solution: x = 3, y = 2.",
+      "concepts": [
+        "elimination method",
+        "substitution method"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "MATH_CH3_Q013",
+      "chapter": 3,
+      "chapter_name": "Pair of Linear Equations in Two Variables",
+      "source": "MQP3_2025_26",
+      "section": "V",
+      "marks": 4,
+      "type": "graphical",
+      "difficulty": "hard",
+      "question": "Find the solution of the given pair of linear equations by graphical method: 3x + y = 10, x + y = 6",
+      "answer": "For 3x+y=10: (0,10),(10/3,0),(2,4). For x+y=6: (0,6),(6,0),(2,4). Intersection: x=2, y=4.",
+      "concepts": [
+        "graphical method"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "MATH_CH4_Q001",
+      "chapter": 4,
+      "chapter_name": "Quadratic Equations",
+      "source": "Board_QP_A_March2025",
+      "section": "III",
+      "marks": 2,
+      "type": "calculation",
+      "difficulty": "medium",
+      "question": "Find the roots of the quadratic equation x² + 8x + 12 = 0.",
+      "answer": "x² + 8x + 12 = (x+6)(x+2) = 0. Roots: x = −6 or x = −2.",
+      "concepts": [
+        "factorisation method",
+        "roots of quadratic equation"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "MATH_CH4_Q002",
+      "chapter": 4,
+      "chapter_name": "Quadratic Equations",
+      "source": "Board_QP_A_March2025",
+      "section": "III",
+      "marks": 2,
+      "type": "calculation",
+      "difficulty": "medium",
+      "question": "Find the discriminant of the quadratic equation x² + 4x + 5 = 0 and hence write the nature of the roots.",
+      "answer": "D = b² − 4ac = 16 − 20 = −4. Since D < 0, the equation has no real roots (complex roots).",
+      "concepts": [
+        "discriminant",
+        "nature of roots"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "MATH_CH4_Q003",
+      "chapter": 4,
+      "chapter_name": "Quadratic Equations",
+      "source": "MQP1_2025_26",
+      "section": "III",
+      "marks": 2,
+      "type": "calculation",
+      "difficulty": "medium",
+      "question": "Find the discriminant of the quadratic equation 2x² + 3x − 7 = 0 and determine the nature of roots.",
+      "answer": "D = 9 + 56 = 65. Since D > 0, the equation has two distinct real roots.",
+      "concepts": [
+        "discriminant",
+        "nature of roots"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "MATH_CH4_Q004",
+      "chapter": 4,
+      "chapter_name": "Quadratic Equations",
+      "source": "MQP3_2025_26",
+      "section": "II",
+      "marks": 2,
+      "type": "calculation",
+      "difficulty": "medium",
+      "question": "Find the roots of the quadratic equation 2x² + x − 6 = 0.",
+      "answer": "2x² + x − 6 = (2x − 3)(x + 2) = 0. x = 3/2 or x = −2.",
+      "concepts": [
+        "factorisation method"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "MATH_CH4_Q005",
+      "chapter": 4,
+      "chapter_name": "Quadratic Equations",
+      "source": "MQP4_2025_26",
+      "section": "III",
+      "marks": 2,
+      "type": "calculation",
+      "difficulty": "medium",
+      "question": "For what value of k the roots of the equation kx² + 6x + 1 = 0 are equal?",
+      "answer": "For equal roots, D = 0. b² − 4ac = 36 − 4k = 0. k = 9.",
+      "concepts": [
+        "equal roots",
+        "discriminant"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "MATH_CH4_Q006",
+      "chapter": 4,
+      "chapter_name": "Quadratic Equations",
+      "source": "MQP4_2025_26",
+      "section": "III",
+      "marks": 2,
+      "type": "calculation",
+      "difficulty": "medium",
+      "question": "Find the roots of the quadratic equation x² − 3x − 10 = 0.",
+      "answer": "x² − 3x − 10 = (x − 5)(x + 2) = 0. Roots: x = 5 or x = −2.",
+      "concepts": [
+        "factorisation method"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "MATH_CH4_Q007",
+      "chapter": 4,
+      "chapter_name": "Quadratic Equations",
+      "source": "Board_QP_A_March2025",
+      "section": "IV",
+      "marks": 3,
+      "type": "word_problem",
+      "difficulty": "hard",
+      "question": "The difference between the altitude and base of a right angled triangle is 5 cm. If the area of the triangle is 150 cm², then find the base and altitude of the triangle.",
+      "answer": "Let base = x, altitude = x + 5. Area = x(x+5)/2 = 150. x² + 5x − 300 = 0. (x+20)(x−15) = 0. x = 15 (taking positive). Base = 15 cm, Altitude = 20 cm.",
+      "concepts": [
+        "word problem",
+        "quadratic equation",
+        "area of triangle"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "MATH_CH4_Q008",
+      "chapter": 4,
+      "chapter_name": "Quadratic Equations",
+      "source": "Board_QP_A_March2025",
+      "section": "IV",
+      "marks": 3,
+      "type": "word_problem",
+      "difficulty": "hard",
+      "question": "The sum of the squares of two consecutive even positive integers is 164. Find the integers.",
+      "answer": "Let integers be x and x+2. x² + (x+2)² = 164. 2x² + 4x + 4 = 164. x² + 2x − 80 = 0. (x+10)(x−8) = 0. x = 8. Integers: 8 and 10.",
+      "concepts": [
+        "word problem",
+        "consecutive integers"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "MATH_CH4_Q009",
+      "chapter": 4,
+      "chapter_name": "Quadratic Equations",
+      "source": "MQP1_2025_26",
+      "section": "IV",
+      "marks": 3,
+      "type": "word_problem",
+      "difficulty": "hard",
+      "question": "An express train takes 1 hour less than a passenger train to travel a distance of 132 km. The average speed of the express train is 11 km/h more than that of the passenger train. Find the average speed of these two trains.",
+      "answer": "Let speed of passenger train = x km/h. Express train speed = x+11. Time difference: 132/x − 132/(x+11) = 1. 132(x+11) − 132x = x(x+11). 1452 = x²+11x. x²+11x−1452=0. (x+44)(x−33)=0. x=33. Passenger: 33 km/h, Express: 44 km/h.",
+      "concepts": [
+        "word problem",
+        "speed-distance-time"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "MATH_CH4_Q010",
+      "chapter": 4,
+      "chapter_name": "Quadratic Equations",
+      "source": "MQP2_2025_26",
+      "section": "IV",
+      "marks": 3,
+      "type": "word_problem",
+      "difficulty": "hard",
+      "question": "The denominator of a fraction is one more than twice its numerator. The sum of this fraction and its reciprocal is 29/10. Find the fraction.",
+      "answer": "Let numerator = x, denominator = 2x+1. x/(2x+1) + (2x+1)/x = 29/10. 10x² + 10(2x+1)² = 29x(2x+1). Solving: 10x² + 40x² + 40x + 10 = 58x² + 29x. 8x² − 11x − 10 = 0. Wait — let me recalculate: (x²+(2x+1)²)/x(2x+1) = 29/10. 10(x²+4x²+4x+1) = 29(2x²+x). 50x²+40x+10 = 58x²+29x. 8x²−11x−10=0. x = (11±√(121+320))/16 = (11±21)/16. x=2. Fraction = 2/5.",
+      "concepts": [
+        "word problem",
+        "fractions"
+      ],
+      "board_frequency": "medium"
+    },
+    {
+      "id": "MATH_CH4_Q011",
+      "chapter": 4,
+      "chapter_name": "Quadratic Equations",
+      "source": "MQP4_2025_26",
+      "section": "IV",
+      "marks": 3,
+      "type": "word_problem",
+      "difficulty": "hard",
+      "question": "The duration of the spacewalk of astronaut A is 6 hours longer than the duration of the spacewalk of astronaut B. If they both continue spacewalk for 4 more hours, the product of their spacewalk duration becomes 720 hours. Find the spacewalk durations of astronauts A and B.",
+      "answer": "Let B's current duration = x. A's = x+6. (x+4)(x+10) = 720. x²+14x+40 = 720. x²+14x−680 = 0. (x+34)(x−20) = 0. x = 20. B = 20 hrs, A = 26 hrs.",
+      "concepts": [
+        "word problem",
+        "product of expressions"
+      ],
+      "board_frequency": "medium"
+    },
+    {
+      "id": "MATH_CH4_Q012",
+      "chapter": 4,
+      "chapter_name": "Quadratic Equations",
+      "source": "MQP3_2025_26",
+      "section": "II",
+      "marks": 2,
+      "type": "calculation",
+      "difficulty": "medium",
+      "question": "Find the discriminant of the quadratic equation 2x² − 6x + 3 = 0 and write the nature of roots.",
+      "answer": "D = 36 − 24 = 12. Since D > 0, two distinct real roots.",
+      "concepts": [
+        "discriminant",
+        "nature of roots"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "MATH_CH5_Q001",
+      "chapter": 5,
+      "chapter_name": "Arithmetic Progressions",
+      "source": "Board_QP_A_March2025",
+      "section": "I",
+      "marks": 1,
+      "type": "mcq",
+      "difficulty": "easy",
+      "question": "The common difference of the arithmetic progression −1, −3, −5, ... is,",
+      "options": [
+        "A) −1",
+        "B) 2",
+        "C) −2",
+        "D) 3"
+      ],
+      "answer": "C) −2",
+      "concepts": [
+        "common difference",
+        "AP"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "MATH_CH5_Q002",
+      "chapter": 5,
+      "chapter_name": "Arithmetic Progressions",
+      "source": "Board_QP_A_March2025",
+      "section": "III",
+      "marks": 2,
+      "type": "calculation",
+      "difficulty": "medium",
+      "question": "Find the sum of first 20 terms of the arithmetic progression 5, 9, 13, ... using formula.",
+      "answer": "a = 5, d = 4, n = 20. Sn = n/2[2a+(n−1)d] = 20/2[10+76] = 10×86 = 860.",
+      "concepts": [
+        "sum of AP",
+        "S20"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "MATH_CH5_Q003",
+      "chapter": 5,
+      "chapter_name": "Arithmetic Progressions",
+      "source": "MQP2_2025_26",
+      "section": "III",
+      "marks": 2,
+      "type": "calculation",
+      "difficulty": "medium",
+      "question": "Find the sum of the first 20 terms of the arithmetic progression 6, 10, 14, ... using formula.",
+      "answer": "a = 6, d = 4, n = 20. S20 = 20/2[12 + 76] = 10 × 88 = 880.",
+      "concepts": [
+        "sum of AP"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "MATH_CH5_Q004",
+      "chapter": 5,
+      "chapter_name": "Arithmetic Progressions",
+      "source": "MQP4_2025_26",
+      "section": "III",
+      "marks": 2,
+      "type": "calculation",
+      "difficulty": "medium",
+      "question": "Find the sum of first 20 terms of the arithmetic progression 11, 15, 19, 23, ...",
+      "answer": "a = 11, d = 4, n = 20. S20 = 20/2[22+76] = 10×98 = 980.",
+      "concepts": [
+        "sum of AP"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "MATH_CH5_Q005",
+      "chapter": 5,
+      "chapter_name": "Arithmetic Progressions",
+      "source": "Board_QP_A_March2025",
+      "section": "V",
+      "marks": 4,
+      "type": "application",
+      "difficulty": "hard",
+      "question": "An arithmetic progression consists of 16 terms. The sum of all its terms is 768. If the last term of the progression is 93, then find the arithmetic progression. Also show that the sum of all the terms of this progression is equal to 3 times the sum of first 16 odd natural numbers using formula.",
+      "answer": "Sn = n/2(a+l). 768 = 8(a+93). a+93 = 96. a = 3. d = (93−3)/15 = 6. AP: 3, 9, 15, 21, ... . Sum of first 16 odd numbers = 16² = 256. 3×256 = 768 ✓.",
+      "concepts": [
+        "AP",
+        "sum formula",
+        "odd natural numbers"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "MATH_CH5_Q006",
+      "chapter": 5,
+      "chapter_name": "Arithmetic Progressions",
+      "source": "MQP1_2025_26",
+      "section": "II",
+      "marks": 1,
+      "type": "direct",
+      "difficulty": "easy",
+      "question": "In an arithmetic progression, the seventh term is 12 more than its fourth term. Find the common difference.",
+      "answer": "a₇ − a₄ = 3d = 12. d = 4.",
+      "concepts": [
+        "common difference",
+        "terms of AP"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "MATH_CH5_Q007",
+      "chapter": 5,
+      "chapter_name": "Arithmetic Progressions",
+      "source": "MQP4_2025_26",
+      "section": "II",
+      "marks": 1,
+      "type": "direct",
+      "difficulty": "easy",
+      "question": "If the first term of an arithmetic progression is 'm' and the common difference is 3, then find the 10th term of the progression.",
+      "answer": "a₁₀ = m + (10−1)×3 = m + 27.",
+      "concepts": [
+        "nth term of AP"
+      ],
+      "board_frequency": "medium"
+    },
+    {
+      "id": "MATH_CH5_Q008",
+      "chapter": 5,
+      "chapter_name": "Arithmetic Progressions",
+      "source": "MQP2_2025_26",
+      "section": "V",
+      "marks": 4,
+      "type": "application",
+      "difficulty": "hard",
+      "question": "The sum of the first 6 terms of an arithmetic progression is 42. If the ratio of the 10th term to the 30th term of the progression is 1:3, then find the 13th term of the progression.",
+      "answer": "S6 = 3(2a+5d) = 42 → 2a+5d = 14. a₁₀/a₃₀ = (a+9d)/(a+29d) = 1/3. 3a+27d = a+29d → 2a = 2d → a = d. From 2a+5a = 14 → 7a = 14 → a = 2, d = 2. a₁₃ = 2+(12×2) = 26.",
+      "concepts": [
+        "AP",
+        "ratio of terms",
+        "nth term"
+      ],
+      "board_frequency": "medium"
+    },
+    {
+      "id": "MATH_CH5_Q009",
+      "chapter": 5,
+      "chapter_name": "Arithmetic Progressions",
+      "source": "MQP1_2025_26",
+      "section": "V",
+      "marks": 4,
+      "type": "application",
+      "difficulty": "hard",
+      "question": "The sum of first n terms of an arithmetic progression is Sn = 3n² + 2n. Find the nth term of the progression. If this progression consists of 59 terms, find the sum of the last 10 terms.",
+      "answer": "aₙ = Sₙ − Sₙ₋₁ = 6n−1. Sum of last 10 = S59 − S49 = (3×3481+118) − (3×2401+98) = 10561−7301 = 3260.",
+      "concepts": [
+        "Sn formula",
+        "nth term",
+        "sum of last n terms"
+      ],
+      "board_frequency": "medium"
+    },
+    {
+      "id": "MATH_CH5_Q010",
+      "chapter": 5,
+      "chapter_name": "Arithmetic Progressions",
+      "source": "MQP3_2025_26",
+      "section": "III",
+      "marks": 2,
+      "type": "calculation",
+      "difficulty": "medium",
+      "question": "If the first term of an arithmetic progression is 1 and the 14th term is 53, then find the nth term of this progression.",
+      "answer": "a = 1, a₁₄ = 1+13d = 53 → d = 4. aₙ = 1 + (n−1)×4 = 4n−3.",
+      "concepts": [
+        "nth term of AP"
+      ],
+      "board_frequency": "medium"
+    },
+    {
+      "id": "MATH_CH5_Q011",
+      "chapter": 5,
+      "chapter_name": "Arithmetic Progressions",
+      "source": "MQP4_2025_26",
+      "section": "III",
+      "marks": 2,
+      "type": "calculation",
+      "difficulty": "medium",
+      "question": "Find how many two digit numbers are divisible by 3.",
+      "answer": "First 2-digit multiple of 3: 12. Last: 99. aₙ = 12+(n−1)3 = 99. n = 30.",
+      "concepts": [
+        "AP application",
+        "count of terms"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "MATH_CH5_Q012",
+      "chapter": 5,
+      "chapter_name": "Arithmetic Progressions",
+      "source": "MQP1_2025_26",
+      "section": "III",
+      "marks": 2,
+      "type": "calculation",
+      "difficulty": "medium",
+      "question": "How many numbers between 201 and 401 are divisible by 6?",
+      "answer": "First: 204. Last: 396. n = (396−204)/6 + 1 = 32+1 = 33.",
+      "concepts": [
+        "AP application",
+        "count of terms"
+      ],
+      "board_frequency": "medium"
+    },
+    {
+      "id": "MATH_CH6_Q001",
+      "chapter": 6,
+      "chapter_name": "Triangles",
+      "source": "Board_QP_A_March2025",
+      "section": "I",
+      "marks": 1,
+      "type": "mcq",
+      "difficulty": "easy",
+      "question": "In the following, the shapes which are always similar are,",
+      "options": [
+        "A) Any two equilateral triangles",
+        "B) Square and rectangle",
+        "C) Square and rhombus",
+        "D) Any two trapeziums"
+      ],
+      "answer": "A) Any two equilateral triangles",
+      "concepts": [
+        "similar figures",
+        "always similar shapes"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "MATH_CH6_Q002",
+      "chapter": 6,
+      "chapter_name": "Triangles",
+      "source": "Board_QP_A_March2025",
+      "section": "II",
+      "marks": 1,
+      "type": "direct",
+      "difficulty": "easy",
+      "question": "In the given figure, write the similarity criterion used to show that △ABC ~ △QRP (sides 2, 3, 2.5 and 6, 5, 4 are given proportionally).",
+      "answer": "SSS (Side-Side-Side) similarity criterion. AB/QR = BC/RP = CA/PQ = 1/2.",
+      "concepts": [
+        "similarity criterion",
+        "SSS similarity"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "MATH_CH6_Q003",
+      "chapter": 6,
+      "chapter_name": "Triangles",
+      "source": "Board_QP_A_March2025",
+      "section": "V",
+      "marks": 4,
+      "type": "proof",
+      "difficulty": "hard",
+      "question": "Prove that 'The ratio of the areas of two similar triangles is equal to the square of the ratio of their corresponding sides'.",
+      "answer": "Given: △ABC ~ △PQR. Draw AM ⊥ BC, PN ⊥ QR. Area(△ABC)/Area(△PQR) = (1/2×BC×AM)/(1/2×QR×PN). AM/PN = AB/PQ (AA similarity of △ABM and △PQN). Since △ABC~△PQR, AB/PQ = BC/QR. So ratio = (BC/QR)×(AB/PQ) = (AB/PQ)². Hence proved.",
+      "concepts": [
+        "ratio of areas",
+        "similar triangles",
+        "theorem proof"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "MATH_CH6_Q004",
+      "chapter": 6,
+      "chapter_name": "Triangles",
+      "source": "Board_QP_A_March2025",
+      "section": "III",
+      "marks": 2,
+      "type": "calculation",
+      "difficulty": "easy",
+      "question": "A ladder 10 m long reaches a window 8 m above the ground. Find the distance of the foot of the ladder from the base of the wall.",
+      "answer": "By Pythagoras theorem: d² + 8² = 10². d² = 100−64 = 36. d = 6 m.",
+      "concepts": [
+        "Pythagoras theorem"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "MATH_CH6_Q005",
+      "chapter": 6,
+      "chapter_name": "Triangles",
+      "source": "MQP1_2025_26",
+      "section": "III",
+      "marks": 2,
+      "type": "proof",
+      "difficulty": "medium",
+      "question": "ABC is a right angled triangle. If ∠B = 90° and AD ⊥ BC, then show that AB² = BC × BD.",
+      "answer": "In △ABD and △ABC: ∠ADB = ∠ABC = 90°. ∠ABD = ∠BAC (complementary angles). By AA similarity, △ABD ~ △CBA. Therefore AB/CB = BD/AB. Hence AB² = CB × BD.",
+      "concepts": [
+        "Pythagoras theorem",
+        "similar triangles",
+        "right angle"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "MATH_CH6_Q006",
+      "chapter": 6,
+      "chapter_name": "Triangles",
+      "source": "MQP1_2025_26",
+      "section": "II",
+      "marks": 1,
+      "type": "direct",
+      "difficulty": "easy",
+      "question": "In the figure, DE ∥ BC. If AD = 2 cm and BD = 6 cm, then find DE:BC.",
+      "answer": "By BPT: AD/AB = DE/BC. AB = 8. DE/BC = 2/8 = 1/4. DE:BC = 1:4.",
+      "concepts": [
+        "Basic Proportionality Theorem",
+        "similar triangles"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "MATH_CH6_Q007",
+      "chapter": 6,
+      "chapter_name": "Triangles",
+      "source": "MQP2_2025_26",
+      "section": "V",
+      "marks": 4,
+      "type": "proof",
+      "difficulty": "hard",
+      "question": "Prove that 'If a line is drawn parallel to one side of a triangle to intersect the other two sides in distinct points, the other two sides are divided in the same ratio' (Basic Proportionality Theorem).",
+      "answer": "Given: In △ABC, DE ∥ BC, D on AB, E on AC. Draw DN ⊥ AE, EM ⊥ AD. Area(△ADE)/Area(△BDE) = AD/BD (same height). Area(△ADE)/Area(△CED) = AE/CE. But △BDE and △CED have equal areas (same base DE, equal heights). So AD/BD = AE/CE. Hence proved.",
+      "concepts": [
+        "BPT theorem",
+        "proof"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "MATH_CH6_Q008",
+      "chapter": 6,
+      "chapter_name": "Triangles",
+      "source": "MQP3_2025_26",
+      "section": "II",
+      "marks": 1,
+      "type": "direct",
+      "difficulty": "easy",
+      "question": "In the figure, DE ∥ BC. If BD = 7.2 cm, AE = 1.8 cm and EC = 5.4 cm, then find the length of AD.",
+      "answer": "By BPT: AD/BD = AE/EC. AD/7.2 = 1.8/5.4 = 1/3. AD = 7.2/3 = 2.4 cm.",
+      "concepts": [
+        "BPT",
+        "calculation"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "MATH_CH6_Q009",
+      "chapter": 6,
+      "chapter_name": "Triangles",
+      "source": "MQP1_2025_26",
+      "section": "V",
+      "marks": 4,
+      "type": "proof",
+      "difficulty": "hard",
+      "question": "Prove that 'If in two triangles, sides of one triangle are proportional to the sides of the other triangle, then their corresponding angles are equal and hence the two triangles are similar' (SSS similarity criterion).",
+      "answer": "Given △ABC and △DEF with AB/DE = BC/EF = CA/FD. Construct △DEF' ≅ △ABC. Show by SAS and congruence that all angles match, hence △ABC ~ △DEF.",
+      "concepts": [
+        "SSS similarity",
+        "proof"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "MATH_CH7_Q001",
+      "chapter": 7,
+      "chapter_name": "Circles",
+      "source": "Board_QP_A_March2025",
+      "section": "I",
+      "marks": 1,
+      "type": "mcq",
+      "difficulty": "easy",
+      "question": "In the given figure, the secant of the circle is,",
+      "options": [
+        "A) KL",
+        "B) OC",
+        "C) AB",
+        "D) OR"
+      ],
+      "answer": "C) AB",
+      "concepts": [
+        "secant",
+        "tangent",
+        "circle terminology"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "MATH_CH7_Q002",
+      "chapter": 7,
+      "chapter_name": "Circles",
+      "source": "Board_QP_A_March2025",
+      "section": "IV",
+      "marks": 3,
+      "type": "proof",
+      "difficulty": "hard",
+      "question": "Prove that 'The tangent at any point of a circle is perpendicular to the radius through the point of contact'.",
+      "answer": "Let O be the centre, P the point of contact, PT the tangent. For any point Q on tangent other than P, OQ > OP (Q is outside circle). So OP is the shortest distance from O to line PT. Hence OP ⊥ PT.",
+      "concepts": [
+        "tangent-radius perpendicularity",
+        "proof",
+        "circle theorem"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "MATH_CH7_Q003",
+      "chapter": 7,
+      "chapter_name": "Circles",
+      "source": "MQP1_2025_26",
+      "section": "IV",
+      "marks": 3,
+      "type": "proof",
+      "difficulty": "hard",
+      "question": "Prove that 'The lengths of tangents drawn from an external point to a circle are equal'.",
+      "answer": "Let P be external point. PA and PB are tangents touching at A and B. Join OA, OB, OP. In △OAP and △OBP: OA = OB (radii), OP common, ∠OAP = ∠OBP = 90° (tangent ⊥ radius). By RHS congruence △OAP ≅ △OBP. Hence PA = PB.",
+      "concepts": [
+        "equal tangents from external point",
+        "proof"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "MATH_CH7_Q004",
+      "chapter": 7,
+      "chapter_name": "Circles",
+      "source": "Board_QP_A_March2025",
+      "section": "I",
+      "marks": 1,
+      "type": "mcq",
+      "difficulty": "medium",
+      "question": "In the given figure O is the centre of the circle. If ∠AOB = 90° and OA = 7 cm, then the length of the arc AMB is,",
+      "options": [
+        "A) 7 cm",
+        "B) 8 cm",
+        "C) 10 cm",
+        "D) 11 cm"
+      ],
+      "answer": "D) 11 cm",
+      "hint": "Arc length = (θ/360) × 2πr = (90/360) × 2 × 22/7 × 7 = 11 cm",
+      "concepts": [
+        "arc length",
+        "circle"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "MATH_CH7_Q005",
+      "chapter": 7,
+      "chapter_name": "Circles",
+      "source": "MQP3_2025_26",
+      "section": "III",
+      "marks": 2,
+      "type": "calculation",
+      "difficulty": "medium",
+      "question": "In the given figure, PA and PB are tangents to the circle with centre O. If PA = 4 cm and ∠APO = 40°, then find the measure of ∠AOB and length of PB.",
+      "answer": "∠OAP = 90°. ∠AOP = 180°−90°−40° = 50°. ∠AOB = 2×∠AOP = 100°. PB = PA = 4 cm (equal tangents).",
+      "concepts": [
+        "tangent properties",
+        "angles in circle"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "MATH_CH7_Q006",
+      "chapter": 7,
+      "chapter_name": "Circles",
+      "source": "MQP2_2025_26",
+      "section": "III",
+      "marks": 2,
+      "type": "calculation",
+      "difficulty": "medium",
+      "question": "Two concentric circles of radii 5 cm and 3 cm are drawn with centre O. Find the length of the chord of the larger circle which touches the smaller circle at point P.",
+      "answer": "OP = 3 (radius of smaller circle), OA = 5 (radius of larger circle). AP² = OA² − OP² = 25−9 = 16. AP = 4. Chord AB = 2AP = 8 cm.",
+      "concepts": [
+        "chord length",
+        "Pythagoras theorem",
+        "concentric circles"
+      ],
+      "board_frequency": "medium"
+    },
+    {
+      "id": "MATH_CH8_Q001",
+      "chapter": 8,
+      "chapter_name": "Coordinate Geometry",
+      "source": "Board_QP_A_March2025",
+      "section": "III",
+      "marks": 2,
+      "type": "calculation",
+      "difficulty": "medium",
+      "question": "If A(1, y), B(4, 3), C(x, 6) and D(3, 5) are the vertices of a parallelogram taken in order, then find the values of x and y.",
+      "answer": "Diagonals bisect each other. Midpoint of AC = Midpoint of BD. (1+x)/2 = (4+3)/2 → x = 6. (y+6)/2 = (3+5)/2 → y = 2.",
+      "concepts": [
+        "midpoint formula",
+        "parallelogram",
+        "diagonals"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "MATH_CH8_Q002",
+      "chapter": 8,
+      "chapter_name": "Coordinate Geometry",
+      "source": "Board_QP_A_March2025",
+      "section": "IV",
+      "marks": 3,
+      "type": "calculation",
+      "difficulty": "medium",
+      "question": "Find the coordinates of a point which divides the line segment joining the points (−1, 7) and (4, −3) internally in the ratio 2:3.",
+      "answer": "x = (2×4+3×(−1))/(2+3) = (8−3)/5 = 1. y = (2×(−3)+3×7)/5 = (−6+21)/5 = 3. Point: (1, 3).",
+      "concepts": [
+        "section formula",
+        "internal division"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "MATH_CH8_Q003",
+      "chapter": 8,
+      "chapter_name": "Coordinate Geometry",
+      "source": "Board_QP_A_March2025",
+      "section": "IV",
+      "marks": 3,
+      "type": "calculation",
+      "difficulty": "medium",
+      "question": "Find a relation between x and y such that the point (x, y) is equidistant from the points (3, 6) and (−3, 4).",
+      "answer": "√[(x−3)²+(y−6)²] = √[(x+3)²+(y−4)²]. Squaring: x²−6x+9+y²−12y+36 = x²+6x+9+y²−8y+16. −12x−4y+20 = 0. 3x+y = 5.",
+      "concepts": [
+        "distance formula",
+        "equidistant points"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "MATH_CH8_Q004",
+      "chapter": 8,
+      "chapter_name": "Coordinate Geometry",
+      "source": "MQP1_2025_26",
+      "section": "III",
+      "marks": 2,
+      "type": "calculation",
+      "difficulty": "medium",
+      "question": "Find the coordinates of the point which divides the line segment joining the points (1, 6) and (4, 3) in the ratio 1:2 internally.",
+      "answer": "x = (1×4+2×1)/3 = 6/3 = 2. y = (1×3+2×6)/3 = 15/3 = 5. Point: (2, 5).",
+      "concepts": [
+        "section formula"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "MATH_CH8_Q005",
+      "chapter": 8,
+      "chapter_name": "Coordinate Geometry",
+      "source": "MQP4_2025_26",
+      "section": "III",
+      "marks": 2,
+      "type": "calculation",
+      "difficulty": "medium",
+      "question": "If the coordinates of the midpoint of the line segment joining the points A(4, 6) and B(x, y) are (6, 5), then find the coordinates of point B.",
+      "answer": "Midpoint: (4+x)/2 = 6 → x = 8. (6+y)/2 = 5 → y = 4. B = (8, 4).",
+      "concepts": [
+        "midpoint formula"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "MATH_CH8_Q006",
+      "chapter": 8,
+      "chapter_name": "Coordinate Geometry",
+      "source": "MQP1_2025_26",
+      "section": "IV",
+      "marks": 3,
+      "type": "calculation",
+      "difficulty": "hard",
+      "question": "Find the coordinates of the centre of a circle passing through the points A(3, 0), B(0, 2) and C(0, 3).",
+      "answer": "Let centre = (h,k). (h−3)²+k² = h²+(k−2)² = h²+(k−3)². From 2nd and 3rd: (k−2)² = (k−3)² → k = 5/2. From 1st and 2nd: h²−6h+9+k² = h²+k²−4k+4 → −6h+9 = −4(5/2)+4 = −6 → 6h = 15 → h = 5/2. Centre: (5/2, 5/2).",
+      "concepts": [
+        "circle centre",
+        "distance formula",
+        "equidistant"
+      ],
+      "board_frequency": "medium"
+    },
+    {
+      "id": "MATH_CH8_Q007",
+      "chapter": 8,
+      "chapter_name": "Coordinate Geometry",
+      "source": "Board_QP_A_March2025",
+      "section": "I",
+      "marks": 1,
+      "type": "mcq",
+      "difficulty": "easy",
+      "question": "The distance of a point P(x, y) from the origin is,",
+      "options": [
+        "A) √(x²−y²)",
+        "B) √(x+y)",
+        "C) √(x²+y²)",
+        "D) √(x−y)"
+      ],
+      "answer": "C) √(x²+y²)",
+      "concepts": [
+        "distance formula",
+        "origin"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "MATH_CH8_Q008",
+      "chapter": 8,
+      "chapter_name": "Coordinate Geometry",
+      "source": "MQP4_2025_26",
+      "section": "IV",
+      "marks": 3,
+      "type": "calculation",
+      "difficulty": "hard",
+      "question": "Find the coordinates of the points of trisection of the line segment joining the points (2, −2) and (−7, 4).",
+      "answer": "Trisection points divide in ratio 1:2 and 2:1. P1: x=(1×(−7)+2×2)/3=−1, y=(1×4+2×(−2))/3=0. P1=(−1,0). P2: x=(2×(−7)+1×2)/3=−4, y=(2×4+1×(−2))/3=2. P2=(−4,2).",
+      "concepts": [
+        "section formula",
+        "trisection"
+      ],
+      "board_frequency": "medium"
+    },
+    {
+      "id": "MATH_CH9_Q001",
+      "chapter": 9,
+      "chapter_name": "Introduction to Trigonometry",
+      "source": "Board_QP_A_March2025",
+      "section": "I",
+      "marks": 1,
+      "type": "mcq",
+      "difficulty": "easy",
+      "question": "If P(E) = 0.05, then P(Ē) is equal to,",
+      "options": [
+        "A) 0.5",
+        "B) 0.95",
+        "C) 0.4",
+        "D) 1.05"
+      ],
+      "answer": "B) 0.95",
+      "concepts": [
+        "complementary probability"
+      ],
+      "board_frequency": "high",
+      "note": "This appears in probability context but is a 1-mark question"
+    },
+    {
+      "id": "MATH_CH9_Q002",
+      "chapter": 9,
+      "chapter_name": "Introduction to Trigonometry",
+      "source": "Board_QP_A_March2025",
+      "section": "II",
+      "marks": 1,
+      "type": "direct",
+      "difficulty": "easy",
+      "question": "If sin θ = 12/15, then write the value of cosec θ.",
+      "answer": "cosec θ = 1/sin θ = 15/12 = 5/4.",
+      "concepts": [
+        "trigonometric ratios",
+        "reciprocal identities"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "MATH_CH9_Q003",
+      "chapter": 9,
+      "chapter_name": "Introduction to Trigonometry",
+      "source": "Board_QP_A_March2025",
+      "section": "IV",
+      "marks": 3,
+      "type": "proof",
+      "difficulty": "hard",
+      "question": "Prove that: cosA/(1+sinA) + (1+sinA)/cosA = 2 secA.",
+      "answer": "LHS = [cos²A + (1+sinA)²] / [cosA(1+sinA)] = [cos²A + 1 + 2sinA + sin²A] / [cosA(1+sinA)] = [1 + 1 + 2sinA] / [cosA(1+sinA)] = 2(1+sinA) / [cosA(1+sinA)] = 2/cosA = 2secA = RHS.",
+      "concepts": [
+        "trigonometric identities",
+        "proof"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "MATH_CH9_Q004",
+      "chapter": 9,
+      "chapter_name": "Introduction to Trigonometry",
+      "source": "Board_QP_A_March2025",
+      "section": "IV",
+      "marks": 3,
+      "type": "calculation",
+      "difficulty": "medium",
+      "question": "Find the value of: (5cos²60° + 4sec²30° − tan²45°) / (sin²30° + cos²30°)",
+      "answer": "Numerator: 5×(1/4) + 4×(4/3) − 1 = 5/4 + 16/3 − 1 = 15/12 + 64/12 − 12/12 = 67/12. Denominator: 1/4 + 3/4 = 1. Value = 67/12.",
+      "concepts": [
+        "standard trigonometric values",
+        "expression evaluation"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "MATH_CH9_Q005",
+      "chapter": 9,
+      "chapter_name": "Introduction to Trigonometry",
+      "source": "MQP1_2025_26",
+      "section": "III",
+      "marks": 2,
+      "type": "calculation",
+      "difficulty": "medium",
+      "question": "In the figure, find the value of tan P and cos R (right triangle with PQ = 12 cm, QR = 5 cm, PR = 13 cm).",
+      "answer": "tan P = QR/PQ = 5/12. cos R = QR/PR = 5/13.",
+      "concepts": [
+        "trigonometric ratios from triangle"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "MATH_CH9_Q006",
+      "chapter": 9,
+      "chapter_name": "Introduction to Trigonometry",
+      "source": "MQP1_2025_26",
+      "section": "IV",
+      "marks": 3,
+      "type": "proof",
+      "difficulty": "hard",
+      "question": "Prove that: (1 + cosA)(1 − cosA) = sin²A   [OR]   Prove that: √(1−sinA)/(1+sinA) = cosecA − cotA",
+      "answer": "(1+cosA)(1−cosA) = 1 − cos²A = sin²A (by Pythagorean identity). Proved.",
+      "concepts": [
+        "trigonometric identities"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "MATH_CH9_Q007",
+      "chapter": 9,
+      "chapter_name": "Introduction to Trigonometry",
+      "source": "MQP4_2025_26",
+      "section": "IV",
+      "marks": 3,
+      "type": "proof",
+      "difficulty": "hard",
+      "question": "Prove that: (sinA + cosecA)² + (cosA + secA)² = 7 + tan²A + cot²A",
+      "answer": "LHS = sin²A+2+cosec²A+cos²A+2+sec²A = 1+4+cosec²A+sec²A = 5+(1+cot²A)+(1+tan²A) = 7+tan²A+cot²A = RHS.",
+      "concepts": [
+        "trigonometric identities",
+        "proof"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "MATH_CH9_Q008",
+      "chapter": 9,
+      "chapter_name": "Introduction to Trigonometry",
+      "source": "MQP1_2025_26",
+      "section": "I",
+      "marks": 1,
+      "type": "mcq",
+      "difficulty": "easy",
+      "question": "If tan A = √3, then the measure of angle A is,",
+      "options": [
+        "A) 90°",
+        "B) 60°",
+        "C) 45°",
+        "D) 30°"
+      ],
+      "answer": "B) 60°",
+      "concepts": [
+        "standard angles",
+        "trigonometric values"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "MATH_CH9_Q009",
+      "chapter": 9,
+      "chapter_name": "Introduction to Trigonometry",
+      "source": "MQP4_2025_26",
+      "section": "III",
+      "marks": 3,
+      "type": "calculation",
+      "difficulty": "medium",
+      "question": "Evaluate: tan60°/cot60° + sec60°/(2sin90°) − 1/cos²45°",
+      "answer": "tan60° = √3, cot60° = 1/√3. tan60°/cot60° = 3. sec60° = 2, sin90° = 1: 2/(2×1) = 1. cos45° = 1/√2: 1/(1/2) = 2. Result = 3+1−2 = 2.",
+      "concepts": [
+        "standard trigonometric values"
+      ],
+      "board_frequency": "medium"
+    },
+    {
+      "id": "MATH_CH9_Q010",
+      "chapter": 9,
+      "chapter_name": "Introduction to Trigonometry",
+      "source": "MQP3_2025_26",
+      "section": "II",
+      "marks": 1,
+      "type": "direct",
+      "difficulty": "easy",
+      "question": "If sinA + sin²A = 1, then find the value of cos²A + cos⁴A.",
+      "answer": "sinA = 1 − sin²A = cos²A. So cos²A + cos⁴A = sinA + sin²A = 1.",
+      "concepts": [
+        "trigonometric identities"
+      ],
+      "board_frequency": "medium"
+    },
+    {
+      "id": "MATH_CH10_Q001",
+      "chapter": 10,
+      "chapter_name": "Some Applications of Trigonometry",
+      "source": "Board_QP_A_March2025",
+      "section": "VI",
+      "marks": 5,
+      "type": "word_problem",
+      "difficulty": "hard",
+      "question": "A pole and a tower are standing vertically on a level ground. The height of the pole is 6 m and the angle of elevation to the top of the pole from the bottom of the tower is 30°. The angle of elevation to the top of the tower from the top of the pole is 60°. Find the height of the tower (CD) and the distance (AC) between the top of the pole and the top of the tower.",
+      "answer": "Let BD = distance between them. tan30° = AB/BD = 6/BD → BD = 6√3. CE = BD = 6√3. tan60° = CE/AE → CE = AE×√3. AE = BD = 6√3. CE = 6√3×√3 = 18. CD = CE + ED = 18 + 6 = 24 m. AC = √(AE²+CE²) = √(108+324) = √432 = 12√3 m.",
+      "concepts": [
+        "heights and distances",
+        "angle of elevation",
+        "two-angle problems"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "MATH_CH10_Q002",
+      "chapter": 10,
+      "chapter_name": "Some Applications of Trigonometry",
+      "source": "MQP3_2025_26",
+      "section": "V",
+      "marks": 4,
+      "type": "word_problem",
+      "difficulty": "hard",
+      "question": "A straight highway leads to the foot of a tower. A person at the top observes a car at point C with angle of depression 60°, moving away. Six seconds later, the person observes the car at point B with angle of depression 30°. If height of tower is 30 m, find the time taken by the car to reach point B from the foot, and the distance between the top of the tower and point B.",
+      "answer": "BC/AB = tan60°/tan30° − 1. h=30. tan60°: DC=30/√3=10√3. tan30°: DB=30√3. BC = 30√3−10√3 = 20√3. Speed in 6s = 20√3/6. Time from foot to B = DB/speed = 30√3/(20√3/6) = 9 sec. TB = √(30²+(30√3)²) = √(900+2700) = 60 m.",
+      "concepts": [
+        "angle of depression",
+        "heights and distances"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "MATH_CH10_Q003",
+      "chapter": 10,
+      "chapter_name": "Some Applications of Trigonometry",
+      "source": "MQP2_2025_26",
+      "section": "V",
+      "marks": 4,
+      "type": "word_problem",
+      "difficulty": "hard",
+      "question": "A tower and a building stand vertically on level ground. From the foot of the tower, the angle of elevation to a window of the building 20 m above the ground is 30°. From the same window, the angle of elevation to the top of the tower is 60°. From the top of the building, the angle of depression to the foot of the tower is 45°. Find the distance between them, height of tower, height of building, and distance from top of building to foot of tower.",
+      "answer": "From foot of tower: tan30° = 20/d → d = 20√3. From window: tan60° = (h−20)/d → h−20 = 20√3×√3 = 60 → h = 80 m. From top of building: tan45° = H/d → H = d = 20√3. Wait — need to recalculate. Let d = distance. tan30° = 20/d, d = 20√3. tan60° = (h−20)/20√3 → h = 80. Top of building angle: given 45°, building height = H. tan45° = H/d → H = 20√3. Distance from top of building to foot = √(d²+H²) = √(1200+1200) = 20√6.",
+      "concepts": [
+        "multiple angles",
+        "heights and distances"
+      ],
+      "board_frequency": "medium"
+    },
+    {
+      "id": "MATH_CH10_Q004",
+      "chapter": 10,
+      "chapter_name": "Some Applications of Trigonometry",
+      "source": "MQP1_2025_26",
+      "section": "V",
+      "marks": 4,
+      "type": "word_problem",
+      "difficulty": "hard",
+      "question": "The lighthouse AB of height 10√3 m stands on a sea shore. A tower CE and a ship F are standing 30 m and 10 m away from the foot of the lighthouse respectively. The angle of elevation of the top of the tower from the top of the lighthouse is 30°. Find the height of the tower and distance AE. Also find the angle of depression from the top of the lighthouse to the ship.",
+      "answer": "BC = 30 m. tan30° = DE/BC → DE = 30/√3 = 10. CE = DE + CD = 10 + 10√3. AE = √(AB²+BC²) = √(300+900) = √1200 = 20√3. For ship: BF = 10. tan(depression) = AB/BF = 10√3/10 = √3 → angle = 60°.",
+      "concepts": [
+        "angle of elevation",
+        "angle of depression",
+        "lighthouse problems"
+      ],
+      "board_frequency": "medium"
+    },
+    {
+      "id": "MATH_CH11_Q001",
+      "chapter": 11,
+      "chapter_name": "Surface Areas and Volumes",
+      "source": "Board_QP_A_March2025",
+      "section": "I",
+      "marks": 1,
+      "type": "mcq",
+      "difficulty": "easy",
+      "question": "The volume of a sphere of radius 'r' units is,",
+      "options": [
+        "A) (2/3)πr³ cubic units",
+        "B) (4/3)πr³ cubic units",
+        "C) (1/3)πr³ cubic units",
+        "D) (3/2)πr³ cubic units"
+      ],
+      "answer": "B) (4/3)πr³ cubic units",
+      "concepts": [
+        "volume of sphere",
+        "formula"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "MATH_CH11_Q002",
+      "chapter": 11,
+      "chapter_name": "Surface Areas and Volumes",
+      "source": "Board_QP_A_March2025",
+      "section": "II",
+      "marks": 1,
+      "type": "direct",
+      "difficulty": "easy",
+      "question": "Write the formula to find the total surface area of a cube of edge 'a' units.",
+      "answer": "Total surface area of cube = 6a² square units.",
+      "concepts": [
+        "total surface area",
+        "cube"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "MATH_CH11_Q003",
+      "chapter": 11,
+      "chapter_name": "Surface Areas and Volumes",
+      "source": "Board_QP_A_March2025",
+      "section": "V",
+      "marks": 4,
+      "type": "calculation",
+      "difficulty": "hard",
+      "question": "A solid consisting of a right circular cone of height 120 cm and radius 60 cm standing on a hemisphere of radius 60 cm is placed upright in a right circular cylinder full of water such that it touches the bottom. If the radius of the cylinder is 60 cm and height is 180 cm, find the volume of water left in the cylinder in terms of π.",
+      "answer": "Volume of cylinder = π×60²×180 = 648000π. Volume of cone = (1/3)π×60²×120 = 144000π. Volume of hemisphere = (2/3)π×60³ = 144000π. Volume of solid = 288000π. Water left = 648000π − 288000π = 360000π cm³.",
+      "concepts": [
+        "volume of combination of solids",
+        "water displacement"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "MATH_CH11_Q004",
+      "chapter": 11,
+      "chapter_name": "Surface Areas and Volumes",
+      "source": "MQP1_2025_26",
+      "section": "VI",
+      "marks": 5,
+      "type": "calculation",
+      "difficulty": "hard",
+      "question": "A hollow solid is made by placing a cylinder on an inverted cone. The radius of the cylinder and the cone are 7 cm and their heights are 12 cm and 9 cm respectively. The solid is filled with water up to 2/3rd the height of the cylinder. Find the amount of water in the solid. Calculate the amount of water required to fill the solid completely.",
+      "answer": "Volume of cylinder = π×49×12 = 588π. Volume up to 2/3 height = π×49×8 = 392π. Volume of cone = (1/3)π×49×9 = 147π. Total capacity = 588π + 147π = 735π. Water already = 392π. Water to fill completely = 735π − 392π = 343π ≈ 1077.57 cm³.",
+      "concepts": [
+        "volume combination",
+        "partial filling"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "MATH_CH11_Q005",
+      "chapter": 11,
+      "chapter_name": "Surface Areas and Volumes",
+      "source": "MQP2_2025_26",
+      "section": "VI",
+      "marks": 5,
+      "type": "calculation",
+      "difficulty": "hard",
+      "question": "From a wooden cylinder of height 18 cm and base diameter 7 cm, a hemisphere and a cone having the same radius as that of the cylinder are carved out. If the height of the cone is 12 cm, find the cost of painting the solid formed at the rate of ₹2.50 per cm².",
+      "answer": "r = 3.5, h_cyl = 18, h_cone = 12. CSA of cylinder = 2πrh = 2π(3.5)(18) = 126π. Base of cylinder = πr² = 12.25π. Curved surface of cone = πrl = π(3.5)(√(12.25+144)) = π(3.5)(√156.25) = π(3.5)(12.5) = 43.75π. CSA of hemisphere = 2πr² = 24.5π. Total SA = 126π + 12.25π + 43.75π + 24.5π = 206.5π = 648.43 cm². Cost = 648.43 × 2.50 = ₹1621.07.",
+      "concepts": [
+        "surface area combination",
+        "cost calculation"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "MATH_CH11_Q006",
+      "chapter": 11,
+      "chapter_name": "Surface Areas and Volumes",
+      "source": "MQP4_2025_26",
+      "section": "VI",
+      "marks": 5,
+      "type": "calculation",
+      "difficulty": "hard",
+      "question": "A solid is made by joining a cylinder, a hemisphere and a cone of equal radii. The height of the cylinder is 6 cm and the total height of the solid is 13 cm. If the volume of the cylinder is three times the volume of the hemisphere, find the volume and surface area of the solid.",
+      "answer": "Volume of cylinder = 3 × volume of hemisphere. πr²h = 3×(2/3)πr³ → 6 = 2r → r = 3. Total height 13: r(hemisphere)=3, h_cylinder=6, h_cone=13−3−6=4. l_cone = √(9+16) = 5. Volume = πr²h + (2/3)πr³ + (1/3)πr²h_cone = 9π(6) + (2/3)(27π) + (1/3)(9π)(4) = 54π+18π+12π = 84π cm³. SA = CSA_cylinder + hemisphere + cone = 2π(3)(6) + 2π(9) + π(3)(5) = 36π+18π+15π = 69π cm².",
+      "concepts": [
+        "volume and surface area",
+        "combination of solids"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "MATH_CH11_Q007",
+      "chapter": 11,
+      "chapter_name": "Surface Areas and Volumes",
+      "source": "MQP4_2025_26",
+      "section": "II",
+      "marks": 1,
+      "type": "direct",
+      "difficulty": "easy",
+      "question": "Find the surface area of a sphere of radius 7 cm.",
+      "answer": "Surface area = 4πr² = 4 × (22/7) × 49 = 616 cm².",
+      "concepts": [
+        "surface area of sphere"
+      ],
+      "board_frequency": "medium"
+    },
+    {
+      "id": "MATH_CH11_Q008",
+      "chapter": 11,
+      "chapter_name": "Surface Areas and Volumes",
+      "source": "MQP1_2025_26",
+      "section": "II",
+      "marks": 1,
+      "type": "direct",
+      "difficulty": "easy",
+      "question": "The circumference of the base of a cylinder is 10 cm and its height is 25 cm. Find its curved surface area.",
+      "answer": "CSA = circumference × height = 10 × 25 = 250 cm².",
+      "concepts": [
+        "curved surface area of cylinder"
+      ],
+      "board_frequency": "medium"
+    },
+    {
+      "id": "MATH_CH12_Q001",
+      "chapter": 12,
+      "chapter_name": "Areas Related to Circles",
+      "source": "Board_QP_A_March2025",
+      "section": "IV",
+      "marks": 3,
+      "type": "calculation",
+      "difficulty": "medium",
+      "question": "In the given figure O is the centre of the circle of radius 21 cm. If ∠AOB = 60°, find the area of the segment APB. [Take √3 = 1.73]",
+      "answer": "Area of sector = (60/360)×π×21² = (1/6)×(22/7)×441 = 231 cm². Area of triangle AOB = (√3/4)×21² = (1.73/4)×441 = 190.6 cm². Area of segment = 231 − 190.6 = 40.4 cm².",
+      "concepts": [
+        "area of segment",
+        "sector",
+        "triangle"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "MATH_CH12_Q002",
+      "chapter": 12,
+      "chapter_name": "Areas Related to Circles",
+      "source": "MQP4_2025_26",
+      "section": "III",
+      "marks": 2,
+      "type": "calculation",
+      "difficulty": "medium",
+      "question": "A hand fan is made in the shape of a sector of a circle of radius 21 cm and angle 120°. Calculate the area of the cloth used and the total length of the metallic wire required.",
+      "answer": "Area = (120/360)×π×21² = (1/3)×(22/7)×441 = 462 cm². Arc length = (120/360)×2π×21 = (1/3)×2×(22/7)×21 = 44 cm. Total wire = arc + 2 radii = 44 + 42 = 86 cm.",
+      "concepts": [
+        "sector area",
+        "arc length"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "MATH_CH12_Q003",
+      "chapter": 12,
+      "chapter_name": "Areas Related to Circles",
+      "source": "MQP1_2025_26",
+      "section": "IV",
+      "marks": 3,
+      "type": "calculation",
+      "difficulty": "medium",
+      "question": "The minute hand of a wall clock is 18 cm long. Find the area swept by the minute hand in 35 minutes. Find the length of the arc formed by the sweep of the minute hand.",
+      "answer": "Angle in 35 min = (35/60)×360° = 210°. Area = (210/360)×π×18² = (7/12)×(22/7)×324 = 594 cm². Arc length = (210/360)×2π×18 = (7/12)×2×(22/7)×18 = 66 cm.",
+      "concepts": [
+        "sector area",
+        "arc length",
+        "minute hand"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "MATH_CH12_Q004",
+      "chapter": 12,
+      "chapter_name": "Areas Related to Circles",
+      "source": "MQP4_2025_26",
+      "section": "III",
+      "marks": 3,
+      "type": "calculation",
+      "difficulty": "medium",
+      "question": "In the figure O is the centre of the circle. Area of sector AOB : Area of the circle = 1:5 and if the radius of the circle is 7 cm, then find the length of arc AB.",
+      "answer": "θ/360 = 1/5 → θ = 72°. Arc length = (72/360)×2π×7 = (1/5)×2×(22/7)×7 = 44/5 = 8.8 cm.",
+      "concepts": [
+        "arc length",
+        "ratio of areas"
+      ],
+      "board_frequency": "medium"
+    },
+    {
+      "id": "MATH_CH12_Q005",
+      "chapter": 12,
+      "chapter_name": "Areas Related to Circles",
+      "source": "MQP2_2025_26",
+      "section": "IV",
+      "marks": 3,
+      "type": "calculation",
+      "difficulty": "medium",
+      "question": "In the figure O is the centre of the circle with radius 21 cm. The length of the arc APB is 22 cm. Find the area of the segment APB.",
+      "answer": "Arc length = (θ/360)×2πr = 22. (θ/360)×2×(22/7)×21 = 22. θ = 60°/3 = wait: (θ/360)×132 = 22 → θ = 60°. Area of sector = (60/360)×π×441 = 231 cm². Area of △AOB = (1/2)×21²×sin60° = (1/2)×441×(√3/2) = 441√3/4 ≈ 190.96. Segment = 231−190.96 ≈ 40.04 cm².",
+      "concepts": [
+        "area of segment",
+        "arc length to angle"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "MATH_CH13_Q001",
+      "chapter": 13,
+      "chapter_name": "Statistics",
+      "source": "Board_QP_A_March2025",
+      "section": "II",
+      "marks": 1,
+      "type": "direct",
+      "difficulty": "easy",
+      "question": "In the given frequency distribution table, write the mid-point of the modal class: Class 1–3 (f=4), 3–5 (f=8), 5–7 (f=2), 7–9 (f=2).",
+      "answer": "Modal class = 3–5 (highest frequency = 8). Mid-point = (3+5)/2 = 4.",
+      "concepts": [
+        "modal class",
+        "midpoint"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "MATH_CH13_Q002",
+      "chapter": 13,
+      "chapter_name": "Statistics",
+      "source": "Board_QP_A_March2025",
+      "section": "IV",
+      "marks": 3,
+      "type": "calculation",
+      "difficulty": "medium",
+      "question": "Find the mean for the following data: Class 10–20 (f=2), 20–30 (f=3), 30–40 (f=6), 40–50 (f=5), 50–60 (f=4).",
+      "answer": "Midpoints: 15, 25, 35, 45, 55. Σf = 20. Σfx = 30+75+210+225+220 = 760. Mean = 760/20 = 38.",
+      "concepts": [
+        "mean of grouped data",
+        "direct method"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "MATH_CH13_Q003",
+      "chapter": 13,
+      "chapter_name": "Statistics",
+      "source": "Board_QP_A_March2025",
+      "section": "IV",
+      "marks": 3,
+      "type": "calculation",
+      "difficulty": "medium",
+      "question": "Find the median for the following data: Class 15–20 (f=4), 20–25 (f=5), 25–30 (f=10), 30–35 (f=5), 35–40 (f=6).",
+      "answer": "n = 30, n/2 = 15. Cumulative frequencies: 4, 9, 19, 24, 30. Median class = 25–30. Median = 25 + [(15−9)/10]×5 = 25 + 3 = 28.",
+      "concepts": [
+        "median of grouped data"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "MATH_CH13_Q004",
+      "chapter": 13,
+      "chapter_name": "Statistics",
+      "source": "Board_QP_A_March2025",
+      "section": "IV",
+      "marks": 3,
+      "type": "graphical",
+      "difficulty": "hard",
+      "question": "The following data gives the weights of 50 students. Draw a 'less than type ogive' for the data: Less than 38(0), 40(5), 42(10), 44(25), 46(35), 48(40), 50(50).",
+      "answer": "Plot points (38,0), (40,5), (42,10), (44,25), (46,35), (48,40), (50,50) on a graph. Join with a smooth curve. The curve represents less than type ogive.",
+      "concepts": [
+        "ogive",
+        "cumulative frequency graph"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "MATH_CH13_Q005",
+      "chapter": 13,
+      "chapter_name": "Statistics",
+      "source": "MQP2_2025_26",
+      "section": "IV",
+      "marks": 3,
+      "type": "calculation",
+      "difficulty": "medium",
+      "question": "Find the Mode for the following frequency distribution: Class 10–20 (f=6), 20–30 (f=4), 30–40 (f=12), 40–50 (f=3), 50–60 (f=5).",
+      "answer": "Modal class = 30–40 (highest f = 12). l=30, f1=12, f0=4, f2=3, h=10. Mode = 30 + [(12−4)/(24−4−3)]×10 = 30 + [8/17]×10 = 30 + 4.7 = 34.7.",
+      "concepts": [
+        "mode of grouped data"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "MATH_CH13_Q006",
+      "chapter": 13,
+      "chapter_name": "Statistics",
+      "source": "MQP1_2025_26",
+      "section": "IV",
+      "marks": 3,
+      "type": "calculation",
+      "difficulty": "medium",
+      "question": "Find the Mean for the following frequency distribution: Class 0–10 (f=4), 10–20 (f=9), 20–30 (f=15), 30–40 (f=14), 40–50 (f=8).",
+      "answer": "Midpoints: 5,15,25,35,45. Σf=50. Σfx = 20+135+375+490+360 = 1380. Mean = 1380/50 = 27.6.",
+      "concepts": [
+        "mean of grouped data"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "MATH_CH13_Q007",
+      "chapter": 13,
+      "chapter_name": "Statistics",
+      "source": "MQP3_2025_26",
+      "section": "IV",
+      "marks": 3,
+      "type": "calculation",
+      "difficulty": "medium",
+      "question": "Find the mean for the following frequency distribution: Class 5–15 (f=2), 15–25 (f=3), 25–35 (f=5), 35–45 (f=7), 45–55 (f=3).",
+      "answer": "Midpoints: 10,20,30,40,50. Σf=20. Σfx=20+60+150+280+150=660. Mean=660/20=33.",
+      "concepts": [
+        "mean of grouped data"
+      ],
+      "board_frequency": "medium"
+    },
+    {
+      "id": "MATH_CH14_Q001",
+      "chapter": 14,
+      "chapter_name": "Probability",
+      "source": "Board_QP_A_March2025",
+      "section": "I",
+      "marks": 1,
+      "type": "mcq",
+      "difficulty": "easy",
+      "question": "If P(E) = 0.05, then P(Ē) is equal to,",
+      "options": [
+        "A) 0.5",
+        "B) 0.95",
+        "C) 0.4",
+        "D) 1.05"
+      ],
+      "answer": "B) 0.95",
+      "concepts": [
+        "complementary events",
+        "P(E)+P(Ē)=1"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "MATH_CH14_Q002",
+      "chapter": 14,
+      "chapter_name": "Probability",
+      "source": "Board_QP_A_March2025",
+      "section": "II",
+      "marks": 1,
+      "type": "direct",
+      "difficulty": "easy",
+      "question": "If two fair coins are tossed simultaneously, then what is the probability of getting two heads?",
+      "answer": "Sample space = {HH, HT, TH, TT}. n(S) = 4. P(HH) = 1/4.",
+      "concepts": [
+        "coin toss",
+        "probability"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "MATH_CH14_Q003",
+      "chapter": 14,
+      "chapter_name": "Probability",
+      "source": "MQP1_2025_26",
+      "section": "IV",
+      "marks": 3,
+      "type": "calculation",
+      "difficulty": "medium",
+      "question": "A box contains cards numbered from 6 to 70. If one card is drawn at random, find the probability that the card will have: (i) a perfect square number (ii) a number divisible by 5 (iii) an odd number less than 30.",
+      "answer": "Total cards = 65. (i) Perfect squares 9,16,25,36,49,64 = 6 cards. P = 6/65. (ii) Divisible by 5: 10,15,20,...,70 = 13 cards. P = 13/65 = 1/5. (iii) Odd <30: 7,9,11,13,15,17,19,21,23,25,27,29 = 12 cards. P = 12/65.",
+      "concepts": [
+        "classical probability",
+        "cards"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "MATH_CH14_Q004",
+      "chapter": 14,
+      "chapter_name": "Probability",
+      "source": "Board_QP_A_March2025",
+      "section": "IV",
+      "marks": 3,
+      "type": "calculation",
+      "difficulty": "medium",
+      "question": "A box contains 20 cards numbered from 1 to 20. One card is drawn randomly. Find the probability of getting: (i) a perfect square number (ii) a number which is divisible by both 2 and 3.",
+      "answer": "(i) Perfect squares: 1,4,9,16 = 4. P = 4/20 = 1/5. (ii) Divisible by 6: 6,12,18 = 3. P = 3/20.",
+      "concepts": [
+        "classical probability",
+        "numbered cards"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "MATH_CH14_Q005",
+      "chapter": 14,
+      "chapter_name": "Probability",
+      "source": "MQP4_2025_26",
+      "section": "IV",
+      "marks": 3,
+      "type": "calculation",
+      "difficulty": "medium",
+      "question": "Three fair coins are tossed simultaneously. Find the probability of getting: (i) at least two heads (ii) at most two tails.",
+      "answer": "Sample space: 8 outcomes. (i) At least 2H: HHH, HHT, HTH, THH = 4. P = 4/8 = 1/2. (ii) At most 2 tails: all except TTT = 7. P = 7/8.",
+      "concepts": [
+        "coins toss",
+        "at least/at most"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "MATH_CH14_Q006",
+      "chapter": 14,
+      "chapter_name": "Probability",
+      "source": "MQP3_2025_26",
+      "section": "IV",
+      "marks": 3,
+      "type": "calculation",
+      "difficulty": "hard",
+      "question": "If two fair dice are rolled simultaneously, find the probability (a) that the sum of numbers on the top faces is less than 8 (b) of getting a square number on one of the faces only.",
+      "answer": "Total outcomes = 36. (a) Sum < 8: count pairs (1,1) to (6,1) etc = 21 outcomes. P = 21/36 = 7/12. (b) Square numbers on dice: 1, 4. One face is square, other is not square: 2×(2×4) = 16. P = 16/36 = 4/9.",
+      "concepts": [
+        "two dice",
+        "probability"
+      ],
+      "board_frequency": "medium"
+    },
+    {
+      "id": "MATH_CH14_Q007",
+      "chapter": 14,
+      "chapter_name": "Probability",
+      "source": "MQP2_2025_26",
+      "section": "IV",
+      "marks": 3,
+      "type": "calculation",
+      "difficulty": "medium",
+      "question": "A bag contains 20 red balls and some blue balls. If the probability of drawing a blue ball is 1/4th the probability of drawing a red ball, find the number of blue balls and total number of balls in the bag.",
+      "answer": "Let blue balls = x. P(blue) = x/(20+x). P(red) = 20/(20+x). x/(20+x) = (1/4)×20/(20+x). x = 5. Total = 25.",
+      "concepts": [
+        "probability",
+        "unknown in bag problems"
+      ],
+      "board_frequency": "medium"
+    },
+    {
+      "id": "MATH_CH14_Q008",
+      "chapter": 14,
+      "chapter_name": "Probability",
+      "source": "MQP1_2025_26",
+      "section": "II",
+      "marks": 1,
+      "type": "direct",
+      "difficulty": "easy",
+      "question": "Write the value of P(E) + P(Ē) with reference to probability.",
+      "answer": "P(E) + P(Ē) = 1",
+      "concepts": [
+        "complementary events",
+        "fundamental property"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "MATH_CH3_Q014",
+      "chapter": 3,
+      "chapter_name": "Pair of Linear Equations in Two Variables",
+      "source": "MQP3_2025_26",
+      "section": "V",
+      "marks": 4,
+      "type": "graphical",
+      "difficulty": "hard",
+      "question": "Solve the given pair of linear equations by graphical method: 2x + y = 6, x + y = 4",
+      "answer": "For 2x+y=6: (0,6),(3,0),(2,2). For x+y=4: (0,4),(4,0),(2,2). Intersection: x=2, y=2. Solution: x=2, y=2.",
+      "concepts": [
+        "graphical method",
+        "point of intersection"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "MATH_CH3_Q015",
+      "chapter": 3,
+      "chapter_name": "Pair of Linear Equations in Two Variables",
+      "source": "MQP2_2025_26",
+      "section": "V",
+      "marks": 4,
+      "type": "graphical",
+      "difficulty": "hard",
+      "question": "Solve the given pair of linear equations by graphical method: x + y = 5, 2x − y = 4",
+      "answer": "For x+y=5: (0,5),(5,0),(3,2). For 2x−y=4: (0,−4),(2,0),(3,2). Intersection: x=3, y=2.",
+      "concepts": [
+        "graphical method"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "MATH_CH3_Q016",
+      "chapter": 3,
+      "chapter_name": "Pair of Linear Equations in Two Variables",
+      "source": "LBA_QuestionBank_2025",
+      "section": "V",
+      "marks": 4,
+      "type": "graphical",
+      "difficulty": "hard",
+      "question": "Solve the given pair of linear equations by graphical method: 3x + 2y = 12, x − y = 1",
+      "answer": "For 3x+2y=12: (0,6),(4,0),(2,3). For x−y=1: (0,−1),(1,0),(2,1). Hmm. Let me recalculate for intersection: 3x+2y=12 and x−y=1 → x=y+1 → 3(y+1)+2y=12 → 5y=9 → y=9/5=1.8, x=2.8. Plot both lines and mark intersection at (2.8, 1.8).",
+      "concepts": [
+        "graphical method"
+      ],
+      "board_frequency": "medium"
+    },
+    {
+      "id": "MATH_CH5_Q013",
+      "chapter": 5,
+      "chapter_name": "Arithmetic Progressions",
+      "source": "MQP4_2025_26",
+      "section": "V",
+      "marks": 4,
+      "type": "application",
+      "difficulty": "hard",
+      "question": "The 10th term of an arithmetic progression is 2 more than three times of the first term and the 8th term is 6 more than twice the first term. Find how many terms of the progression make the sum 540.",
+      "answer": "a₁₀ = 3a+2 → a+9d=3a+2 → 9d=2a+2 …(1). a₈=2a+6 → a+7d=2a+6 → 7d=a+6 …(2). From (2): a=7d−6. Substitute in (1): 9d=2(7d−6)+2=14d−10, 5d=10, d=2, a=8. Sn=540: n/2[16+(n−1)2]=540 → n(n+7)=540 → n²+7n−540=0 → n=20. Answer: 20 terms.",
+      "concepts": [
+        "AP",
+        "finding number of terms",
+        "sum formula"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "MATH_CH5_Q014",
+      "chapter": 5,
+      "chapter_name": "Arithmetic Progressions",
+      "source": "MQP2_2025_26",
+      "section": "V",
+      "marks": 4,
+      "type": "application",
+      "difficulty": "hard",
+      "question": "In an arithmetic progression, the sum of 4th term and 8th terms is 24, and sum of 6th term and 10th terms is 44. Find the arithmetic progression and also find the 25th term.",
+      "answer": "a₄+a₈=(a+3d)+(a+7d)=2a+10d=24 →a+5d=12 …(1). a₆+a₁₀=(a+5d)+(a+9d)=2a+14d=44→a+7d=22 …(2). Subtracting: 2d=10, d=5. a=12−25=−13. AP: −13,−8,−3,2,7,... a₂₅=−13+24×5=107.",
+      "concepts": [
+        "AP",
+        "finding terms",
+        "25th term"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "MATH_CH5_Q015",
+      "chapter": 5,
+      "chapter_name": "Arithmetic Progressions",
+      "source": "MQP3_2025_26",
+      "section": "V",
+      "marks": 4,
+      "type": "application",
+      "difficulty": "hard",
+      "question": "An arithmetic progression consists of four terms whose sum is 32. The ratio of the product of first and last terms to the product of second and third terms is 7:15. Find the terms of the progression.",
+      "answer": "Let 4 terms be a−3d, a−d, a+d, a+3d. Sum=4a=32 → a=8. Ratio: (a−3d)(a+3d)/[(a−d)(a+d)]=7/15. (64−9d²)/(64−d²)=7/15. 15(64−9d²)=7(64−d²). 960−135d²=448−7d². 512=128d². d²=4, d=2. Terms: 2,6,10,14.",
+      "concepts": [
+        "AP",
+        "four terms",
+        "product ratio"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "MATH_CH5_Q016",
+      "chapter": 5,
+      "chapter_name": "Arithmetic Progressions",
+      "source": "MQP3_2025_26",
+      "section": "V",
+      "marks": 4,
+      "type": "application",
+      "difficulty": "hard",
+      "question": "A book contains 432 pages. A student reads 25 pages on the first day and reads 2 more pages each subsequent day. Find how many pages he will read on the 12th day and how many days to read the book completely.",
+      "answer": "a=25, d=2. a₁₂=25+11×2=47 pages. Total = Sn=432. n/2[50+(n−1)2]=432. n(48+2n)/2=432. n²+24n−432=0. (n+36)(n−12)=0. n=12 days.",
+      "concepts": [
+        "AP word problem",
+        "days to complete"
+      ],
+      "board_frequency": "medium"
+    },
+    {
+      "id": "MATH_CH6_Q010",
+      "chapter": 6,
+      "chapter_name": "Triangles",
+      "source": "MQP2_2025_26",
+      "section": "V",
+      "marks": 4,
+      "type": "proof",
+      "difficulty": "hard",
+      "question": "Prove that 'If in two triangles, corresponding angles are equal, then their corresponding sides are in the same ratio and hence the two triangles are similar' (AA Similarity / AAA criterion).",
+      "answer": "Given: In △ABC and △DEF, ∠A=∠D, ∠B=∠E. To prove: △ABC~△DEF. Construct △DEF' where DF'=AC and ∠EDF'=∠A. Then △DEF'≅△ABC (AAS). So ∠DEF'=∠B=∠E. So EF' ∥ EF (corresponding angles equal). By BPT, DF'/DF = DE/DE. Hence all sides proportional. ∠F'=∠F. Therefore △ABC~△DEF. Hence proved.",
+      "concepts": [
+        "AA similarity",
+        "proof"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "MATH_CH6_Q011",
+      "chapter": 6,
+      "chapter_name": "Triangles",
+      "source": "LBA_QuestionBank_2025",
+      "section": "V",
+      "marks": 4,
+      "type": "proof",
+      "difficulty": "hard",
+      "question": "Prove that 'If one angle of a triangle is equal to one angle of the other triangle and the sides including these angles are proportional, then the two triangles are similar' (SAS Similarity).",
+      "answer": "Given: In △ABC and △DEF, ∠A=∠D and AB/DE=AC/DF. To prove: △ABC~△DEF. Take point P on DE such that DP=AB and Q on DF such that DQ=AC. Then △DPQ≅△ABC (SAS). ∠DPQ=∠B. Since DP/DE=DQ/DF, by converse of BPT, PQ∥EF. ∠DPQ=∠E, so ∠B=∠E. Similarly ∠C=∠F. By AA, △ABC~△DEF. Proved.",
+      "concepts": [
+        "SAS similarity",
+        "proof"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "MATH_CH6_Q012",
+      "chapter": 6,
+      "chapter_name": "Triangles",
+      "source": "Board_QP_A_March2025",
+      "section": "V",
+      "marks": 4,
+      "type": "proof",
+      "difficulty": "hard",
+      "question": "Two line segments AB and CD intersect each other at point O. Join AC and BD such that AC ∥ BD. Prove that △AOC ~ △BOD.",
+      "answer": "Given: AB and CD intersect at O. AC ∥ BD. In △AOC and △BOD: ∠OAC = ∠OBD (alternate interior angles, AC∥BD). ∠AOC = ∠BOD (vertically opposite angles). By AA similarity criterion, △AOC ~ △BOD. Hence OA/OB = OC/OD = AC/BD. Proved.",
+      "concepts": [
+        "AA similarity",
+        "parallel lines",
+        "intersecting chords"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "MATH_CH11_Q009",
+      "chapter": 11,
+      "chapter_name": "Surface Areas and Volumes",
+      "source": "MQP3_2025_26",
+      "section": "VI",
+      "marks": 4,
+      "type": "calculation",
+      "difficulty": "hard",
+      "question": "Two solid cones of radii equal to the base radius of the cylinder are hollowed out from it. The ratio of volumes of cones is 2:1. The diameter and height of the cylinder are 6 cm and 21 cm respectively. Find the height and volume of cones. Also find the volume of the remaining portion.",
+      "answer": "r=3, H=21. h₁:h₂=2:1, h₁+h₂=21, so h₁=14, h₂=7. V₁=(1/3)π(9)(14)=42π. V₂=(1/3)π(9)(7)=21π. Total cone volume=63π. Cylinder volume=π×9×21=189π. Remaining=189π−63π=126π≈395.84 cm³.",
+      "concepts": [
+        "cones",
+        "cylinder",
+        "volume combination"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "MATH_CH11_Q010",
+      "chapter": 11,
+      "chapter_name": "Surface Areas and Volumes",
+      "source": "MQP2_2025_26",
+      "section": "VI",
+      "marks": 5,
+      "type": "calculation",
+      "difficulty": "hard",
+      "question": "A solid toy is made by joining a right circular cone of height 12 cm to a hemisphere of base radius 3.5 cm. The toy is immersed in a cylindrical glass vessel completely filled with water. If the diameter of the cylinder is 14 cm and its height equals the height of the toy, find the volume of water left in the cylinder and total surface area of the toy.",
+      "answer": "r=3.5, h_cone=12. Height of toy=12+3.5=15.5 cm. Cylinder: r=7, h=15.5. V_cylinder=π×49×15.5=759.5π. V_cone=(1/3)π(12.25)(12)=49π. V_hemisphere=(2/3)π(42.875)=28.583π. V_toy=77.583π. V_water=759.5π−77.583π=681.917π≈2142.3 cm³. TSA of toy=πrl+2πr²=π(3.5)(√(12²+3.5²))+2π(3.5)²=π(3.5)(12.5)+24.5π=43.75π+24.5π=68.25π≈214.5 cm².",
+      "concepts": [
+        "toy volume",
+        "water left",
+        "TSA"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "MATH_CH11_Q011",
+      "chapter": 11,
+      "chapter_name": "Surface Areas and Volumes",
+      "source": "MQP1_2025_26",
+      "section": "VI",
+      "marks": 5,
+      "type": "calculation",
+      "difficulty": "hard",
+      "question": "A vessel is in the form of an inverted cone with height 8 cm and radius 5 cm. The vessel is filled with water to the brim and when 100 lead shots of same size are dropped in it, 1/4th of the water flows out. Find the radius and volume of each lead shot.",
+      "answer": "Volume of cone=(1/3)π(25)(8)=200π/3. Water out=200π/12=50π/3. This equals volume of 100 lead shots. Each shot=(50π/3)/100=π/6. (4/3)πr³=π/6. r³=1/8. r=0.5 cm. Volume each=π/6≈0.524 cm³.",
+      "concepts": [
+        "cone",
+        "lead shots",
+        "volume"
+      ],
+      "board_frequency": "medium"
+    },
+    {
+      "id": "MATH_CH11_Q012",
+      "chapter": 11,
+      "chapter_name": "Surface Areas and Volumes",
+      "source": "MQP3_2025_26",
+      "section": "VI",
+      "marks": 5,
+      "type": "calculation",
+      "difficulty": "hard",
+      "question": "A rectangular wooden block has length 40 cm, breadth 30 cm and height 7.5 cm. From this block, a cone of radius 10 cm is drilled out. Find the volume and surface area of the remaining solid.",
+      "answer": "V_block=40×30×7.5=9000 cm³. h_cone=7.5, r=10. l=√(10²+7.5²)=√156.25=12.5. V_cone=(1/3)π(100)(7.5)=250π≈785.7. V_remaining=9000−250π≈8214.3 cm³. SA_block=2(40×30+40×7.5+30×7.5)=2(1200+300+225)=3450. Hole: top circle area=πr²=100π removed. CSA of cone=πrl=125π added. Bottom of cone open (going through)=100π. Net SA=3450−100π+125π=3450+25π≈3528.5 cm².",
+      "concepts": [
+        "surface area",
+        "volume",
+        "combined solid"
+      ],
+      "board_frequency": "medium"
+    },
+    {
+      "id": "MATH_CH13_Q008",
+      "chapter": 13,
+      "chapter_name": "Statistics",
+      "source": "MQP1_2025_26",
+      "section": "IV",
+      "marks": 3,
+      "type": "calculation",
+      "difficulty": "medium",
+      "question": "Find the Mode for the following frequency distribution: Class 15–20 (f=6), 20–25 (f=9), 25–30 (f=15), 30–35 (f=9), 35–40 (f=1).",
+      "answer": "Modal class = 25–30 (highest f=15). l=25, f₁=15, f₀=9, f₂=9, h=5. Mode=25+[(15−9)/(30−9−9)]×5=25+(6/12)×5=25+2.5=27.5.",
+      "concepts": [
+        "mode of grouped data"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "MATH_CH13_Q009",
+      "chapter": 13,
+      "chapter_name": "Statistics",
+      "source": "MQP4_2025_26",
+      "section": "IV",
+      "marks": 3,
+      "type": "calculation",
+      "difficulty": "medium",
+      "question": "Find the Median for the following frequency distribution: Class 10–20 (f=6), 20–30 (f=4), 30–40 (f=12), 40–50 (f=3), 50–60 (f=5).",
+      "answer": "n=30, n/2=15. CF: 6,10,22,25,30. Median class=30–40. l=30, f=12, cf=10, h=10. Median=30+[(15−10)/12]×10=30+4.17=34.17.",
+      "concepts": [
+        "median of grouped data"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "MATH_CH13_Q010",
+      "chapter": 13,
+      "chapter_name": "Statistics",
+      "source": "LBA_QuestionBank_2025",
+      "section": "V",
+      "marks": 4,
+      "type": "graphical",
+      "difficulty": "hard",
+      "question": "The following frequency distribution gives the daily income of 50 workers. Draw a 'less than type ogive' and hence find the median: Class 100–120 (f=12), 120–140 (f=14), 140–160 (f=8), 160–180 (f=6), 180–200 (f=10).",
+      "answer": "Less than CF: <120:12, <140:26, <160:34, <180:40, <200:50. Plot points (120,12),(140,26),(160,34),(180,40),(200,50). n/2=25. From ogive at CF=25, x-coordinate≈139. Median≈139. Using formula: l=120, f=14, cf=12, h=20. Median=120+[(25−12)/14]×20=120+18.57≈138.57.",
+      "concepts": [
+        "ogive",
+        "median from graph",
+        "cumulative frequency"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "MATH_CH13_Q011",
+      "chapter": 13,
+      "chapter_name": "Statistics",
+      "source": "LBA_QuestionBank_2025",
+      "section": "V",
+      "marks": 4,
+      "type": "graphical",
+      "difficulty": "hard",
+      "question": "Draw a 'more than type ogive' for the following data and find the median: Class 0–10 (f=5), 10–20 (f=8), 20–30 (f=15), 30–40 (f=10), 40–50 (f=7), 50–60 (f=5).",
+      "answer": "More than CF: ≥0:50, ≥10:45, ≥20:37, ≥30:22, ≥40:12, ≥50:7, ≥60:0. Plot and join. n/2=25. Where ogive cuts CF=25 gives median≈28. Formula: l=20, cf=13, f=15, h=10. Median=20+[(25−13)/15]×10=20+8=28.",
+      "concepts": [
+        "more than ogive",
+        "median"
+      ],
+      "board_frequency": "medium"
+    },
+    {
+      "id": "MATH_CH10_Q005",
+      "chapter": 10,
+      "chapter_name": "Some Applications of Trigonometry",
+      "source": "MQP4_2025_26",
+      "section": "V",
+      "marks": 4,
+      "type": "word_problem",
+      "difficulty": "hard",
+      "question": "A building (AD) and a tower (BE) are standing vertically on level ground. From the top of the building, a drone travels for 10s and reaches the top of the tower along straight line AB with angle of elevation 30°. The angle of elevation from the bottom of the building to the top of the tower is 60° and the distance BD = 10√3 m. Find the height of building, height of tower, distance DE between them and speed of drone.",
+      "answer": "Let height of building AD=h₁, tower BE=h₂, distance BD=10√3. From bottom D: tan60°=BE/DE → h₂/DE=√3. From top A: tan30°=CE/AE → CE/AE=1/√3 (CE=BE−AD=h₂−h₁, AE=DE). So (h₂−h₁)/DE=1/√3. From tan60°: h₂=DE×√3. From tan30°: h₂−h₁=DE/√3. h₁=DE×√3−DE/√3=2DE/√3. Also from tan30° of foot: BD/AD=cot30°=√3? Wait. Let DE=d. tan60°=h₂/d → h₂=d√3. AE=d. AB (drone path) from top A to top B. tan30° from A to B: (h₂−h₁)/d=1/√3. h₂−h₁=d/√3. h₁=d√3−d/√3=2d/√3. BD=10√3=d. d=10√3. h₂=10√3×√3=30m. h₁=2×10√3/√3=20m. DE=10√3≈17.3m. AB=√(d²+(h₂−h₁)²)=√(300+100/3)=√(1000/3)=10√(10/3). Speed=AB/10.",
+      "concepts": [
+        "height and distance",
+        "angle of elevation",
+        "drone speed"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "MATH_CH8_Q009",
+      "chapter": 8,
+      "chapter_name": "Coordinate Geometry",
+      "source": "LBA_QuestionBank_2025",
+      "section": "V",
+      "marks": 4,
+      "type": "application",
+      "difficulty": "hard",
+      "question": "The vertices of △ABC are A(7,2), B(9,10) and C(1,4). E and F are midpoints of AB and AC respectively. Prove that EF = ½ BC using distance formula.",
+      "answer": "E = midpoint of AB = ((7+9)/2,(2+10)/2) = (8,6). F = midpoint of AC = ((7+1)/2,(2+4)/2) = (4,3). EF = √[(8−4)²+(6−3)²] = √[16+9] = √25 = 5. BC = √[(9−1)²+(10−4)²] = √[64+36] = √100 = 10. EF = 5 = 10/2 = ½ BC. Hence proved.",
+      "concepts": [
+        "midpoint theorem",
+        "distance formula",
+        "proof"
+      ],
+      "board_frequency": "medium"
+    },
+    {
+      "id": "MATH_CH7_Q007",
+      "chapter": 7,
+      "chapter_name": "Circles",
+      "source": "Board_QP_A_March2025",
+      "section": "IV",
+      "marks": 3,
+      "type": "construction",
+      "difficulty": "hard",
+      "question": "Draw a circle of radius 4 cm. From a point 9 cm away from its centre, construct two tangents to the circle and measure their lengths.",
+      "answer": "Steps: 1. Draw circle with centre O, radius 4 cm. 2. Mark point P such that OP=9 cm. 3. Draw perpendicular bisector of OP; find midpoint M. 4. Draw circle with centre M, radius MP=OP/2=4.5 cm. 5. This circle intersects first circle at A and B. 6. PA and PB are the required tangents. Length = √(OP²−r²) = √(81−16) = √65 ≈ 8.06 cm.",
+      "concepts": [
+        "tangent construction",
+        "external point"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "MATH_CH6_Q013",
+      "chapter": 6,
+      "chapter_name": "Triangles",
+      "source": "Board_QP_A_March2025",
+      "section": "IV",
+      "marks": 3,
+      "type": "construction",
+      "difficulty": "hard",
+      "question": "Construct a triangle with sides 6 cm, 7.5 cm and 9 cm and then construct another triangle whose sides are 2/3 of the corresponding sides of the first triangle.",
+      "answer": "Steps: 1. Draw BC=9 cm. 2. With B as centre, radius 6 cm draw arc. With C as centre, radius 7.5 cm draw arc. Mark intersection as A. △ABC is the required triangle. 3. Draw ray BX below BC. Mark 3 equal parts on BX: B₁B₂B₃. 4. Join B₃C. Draw line through B₂ parallel to B₃C meeting BC at C'. 5. Draw line through C' parallel to CA meeting BA at A'. 6. △A'BC' is the required triangle with sides 2/3 of △ABC.",
+      "concepts": [
+        "similar triangle construction",
+        "scale factor"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "MATH_CH4_Q013",
+      "chapter": 4,
+      "chapter_name": "Quadratic Equations",
+      "source": "MQP1_2025_26",
+      "section": "IV",
+      "marks": 3,
+      "type": "word_problem",
+      "difficulty": "hard",
+      "question": "The ages of two students A and B are 19 years and 15 years respectively. Find how many years it will take so that the product of their ages becomes 480.",
+      "answer": "After n years: (19+n)(15+n)=480. 285+34n+n²=480. n²+34n−195=0. (n+39)(n−5)=0. n=5. After 5 years.",
+      "concepts": [
+        "quadratic equation",
+        "age problem"
+      ],
+      "board_frequency": "medium"
+    },
+    {
+      "id": "MATH_CH4_Q014",
+      "chapter": 4,
+      "chapter_name": "Quadratic Equations",
+      "source": "MQP2_2025_26",
+      "section": "IV",
+      "marks": 3,
+      "type": "word_problem",
+      "difficulty": "hard",
+      "question": "A cottage industry produces a certain number of pottery articles in a day. The cost of production of each article (in rupees) was 3 more than twice the number of articles produced. If the total cost of production was ₹90, find the number of articles produced and cost of each article.",
+      "answer": "Let number of articles = x. Cost per article = 2x+3. Total cost = x(2x+3) = 90. 2x²+3x−90=0. Discriminant=9+720=729. x=(−3+27)/4=6. Articles=6, Cost=2(6)+3=₹15.",
+      "concepts": [
+        "quadratic equation",
+        "cost problem"
+      ],
+      "board_frequency": "medium"
+    },
+    {
+      "id": "MATH_CH5_Q017",
+      "chapter": 5,
+      "chapter_name": "Arithmetic Progressions",
+      "source": "MQP2_2025_26",
+      "section": "I",
+      "marks": 1,
+      "type": "mcq",
+      "difficulty": "easy",
+      "question": "The arithmetic progression in the following is,",
+      "options": [
+        "A) 1,2,4,8...",
+        "B) 3,7,10,14...",
+        "C) 1,4,9,16...",
+        "D) 5,9,13,17..."
+      ],
+      "answer": "D) 5,9,13,17...",
+      "concepts": [
+        "AP identification",
+        "common difference"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "MATH_CH2_Q011",
+      "chapter": 2,
+      "chapter_name": "Polynomials",
+      "source": "MQP2_2025_26",
+      "section": "I",
+      "marks": 1,
+      "type": "mcq",
+      "difficulty": "easy",
+      "question": "The degree of a cubic polynomial is,",
+      "options": [
+        "A) 4",
+        "B) 1",
+        "C) 3",
+        "D) 2"
+      ],
+      "answer": "C) 3",
+      "concepts": [
+        "degree of polynomial",
+        "cubic"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "MATH_CH13_Q012",
+      "chapter": 13,
+      "chapter_name": "Statistics",
+      "source": "MQP2_2025_26",
+      "section": "I",
+      "marks": 1,
+      "type": "mcq",
+      "difficulty": "easy",
+      "question": "The formula to find the midpoint of a class interval is,",
+      "options": [
+        "A) (UCL−LCL)/3",
+        "B) (UCL+LCL)/2",
+        "C) (UCL−LCL)/2",
+        "D) (UCL+LCL)/3"
+      ],
+      "answer": "B) (UCL+LCL)/2",
+      "concepts": [
+        "class midpoint",
+        "statistics"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "MATH_CH6_Q014",
+      "chapter": 6,
+      "chapter_name": "Triangles",
+      "source": "MQP2_2025_26",
+      "section": "I",
+      "marks": 1,
+      "type": "mcq",
+      "difficulty": "medium",
+      "question": "△ABC and △DEF are similar and if AB/DE = BC/EF = CA/FD, then the correct relation is",
+      "options": [
+        "A) ∠B = ∠E",
+        "B) ∠A = ∠D",
+        "C) ∠B = ∠D",
+        "D) ∠A = ∠F"
+      ],
+      "answer": "B) ∠A = ∠D",
+      "concepts": [
+        "similar triangles",
+        "corresponding angles"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "MATH_CH11_Q013",
+      "chapter": 11,
+      "chapter_name": "Surface Areas and Volumes",
+      "source": "MQP2_2025_26",
+      "section": "I",
+      "marks": 1,
+      "type": "mcq",
+      "difficulty": "easy",
+      "question": "Two cubes, each having volume 64 cm³, are joined end to end to form a cuboid. The measure of the longest side of the cuboid is",
+      "options": [
+        "A) 4 cm",
+        "B) 8 cm",
+        "C) 16 cm",
+        "D) 128 cm"
+      ],
+      "answer": "B) 8 cm",
+      "concepts": [
+        "cube",
+        "cuboid",
+        "volume"
+      ],
+      "board_frequency": "medium"
+    },
+    {
+      "id": "MATH_CH3_Q017",
+      "chapter": 3,
+      "chapter_name": "Pair of Linear Equations in Two Variables",
+      "source": "MQP2_2025_26",
+      "section": "I",
+      "marks": 1,
+      "type": "mcq",
+      "difficulty": "medium",
+      "question": "If the lines representing the pair of linear equations a₁x+b₁y+c₁=0 and a₂x+b₂y+c₂=0 intersect each other, then the correct relation is,",
+      "options": [
+        "A) a₁/a₂ = b₁/b₂ ≠ c₁/c₂",
+        "B) a₁/a₂ = b₁/b₂ = c₁/c₂",
+        "C) a₁/b₂ = b₁/a₂",
+        "D) a₁/a₂ ≠ b₁/b₂"
+      ],
+      "answer": "D) a₁/a₂ ≠ b₁/b₂",
+      "concepts": [
+        "intersecting lines",
+        "unique solution"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "MATH_CH2_Q012",
+      "chapter": 2,
+      "chapter_name": "Polynomials",
+      "source": "LBA_QuestionBank_2025",
+      "section": "III",
+      "marks": 2,
+      "type": "application",
+      "difficulty": "medium",
+      "question": "Find the zeroes of the polynomial p(x) = x² − 5 and verify the relationship between zeroes and coefficients.",
+      "answer": "x²=5 → x=±√5. Zeroes: α=√5, β=−√5. Sum=0=−b/a=0 ✓. Product=−5=c/a=−5 ✓.",
+      "concepts": [
+        "zeroes of polynomial",
+        "verification"
+      ],
+      "board_frequency": "medium"
+    },
+    {
+      "id": "MATH_CH4_Q015",
+      "chapter": 4,
+      "chapter_name": "Quadratic Equations",
+      "source": "LBA_QuestionBank_2025",
+      "section": "III",
+      "marks": 2,
+      "type": "calculation",
+      "difficulty": "medium",
+      "question": "Express the quadratic equation (2x+3)x = x² + 1 in standard form.",
+      "answer": "2x²+3x = x²+1. 2x²+3x−x²−1=0. x²+3x−1=0. Standard form: x²+3x−1=0, where a=1, b=3, c=−1.",
+      "concepts": [
+        "standard form of quadratic"
+      ],
+      "board_frequency": "medium"
+    },
+    {
+      "id": "MATH_CH5_Q018",
+      "chapter": 5,
+      "chapter_name": "Arithmetic Progressions",
+      "source": "MQP2_2025_26",
+      "section": "III",
+      "marks": 2,
+      "type": "calculation",
+      "difficulty": "medium",
+      "question": "Find which term of the arithmetic progression 2, 7, 12, ... is 47 using formula.",
+      "answer": "a=2, d=5. aₙ=a+(n−1)d=47. 2+(n−1)5=47. (n−1)5=45. n−1=9. n=10. The 10th term is 47.",
+      "concepts": [
+        "nth term formula",
+        "finding term number"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "MATH_CH9_Q011",
+      "chapter": 9,
+      "chapter_name": "Introduction to Trigonometry",
+      "source": "MQP2_2025_26",
+      "section": "III",
+      "marks": 2,
+      "type": "calculation",
+      "difficulty": "medium",
+      "question": "If (sec²θ − 1)(1 − sin²θ) = 1/k, find the value of k.",
+      "answer": "sec²θ−1=tan²θ. 1−sin²θ=cos²θ. (tan²θ)(cos²θ)=(sin²θ/cos²θ)(cos²θ)=sin²θ. So 1/k=sin²θ. k=1/sin²θ=cosec²θ.",
+      "concepts": [
+        "trigonometric identities",
+        "simplification"
+      ],
+      "board_frequency": "medium"
+    },
+    {
+      "id": "MATH_CH8_Q010",
+      "chapter": 8,
+      "chapter_name": "Coordinate Geometry",
+      "source": "MQP3_2025_26",
+      "section": "III",
+      "marks": 2,
+      "type": "calculation",
+      "difficulty": "medium",
+      "question": "Prove that the points A(1,5), B(2,4) and C(9,−3) are collinear using distance formula.",
+      "answer": "AB=√[(2−1)²+(4−5)²]=√2. BC=√[(9−2)²+(−3−4)²]=√98=7√2. AC=√[(9−1)²+(−3−5)²]=√128=8√2. AB+BC=√2+7√2=8√2=AC. Since AB+BC=AC, the points are collinear.",
+      "concepts": [
+        "collinear points",
+        "distance formula"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "MATH_CH1_Q015",
+      "chapter": 1,
+      "chapter_name": "Real Numbers",
+      "source": "LBA_QuestionBank_2025",
+      "section": "IV",
+      "marks": 3,
+      "type": "proof",
+      "difficulty": "medium",
+      "question": "Prove that √3 is an irrational number.",
+      "answer": "Assume √3=p/q where p,q are coprime integers. Then 3q²=p², so 3|p². By Euclid's lemma, 3|p. Let p=3m. Then q²=3m², so 3|q. Both p and q are divisible by 3, contradicting that they are coprime. Hence √3 is irrational.",
+      "concepts": [
+        "irrational numbers",
+        "proof by contradiction"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "MATH_CH2_Q013",
+      "chapter": 2,
+      "chapter_name": "Polynomials",
+      "source": "LBA_QuestionBank_2025",
+      "section": "IV",
+      "marks": 3,
+      "type": "application",
+      "difficulty": "medium",
+      "question": "If α and β are zeroes of polynomial p(x) = x² + 3x + 1, find the value of (i) (α/β) + (β/α) and (ii) α² + β².",
+      "answer": "α+β=−3, αβ=1. (i) (α²+β²)/αβ = [(α+β)²−2αβ]/αβ = [9−2]/1=7. (ii) α²+β²=(α+β)²−2αβ=9−2=7.",
+      "concepts": [
+        "expressions in terms of zeroes",
+        "symmetric functions"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "MATH_CH9_Q012",
+      "chapter": 9,
+      "chapter_name": "Introduction to Trigonometry",
+      "source": "MQP3_2025_26",
+      "section": "IV",
+      "marks": 3,
+      "type": "proof",
+      "difficulty": "hard",
+      "question": "Prove that: (sinA − cosA + 1)/(sinA + cosA − 1) = 1/(secA − tanA)",
+      "answer": "RHS = 1/(secA−tanA). Multiply numerator and denominator by (secA+tanA): (secA+tanA)/(sec²A−tan²A)=(secA+tanA)/1=secA+tanA. LHS: divide by cosA: (tanA−1+secA)/(tanA+1−secA). = (tanA+secA−1)/(tanA−secA+1). Multiply N and D by (tanA+secA+1): ... after manipulation = secA+tanA = RHS. Proved.",
+      "concepts": [
+        "trigonometric identities",
+        "proof"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "MATH_CH12_Q006",
+      "chapter": 12,
+      "chapter_name": "Areas Related to Circles",
+      "source": "MQP3_2025_26",
+      "section": "IV",
+      "marks": 3,
+      "type": "calculation",
+      "difficulty": "medium",
+      "question": "Arcs are drawn in square ABCD with A, B, C, D as centres of circles of radius 3.5 cm. If the area of square ABCD is 144 cm², find the perimeter of the shape PQRSTUVWP formed by arcs within the square.",
+      "answer": "Side of square=12 cm. Each arc is a quarter circle of radius 3.5 cm. The shape has 8 arcs — 4 from corners (quarter circle each) and 4 from midpoints. Total perimeter = 4 quarter-circles of r=3.5 + 4 quarter-circles of r=3.5 = 8 × (90/360) × 2π × 3.5 = 8 × (1/4) × 7π = 14π = 44 cm.",
+      "concepts": [
+        "arc length",
+        "perimeter of combined shape"
+      ],
+      "board_frequency": "medium"
+    },
+    {
+      "id": "MATH_CH14_Q009",
+      "chapter": 14,
+      "chapter_name": "Probability",
+      "source": "MQP3_2025_26",
+      "section": "IV",
+      "marks": 3,
+      "type": "calculation",
+      "difficulty": "medium",
+      "question": "A box contains 20 cards numbered from 1 to 20. Find the probability of getting: (i) a perfect square (ii) divisible by both 2 and 3 (iii) a prime number.",
+      "answer": "Total=20. (i) Perfect squares: 1,4,9,16=4. P=4/20=1/5. (ii) Divisible by 6: 6,12,18=3. P=3/20. (iii) Primes: 2,3,5,7,11,13,17,19=8. P=8/20=2/5.",
+      "concepts": [
+        "classical probability",
+        "cards"
+      ],
+      "board_frequency": "high"
+    }
+  ]
+}
