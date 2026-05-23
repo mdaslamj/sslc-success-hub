@@ -4,6 +4,18 @@
   "section": "Geography",
   "chapter_number": 8,
   "chapter_name": "India Transport and Communication",
+  "mapImage": "/content/maps/india-outline.svg",
+  "mapTitle": "India \u2013 Transport Network",
+  "mapCaption": "Trace national highways, major ports and rail corridors on this outline.",
+  "mapTopics": ["NH 44", "Golden Quadrilateral", "Major Ports", "Airports", "Inland Waterways"],
+  "mapLabels": [
+    { "label": "Mumbai", "description": "Gateway of India — busiest port" },
+    { "label": "Kolkata", "description": "Tea Port of India" },
+    { "label": "Chennai", "description": "Major eastern port & rail hub" },
+    { "label": "NH 44", "description": "Longest national highway: Srinagar \u2192 Kanyakumari" },
+    { "label": "New Mangalore", "description": "Key port on the west coast" },
+    { "label": "Delhi", "description": "North Indian transport & air hub" }
+  ],
   "learning_outcomes": [
     "Understand the importance of transport in India",
     "Understand types of road transport",
