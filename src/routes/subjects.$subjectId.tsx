@@ -1496,7 +1496,7 @@ function ChapterDetailViewInner({
       <ChapterContentOverview chapter={chapter} />
 
       {chapter.map && (
-        <ChapterMap map={chapter.map} chapterTitle={chapter.title} color={color} />
+        <ChapterMap chapter={chapter} color={color} />
       )}
 
       {chapter.importantDates.length > 0 && (
