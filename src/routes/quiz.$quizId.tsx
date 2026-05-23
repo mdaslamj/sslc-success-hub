@@ -58,8 +58,15 @@ function QuizPlayerPage() {
   if (!quiz) {
     return (
       <DashboardLayout title="Quiz">
-        <div className="mx-auto max-w-md rounded-3xl border border-border/60 bg-card p-8 text-center text-sm text-muted-foreground">
-          Loading…
+        <div className="mx-auto max-w-md space-y-3 rounded-3xl border border-border/60 bg-card p-6">
+          <div className="h-4 w-24 animate-pulse rounded-full bg-muted" />
+          <div className="h-6 w-3/4 animate-pulse rounded-md bg-muted" />
+          <div className="h-32 w-full animate-pulse rounded-2xl bg-muted/70" />
+          <div className="grid grid-cols-2 gap-2 pt-1">
+            <div className="h-10 animate-pulse rounded-xl bg-muted/70" />
+            <div className="h-10 animate-pulse rounded-xl bg-muted/70" />
+          </div>
+          <p className="pt-1 text-center text-xs text-muted-foreground">Preparing your quiz…</p>
         </div>
       </DashboardLayout>
     );
