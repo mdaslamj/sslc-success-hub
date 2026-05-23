@@ -1228,8 +1228,7 @@ function TopicPracticeDialog({
 
   function check() {
     if (picked === null || !q) return;
-    const correctIdx = q.options.findIndex((o) => o === q.answer);
-    const ok = picked === correctIdx;
+    const ok = picked === q.correctIndex;
     if (ok) setScore((s) => s + 1);
     setRevealed(true);
   }
@@ -1305,7 +1304,7 @@ function TopicPracticeDialog({
               <div className="text-sm font-medium leading-snug">{q.question}</div>
               <div className="space-y-2">
                 {q.options.map((opt, i) => {
-                  const correctIdx = q.options.findIndex((o) => o === q.answer);
+                  const correctIdx = q.correctIndex;
                   const isPicked = picked === i;
                   const isCorrect = revealed && i === correctIdx;
                   const isWrong = revealed && isPicked && i !== correctIdx;
