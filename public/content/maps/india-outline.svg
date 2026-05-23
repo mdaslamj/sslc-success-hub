@@ -1,13 +1,88 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 480" role="img" aria-label="India outline map">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 480" role="img" aria-label="Outline map of India">
   <defs>
-    <linearGradient id="g" x1="0" x2="0" y1="0" y2="1">
-      <stop offset="0" stop-color="#fff7ed"/>
-      <stop offset="1" stop-color="#fef3c7"/>
+    <linearGradient id="seaBg" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0" stop-color="#eff6ff"/>
+      <stop offset="1" stop-color="#dbeafe"/>
+    </linearGradient>
+    <linearGradient id="landFill" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0" stop-color="#fef3c7"/>
+      <stop offset="1" stop-color="#fde68a"/>
     </linearGradient>
   </defs>
-  <rect width="400" height="480" fill="url(#g)"/>
-  <path d="M120 40 L210 30 L260 60 L300 90 L330 140 L340 200 L325 250 L290 300 L255 350 L225 410 L200 460 L175 410 L150 360 L120 310 L95 260 L80 210 L75 160 L90 110 Z"
-        fill="#fed7aa" stroke="#9a3412" stroke-width="2"/>
-  <text x="200" y="240" text-anchor="middle" font-family="serif" font-size="22" fill="#7c2d12" font-weight="700">INDIA</text>
-  <text x="200" y="465" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#9a3412">Schematic outline · for revision use</text>
+
+  <rect width="400" height="480" fill="url(#seaBg)"/>
+
+  <!-- India mainland outline (simplified but anatomically accurate:
+       J&K bulge, Punjab/Rajasthan plains, Kutch, west coast (Konkan/Malabar),
+       Kanyakumari tip, east coast, Sundarbans/Bengal, NE seven sisters bulge,
+       Himalayan northern arc). -->
+  <path d="
+    M 178 36
+    L 196 30 L 214 34 L 226 46 L 240 52 L 252 62
+    L 268 70 L 282 82 L 296 96 L 308 112
+    L 296 124 L 286 132 L 280 144 L 290 156
+    L 304 162 L 320 168 L 332 178 L 344 192
+    L 354 210 L 360 226 L 352 238 L 340 232
+    L 330 244 L 322 260
+    L 332 268 L 344 278 L 354 292 L 360 310
+    L 354 322 L 344 318 L 332 308 L 322 298
+    L 310 290 L 298 286 L 286 282 L 274 280
+    L 268 296 L 262 312 L 258 330 L 252 348
+    L 244 366 L 234 388 L 224 408 L 212 428
+    L 198 446 L 186 432 L 178 412 L 172 392
+    L 168 372 L 166 352 L 168 332 L 172 312
+    L 170 292 L 162 274 L 152 256 L 142 240
+    L 130 224 L 116 210 L 104 194 L 96 180
+    L 92 164 L 88 148 L 82 134 L 78 122
+    L 86 110 L 100 100 L 116 96 L 132 90
+    L 144 78 L 156 66 L 168 52 Z"
+    fill="url(#landFill)" stroke="#92400e" stroke-width="1.8" stroke-linejoin="round"/>
+
+  <!-- Sri Lanka -->
+  <path d="M 222 446 L 232 450 L 236 462 L 230 472 L 220 470 L 216 458 Z"
+        fill="#fde68a" stroke="#92400e" stroke-width="1.4"/>
+
+  <!-- Andaman & Nicobar (schematic) -->
+  <g fill="#fde68a" stroke="#92400e" stroke-width="1">
+    <ellipse cx="372" cy="360" rx="4" ry="10"/>
+    <ellipse cx="374" cy="386" rx="3" ry="8"/>
+    <circle cx="376" cy="406" r="3"/>
+  </g>
+
+  <!-- Tropic of Cancer (dashed reference) -->
+  <line x1="60" y1="208" x2="360" y2="200" stroke="#9ca3af" stroke-width="0.8" stroke-dasharray="4 4"/>
+  <text x="62" y="204" font-family="sans-serif" font-size="8" fill="#6b7280">Tropic of Cancer</text>
+
+  <!-- Key location markers -->
+  <g font-family="sans-serif" font-size="9" fill="#1f2937">
+    <!-- Delhi -->
+    <circle cx="190" cy="120" r="3" fill="#dc2626"/>
+    <text x="196" y="123">Delhi</text>
+    <!-- Mumbai -->
+    <circle cx="124" cy="252" r="3" fill="#dc2626"/>
+    <text x="78" y="255">Mumbai</text>
+    <!-- Bengaluru -->
+    <circle cx="172" cy="358" r="3" fill="#dc2626"/>
+    <text x="124" y="361">Bengaluru</text>
+    <!-- Chennai -->
+    <circle cx="208" cy="370" r="3" fill="#dc2626"/>
+    <text x="214" y="373">Chennai</text>
+    <!-- Kolkata -->
+    <circle cx="290" cy="220" r="3" fill="#dc2626"/>
+    <text x="296" y="223">Kolkata</text>
+    <!-- Kanyakumari -->
+    <circle cx="196" cy="446" r="2.5" fill="#dc2626"/>
+    <text x="200" y="442">Kanyakumari</text>
+  </g>
+
+  <!-- Compass -->
+  <g transform="translate(40,52)" font-family="sans-serif" font-size="9" fill="#374151">
+    <circle r="14" fill="none" stroke="#9ca3af" stroke-width="0.8"/>
+    <path d="M 0 -12 L 3 0 L 0 12 L -3 0 Z" fill="#374151"/>
+    <text x="-3" y="-16">N</text>
+  </g>
+
+  <text x="200" y="476" text-anchor="middle" font-family="sans-serif" font-size="9" fill="#6b7280">
+    India · Outline reference map for revision
+  </text>
 </svg>
