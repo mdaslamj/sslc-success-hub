@@ -30,7 +30,7 @@ import {
   ref as storageRef,
   uploadBytes,
 } from "firebase/storage";
-import { COLLECTIONS, db, storage } from "../config";
+import { COLLECTIONS, db, getStorageLazy } from "../config";
 import type {
   AnswerAttemptContext,
   AnswerAttemptDoc,
@@ -92,6 +92,7 @@ export async function uploadAnswerImage(
 ): Promise<AnswerUploadDoc> {
   const id = genId("img");
   const path = `answer-uploads/${input.userId}/${input.attemptId}/${id}.jpg`;
+  const storage = await getStorageLazy();
   const ref = storageRef(storage, path);
   await uploadBytes(ref, input.blob, { contentType: "image/jpeg" });
   const downloadUrl = await getDownloadURL(ref);
@@ -182,6 +183,7 @@ export async function fetchAttemptImages(
 
 export async function deleteAnswerImage(image: AnswerUploadDoc): Promise<void> {
   try {
+    const storage = await getStorageLazy();
     await deleteObject(storageRef(storage, image.storagePath));
   } catch {
     /* ignore storage delete failure — doc cleanup still proceeds */

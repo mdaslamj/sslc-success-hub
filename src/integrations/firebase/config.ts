@@ -1,6 +1,6 @@
 import { initializeApp, getApps, getApp, type FirebaseApp } from "firebase/app";
 import { getFirestore, type Firestore } from "firebase/firestore";
-import { getStorage, type FirebaseStorage } from "firebase/storage";
+import type { FirebaseStorage } from "firebase/storage";
 import {
   getAuth,
   setPersistence,
@@ -42,8 +42,16 @@ export const firebaseApp: FirebaseApp = getApps().length
 
 export const db: Firestore = getFirestore(firebaseApp);
 
-// Firebase Storage — used by the handwritten-answer upload feature.
-export const storage: FirebaseStorage = getStorage(firebaseApp);
+// Firebase Storage — lazily initialised so the ~40KB SDK chunk only loads
+// when the handwritten-answer upload or account-delete flow is invoked.
+// Most sessions never touch storage, so this stays out of the initial bundle.
+let _storage: FirebaseStorage | null = null;
+export async function getStorageLazy(): Promise<FirebaseStorage> {
+  if (_storage) return _storage;
+  const { getStorage } = await import("firebase/storage");
+  _storage = getStorage(firebaseApp);
+  return _storage;
+}
 
 // Firebase Auth — persistent sessions across reloads & tabs.
 export const auth: Auth = getAuth(firebaseApp);

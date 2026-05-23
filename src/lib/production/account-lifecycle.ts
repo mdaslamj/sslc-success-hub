@@ -25,7 +25,7 @@ import {
 import { deleteUser } from "firebase/auth";
 import { deleteObject, listAll, ref as storageRef } from "firebase/storage";
 
-import { auth, db, storage, COLLECTIONS } from "@/integrations/firebase/config";
+import { auth, db, getStorageLazy, COLLECTIONS } from "@/integrations/firebase/config";
 import {
   ADAPTIVE_SUBCOLLECTIONS,
   BOARD_READINESS_SUBCOLLECTIONS,
@@ -235,6 +235,7 @@ async function deleteDocsWhereUserId(colName: string, uid: string) {
 
 async function deleteStorageFolder(path: string) {
   try {
+    const storage = await getStorageLazy();
     const dir = storageRef(storage, path);
     const listing = await listAll(dir);
     await Promise.all(listing.items.map((it) => deleteObject(it).catch(() => {})));
