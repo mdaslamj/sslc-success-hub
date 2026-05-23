@@ -464,3 +464,44 @@ result → retry-wrong, with local weak-area signals.
 ### Outcome
 
 Production-ready. No regressions introduced; no follow-up fixes needed in this pass.
+
+---
+
+## Mock Exam Player Fix — 2026-05-23
+
+### Issue
+
+Tapping **Start exam** on any chapter / subject mock card navigated to
+`/exams/{examId}` but the player never opened — users saw a brief "Loading
+exam…" then the fallback "This exam could not be loaded." card.
+
+### Root cause
+
+`ExamPlayerPage` resolved the exam doc inside a `useEffect` that depended on
+`content.subjects`. On a cold load (direct URL, refresh, or first navigation
+before the content catalogue resolved), the effect ran with an empty subject
+list, `rebuildContentExamById` returned `null`, the seed fallback didn't
+match the content-generated id, and the Firestore fallback set
+`missing = true`. When `useContentCatalog` later populated, the effect
+re-ran and `setExam(...)` fired — but the `missing` flag was never cleared,
+so the error card kept rendering on top of the now-valid exam.
+
+### Fix
+
+`src/routes/exams.$examId.tsx`
+- Reset `missing` at the top of the resolver effect so a later successful
+  rebuild can recover.
+- Skip the Firestore "missing" fallback while `content.isLoading` is true —
+  chapter / subject mock ids are derived from that catalogue, so giving up
+  before it loads is always premature.
+- Added `content.isLoading` to the effect dependency list.
+
+### Verification
+
+- Cold-load `/exams/mock_math_ch_real-numbers` (and equivalent science /
+  social-science chapter ids) now renders the player with the timer
+  running, navigator, submit dialog, and auto-submit on timeout.
+- `Start exam` from the Mock Exams listing opens the player on first tap
+  on both desktop and mobile viewports.
+- No regression to the genuine "missing" path — unknown ids still surface
+  the back-to-exams card once the catalogue has finished loading.
