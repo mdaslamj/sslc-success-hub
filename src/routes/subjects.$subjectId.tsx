@@ -690,6 +690,160 @@ function ManifestChaptersGrid({
   );
 }
 
+/* ---------------- Social Science section view (Timeline / Maps / Civics) ---------------- */
+
+function SocialSectionView({
+  title,
+  description,
+  emptyLabel,
+  chapters,
+  color,
+  variant,
+  onSelect,
+}: {
+  title: string;
+  description: string;
+  emptyLabel: string;
+  chapters: ManifestChapter[];
+  color: string;
+  variant: "timeline" | "maps" | "civics";
+  onSelect: (id: string) => void;
+}) {
+  const sorted = [...chapters].sort(
+    (a, b) => (a.chapterNumber ?? 0) - (b.chapterNumber ?? 0),
+  );
+
+  const Icon = variant === "timeline" ? Clock : variant === "maps" ? MapIcon : Landmark;
+
+  if (sorted.length === 0) {
+    return (
+      <div className="rounded-2xl border border-dashed border-border/60 p-10 text-center text-sm text-muted-foreground">
+        {emptyLabel}
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-4">
+      <div
+        className="rounded-2xl border border-border/60 p-4"
+        style={{
+          background: `linear-gradient(135deg, color-mix(in oklab, ${color} 14%, transparent), transparent)`,
+        }}
+      >
+        <div className="flex items-center gap-2">
+          <div
+            className="flex h-9 w-9 items-center justify-center rounded-xl text-white"
+            style={{ background: color }}
+          >
+            <Icon className="h-4 w-4" />
+          </div>
+          <div>
+            <h2 className="font-display text-lg font-bold leading-tight">{title}</h2>
+            <p className="text-xs text-muted-foreground leading-snug">{description}</p>
+          </div>
+        </div>
+      </div>
+
+      {variant === "timeline" ? (
+        <ol className="relative space-y-3 border-l border-border/60 pl-5">
+          {sorted.map((c) => {
+            const isReady = c.status === "ready";
+            return (
+              <li key={c.id} className="relative">
+                <span
+                  className="absolute -left-[27px] top-3 flex h-4 w-4 items-center justify-center rounded-full ring-4 ring-background"
+                  style={{ background: isReady ? color : "var(--muted)" }}
+                />
+                <button
+                  type="button"
+                  disabled={!isReady}
+                  onClick={() => isReady && onSelect(c.id)}
+                  className={`w-full rounded-2xl border p-3 text-left transition ${
+                    isReady
+                      ? "border-border/60 bg-card hover:border-brand/40 cursor-pointer"
+                      : "border-dashed border-border/60 bg-muted/30 opacity-75 cursor-not-allowed"
+                  }`}
+                >
+                  <div className="flex items-center gap-2 text-[11px] text-muted-foreground">
+                    <span>Chapter {c.chapterNumber ?? "—"}</span>
+                    {isReady ? (
+                      <Badge
+                        variant="outline"
+                        className="h-4 rounded-full border-transparent bg-success/15 px-1.5 text-[9px] text-success"
+                      >
+                        Available
+                      </Badge>
+                    ) : (
+                      <Badge
+                        variant="outline"
+                        className="h-4 rounded-full border-transparent bg-muted px-1.5 text-[9px] text-muted-foreground"
+                      >
+                        Coming soon
+                      </Badge>
+                    )}
+                  </div>
+                  <div
+                    className="font-display font-semibold"
+                    style={isReady ? { color } : undefined}
+                  >
+                    {c.title ?? c.id}
+                  </div>
+                </button>
+              </li>
+            );
+          })}
+        </ol>
+      ) : (
+        <div className="grid gap-3 md:grid-cols-2">
+          {sorted.map((c) => {
+            const isReady = c.status === "ready";
+            return (
+              <button
+                key={c.id}
+                type="button"
+                disabled={!isReady}
+                onClick={() => isReady && onSelect(c.id)}
+                className={`rounded-2xl border p-4 text-left transition ${
+                  isReady
+                    ? "border-border/60 bg-card hover:border-brand/40 cursor-pointer"
+                    : "border-dashed border-border/60 bg-muted/30 opacity-75 cursor-not-allowed"
+                }`}
+              >
+                <div className="flex items-center gap-2 text-[11px] text-muted-foreground">
+                  <span>Chapter {c.chapterNumber ?? "—"}</span>
+                  {c.section && (
+                    <Badge
+                      variant="outline"
+                      className="h-4 rounded-full border-border/60 px-1.5 text-[9px]"
+                    >
+                      {c.section}
+                    </Badge>
+                  )}
+                  {!isReady && (
+                    <Badge
+                      variant="outline"
+                      className="h-4 rounded-full border-transparent bg-muted px-1.5 text-[9px] text-muted-foreground"
+                    >
+                      Coming soon
+                    </Badge>
+                  )}
+                </div>
+                <div
+                  className="font-display font-semibold"
+                  style={isReady ? { color } : undefined}
+                >
+                  {c.title ?? c.id}
+                </div>
+              </button>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
+}
+
 /* ---------------- Chapter Detail View (in Chapters tab) ---------------- */
 
 function ChapterDetailView({
