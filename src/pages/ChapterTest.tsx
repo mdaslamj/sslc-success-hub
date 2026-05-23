@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { Link } from "@tanstack/react-router";
+import { Link, useSearch } from "@tanstack/react-router";
 import { Loader2, RefreshCcw, CheckCircle2, XCircle } from "lucide-react";
 import { loadChapter } from "@/lib/contentLoader";
 import { DashboardLayout } from "@/components/dashboard-layout";
@@ -22,16 +22,34 @@ interface Chapter {
 }
 
 export default function ChapterTest() {
+  const search = useSearch({ strict: false }) as {
+    subject?: string;
+    chapter?: string;
+  };
+  const subjectFolder = search.subject ?? "mathematics";
+  const chapterId = search.chapter ?? "real-numbers";
   const [chapter, setChapter] = useState<Chapter | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [answers, setAnswers] = useState<Record<string, number>>({});
   const [submitted, setSubmitted] = useState(false);
 
   useEffect(() => {
-    loadChapter("mathematics", "real-numbers")
-      .then(setChapter)
-      .catch((e) => setError(e.message));
-  }, []);
+    let cancelled = false;
+    setChapter(null);
+    setError(null);
+    setAnswers({});
+    setSubmitted(false);
+    loadChapter(subjectFolder, chapterId)
+      .then((c) => {
+        if (!cancelled) setChapter(c);
+      })
+      .catch((e) => {
+        if (!cancelled) setError(e?.message ?? "Chapter unavailable.");
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [subjectFolder, chapterId]);
 
   const results = useMemo(() => {
     if (!chapter) return { total: 0, correct: 0 };

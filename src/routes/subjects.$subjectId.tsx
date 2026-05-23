@@ -1247,7 +1247,7 @@ function TopicPracticeDialog({
 
   return (
     <Dialog open={!!topic} onOpenChange={(o) => !o && onClose()}>
-      <DialogContent className="left-1/2 top-[max(50%,calc(env(safe-area-inset-top)+12rem))] w-[calc(100vw-1rem)] max-w-md translate-x-[-50%] translate-y-[-50%] gap-0 overflow-hidden p-0 sm:w-full">
+      <DialogContent className="left-1/2 top-1/2 w-[calc(100vw-1rem)] max-w-md -translate-x-1/2 -translate-y-1/2 gap-0 overflow-hidden p-0 sm:w-full">
         <DialogHeader className="p-4 pb-3 border-b border-border/60">
           <DialogTitle className="flex items-center gap-2 text-base">
             <MapIcon className="h-4 w-4" style={{ color }} />

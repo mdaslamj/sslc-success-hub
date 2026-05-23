@@ -58,7 +58,7 @@ export function DashboardLayout({ children, title }: { children: ReactNode; titl
               </Link>
               <div className="min-w-0 flex-1 leading-tight">
                 <div className="text-[11px] text-muted-foreground">Aura</div>
-                <h2 className="max-w-[32vw] truncate font-display text-[15px] font-semibold text-foreground sm:max-w-[40vw]">
+                <h2 className="truncate font-display text-[15px] font-semibold text-foreground">
                   {title ?? "Today"}
                 </h2>
               </div>
@@ -75,7 +75,7 @@ export function DashboardLayout({ children, title }: { children: ReactNode; titl
             <Button
               size="icon"
               variant="ghost"
-              className="ml-auto md:ml-0 relative rounded-full h-10 w-10 press"
+              className="relative ml-auto h-9 w-9 shrink-0 rounded-full press md:ml-0 md:h-10 md:w-10"
               aria-label="Notifications"
             >
               <Bell className="h-[18px] w-[18px]" />
@@ -96,7 +96,7 @@ export function DashboardLayout({ children, title }: { children: ReactNode; titl
                 size="sm"
                 className="h-9 shrink-0 gap-1 rounded-full px-2.5 text-xs gradient-brand text-brand-foreground shadow-soft press sm:px-3 sm:text-sm"
               >
-                <Link to="/login">
+                <Link to="/login" aria-label="Sign in">
                   <LogIn className="h-4 w-4 shrink-0" />
                   <span>Sign in</span>
                 </Link>

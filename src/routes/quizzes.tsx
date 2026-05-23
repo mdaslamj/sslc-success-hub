@@ -104,13 +104,14 @@ function QuizzesPage() {
         />
       </div>
 
-      <div className="mt-6 flex flex-wrap items-center gap-2">
+      <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
+        <div className="-mx-1 flex gap-2 overflow-x-auto px-1 pb-1 sm:mx-0 sm:flex-wrap sm:overflow-visible sm:px-0 sm:pb-0">
         {subjects.map((s) => (
           <button
             key={s.id}
             onClick={() => setSubjectId(s.id)}
             className={cn(
-              "rounded-full border border-border/60 px-3 py-1.5 text-sm transition-colors",
+              "shrink-0 rounded-full border border-border/60 px-3 py-1.5 text-sm transition-colors",
               subjectId === s.id
                 ? "bg-foreground text-background"
                 : "bg-card text-muted-foreground hover:text-foreground",
@@ -120,7 +121,8 @@ function QuizzesPage() {
             {s.name}
           </button>
         ))}
-        <div className="ml-auto inline-flex rounded-full border border-border/60 bg-card p-1 text-xs">
+        </div>
+        <div className="inline-flex w-max self-start rounded-full border border-border/60 bg-card p-1 text-xs sm:ml-auto sm:self-auto">
           {LEVELS.map((l) => (
             <button
               key={l.id}
