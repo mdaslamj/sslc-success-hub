@@ -70,15 +70,70 @@ function asDifficulty(v: unknown): Difficulty {
  */
 export function normalizeChapterData(raw: unknown): NormalizedChapter {
   const r = (raw ?? {}) as Record<string, unknown>;
-  const mcqs = asArray<ContentMCQ>(r.mcqs);
-  const exercises = asArray<ContentExercise>(r.exercises);
+  const rawMcqs = asArray<Record<string, unknown>>(r.mcqs);
+  const mcqs: ContentMCQ[] = rawMcqs
+    .map((m, i) => {
+      const id =
+        asString(m.id) ||
+        asString(m.q_id) ||
+        `${asString(r.id) || asString(r.chapter_id) || "chapter"}-mcq-${i + 1}`;
+      const rawOpts = m.options;
+      let options: string[] = [];
+      if (Array.isArray(rawOpts)) {
+        options = rawOpts.map((o) =>
+          typeof o === "string" ? o.replace(/^\s*[A-D][.\)]\s*/i, "").trim() : "",
+        );
+      } else if (rawOpts && typeof rawOpts === "object") {
+        options = ["A", "B", "C", "D", "E"]
+          .map((k) => (rawOpts as Record<string, unknown>)[k])
+          .filter((v): v is string => typeof v === "string");
+      }
+      const correctAnswer =
+        asString(m.correctAnswer) || asString(m.correct) || "A";
+      return {
+        id,
+        question: asString(m.question),
+        options,
+        correctAnswer,
+        explanation: asString(m.explanation),
+      };
+    })
+    .filter((m) => m.question && m.options.length >= 2);
+
+  // Merge in social-science short/long answer banks as exercises.
+  const baseExercises = asArray<Record<string, unknown>>(r.exercises).map(
+    (e, i): ContentExercise => ({
+      id: asString(e.id) || `ex-${i + 1}`,
+      question: asString(e.question),
+      answer: asString(e.answer),
+      type: asString(e.type),
+    }),
+  );
+  const ssBanks = [
+    "one_mark_questions",
+    "two_mark_questions",
+    "three_mark_questions",
+    "four_mark_questions",
+  ];
+  const bankExercises: ContentExercise[] = ssBanks.flatMap((key) =>
+    asArray<Record<string, unknown>>(r[key]).map((q, i) => ({
+      id: asString(q.id) || `${key}-${i + 1}`,
+      question: asString(q.question),
+      answer: Array.isArray(q.answer) ? (q.answer as string[]).join("\n") : asString(q.answer),
+      type: key.replace("_questions", ""),
+    })),
+  );
+  const exercises = [...baseExercises, ...bankExercises].filter((e) => e.question);
   return {
-    id: asString(r.id),
-    chapterNumber: asNumber(r.chapterNumber),
-    title: asString(r.title),
+    id: asString(r.id) || asString(r.chapter_id),
+    chapterNumber: asNumber(r.chapterNumber) || asNumber(r.chapter_number),
+    title: asString(r.title) || asString(r.chapter_name),
     summary: asString(r.summary),
     difficulty: asDifficulty(r.difficulty),
-    learningPoints: asArray<string>(r.learningPoints),
+    learningPoints:
+      asArray<string>(r.learningPoints).length > 0
+        ? asArray<string>(r.learningPoints)
+        : asArray<string>(r.learning_outcomes),
     formulas: asArray<ContentFormula>(r.formulas),
     resources: asArray<ContentResource>(r.resources),
     mcqs,
