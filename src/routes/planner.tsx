@@ -41,6 +41,8 @@ import { RevisionPlannerCard, type RevisionPick } from "@/components/revision-pl
 import { useAnalytics } from "@/hooks/use-analytics";
 import { getPrepModes } from "@/lib/prep-modes";
 import { PlannerCalendar } from "@/components/planner/planner-calendar";
+import { AdaptiveGuidanceCard } from "@/components/planner/adaptive-guidance-card";
+import type { AdaptivePlanItem } from "@/lib/adaptivePlannerBridge";
 import {
   addEvent as addCalendarEvent,
   toDateKey,
@@ -184,6 +186,48 @@ function PlannerPage() {
     setHighlightId(id);
     toast.success("Added to today's plan", {
       description: `${pick.subjectName} · ${pick.minutes} min`,
+    });
+  }
+
+  /**
+   * Add an adaptive guidance item (daily focus / revision / recovery /
+   * practice) to today's plan. Keeps planner as single source of truth
+   * and prevents duplicate entries with the same title.
+   */
+  function addAdaptiveItem(item: AdaptivePlanItem) {
+    const subjectMatch =
+      subjects.find((s) => s.id === item.subjectId) ??
+      subjects.find((s) => s.name.toLowerCase().includes(item.subjectId.toLowerCase())) ??
+      subjects[0];
+    const prefix =
+      item.kind === "practice"
+        ? "Practice"
+        : item.kind === "recovery"
+        ? "Recover"
+        : item.kind === "daily-focus"
+        ? "Focus"
+        : "Revise";
+    const taskTitle = `${prefix} — ${item.title}`;
+    if (tasks.some((t) => t.task.toLowerCase() === taskTitle.toLowerCase())) {
+      toast("Already on today's plan");
+      return;
+    }
+    const id = Math.max(0, ...tasks.map((t) => t.id)) + 1;
+    setTasks((prev) => [
+      ...prev,
+      {
+        id,
+        subject: subjectMatch.name,
+        task: taskTitle,
+        time: `${item.minutes} min`,
+        durationMin: item.minutes,
+        done: false,
+      },
+    ]);
+    setHighlightId(id);
+    toast.success("Added to today's plan", {
+      description: `${subjectMatch.name} · ${item.minutes} min`,
+      icon: <Sparkles className="h-4 w-4" />,
     });
   }
 
@@ -538,6 +582,7 @@ function PlannerPage() {
 
           {/* RIGHT: focus + achievements */}
           <section className="space-y-6">
+            <AdaptiveGuidanceCard onAdd={addAdaptiveItem} />
             <RevisionPlannerCard onAddToPlan={addFromRecommendation} />
             <FocusTimer
               onSessionComplete={(min) => {
