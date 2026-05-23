@@ -1,5 +1,49 @@
 # Aura — Dev Status
 
+## Emotional Progress Layer — ✅ shipped
+
+**Scope:** Lightweight emotional reflections derived from existing learning
+signals (weakAreaTracker, adaptiveRevision, mock exam attempts). Local-only,
+no new storage keys, no streaks/rankings/gamification.
+
+### What changed
+- New module `src/lib/emotionalProgress.ts` exposes pure helpers:
+  - `getEmotionalSummary()` — `{ headline, consistency, confidence, progress, recovery, label }`
+  - `getConsistencyReflection()` — calm consistency-focused message
+  - `getConfidenceEncouragement()` — confidence-building encouragement
+  - `getGentleProgressSummary()` — short kind overall summary
+  - `getRecoveryEncouragement()` — recovery-oriented encouragement (empty when no weak areas)
+- Tone: supportive and calm — e.g. "You’re building steady progress." /
+  "Consistency matters more than speed." / "You’re improving chapter by chapter."
+  No pressure, streak obsession, rankings, or gamification.
+- Reads existing `aura:weak:*` and `mt:attempts` entries only; no new storage keys.
+
+### Integration points
+- **Planner** (`src/routes/planner.tsx`): `mentorMessage` now blends emotional
+  signals with task-completion coaching. When learning data exists, the strip
+  shows the emotional headline + confidence/recovery message instead of generic
+  task coaching.
+- **Mock Test Result** (`src/routes/mock-test.$testId.tsx`): ReviewView now
+  renders a small emotional note below the score cards — e.g.
+  "You’re building steady progress. You’re growing more confident chapter by chapter."
+- **Adaptive Guidance Card** (`src/components/planner/adaptive-guidance-card.tsx`):
+  Adds a subtle emotional progress line below the plan message, using the same
+  calm `emotional.headline`.
+
+### Verification
+- ✅ Pure functions; deterministic for a given snapshot.
+- ✅ No new `localStorage` keys.
+- ✅ Empty-state safe — returns gentle welcome messages with no signals.
+- ✅ Mobile-friendly — uses existing card padding and text sizes; no layout shifts.
+- ✅ No console errors.
+
+### Future hooks
+- Emotional progress summaries can feed parent-friendly dashboards.
+- `label` field is ready for dashboard chips / profile badges.
+- Can be extended with emotional trend detection (e.g. accuracy improving over time).
+
+---
+
 ## Adaptive Planner Integration — ✅ shipped
 
 **Scope:** Transform the Planner from a static schedule into a calm,
