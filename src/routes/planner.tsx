@@ -274,11 +274,34 @@ function PlannerPage() {
   const nextUp = useMemo(() => tasks.find((t) => !t.done) ?? null, [tasks]);
   const overloadHint = tasks.length >= 8;
   const underloadHint = tasks.length > 0 && tasks.length <= 2;
+  const emotional = useMemo(() => {
+    try {
+      const { getEmotionalSummary } = require("@/lib/emotionalProgress");
+      return getEmotionalSummary();
+    } catch {
+      return null;
+    }
+  }, [tasks, doneCount, focusMinutes]);
+
   const mentorMessage = useMemo(() => {
+    // Prefer emotional signal when learning data exists, else fall back to
+    // task-completion coaching.
+    if (emotional && (doneCount > 0 || tasks.length === 0)) {
+      // Blend emotional headline with a gentle task hint.
+      if (tasks.length === 0)
+        return `${emotional.headline} ${emotional.consistency}`;
+      if (doneCount === tasks.length)
+        return `${emotional.headline} ${emotional.progress}`;
+      if (completionPct >= 50)
+        return `${emotional.confidence} You're past halfway — finish the next task before the energy dips.`;
+      if (focusMinutes === 0 && doneCount === 0)
+        return `${emotional.headline} A 25-min sprint on the first task will unlock the day.`;
+      return `${emotional.headline} ${emotional.recovery || emotional.consistency}`;
+    }
     if (tasks.length === 0)
       return "Plan one thing — even 25 minutes of focus today builds momentum.";
     if (doneCount === tasks.length)
-      return "Every task done. Protect this streak — schedule tomorrow now.";
+      return "Every task done. Protect this rhythm — schedule tomorrow now.";
     if (overloadHint && doneCount === 0)
       return "Heavy day ahead. Start with the smallest task to build flow.";
     if (completionPct >= 50)
@@ -288,7 +311,7 @@ function PlannerPage() {
     if (focusMinutes === 0 && doneCount === 0)
       return "No focus logged yet. A 25-min sprint on the first task will unlock the day.";
     return "Keep the rhythm — one task, then a short break.";
-  }, [tasks.length, doneCount, completionPct, overloadHint, underloadHint, focusMinutes]);
+  }, [tasks.length, doneCount, completionPct, overloadHint, underloadHint, focusMinutes, emotional]);
 
   // Achievements (live)
   const unlocked = useMemo(() => {
