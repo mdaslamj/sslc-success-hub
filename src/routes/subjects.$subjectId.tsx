@@ -392,8 +392,9 @@ function SubjectDetailPage() {
             onBack={() => setChapterDetailOpen(false)}
           />
         ) : (
-        <Tabs defaultValue="chapters" className="w-full">
-          <TabsList className="rounded-full w-full sm:w-auto overflow-x-auto no-scrollbar flex justify-start sm:inline-flex">
+        <Tabs defaultValue="chapters" className="w-full min-w-0">
+          <div className="-mx-4 overflow-x-auto px-4 pb-1 sm:mx-0 sm:px-0">
+          <TabsList className="h-auto min-w-max rounded-full w-max max-w-none flex-nowrap justify-start sm:w-auto sm:min-w-0 sm:max-w-full sm:flex-wrap sm:inline-flex">
             <TabsTrigger value="chapters" className="rounded-full gap-1.5">
               <BookOpen className="h-3.5 w-3.5" /> Chapters
             </TabsTrigger>
@@ -431,6 +432,7 @@ function SubjectDetailPage() {
               </>
             )}
           </TabsList>
+          </div>
 
           {/* CHAPTERS */}
           <TabsContent value="chapters" className="mt-4">
@@ -1245,7 +1247,7 @@ function TopicPracticeDialog({
 
   return (
     <Dialog open={!!topic} onOpenChange={(o) => !o && onClose()}>
-      <DialogContent className="max-w-md p-0 gap-0 overflow-hidden">
+      <DialogContent className="left-1/2 top-[max(50%,calc(env(safe-area-inset-top)+12rem))] w-[calc(100vw-1rem)] max-w-md translate-x-[-50%] translate-y-[-50%] gap-0 overflow-hidden p-0 sm:w-full">
         <DialogHeader className="p-4 pb-3 border-b border-border/60">
           <DialogTitle className="flex items-center gap-2 text-base">
             <MapIcon className="h-4 w-4" style={{ color }} />
@@ -1555,8 +1557,9 @@ function SocialPracticeView({
   }
 
   return (
-    <Tabs defaultValue="mcq" className="w-full">
-      <TabsList className="rounded-full w-full sm:w-auto overflow-x-auto no-scrollbar flex justify-start sm:inline-flex">
+    <Tabs defaultValue="mcq" className="w-full min-w-0">
+      <div className="-mx-4 overflow-x-auto px-4 pb-1 sm:mx-0 sm:px-0">
+      <TabsList className="h-auto min-w-max rounded-full w-max max-w-none flex-nowrap justify-start sm:w-auto sm:min-w-0 sm:max-w-full sm:flex-wrap sm:inline-flex">
         <TabsTrigger value="mcq" className="rounded-full">
           MCQs <span className="ml-1 text-[10px] text-muted-foreground">({allMcqs.length})</span>
         </TabsTrigger>
@@ -1570,6 +1573,7 @@ function SocialPracticeView({
           3-mark <span className="ml-1 text-[10px] text-muted-foreground">({banks.three_mark.length})</span>
         </TabsTrigger>
       </TabsList>
+      </div>
 
       <TabsContent value="mcq" className="mt-4">
         {allMcqs.length > 0 ? (

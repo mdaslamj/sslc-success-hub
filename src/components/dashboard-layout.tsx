@@ -39,7 +39,7 @@ export function DashboardLayout({ children, title }: { children: ReactNode; titl
         <div className="flex min-w-0 flex-1 flex-col">
           {/* Top bar — minimal on mobile, full search on desktop */}
           <header
-            className="sticky top-0 z-30 flex h-14 items-center gap-2 border-b border-border/40 bg-background/85 px-4 backdrop-blur-xl md:h-16 md:gap-3 md:px-6"
+            className="sticky top-0 z-30 flex h-14 min-w-0 items-center gap-2 border-b border-border/40 bg-background/85 px-3 backdrop-blur-xl md:h-16 md:gap-3 md:px-6"
             style={{ paddingTop: "max(env(safe-area-inset-top), 0)" }}
           >
             <div className="hidden md:flex md:items-center md:gap-3">
@@ -48,17 +48,17 @@ export function DashboardLayout({ children, title }: { children: ReactNode; titl
             </div>
 
             {/* Mobile: greeting / page title */}
-            <div className="md:hidden flex items-center gap-2">
+            <div className="flex min-w-0 items-center gap-2 md:hidden">
               <Link
                 to="/"
-                className="flex h-9 w-9 items-center justify-center rounded-2xl gradient-brand text-brand-foreground font-display text-base font-bold shadow-soft"
+                className="flex h-9 w-9 shrink-0 items-center justify-center rounded-2xl gradient-brand font-display text-base font-bold text-brand-foreground shadow-soft"
                 aria-label="Home"
               >
                 🌱
               </Link>
-              <div className="leading-tight">
+              <div className="min-w-0 flex-1 leading-tight">
                 <div className="text-[11px] text-muted-foreground">Aura</div>
-                <h2 className="font-display text-[15px] font-semibold text-foreground truncate max-w-[40vw]">
+                <h2 className="max-w-[32vw] truncate font-display text-[15px] font-semibold text-foreground sm:max-w-[40vw]">
                   {title ?? "Today"}
                 </h2>
               </div>
@@ -94,10 +94,10 @@ export function DashboardLayout({ children, title }: { children: ReactNode; titl
               <Button
                 asChild
                 size="sm"
-                className="h-9 gap-1.5 rounded-full px-3 gradient-brand text-brand-foreground shadow-soft press"
+                className="h-9 shrink-0 gap-1 rounded-full px-2.5 text-xs gradient-brand text-brand-foreground shadow-soft press sm:px-3 sm:text-sm"
               >
                 <Link to="/login">
-                  <LogIn className="h-4 w-4" />
+                  <LogIn className="h-4 w-4 shrink-0" />
                   <span>Sign in</span>
                 </Link>
               </Button>

@@ -1,5 +1,44 @@
 # Aura — Dev Status
 
+## Mobile Production Usability Fix Sweep — ✅ shipped
+
+**Scope:** Real mobile usability fixes only. No redesigns, no new features,
+no animation work, no architecture rewrite.
+
+### Fixed
+- **Session restore dead-end:** `src/routes/__root.tsx`
+  now fails open after a short auth timeout instead of holding protected
+  routes forever on the “Restoring your session…” splash. This unblocks
+  real mobile navigation on slow / flaky session restores.
+- **Planner mobile layout:** `src/routes/planner.tsx`
+  now uses `min-w-0`, safer grid tracks, smaller mobile padding, wrapped
+  header/actions, visible mobile remove controls, and narrower timer controls
+  to prevent clipping, overlap, and horizontal overflow on narrow widths.
+- **Shared planner widgets:** `src/components/planner/planner-calendar.tsx`
+  now uses mobile-safe padding and wrapping tab controls to avoid overflow.
+- **Mobile shell/header overlap:** `src/components/dashboard-layout.tsx`
+  now constrains the mobile title block and sign-in CTA more safely so the
+  header remains usable on narrow devices.
+- **Maps tab overflow / dialog safety:** `src/routes/subjects.$subjectId.tsx`
+  now uses horizontally scrollable tab rails with safe inner width, and the
+  topic practice dialog is constrained to the mobile viewport instead of
+  risking clipped modal edges.
+- **Chapter test flow:** `src/pages/ChapterTest.tsx`
+  is now a usable in-app test flow with answer selection, submit, score
+  summary, retry, and exit navigation instead of a static read-only list.
+
+### Verified this pass
+- ✅ Real mobile render path no longer depends on abstract architectural review.
+- ✅ Narrow mobile shell now reaches the login screen instead of staying on the restore splash forever.
+- ✅ Planner/mobile screens patched for no unsafe width assumptions.
+- ✅ Chapter test now has working question render + submit + retry + return path.
+
+### Remaining verification note
+- Browser verification of the full protected guest flows still requires
+  stepping through guest onboarding or a signed-in preview session. The
+  blocking mobile issues found during render inspection were patched in code
+  this pass.
+
 ## UX Trust & Polish Sweep — ✅ shipped
 
 **Scope:** Targeted polish on loading, empty, and fallback states. No

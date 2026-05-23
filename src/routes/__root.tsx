@@ -285,6 +285,7 @@ function OnboardingGate({ children }: { children: React.ReactNode }) {
   const pathname = useRouterState({ select: (r) => r.location.pathname });
   const navigate = useNavigate();
   const [splashHold, setSplashHold] = useState(true);
+  const [authTimedOut, setAuthTimedOut] = useState(false);
 
   // Minimum splash window on first paint so session restore feels smooth
   // instead of flashing the dashboard.
@@ -292,6 +293,15 @@ function OnboardingGate({ children }: { children: React.ReactNode }) {
     const t = setTimeout(() => setSplashHold(false), 450);
     return () => clearTimeout(t);
   }, []);
+
+  useEffect(() => {
+    if (!loading) {
+      setAuthTimedOut(false);
+      return;
+    }
+    const t = window.setTimeout(() => setAuthTimedOut(true), 2200);
+    return () => window.clearTimeout(t);
+  }, [loading]);
 
   useEffect(() => {
     if (loading) return;
@@ -343,7 +353,7 @@ function OnboardingGate({ children }: { children: React.ReactNode }) {
   const profilePending = !!user && !profile;
   const showSplash =
     splashHold ||
-    (!isPublic && loading) ||
+    (!isPublic && loading && !authTimedOut) ||
     (!isPublic && profilePending);
 
   if (showSplash) {

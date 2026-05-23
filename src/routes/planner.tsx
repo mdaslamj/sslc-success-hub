@@ -367,7 +367,7 @@ function PlannerPage() {
 
   return (
     <DashboardLayout title="Study Planner">
-      <div className="mx-auto max-w-7xl space-y-6">
+      <div className="mx-auto w-full max-w-7xl space-y-6 overflow-x-clip">
         {/* Header */}
         <header className="flex flex-wrap items-end justify-between gap-4 min-w-0">
           <div className="min-w-0">
@@ -381,7 +381,7 @@ function PlannerPage() {
               Adaptive schedule with built-in Pomodoro and live achievements.
             </p>
           </div>
-          <div className="flex flex-wrap items-center gap-2 sm:gap-3 w-full sm:w-auto">
+          <div className="flex w-full flex-wrap items-center gap-2 sm:w-auto sm:gap-3">
             <StatPill icon={<CheckCircle2 className="h-4 w-4" />} label="Done" value={`${doneCount}/${tasks.length}`} />
             <StatPill icon={<Clock className="h-4 w-4" />} label="Focused" value={`${focusMinutes}m`} />
             <StatPill icon={<Trophy className="h-4 w-4" />} label="Badges" value={`${earnedCount}/${unlocked.length}`} />
@@ -425,11 +425,11 @@ function PlannerPage() {
         {/* Calendar & life-planning layer */}
         <PlannerCalendar />
 
-        <div className="grid gap-6 lg:grid-cols-[1.4fr_1fr]">
+        <div className="grid min-w-0 gap-6 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)]">
           {/* LEFT: schedule */}
-          <section className="rounded-3xl border border-border/60 bg-card p-6 shadow-card">
-            <div className="mb-4 flex items-center justify-between">
-              <h3 className="font-display text-lg font-semibold flex items-center gap-2">
+          <section className="min-w-0 rounded-3xl border border-border/60 bg-card p-4 shadow-card sm:p-6">
+            <div className="mb-4 flex min-w-0 flex-wrap items-center justify-between gap-2">
+              <h3 className="flex min-w-0 items-center gap-2 font-display text-lg font-semibold">
                 <Sparkles className="h-4 w-4 text-brand" /> Today's Schedule
               </h3>
               <Badge variant="outline" className="rounded-full">
@@ -452,7 +452,7 @@ function PlannerPage() {
                         : "border-border/60 bg-background/40 hover:border-brand/40"
                     }`}
                   >
-                    <div className="flex items-center gap-3 p-3">
+                    <div className="flex min-w-0 items-start gap-2 p-3 sm:items-center sm:gap-3">
                     <Checkbox
                       checked={t.done}
                       onCheckedChange={() => toggleTask(t.id)}
@@ -511,7 +511,7 @@ function PlannerPage() {
                     <Button
                       size="icon"
                       variant="ghost"
-                      className="h-7 w-7 opacity-0 transition group-hover:opacity-100"
+                      className="h-7 w-7 shrink-0 opacity-100 transition sm:opacity-0 sm:group-hover:opacity-100"
                       onClick={() => removeTask(t.id)}
                       aria-label="Remove task"
                     >
@@ -562,14 +562,14 @@ function PlannerPage() {
                 );
               })}
               {tasks.length === 0 && (
-                <div className="rounded-2xl border border-dashed border-border/60 p-8 text-center text-sm text-muted-foreground">
+              <div className="rounded-2xl border border-dashed border-border/60 p-6 text-center text-sm text-muted-foreground sm:p-8">
                   No tasks left. Add one below to keep momentum going.
                 </div>
               )}
             </div>
 
             {/* Add task */}
-            <div className="mt-5 rounded-2xl border border-border/60 bg-background/40 p-3">
+            <div className="mt-5 rounded-2xl border border-border/60 bg-background/40 p-3 min-w-0">
               <div className="grid gap-2 sm:grid-cols-[1fr_140px_90px_auto]">
                 <Input
                   placeholder="New task — e.g. Revise Trigonometry"
@@ -604,7 +604,7 @@ function PlannerPage() {
           </section>
 
           {/* RIGHT: focus + achievements */}
-          <section className="space-y-6">
+          <section className="min-w-0 space-y-6">
             <AdaptiveGuidanceCard onAdd={addAdaptiveItem} />
             <RevisionPlannerCard onAddToPlan={addFromRecommendation} />
             <FocusTimer
@@ -667,10 +667,10 @@ function StatPill({
   value: string;
 }) {
   return (
-    <div className="rounded-full border border-border/60 bg-card px-3 py-1.5 flex items-center gap-2 text-xs">
+    <div className="flex min-w-0 items-center gap-2 rounded-full border border-border/60 bg-card px-3 py-1.5 text-xs">
       <span className="text-brand">{icon}</span>
-      <span className="text-muted-foreground">{label}</span>
-      <span className="font-semibold">{value}</span>
+      <span className="truncate text-muted-foreground">{label}</span>
+      <span className="shrink-0 font-semibold">{value}</span>
     </div>
   );
 }
@@ -732,10 +732,10 @@ function FocusTimer({ onSessionComplete }: { onSessionComplete: (min: number) =>
   const offset = C - (progress / 100) * C;
 
   return (
-    <div className="rounded-3xl gradient-ocean p-6 text-white shadow-glow relative overflow-hidden">
+    <div className="relative overflow-hidden rounded-3xl gradient-ocean p-4 text-white shadow-glow sm:p-6">
       <div className="absolute -right-10 -top-10 h-44 w-44 rounded-full bg-brand-glow/30 blur-3xl animate-float" />
       <div className="relative">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-wrap items-center justify-between gap-2">
           <div className="flex items-center gap-2 text-xs uppercase tracking-widest text-white/70">
             <Brain className="h-3.5 w-3.5" /> Focus Timer
           </div>
@@ -745,20 +745,20 @@ function FocusTimer({ onSessionComplete }: { onSessionComplete: (min: number) =>
         </div>
 
         <Tabs value={mode} onValueChange={(v) => setMode(v as Mode)} className="mt-4">
-          <TabsList className="bg-white/10 border border-white/10">
-            <TabsTrigger value="focus" className="data-[state=active]:bg-white data-[state=active]:text-foreground gap-1">
+          <TabsList className="h-auto w-full flex-wrap justify-start bg-white/10 border border-white/10">
+            <TabsTrigger value="focus" className="gap-1 data-[state=active]:bg-white data-[state=active]:text-foreground">
               <Brain className="h-3 w-3" /> Focus
             </TabsTrigger>
-            <TabsTrigger value="short" className="data-[state=active]:bg-white data-[state=active]:text-foreground gap-1">
+            <TabsTrigger value="short" className="gap-1 data-[state=active]:bg-white data-[state=active]:text-foreground">
               <Coffee className="h-3 w-3" /> Short
             </TabsTrigger>
-            <TabsTrigger value="long" className="data-[state=active]:bg-white data-[state=active]:text-foreground gap-1">
+            <TabsTrigger value="long" className="gap-1 data-[state=active]:bg-white data-[state=active]:text-foreground">
               <Coffee className="h-3 w-3" /> Long
             </TabsTrigger>
           </TabsList>
           <TabsContent value={mode} className="mt-4">
             <div className="flex flex-col items-center">
-              <div className="relative h-48 w-48">
+              <div className="relative h-40 w-40 sm:h-48 sm:w-48">
                 <svg className="absolute inset-0 -rotate-90" viewBox="0 0 180 180">
                   <circle cx="90" cy="90" r={R} stroke="rgba(255,255,255,0.15)" strokeWidth="10" fill="none" />
                   <circle
@@ -775,17 +775,17 @@ function FocusTimer({ onSessionComplete }: { onSessionComplete: (min: number) =>
                   />
                 </svg>
                 <div className="absolute inset-0 flex flex-col items-center justify-center">
-                  <div className="font-display text-5xl font-bold tabular-nums">{mm}:{ss}</div>
+                  <div className="font-display text-4xl font-bold tabular-nums sm:text-5xl">{mm}:{ss}</div>
                   <div className="text-[11px] uppercase tracking-widest text-white/70">
                     {mode === "focus" ? "Deep work" : mode === "short" ? "Short break" : "Long break"}
                   </div>
                 </div>
               </div>
 
-              <div className="mt-5 flex gap-2">
+              <div className="mt-5 flex w-full flex-col gap-2 sm:w-auto sm:flex-row">
                 <Button
                   onClick={() => setRunning((r) => !r)}
-                  className="rounded-full bg-white text-foreground hover:bg-white/90"
+                  className="w-full rounded-full bg-white text-foreground hover:bg-white/90 sm:w-auto"
                 >
                   {running ? <Pause className="mr-1 h-4 w-4" /> : <Play className="mr-1 h-4 w-4" />}
                   {running ? "Pause" : "Start"}
@@ -796,7 +796,7 @@ function FocusTimer({ onSessionComplete }: { onSessionComplete: (min: number) =>
                     setRunning(false);
                     setSecondsLeft(MODE_MINUTES[mode] * 60);
                   }}
-                  className="rounded-full border-white/30 bg-white/10 text-white hover:bg-white/20 hover:text-white"
+                  className="w-full rounded-full border-white/30 bg-white/10 text-white hover:bg-white/20 hover:text-white sm:w-auto"
                 >
                   <RotateCcw className="mr-1 h-4 w-4" /> Reset
                 </Button>
