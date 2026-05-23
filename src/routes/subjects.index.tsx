@@ -119,7 +119,11 @@ function SubjectsPage() {
 
         {!isLoading && !isError && subjects && subjects.length > 0 && (
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-          {subjects.map((s) => (
+          {subjects.map((s) => {
+            const manifestTotal = manifestMeta.get(s.id);
+            const chaptersTotal = manifestTotal ?? s.chaptersTotal;
+            const chaptersDone = Math.min(s.chaptersDone, chaptersTotal);
+            return (
             <article
               key={s.id}
               className="group relative overflow-hidden rounded-2xl border border-border/60 bg-card p-4 shadow-soft transition-all hover:-translate-y-1 hover:shadow-glow"
@@ -154,7 +158,7 @@ function SubjectsPage() {
                 </div>
 
                 <div className="mt-4 grid grid-cols-3 gap-2 text-center">
-                  <Stat label="Chapters" value={`${s.chaptersDone}/${s.chaptersTotal}`} />
+                  <Stat label="Chapters" value={`${chaptersDone}/${chaptersTotal}`} />
                   <Stat label="Mastery" value={`${s.mastery}%`} />
                   <Stat label="Target" value={`${s.target}%`} />
                 </div>
