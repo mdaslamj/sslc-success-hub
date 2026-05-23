@@ -290,6 +290,18 @@ function SubjectDetailPage() {
     ? Math.round(chapters.reduce((a, c) => a + c.progress, 0) / chapters.length)
     : subject.completion;
 
+  const isSocial = SOCIAL_SUBJECT_IDS.has(subjectId);
+  const manifestChaptersAll =
+    ((manifestQuery.data as ManifestDoc | undefined)?.chapters ?? []) as ManifestChapter[];
+  const HISTORY_SECTIONS = new Set(["History"]);
+  const MAPS_SECTIONS = new Set(["Geography"]);
+  const CIVICS_SECTIONS = new Set([
+    "Political Science",
+    "Sociology",
+    "Economics",
+    "Business Studies",
+  ]);
+
   return (
     <DashboardLayout title={subject.name}>
       <div className="mx-auto max-w-3xl space-y-4">
@@ -334,20 +346,39 @@ function SubjectDetailPage() {
             <TabsTrigger value="chapters" className="rounded-full gap-1.5">
               <BookOpen className="h-3.5 w-3.5" /> Chapters
             </TabsTrigger>
-            <TabsTrigger value="resources" className="rounded-full gap-1.5">
-              <Library className="h-3.5 w-3.5" /> Resources
-            </TabsTrigger>
-            {isContentDriven && (
-              <TabsTrigger value="formulas" className="rounded-full gap-1.5">
-                <Sigma className="h-3.5 w-3.5" /> Formulas
-              </TabsTrigger>
+            {isSocial ? (
+              <>
+                <TabsTrigger value="timeline" className="rounded-full gap-1.5">
+                  <Clock className="h-3.5 w-3.5" /> Timeline
+                </TabsTrigger>
+                <TabsTrigger value="maps" className="rounded-full gap-1.5">
+                  <MapIcon className="h-3.5 w-3.5" /> Maps
+                </TabsTrigger>
+                <TabsTrigger value="civics" className="rounded-full gap-1.5">
+                  <Landmark className="h-3.5 w-3.5" /> Civics
+                </TabsTrigger>
+                <TabsTrigger value="practice" className="rounded-full gap-1.5">
+                  <Brain className="h-3.5 w-3.5" /> Practice
+                </TabsTrigger>
+              </>
+            ) : (
+              <>
+                <TabsTrigger value="resources" className="rounded-full gap-1.5">
+                  <Library className="h-3.5 w-3.5" /> Resources
+                </TabsTrigger>
+                {isContentDriven && (
+                  <TabsTrigger value="formulas" className="rounded-full gap-1.5">
+                    <Sigma className="h-3.5 w-3.5" /> Formulas
+                  </TabsTrigger>
+                )}
+                <TabsTrigger value="topics" className="rounded-full gap-1.5">
+                  <Sparkles className="h-3.5 w-3.5" /> Topics
+                </TabsTrigger>
+                <TabsTrigger value="practice" className="rounded-full gap-1.5">
+                  <Brain className="h-3.5 w-3.5" /> Practice MCQs
+                </TabsTrigger>
+              </>
             )}
-            <TabsTrigger value="topics" className="rounded-full gap-1.5">
-              <Sparkles className="h-3.5 w-3.5" /> Topics
-            </TabsTrigger>
-            <TabsTrigger value="practice" className="rounded-full gap-1.5">
-              <Brain className="h-3.5 w-3.5" /> Practice MCQs
-            </TabsTrigger>
           </TabsList>
 
           {/* CHAPTERS */}
@@ -379,6 +410,7 @@ function SubjectDetailPage() {
           </TabsContent>
 
           {/* RESOURCES */}
+          {!isSocial && (
           <TabsContent value="resources" className="mt-4 space-y-4">
             {isContentDriven ? (
               <ContentChapterPane
@@ -396,9 +428,10 @@ function SubjectDetailPage() {
               <ResourcesSection chapters={chapters} />
             )}
           </TabsContent>
+          )}
 
 
-          {isContentDriven && (
+          {isContentDriven && !isSocial && (
             <TabsContent value="formulas" className="mt-4">
               <ContentChapterPane
                 chapters={normalizedChapters}
@@ -418,6 +451,7 @@ function SubjectDetailPage() {
           )}
 
           {/* TOPICS */}
+          {!isSocial && (
           <TabsContent value="topics" className="mt-4">
             {isContentDriven ? (
               <div className="space-y-4">
@@ -444,6 +478,63 @@ function SubjectDetailPage() {
               />
             )}
           </TabsContent>
+          )}
+
+          {/* SOCIAL-SCIENCE: TIMELINE / MAPS / CIVICS */}
+          {isSocial && (
+            <>
+              <TabsContent value="timeline" className="mt-4">
+                <SocialSectionView
+                  title="History Timeline"
+                  description="Chronological flow of events from European arrival through India's independence and beyond. Tap a chapter to enter the story."
+                  emptyLabel="No history chapters available yet."
+                  chapters={manifestChaptersAll.filter(
+                    (c) => c.section && HISTORY_SECTIONS.has(c.section),
+                  )}
+                  color={subject.color}
+                  variant="timeline"
+                  onSelect={(id) => {
+                    setSelectedContentId(id);
+                    setChapterDetailOpen(true);
+                  }}
+                />
+              </TabsContent>
+
+              <TabsContent value="maps" className="mt-4">
+                <SocialSectionView
+                  title="Geography & Maps"
+                  description="Physical features, climate, resources and human geography of India. Visual learning starts here."
+                  emptyLabel="No geography chapters available yet."
+                  chapters={manifestChaptersAll.filter(
+                    (c) => c.section && MAPS_SECTIONS.has(c.section),
+                  )}
+                  color={subject.color}
+                  variant="maps"
+                  onSelect={(id) => {
+                    setSelectedContentId(id);
+                    setChapterDetailOpen(true);
+                  }}
+                />
+              </TabsContent>
+
+              <TabsContent value="civics" className="mt-4">
+                <SocialSectionView
+                  title="Civics, Society & Economy"
+                  description="Political Science, Sociology, Economics and Business Studies — how India is governed, organised and powered."
+                  emptyLabel="No civics chapters available yet."
+                  chapters={manifestChaptersAll.filter(
+                    (c) => c.section && CIVICS_SECTIONS.has(c.section),
+                  )}
+                  color={subject.color}
+                  variant="civics"
+                  onSelect={(id) => {
+                    setSelectedContentId(id);
+                    setChapterDetailOpen(true);
+                  }}
+                />
+              </TabsContent>
+            </>
+          )}
 
           {/* PRACTICE */}
           <TabsContent value="practice" className="mt-4">
