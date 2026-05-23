@@ -817,8 +817,8 @@ function SocialTimelineView({
     <div className="space-y-4">
       <SocialHeader
         icon={Clock}
-        title="History Timeline"
-        description="Chronological flow of events across History chapters — pulled live from the textbook JSON."
+        title="Complete History Timeline"
+        description="Syllabus-wide chronology aggregated across every History chapter — pulled live from the textbook JSON. Open a chapter for its focused timeline."
         color={color}
       />
 
