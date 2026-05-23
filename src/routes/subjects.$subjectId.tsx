@@ -302,6 +302,40 @@ function SubjectDetailPage() {
     "Business Studies",
   ]);
 
+  const readyIds = useMemo(
+    () => new Set(manifestChaptersAll.filter((c) => c.status === "ready").map((c) => c.id)),
+    [manifestChaptersAll],
+  );
+  const sectionById = useMemo(() => {
+    const m = new Map<string, string | undefined>();
+    for (const c of manifestChaptersAll) m.set(c.id, c.section);
+    return m;
+  }, [manifestChaptersAll]);
+
+  // Decorate normalized chapters with section from manifest (chapter JSON
+  // also carries `section`, but manifest is authoritative).
+  const decoratedChapters = useMemo(
+    () =>
+      normalizedChapters.map((c) => ({
+        ...c,
+        section: c.section || sectionById.get(c.id),
+      })),
+    [normalizedChapters, sectionById],
+  );
+
+  const historyChapters = useMemo(
+    () => decoratedChapters.filter((c) => c.section && HISTORY_SECTIONS.has(c.section)),
+    [decoratedChapters],
+  );
+  const geographyChapters = useMemo(
+    () => decoratedChapters.filter((c) => c.section && MAPS_SECTIONS.has(c.section)),
+    [decoratedChapters],
+  );
+  const civicsChapters = useMemo(
+    () => decoratedChapters.filter((c) => c.section && CIVICS_SECTIONS.has(c.section)),
+    [decoratedChapters],
+  );
+
   return (
     <DashboardLayout title={subject.name}>
       <div className="mx-auto max-w-3xl space-y-4">
@@ -484,15 +518,11 @@ function SubjectDetailPage() {
           {isSocial && (
             <>
               <TabsContent value="timeline" className="mt-4">
-                <SocialSectionView
-                  title="History Timeline"
-                  description="Chronological flow of events from European arrival through India's independence and beyond. Tap a chapter to enter the story."
-                  emptyLabel="No history chapters available yet."
-                  chapters={manifestChaptersAll.filter(
-                    (c) => c.section && HISTORY_SECTIONS.has(c.section),
-                  )}
+                <SocialTimelineView
+                  chapters={historyChapters}
+                  readyIds={readyIds}
                   color={subject.color}
-                  variant="timeline"
+                  loading={anyChapterLoading}
                   onSelect={(id) => {
                     setSelectedContentId(id);
                     setChapterDetailOpen(true);
@@ -501,15 +531,11 @@ function SubjectDetailPage() {
               </TabsContent>
 
               <TabsContent value="maps" className="mt-4">
-                <SocialSectionView
-                  title="Geography & Maps"
-                  description="Physical features, climate, resources and human geography of India. Visual learning starts here."
-                  emptyLabel="No geography chapters available yet."
-                  chapters={manifestChaptersAll.filter(
-                    (c) => c.section && MAPS_SECTIONS.has(c.section),
-                  )}
+                <SocialMapsView
+                  chapters={geographyChapters}
+                  readyIds={readyIds}
                   color={subject.color}
-                  variant="maps"
+                  loading={anyChapterLoading}
                   onSelect={(id) => {
                     setSelectedContentId(id);
                     setChapterDetailOpen(true);
@@ -518,15 +544,11 @@ function SubjectDetailPage() {
               </TabsContent>
 
               <TabsContent value="civics" className="mt-4">
-                <SocialSectionView
-                  title="Civics, Society & Economy"
-                  description="Political Science, Sociology, Economics and Business Studies — how India is governed, organised and powered."
-                  emptyLabel="No civics chapters available yet."
-                  chapters={manifestChaptersAll.filter(
-                    (c) => c.section && CIVICS_SECTIONS.has(c.section),
-                  )}
+                <SocialCivicsView
+                  chapters={civicsChapters}
+                  readyIds={readyIds}
                   color={subject.color}
-                  variant="civics"
+                  loading={anyChapterLoading}
                   onSelect={(id) => {
                     setSelectedContentId(id);
                     setChapterDetailOpen(true);
@@ -552,7 +574,13 @@ function SubjectDetailPage() {
                 label="Upload answers"
               />
             </div>
-            {isContentDriven ? (
+            {isSocial ? (
+              <SocialPracticeView
+                chapters={decoratedChapters}
+                color={subject.color}
+                loading={anyChapterLoading}
+              />
+            ) : isContentDriven ? (
               <ContentChapterPane
                 chapters={normalizedChapters}
                 activeId={activeContentId}
