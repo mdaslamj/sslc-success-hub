@@ -367,7 +367,7 @@ function PlannerPage() {
 
   return (
     <DashboardLayout title="Study Planner">
-      <div className="mx-auto max-w-7xl space-y-6">
+      <div className="mx-auto w-full max-w-7xl space-y-6 overflow-x-clip">
         {/* Header */}
         <header className="flex flex-wrap items-end justify-between gap-4 min-w-0">
           <div className="min-w-0">
@@ -381,7 +381,7 @@ function PlannerPage() {
               Adaptive schedule with built-in Pomodoro and live achievements.
             </p>
           </div>
-          <div className="flex flex-wrap items-center gap-2 sm:gap-3 w-full sm:w-auto">
+          <div className="flex w-full flex-wrap items-center gap-2 sm:w-auto sm:gap-3">
             <StatPill icon={<CheckCircle2 className="h-4 w-4" />} label="Done" value={`${doneCount}/${tasks.length}`} />
             <StatPill icon={<Clock className="h-4 w-4" />} label="Focused" value={`${focusMinutes}m`} />
             <StatPill icon={<Trophy className="h-4 w-4" />} label="Badges" value={`${earnedCount}/${unlocked.length}`} />
@@ -425,11 +425,11 @@ function PlannerPage() {
         {/* Calendar & life-planning layer */}
         <PlannerCalendar />
 
-        <div className="grid gap-6 lg:grid-cols-[1.4fr_1fr]">
+        <div className="grid min-w-0 gap-6 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)]">
           {/* LEFT: schedule */}
-          <section className="rounded-3xl border border-border/60 bg-card p-6 shadow-card">
-            <div className="mb-4 flex items-center justify-between">
-              <h3 className="font-display text-lg font-semibold flex items-center gap-2">
+          <section className="min-w-0 rounded-3xl border border-border/60 bg-card p-4 shadow-card sm:p-6">
+            <div className="mb-4 flex min-w-0 flex-wrap items-center justify-between gap-2">
+              <h3 className="flex min-w-0 items-center gap-2 font-display text-lg font-semibold">
                 <Sparkles className="h-4 w-4 text-brand" /> Today's Schedule
               </h3>
               <Badge variant="outline" className="rounded-full">
@@ -452,7 +452,7 @@ function PlannerPage() {
                         : "border-border/60 bg-background/40 hover:border-brand/40"
                     }`}
                   >
-                    <div className="flex items-center gap-3 p-3">
+                    <div className="flex min-w-0 items-start gap-2 p-3 sm:items-center sm:gap-3">
                     <Checkbox
                       checked={t.done}
                       onCheckedChange={() => toggleTask(t.id)}
@@ -511,7 +511,7 @@ function PlannerPage() {
                     <Button
                       size="icon"
                       variant="ghost"
-                      className="h-7 w-7 opacity-0 transition group-hover:opacity-100"
+                      className="h-7 w-7 shrink-0 opacity-100 transition sm:opacity-0 sm:group-hover:opacity-100"
                       onClick={() => removeTask(t.id)}
                       aria-label="Remove task"
                     >
@@ -562,14 +562,14 @@ function PlannerPage() {
                 );
               })}
               {tasks.length === 0 && (
-                <div className="rounded-2xl border border-dashed border-border/60 p-8 text-center text-sm text-muted-foreground">
+              <div className="rounded-2xl border border-dashed border-border/60 p-6 text-center text-sm text-muted-foreground sm:p-8">
                   No tasks left. Add one below to keep momentum going.
                 </div>
               )}
             </div>
 
             {/* Add task */}
-            <div className="mt-5 rounded-2xl border border-border/60 bg-background/40 p-3">
+            <div className="mt-5 rounded-2xl border border-border/60 bg-background/40 p-3 min-w-0">
               <div className="grid gap-2 sm:grid-cols-[1fr_140px_90px_auto]">
                 <Input
                   placeholder="New task — e.g. Revise Trigonometry"
@@ -604,7 +604,7 @@ function PlannerPage() {
           </section>
 
           {/* RIGHT: focus + achievements */}
-          <section className="space-y-6">
+          <section className="min-w-0 space-y-6">
             <AdaptiveGuidanceCard onAdd={addAdaptiveItem} />
             <RevisionPlannerCard onAddToPlan={addFromRecommendation} />
             <FocusTimer
