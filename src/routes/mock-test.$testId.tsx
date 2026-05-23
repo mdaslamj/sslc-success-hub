@@ -289,6 +289,14 @@ function ReviewView({
           <ResultCard label="To revisit" value={String(wrongCount)} />
         </div>
 
+        {/* Emotional progress note — calm, learning-signal aware */}
+        <div className="flex items-start gap-2 rounded-2xl border border-border/60 bg-card/60 p-3 text-xs text-muted-foreground">
+          <Heart className="mt-0.5 h-3.5 w-3.5 shrink-0 text-rose-400" />
+          <p className="leading-snug">
+            {emotional.headline} {emotional.confidence}
+          </p>
+        </div>
+
         {/* Action row — retry wrong + back */}
         <div className="flex flex-wrap items-center justify-center gap-2">
           {wrongCount > 0 ? (

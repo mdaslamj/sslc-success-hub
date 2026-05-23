@@ -15,11 +15,12 @@
 import { useMemo } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Brain, Plus, Sparkles, LifeBuoy, Target } from "lucide-react";
+import { Brain, Plus, Sparkles, LifeBuoy, Target, Heart } from "lucide-react";
 import {
   buildAdaptiveDailyPlan,
   type AdaptivePlanItem,
 } from "@/lib/adaptivePlannerBridge";
+import { getEmotionalSummary } from "@/lib/emotionalProgress";
 
 export type AdaptiveGuidanceCardProps = {
   subjectId?: string;
