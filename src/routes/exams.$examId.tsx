@@ -59,6 +59,10 @@ function ExamPlayerPage() {
   const content = useContentCatalog();
 
   useEffect(() => {
+    // Reset failure flag on every re-evaluation so a successful rebuild
+    // (once the content catalogue finishes loading) doesn't get stuck on
+    // the "couldn't load" screen.
+    setMissing(false);
     const cached = readCachedExam(examId);
     if (cached) {
       setExam(cached);
@@ -81,10 +85,13 @@ function ExamPlayerPage() {
       setExam(seed);
       return;
     }
+    // Wait until the content catalogue has finished loading before
+    // giving up — chapter / subject mock ids are built from that data.
+    if (content.isLoading) return;
     fetchMockExam(examId)
       .then((e) => (e ? setExam(e) : setMissing(true)))
       .catch(() => setMissing(true));
-  }, [examId, content.subjects]);
+  }, [examId, content.subjects, content.isLoading]);
 
   if (missing) {
     return (
