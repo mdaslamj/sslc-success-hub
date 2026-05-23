@@ -1363,6 +1363,10 @@ function ChapterDetailViewInner({
 
       <ChapterContentOverview chapter={chapter} />
 
+      {chapter.map && (
+        <ChapterMap map={chapter.map} chapterTitle={chapter.title} color={color} />
+      )}
+
       {chapter.importantDates.length > 0 && (
         <ChapterTimeline chapter={chapter} color={color} />
       )}
