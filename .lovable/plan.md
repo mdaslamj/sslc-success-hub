@@ -1,67 +1,51 @@
+# Aura mobile production fix plan
 
-## Goal
+## What I’ll fix
 
-In `src/routes/subjects.$subjectId.tsx` (Math subject page), make the **Chapters, Resources, Formulas, Topics, and Practice MCQs** tabs render entirely from the uploaded JSON in `public/content/`. Keep all current UI (markup, classes, spacing, colors, layout, tab order) byte-for-byte equivalent — only the data layer changes.
+1. **Planner mobile breakage**
+   - Remove the remaining unsafe width/overflow points in the planner header, task rows, add-task form, calendar controls, and focus timer.
+   - Tighten the mobile app shell header so the title, notification button, and sign-in/profile controls cannot overlap or clip on narrow screens.
+   - Verify no horizontal overflow remains on planner and dashboard-adjacent mobile routes.
 
-## Files
+2. **Chapter test flow that doesn’t reliably function**
+   - Replace the hardcoded `/chapter-test` page behavior with a route-safe chapter test flow that uses the actual selected chapter/test data rather than always loading one fixed chapter.
+   - Ensure chapter tests open from the existing quiz/test entry points, render questions consistently, and expose clear back/retry paths without dead ends.
+   - Keep it lightweight and local-only.
 
-### New
-- `src/lib/normalizeChapterData.ts` — single adapter consumed by every tab.
+3. **Maps interaction flow on mobile**
+   - Fix remaining mobile issues in the Social Science maps dialog and chapter detail view: viewport-safe modal sizing, scroll containment, tap targets, and any clipped content.
+   - Check the chapter picker/detail panes for narrow-screen usability so the user can open a map, read the explanation, practice related questions, and exit cleanly.
 
-### Edited
-- `src/routes/subjects.$subjectId.tsx` — swap mock/firebase data sources for normalized JSON.
+4. **Stability cleanup tied to these screens only**
+   - Remove duplicate or stale logic uncovered in these flows.
+   - Clean any console/runtime issues surfaced by the audited planner, chapter test, and maps paths.
+   - Update `docs/dev-status.md` with the concrete production fixes and verification notes.
 
-### Untouched
-- `src/lib/contentLoader.ts` (already correct: `loadManifest`, `loadChapter`).
-- `src/routes/subjects.math.$chapterId.tsx` (separate hub, out of scope).
-- All UI components (`Tabs`, `Badge`, `Progress`, `ContentResourcesGrid`, `FormulasSection`, `ChapterContentOverview`, `ManifestChaptersGrid`, `TopicsSection`, `PracticeQuiz`, `DifficultyBadge`).
+## Verification after implementation
 
-## `normalizeChapterData()` shape
+- Planner fully aligned on mobile
+- No clipped UI or hidden controls in planner header/actions
+- No horizontal overflow on audited screens
+- Chapter test opens and questions render correctly
+- Maps flow opens, scrolls, practices, and closes correctly on mobile
+- No dead-end navigation on the audited flows
+- No console/runtime errors on the fixed paths
 
-```ts
-export type NormalizedChapter = {
-  id: string;
-  chapterNumber: number;
-  title: string;
-  summary: string;
-  difficulty: "easy" | "medium" | "hard";
-  learningPoints: string[];
-  formulas: ContentFormula[];   // ?? []
-  resources: ContentResource[]; // ?? []
-  mcqs: ContentMCQ[];           // ?? []
-  exercises: ContentExercise[]; // ?? []
-  mcqCount: number;             // mcqs.length or raw.mcqCount ?? 0
-  exerciseCount: number;        // exercises.length or raw.exerciseCount ?? 0
-};
+## Technical notes
 
-export function normalizeChapterData(raw: unknown): NormalizedChapter
+- I’ll keep this as a **surgical frontend pass** only: no redesigns, no new dependencies, no architecture rewrite.
+- Main files likely affected:
+  - `src/components/dashboard-layout.tsx`
+  - `src/routes/planner.tsx`
+  - `src/components/planner/planner-calendar.tsx`
+  - `src/routes/chapter-test.tsx` and/or `src/pages/ChapterTest.tsx`
+  - `src/routes/quizzes.tsx` if the chapter-test entry path needs correcting
+  - `src/routes/subjects.$subjectId.tsx`
+  - `docs/dev-status.md`
+
+```text
+Audit actual mobile breakpoints
+-> patch layout/flow bugs only
+-> verify route + interaction paths
+-> document shipped fixes
 ```
-
-All array fields default to `[]`, strings default to `""`, numbers default to `0`. Accepts both a manifest entry (skeleton) and a full chapter JSON, merging where both exist. The Practice tab's MCQ-to-quiz mapping (`mapContentMcqs`) is moved here as a helper but kept identical in behavior.
-
-## Data flow changes in `subjects.$subjectId.tsx`
-
-1. `manifestQuery` — unchanged (already loads `/content/manifest.json`).
-2. Replace the single-chapter `contentChapterQuery` with a `useQueries` batch that loads **every chapter with `status: "ready"`** via `loadChapter("mathematics", id)` in parallel (already cached by `loadChapter`).
-3. Map each loaded chapter through `normalizeChapterData`, indexed by id.
-4. Remove the `subjectMCQs` import and the `subjectMCQs[subject.id] ?? []` fallback. If no JSON MCQs exist for the selected chapter, render the existing empty state ("MCQs for this subject coming soon."). No mock fallback.
-
-## Per-tab wiring
-
-- **Chapters** — already manifest-driven via `ManifestChaptersGrid`; no markup change. Drop the firebase `ChaptersSection` fallback for `isMath` (manifest is the source of truth on Math). Non-math subjects keep the existing firebase path.
-- **Resources** — replace `ResourcesSection` (firebase `ChapterResources` picker) on the Math path with a chapter picker (same two-column layout, same classes) that renders `ContentResourcesGrid` for `normalized[selectedId].resources ?? []`. Non-math subjects keep the existing path.
-- **Formulas** — add the same chapter picker; pass `normalized[selectedId].formulas ?? []` to the existing `FormulasSection`. No styling change.
-- **Topics** — drive from the selected normalized chapter: `summary` + `learningPoints` via the existing `ChapterContentOverview` markup. Keep the existing weak/strong/AI band beneath it unchanged (it already comes from `subject.weakTopics`/`strongTopics`).
-- **Practice MCQs** — chapter picker drives `normalized[selectedId].mcqs ?? []` through `mapContentMcqs` into the existing `PracticeQuiz`. Empty state unchanged.
-
-The chapter picker is the same visual element already used in `ResourcesSection` (left rail + content), so no new design.
-
-## Safe fallbacks
-
-Every tab reads through `?? []` / `?? ""` from the normalized object — a missing/late-loading JSON file shows the existing empty-state markup, never a crash. A skeleton state is shown while the manifest or the selected chapter JSON is loading.
-
-## Out of scope
-
-- No changes to routing, theme tokens, spacing, typography, responsiveness, or any component visuals.
-- No changes to `subjects.math.$chapterId.tsx`, firebase services, or non-math subject pages.
-- No new dependencies.
