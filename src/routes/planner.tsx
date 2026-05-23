@@ -667,10 +667,10 @@ function StatPill({
   value: string;
 }) {
   return (
-    <div className="rounded-full border border-border/60 bg-card px-3 py-1.5 flex items-center gap-2 text-xs">
+    <div className="flex min-w-0 items-center gap-2 rounded-full border border-border/60 bg-card px-3 py-1.5 text-xs">
       <span className="text-brand">{icon}</span>
-      <span className="text-muted-foreground">{label}</span>
-      <span className="font-semibold">{value}</span>
+      <span className="truncate text-muted-foreground">{label}</span>
+      <span className="shrink-0 font-semibold">{value}</span>
     </div>
   );
 }
@@ -732,10 +732,10 @@ function FocusTimer({ onSessionComplete }: { onSessionComplete: (min: number) =>
   const offset = C - (progress / 100) * C;
 
   return (
-    <div className="rounded-3xl gradient-ocean p-6 text-white shadow-glow relative overflow-hidden">
+    <div className="relative overflow-hidden rounded-3xl gradient-ocean p-4 text-white shadow-glow sm:p-6">
       <div className="absolute -right-10 -top-10 h-44 w-44 rounded-full bg-brand-glow/30 blur-3xl animate-float" />
       <div className="relative">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-wrap items-center justify-between gap-2">
           <div className="flex items-center gap-2 text-xs uppercase tracking-widest text-white/70">
             <Brain className="h-3.5 w-3.5" /> Focus Timer
           </div>
@@ -745,20 +745,20 @@ function FocusTimer({ onSessionComplete }: { onSessionComplete: (min: number) =>
         </div>
 
         <Tabs value={mode} onValueChange={(v) => setMode(v as Mode)} className="mt-4">
-          <TabsList className="bg-white/10 border border-white/10">
-            <TabsTrigger value="focus" className="data-[state=active]:bg-white data-[state=active]:text-foreground gap-1">
+          <TabsList className="h-auto w-full flex-wrap justify-start bg-white/10 border border-white/10">
+            <TabsTrigger value="focus" className="gap-1 data-[state=active]:bg-white data-[state=active]:text-foreground">
               <Brain className="h-3 w-3" /> Focus
             </TabsTrigger>
-            <TabsTrigger value="short" className="data-[state=active]:bg-white data-[state=active]:text-foreground gap-1">
+            <TabsTrigger value="short" className="gap-1 data-[state=active]:bg-white data-[state=active]:text-foreground">
               <Coffee className="h-3 w-3" /> Short
             </TabsTrigger>
-            <TabsTrigger value="long" className="data-[state=active]:bg-white data-[state=active]:text-foreground gap-1">
+            <TabsTrigger value="long" className="gap-1 data-[state=active]:bg-white data-[state=active]:text-foreground">
               <Coffee className="h-3 w-3" /> Long
             </TabsTrigger>
           </TabsList>
           <TabsContent value={mode} className="mt-4">
             <div className="flex flex-col items-center">
-              <div className="relative h-48 w-48">
+              <div className="relative h-40 w-40 sm:h-48 sm:w-48">
                 <svg className="absolute inset-0 -rotate-90" viewBox="0 0 180 180">
                   <circle cx="90" cy="90" r={R} stroke="rgba(255,255,255,0.15)" strokeWidth="10" fill="none" />
                   <circle
@@ -775,17 +775,17 @@ function FocusTimer({ onSessionComplete }: { onSessionComplete: (min: number) =>
                   />
                 </svg>
                 <div className="absolute inset-0 flex flex-col items-center justify-center">
-                  <div className="font-display text-5xl font-bold tabular-nums">{mm}:{ss}</div>
+                  <div className="font-display text-4xl font-bold tabular-nums sm:text-5xl">{mm}:{ss}</div>
                   <div className="text-[11px] uppercase tracking-widest text-white/70">
                     {mode === "focus" ? "Deep work" : mode === "short" ? "Short break" : "Long break"}
                   </div>
                 </div>
               </div>
 
-              <div className="mt-5 flex gap-2">
+              <div className="mt-5 flex w-full flex-col gap-2 sm:w-auto sm:flex-row">
                 <Button
                   onClick={() => setRunning((r) => !r)}
-                  className="rounded-full bg-white text-foreground hover:bg-white/90"
+                  className="w-full rounded-full bg-white text-foreground hover:bg-white/90 sm:w-auto"
                 >
                   {running ? <Pause className="mr-1 h-4 w-4" /> : <Play className="mr-1 h-4 w-4" />}
                   {running ? "Pause" : "Start"}
@@ -796,7 +796,7 @@ function FocusTimer({ onSessionComplete }: { onSessionComplete: (min: number) =>
                     setRunning(false);
                     setSecondsLeft(MODE_MINUTES[mode] * 60);
                   }}
-                  className="rounded-full border-white/30 bg-white/10 text-white hover:bg-white/20 hover:text-white"
+                  className="w-full rounded-full border-white/30 bg-white/10 text-white hover:bg-white/20 hover:text-white sm:w-auto"
                 >
                   <RotateCcw className="mr-1 h-4 w-4" /> Reset
                 </Button>
