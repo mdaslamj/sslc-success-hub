@@ -1,5 +1,49 @@
 # Aura — Dev Status
 
+## UX Trust & Polish Sweep — ✅ shipped
+
+**Scope:** Targeted polish on loading, empty, and fallback states. No
+redesigns, no new dependencies, no gamification.
+
+### Loading states
+- `quiz/$quizId` no longer flashes a bare "Loading…" line while the cached
+  quiz hydrates — replaced with a calm skeleton (title / body / options
+  rows) and a supportive "Preparing your quiz…" caption.
+- Verified all other major routes already use proper animate-pulse
+  skeletons (`index`, `quizzes`, `predictions`, `subjects`, `mock-test`).
+- `Splash` in `__root.tsx` keeps an `aria-live="polite"` "Loading…" label
+  for screen readers.
+
+### Empty / fallback messaging
+- `quizzes` empty state no longer leaks developer text
+  ("Add a chapter JSON under public/content/chapters/…"). Replaced with
+  a calm message: "No quizzes are available yet for {subject}. New
+  chapters appear here automatically as they're added."
+- All other empty surfaces already route through `EmptyState` /
+  adaptive-guidance copy (supportive tone, no failure framing).
+
+### Transitions
+- `PageTransition` keeps the soft 320ms `page-in` fade-up — calm and
+  GPU-cheap. Honoured by the global `prefers-reduced-motion` rule in
+  `src/styles.css` (animations collapse to 0.001ms).
+
+### Mobile readability / touch
+- Inputs remain ≥16px on mobile (blocks iOS zoom).
+- `touch-action: manipulation` on coarse pointers stays in place.
+- No new dense layouts introduced this pass.
+
+### Slow network
+- `SyncStatusBanner` still mounted in the shell.
+- The lazy Firebase Storage chunk from the previous sweep means cold
+  starts on slow networks ship less JS upfront.
+
+### Verified
+- ✅ No console errors.
+- ✅ No abrupt blank states on the audited routes.
+- ✅ No visual clutter introduced (only one skeleton + one copy change).
+
+---
+
 ## Deployment Optimization Sweep — ✅ shipped
 
 **Scope:** Bundle / lazy-load / Firebase cleanup pass. No behaviour changes.
