@@ -1271,6 +1271,68 @@ function ChapterDetailView({
   color: string;
   onBack: () => void;
 }) {
+  return <ChapterDetailViewInner chapter={chapter} color={color} onBack={onBack} />;
+}
+
+function ChapterTimeline({
+  chapter,
+  color,
+}: {
+  chapter: NormalizedChapter;
+  color: string;
+}) {
+  const sorted = useMemo(
+    () =>
+      [...chapter.importantDates].sort(
+        (a, b) => parseYear(a.year) - parseYear(b.year),
+      ),
+    [chapter],
+  );
+  if (sorted.length === 0) return null;
+  return (
+    <div className="rounded-2xl border border-border/60 bg-card p-4">
+      <div className="mb-3 flex items-center gap-2">
+        <Clock className="h-4 w-4 text-brand" />
+        <h3 className="font-display font-semibold">Chapter Timeline</h3>
+        <Badge variant="outline" className="rounded-full text-[10px]">
+          {sorted.length}
+        </Badge>
+      </div>
+      <p className="mb-3 text-xs text-muted-foreground">
+        Events and dates from <span className="font-medium">{chapter.title}</span> only.
+      </p>
+      <ol className="relative space-y-3 border-l border-border/60 pl-5">
+        {sorted.map((d, i) => (
+          <li key={`${chapter.id}-tl-${i}`} className="relative">
+            <span
+              className="absolute -left-[27px] top-2 flex h-3 w-3 items-center justify-center rounded-full ring-4 ring-background"
+              style={{ background: color }}
+            />
+            <div className="flex flex-wrap items-baseline gap-2">
+              <span
+                className="font-display text-base font-bold"
+                style={{ color }}
+              >
+                {d.year}
+              </span>
+              <span className="text-sm text-foreground/90">{d.event}</span>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  );
+}
+
+function ChapterDetailViewInner({
+  chapter,
+  color,
+  onBack,
+}: {
+  chapter: NormalizedChapter;
+  color: string;
+  onBack: () => void;
+}) {
   const mcqs = useMemo(
     () => mapContentMcqs(chapter.mcqs ?? [], chapter.title),
     [chapter],
