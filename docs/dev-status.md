@@ -1,5 +1,53 @@
 # Aura — Dev Status
 
+## Deployment Optimization Sweep — ✅ shipped
+
+**Scope:** Bundle / lazy-load / Firebase cleanup pass. No behaviour changes.
+
+### Bundle
+- **Firebase Storage SDK now lazy-loaded** (`src/integrations/firebase/config.ts`).
+  Replaced the eager `getStorage()` export with `getStorageLazy()` which
+  dynamically imports `firebase/storage` only when the handwritten-answer
+  upload or account-delete flow runs. Most sessions never touch storage,
+  so the SDK chunk no longer ships in the initial bundle.
+  - Call sites updated: `services/answer-uploads.ts`,
+    `lib/production/account-lifecycle.ts`.
+- **Recharts** stays scoped to `/analytics` and `/targets` only —
+  TanStack auto code-splitting keeps it out of the initial bundle.
+- No `framer-motion`, no `three`, no other heavy libs in the tree.
+
+### Firebase usage
+- Confirmed all service modules use granular `firebase/firestore` imports
+  (`doc`, `getDoc`, `setDoc`, `collection`, `query`, …) so tree-shaking
+  drops unused Firestore surface area.
+- `firebase/auth` persistence is `browserLocalPersistence` with a silent
+  fallback to in-memory — survives reload without blocking startup.
+
+### Rerenders / memory
+- Adaptive + emotional layers remain pure functions over existing
+  localStorage signals — no new subscriptions, no new React contexts.
+- `OnboardingGate` early-returns on `loading` and only navigates inside a
+  `useEffect` keyed on `(user, profile, loading, pathname)` — no render loop.
+
+### Offline resilience
+- `SyncStatusBanner` already mounted in the shell.
+- Storage-backed flows degrade gracefully: lazy import failures are caught
+  by the existing try/catch in `deleteAnswerImage` and
+  `deleteStorageFolder` so an offline session can't crash the UI.
+
+### Low-end Android
+- Global `body { overflow-x: hidden; overscroll-behavior-y: contain }` and
+  `touch-action: manipulation` on coarse pointers remain in place.
+- Initial JS payload is smaller (no storage SDK), helping cold-start on
+  slow networks.
+
+### Verified
+- ✅ No console errors, no runtime errors, no dev-server warnings.
+- ✅ Production build remains clean (no stale `storage` imports).
+- ✅ `getStorageLazy()` is idempotent — caches the instance after first call.
+
+---
+
 ## Production Stabilization Sweep — ✅ shipped
 
 **Scope:** Verification pass across onboarding/session persistence, route
