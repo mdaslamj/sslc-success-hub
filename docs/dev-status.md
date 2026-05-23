@@ -1,5 +1,36 @@
 # Aura — Dev Status
 
+## Mobile Production Fix Pass (focused) — ✅ shipped
+
+Targeted, surgical fixes to real rendered mobile breakage — no redesigns,
+no new dependencies, no sweeps.
+
+### Fixed
+- **Chapter test was hardcoded to one chapter.** `src/routes/chapter-test.tsx`
+  now validates `?subject=&chapter=` search params, and
+  `src/pages/ChapterTest.tsx` reads them and reloads on change. Cancels stale
+  loads, resets answers, and surfaces a calm error instead of an empty page.
+- **Quizzes filter row overflowed on narrow phones.** Subject chips now sit
+  in a horizontally scrollable rail and the level switcher wraps to its own
+  row on mobile, so no control gets clipped at 320–360px widths.
+- **Mobile header overlap.** `dashboard-layout.tsx` removes the hard
+  `max-w-[32vw]` cap on the title (now shrinks via `flex-1 min-w-0`),
+  pins the notifications bell to `shrink-0`, and keeps Sign in / profile
+  always tappable without colliding with the title.
+- **Maps topic dialog centering was unsafe.** `TopicPracticeDialog` in
+  `src/routes/subjects.$subjectId.tsx` now centers with a normal
+  `top-1/2 -translate-y-1/2` so it can't be pushed off-screen by the safe
+  area inset on tall iOS viewports.
+
+### Verified
+- No console / runtime errors on the audited routes.
+- Planner header + actions stay aligned at 320px.
+- Chapter test opens, renders questions, submits, retries, and exits cleanly.
+- Maps practice dialog opens, scrolls, practices, and closes on mobile.
+- No horizontal overflow introduced on audited screens.
+
+---
+
 ## Mobile Production Usability Fix Sweep — ✅ shipped
 
 **Scope:** Real mobile usability fixes only. No redesigns, no new features,
