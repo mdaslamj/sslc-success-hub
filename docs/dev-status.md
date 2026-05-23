@@ -1,5 +1,44 @@
 # Aura — Dev Status
 
+## Adaptive Planner Integration — ✅ shipped
+
+**Scope:** Transform the Planner from a static schedule into a calm,
+adaptive daily guidance layer powered by `adaptiveRevision`. Local-only,
+no backend/cron/notifications, no new storage keys.
+
+### What changed
+- New bridge `src/lib/adaptivePlannerBridge.ts` — pure
+  `buildAdaptiveDailyPlan({ subjectId? })` returning `dailyFocus`,
+  `revision[]` (≤3), `recovery[]` (≤2), `practice[]` (≤2), a calm
+  `message`, and `totalMinutes` capped at 60 min/day. De-duplicates
+  chapters across buckets.
+- New `src/components/planner/adaptive-guidance-card.tsx` — mobile-first
+  card surfacing the daily plan with per-item "Add to today" buttons.
+- Wired into `src/routes/planner.tsx`: renders above the legacy
+  `RevisionPlannerCard`; `addAdaptiveItem` appends to the existing task
+  list (skips duplicates, preserves the highlight-pulse UX).
+- Calm supportive copy only — e.g. "A short revision session today may
+  strengthen confidence." / "You’re maintaining steady progress." / "Let’s
+  revisit a few important chapters today." No pressure language, streak
+  obsession, aggressive targets, or overload indicators.
+
+### Workload guardrails
+- Hard caps per bucket; total minutes ≤ 60/day with trim order
+  practice → recovery → revision (least urgent first).
+
+### Future hooks
+- Emotional progress layer can read `plan.message` + item tone.
+- Personalized mock exams can consume `item.practice.questionIds`.
+- Parent-friendly summaries can re-use the headline + bucket counts.
+
+### Verification
+- ✅ Planner pulls adaptive suggestions through the bridge.
+- ✅ Workload stays balanced via hard caps and minute trimming.
+- ✅ No duplicate logic — bridge re-uses `adaptiveRevision` exclusively.
+- ✅ Mobile layout uses existing column grid; card is `flex-wrap`-safe
+  and uses semantic tokens only.
+- ✅ No new `localStorage` keys, backend, cron, or notifications.
+
 ## Adaptive Revision Engine — ✅ shipped
 
 **Scope:** Lightweight, local-only revision suggestions derived from
