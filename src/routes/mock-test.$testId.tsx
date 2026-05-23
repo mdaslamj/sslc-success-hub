@@ -15,13 +15,18 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import {
   gradeTest,
+  buildRetryWrongTest,
+  computeChapterBreakdown,
+  type ChapterBreakdownRow,
   type MockTest,
   type MockTestResult,
 } from "@/lib/mock-test/engine";
 import {
+  cacheTest,
   readCachedTest,
   recordAttempt,
 } from "@/lib/mock-test/store";
+import { recordAttemptSignals } from "@/lib/weakAreaTracker";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/mock-test/$testId")({
@@ -105,10 +110,19 @@ function ActiveRunner({ test, onExit }: { test: MockTest; onExit: () => void }) 
       durationSeconds: Math.max(1, Math.round((Date.now() - startedAt) / 1000)),
       result: r,
     });
+    // Local-only weak-area signals — wrong qs, chapter accuracy, confidence.
+    recordAttemptSignals({ test, answers });
   }
 
   if (phase === "review" && result) {
-    return <ReviewView test={test} answers={answers} result={result} onRestart={onExit} />;
+    return (
+      <ReviewView
+        test={test}
+        answers={answers}
+        result={result}
+        onRestart={onExit}
+      />
+    );
   }
 
   return (
@@ -236,19 +250,87 @@ function ReviewView({
   result: MockTestResult;
   onRestart: () => void;
 }) {
+  const navigate = useNavigate();
+  const breakdown = useMemo(
+    () => computeChapterBreakdown(test, answers),
+    [test, answers],
+  );
+  const wrongCount = test.questions.reduce((n, q, i) => {
+    const a = answers[i];
+    return n + (a == null || a !== q.correctIndex ? 1 : 0);
+  }, 0);
+  const supportive = supportiveMessage(result.scorePct);
+  const weakChapters = breakdown
+    .filter((b) => b.accuracyPct < 60)
+    .sort((a, b) => a.accuracyPct - b.accuracyPct);
+
+  function retryWrong() {
+    const retry = buildRetryWrongTest(test, answers);
+    if (!retry) return;
+    cacheTest(retry);
+    navigate({ to: "/mock-test/$testId", params: { testId: retry.id } });
+  }
+
   return (
     <DashboardLayout title={`${test.title} — Review`}>
       <div className="mx-auto w-full max-w-2xl space-y-4 px-4 py-4">
         <header className="space-y-1">
           <Badge variant="outline" className="rounded-full">Result</Badge>
           <h1 className="text-xl font-semibold">{test.title}</h1>
+          <p className="text-sm text-muted-foreground">{supportive}</p>
         </header>
 
         <div className="grid grid-cols-3 gap-2">
           <ResultCard label="Score" value={`${result.scorePct}%`} />
           <ResultCard label="Correct" value={`${result.correct}/${result.total}`} />
-          <ResultCard label="Accuracy" value={`${result.accuracyPct}%`} />
+          <ResultCard label="To revisit" value={String(wrongCount)} />
         </div>
+
+        {/* Action row — retry wrong + back */}
+        <div className="flex flex-wrap items-center justify-center gap-2">
+          {wrongCount > 0 ? (
+            <Button size="sm" onClick={retryWrong}>
+              <RotateCcw className="mr-1 h-4 w-4" /> Retry wrong ({wrongCount})
+            </Button>
+          ) : null}
+          <Button size="sm" variant="outline" onClick={onRestart}>
+            Back to mock tests
+          </Button>
+        </div>
+
+        {/* Chapter breakdown */}
+        {breakdown.length > 1 ? (
+          <section className="rounded-2xl border border-border bg-card p-4">
+            <h2 className="text-sm font-semibold">Chapter breakdown</h2>
+            <p className="mt-1 text-xs text-muted-foreground">
+              A calm look at how each chapter went — not a score, just a guide.
+            </p>
+            <ul className="mt-3 space-y-2">
+              {breakdown.map((b) => (
+                <BreakdownRow key={b.chapterId} row={b} />
+              ))}
+            </ul>
+          </section>
+        ) : null}
+
+        {/* Gentle revision suggestion */}
+        {weakChapters.length > 0 ? (
+          <section className="rounded-2xl border border-amber-400/30 bg-amber-50/40 p-4 dark:bg-amber-500/5">
+            <h2 className="text-sm font-semibold">A gentle next step</h2>
+            <p className="mt-1 text-xs text-muted-foreground">
+              No pressure — when you’re ready, a short revisit of these will help
+              the most.
+            </p>
+            <ul className="mt-2 space-y-1 text-sm">
+              {weakChapters.slice(0, 3).map((b) => (
+                <li key={b.chapterId} className="flex items-center justify-between gap-2">
+                  <span className="truncate">{b.chapterTitle}</span>
+                  <span className="text-xs text-muted-foreground">{b.accuracyPct}%</span>
+                </li>
+              ))}
+            </ul>
+          </section>
+        ) : null}
 
         <ol className="space-y-3">
           {test.questions.map((q, i) => {
@@ -312,14 +394,40 @@ function ReviewView({
           })}
         </ol>
 
-        <div className="flex justify-center gap-2 pt-2">
+        <div className="flex flex-wrap justify-center gap-2 pt-2">
+          {wrongCount > 0 ? (
+            <Button onClick={retryWrong}>
+              <RotateCcw className="mr-1 h-4 w-4" /> Retry wrong questions
+            </Button>
+          ) : null}
           <Button variant="outline" onClick={onRestart}>
-            <RotateCcw className="mr-1 h-4 w-4" /> Back to mock tests
+            Back to mock tests
           </Button>
         </div>
       </div>
     </DashboardLayout>
   );
+}
+
+function BreakdownRow({ row }: { row: ChapterBreakdownRow }) {
+  return (
+    <li className="space-y-1">
+      <div className="flex items-center justify-between gap-2 text-sm">
+        <span className="min-w-0 truncate">{row.chapterTitle}</span>
+        <span className="tabular-nums text-xs text-muted-foreground">
+          {row.correct}/{row.total} · {row.accuracyPct}%
+        </span>
+      </div>
+      <Progress value={row.accuracyPct} className="h-1.5" />
+    </li>
+  );
+}
+
+function supportiveMessage(pct: number): string {
+  if (pct >= 85) return "Lovely work — you’re owning this. Keep the rhythm gentle.";
+  if (pct >= 65) return "Solid effort. A short revisit of the trickier ones and you’re set.";
+  if (pct >= 40) return "Good attempt — every wrong answer is a hint, not a verdict.";
+  return "Be kind to yourself. Tests are practice. Let’s revisit a few topics calmly.";
 }
 
 function ResultCard({ label, value }: { label: string; value: string }) {

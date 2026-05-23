@@ -195,3 +195,74 @@ export function gradeTest(
     accuracyPct: answered ? Math.round((correct / answered) * 100) : 0,
   };
 }
+
+// ---------------------------------------------------------------------------
+// Chapter breakdown + retry helpers
+// ---------------------------------------------------------------------------
+
+export type ChapterBreakdownRow = {
+  chapterId: string;
+  chapterTitle: string;
+  total: number;
+  correct: number;
+  wrong: number;
+  skipped: number;
+  accuracyPct: number;
+};
+
+export function computeChapterBreakdown(
+  test: MockTest,
+  answers: (number | null)[],
+): ChapterBreakdownRow[] {
+  const map = new Map<string, ChapterBreakdownRow>();
+  test.questions.forEach((q, i) => {
+    const row =
+      map.get(q.chapterId) ??
+      {
+        chapterId: q.chapterId,
+        chapterTitle: q.chapterTitle,
+        total: 0,
+        correct: 0,
+        wrong: 0,
+        skipped: 0,
+        accuracyPct: 0,
+      };
+    row.total += 1;
+    const a = answers[i];
+    if (a == null) row.skipped += 1;
+    else if (a === q.correctIndex) row.correct += 1;
+    else row.wrong += 1;
+    map.set(q.chapterId, row);
+  });
+  return Array.from(map.values()).map((r) => ({
+    ...r,
+    accuracyPct: r.total ? Math.round((r.correct / r.total) * 100) : 0,
+  }));
+}
+
+/**
+ * Build a retry test from the questions the student got wrong (or skipped).
+ * Reuses the same MockTestQuestion shape — runner + grading work unchanged.
+ */
+export function buildRetryWrongTest(
+  test: MockTest,
+  answers: (number | null)[],
+): MockTest | null {
+  const wrong = test.questions.filter((q, i) => {
+    const a = answers[i];
+    return a == null || a !== q.correctIndex;
+  });
+  if (wrong.length === 0) return null;
+  const shuffled = shuffle(wrong);
+  return {
+    id: `${test.id}_retry_${Date.now()}`,
+    kind: test.kind,
+    subjectId: test.subjectId,
+    subjectName: test.subjectName,
+    chapterId: test.chapterId,
+    title: `${test.title} — Retry Wrong`,
+    durationSeconds: Math.max(3, shuffled.length) * 60,
+    questions: shuffled,
+    createdAt: Date.now(),
+  };
+}
