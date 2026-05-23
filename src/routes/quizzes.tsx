@@ -153,9 +153,8 @@ function QuizzesPage() {
         )}
         {!catalog.isLoading && chapterRows.length === 0 && (
           <div className="rounded-3xl border border-dashed border-border/60 p-8 text-sm text-muted-foreground">
-            No chapter content available yet for {subject?.name ?? subjectId}.
-            Add a chapter JSON under <code>public/content/chapters/</code> and
-            it will appear here automatically.
+            No quizzes are available yet for {subject?.name ?? subjectId}.
+            New chapters appear here automatically as they're added.
           </div>
         )}
         {chapterRows.map(({ chapter, mcqCount }) => (
