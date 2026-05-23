@@ -29,6 +29,16 @@ export type ContentExercise = {
   type?: string;
 };
 
+export type ContentImportantDate = {
+  year: string;
+  event: string;
+};
+
+export type ContentKeyTerm = {
+  term: string;
+  definition: string;
+};
+
 export type Difficulty = "easy" | "medium" | "hard";
 
 export type NormalizedChapter = {
@@ -44,6 +54,10 @@ export type NormalizedChapter = {
   exercises: ContentExercise[];
   mcqCount: number;
   exerciseCount: number;
+  section?: string;
+  sectionKn?: string;
+  importantDates: ContentImportantDate[];
+  keyTerms: ContentKeyTerm[];
 };
 
 function asArray<T>(v: unknown): T[] {
