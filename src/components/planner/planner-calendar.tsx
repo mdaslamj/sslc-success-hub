@@ -280,7 +280,7 @@ export function PlannerCalendar() {
   if (!hydrated) return null;
 
   return (
-    <section className="rounded-3xl border border-border/60 bg-card p-6 shadow-card">
+    <section className="min-w-0 rounded-3xl border border-border/60 bg-card p-4 shadow-card sm:p-6">
       <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
         <h3 className="font-display text-lg font-semibold flex items-center gap-2">
           <CalendarDays className="h-4 w-4 text-brand" /> Calendar & Life Planner
@@ -291,7 +291,7 @@ export function PlannerCalendar() {
       </div>
 
       {/* Intelligent strips */}
-      <div className="mb-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="mb-5 grid min-w-0 gap-3 sm:grid-cols-2 lg:grid-cols-3">
         <InsightCard
           icon={<CalendarRange className="h-4 w-4" />}
           title="Upcoming Exams"
@@ -404,7 +404,7 @@ export function PlannerCalendar() {
       </div>
 
       {/* Quick add */}
-      <div className="mb-4 rounded-2xl border border-border/60 bg-background/40 p-3">
+      <div className="mb-4 min-w-0 rounded-2xl border border-border/60 bg-background/40 p-3">
         <div className="grid gap-2 sm:grid-cols-[1fr_140px_140px_120px_auto]">
           <Input
             placeholder="Event — e.g. Mock Exam, Sports practice"
@@ -447,7 +447,7 @@ export function PlannerCalendar() {
 
       {/* Day/Week/Month/Past tabs */}
       <Tabs value={tab} onValueChange={(v) => setTab(v as typeof tab)}>
-        <TabsList className="flex w-full flex-wrap">
+        <TabsList className="flex h-auto w-full flex-wrap justify-start">
           <TabsTrigger value="day">Today</TabsTrigger>
           <TabsTrigger value="week">This Week</TabsTrigger>
           <TabsTrigger value="month">This Month</TabsTrigger>
