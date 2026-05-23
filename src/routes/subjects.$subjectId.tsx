@@ -47,6 +47,8 @@ import {
   type NormalizedChapter,
   type ContentFormula,
   type ContentResource,
+  type ContentImportantDate,
+  type ContentKeyTerm,
 } from "@/lib/normalizeChapterData";
 
 type ManifestChapter = {
