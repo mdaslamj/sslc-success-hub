@@ -9,6 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useAuth } from "@/contexts/auth-context";
 
 const GUEST_KEY = "aura.guest.v1";
+const GUEST_ONBOARDING_KEY = "aura.guest.onboarding.v1";
 
 export const Route = createFileRoute("/login")({
   head: () => ({
