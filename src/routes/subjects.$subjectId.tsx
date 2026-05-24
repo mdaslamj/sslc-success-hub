@@ -41,6 +41,8 @@ import { UploadAnswerButton } from "@/components/answer-upload/upload-answer-but
 import { Library, Sigma } from "lucide-react";
 import { ExternalLink } from "lucide-react";
 import { loadChapter, loadManifest } from "@/lib/contentLoader";
+import { subjectMockExamId } from "@/lib/content-exam-builder";
+import { GraduationCap, ListChecks } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -81,6 +83,18 @@ function contentFolderFor(subjectId: string): string | null {
   if (MATH_SUBJECT_IDS.has(subjectId)) return "mathematics";
   if (SCIENCE_SUBJECT_IDS.has(subjectId)) return "science";
   if (SOCIAL_SUBJECT_IDS.has(subjectId)) return "social-science";
+  return null;
+}
+
+/**
+ * Map the URL subject id (which may be "math", "mathematics",
+ * "social-science", etc.) to the runtime id used by
+ * `content-question-index` / `subjectMockExamId` ("math" | "science" | "social").
+ */
+function runtimeSubjectIdFor(subjectId: string): string | null {
+  if (MATH_SUBJECT_IDS.has(subjectId)) return "math";
+  if (SCIENCE_SUBJECT_IDS.has(subjectId)) return "science";
+  if (SOCIAL_SUBJECT_IDS.has(subjectId)) return "social";
   return null;
 }
 
@@ -579,6 +593,43 @@ function SubjectDetailPage() {
 
           {/* PRACTICE */}
           <TabsContent value="practice" className="mt-4">
+            {isContentDriven && runtimeSubjectIdFor(subjectId) && (
+              <div className="mb-3 grid gap-2 sm:grid-cols-2">
+                <Link
+                  to="/exams/$examId"
+                  params={{
+                    examId: subjectMockExamId(runtimeSubjectIdFor(subjectId)!),
+                  }}
+                  className="flex items-center justify-between gap-3 rounded-2xl border border-border/60 bg-card p-3 transition-colors hover:border-foreground/40"
+                >
+                  <div className="min-w-0">
+                    <div className="flex items-center gap-2 text-sm font-semibold">
+                      <GraduationCap className="h-4 w-4" />
+                      Start subject mock exam
+                    </div>
+                    <p className="mt-0.5 text-xs text-muted-foreground">
+                      Blueprint-weighted paper · timed
+                    </p>
+                  </div>
+                  <ArrowRight className="h-4 w-4 text-muted-foreground" />
+                </Link>
+                <Link
+                  to="/quizzes"
+                  className="flex items-center justify-between gap-3 rounded-2xl border border-border/60 bg-card p-3 transition-colors hover:border-foreground/40"
+                >
+                  <div className="min-w-0">
+                    <div className="flex items-center gap-2 text-sm font-semibold">
+                      <ListChecks className="h-4 w-4" />
+                      Browse chapter tests
+                    </div>
+                    <p className="mt-0.5 text-xs text-muted-foreground">
+                      Easy · Board · Challenge levels
+                    </p>
+                  </div>
+                  <ArrowRight className="h-4 w-4 text-muted-foreground" />
+                </Link>
+              </div>
+            )}
             <div className="mb-3 flex flex-wrap items-center justify-between gap-2 rounded-2xl border border-border/60 bg-card p-3">
               <div className="text-xs text-muted-foreground">
                 Practicing on paper? Upload a photo of your answers.
