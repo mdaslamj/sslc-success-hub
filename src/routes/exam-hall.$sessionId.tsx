@@ -157,7 +157,7 @@ function ExamHallSession() {
         <Progress value={totalProgress} className="h-1 rounded-none" />
       </header>
 
-      {/* AI invigilator banner */}
+      {/* Guidance banner */}
       {latestEvent && Date.now() - latestEvent.createdAt < 30_000 && (
         <InvigilatorBanner event={latestEvent} />
       )}
@@ -418,7 +418,7 @@ function ExamHallSession() {
 
           {r.invigilatorHighlights.length > 0 && (
             <section className="rounded-3xl border border-border/60 bg-card p-5">
-              <h2 className="text-sm font-semibold">Invigilator notes</h2>
+              <h2 className="text-sm font-semibold">Session notes</h2>
               <div className="mt-2 flex flex-wrap gap-1.5">
                 {r.invigilatorHighlights.map((k) => (
                   <Badge key={k} variant="outline" className="rounded-full text-[10px]">

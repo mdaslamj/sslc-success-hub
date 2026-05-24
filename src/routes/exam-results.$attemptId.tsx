@@ -190,7 +190,7 @@ function Results({
               Weak areas to revise
             </h3>
             <p className="text-xs text-muted-foreground">
-              Topics where you got less than half right. Added to your AI recommendations.
+              Topics where you got less than half right. Added to your revision list.
             </p>
             <div className="mt-3 flex flex-wrap gap-2">
               {result.weakAreas.map((t) => (
