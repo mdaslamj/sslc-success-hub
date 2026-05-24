@@ -110,6 +110,15 @@ function OnboardingFlow() {
       return;
     }
     if (!user) {
+      // First-time visitor finishing onboarding before choosing auth:
+      // persist completion + mark guest so they aren't shown onboarding
+      // again if they later tap "Continue as guest" from /login.
+      try {
+        localStorage.setItem(
+          GUEST_ONBOARDING_KEY,
+          JSON.stringify({ ...s, completedAt: Date.now() }),
+        );
+      } catch {}
       navigate({ to: "/login" });
       return;
     }
