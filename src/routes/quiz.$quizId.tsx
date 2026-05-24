@@ -38,6 +38,7 @@ function QuizPlayerPage() {
   const [quiz, setQuiz] = useState<QuizDoc | null>(null);
   const [missing, setMissing] = useState(false);
   const [rebuilding, setRebuilding] = useState(false);
+  const [retryToken, setRetryToken] = useState(0);
   const content = useContentCatalog();
 
   useEffect(() => {
@@ -72,16 +73,26 @@ function QuizPlayerPage() {
     console.debug("[quiz] missing", { quizId });
     setRebuilding(false);
     setMissing(true);
-  }, [quizId, content.subjects, content.isLoading]);
+  }, [quizId, content.subjects, content.isLoading, retryToken]);
 
   if (missing) {
     return (
       <DashboardLayout title="Quiz">
         <div className="mx-auto max-w-md rounded-3xl border border-border/60 bg-card p-8 text-center text-sm text-muted-foreground">
-          <p>This quiz is no longer in your local cache.</p>
-          <Link to="/quizzes">
-            <Button className="mt-4 rounded-full">Back to Quizzes</Button>
-          </Link>
+          <p>Unable to load quiz. Retry.</p>
+          <div className="mt-4 flex justify-center gap-2">
+            <Button
+              className="rounded-full"
+              onClick={() => setRetryToken((t) => t + 1)}
+            >
+              Retry
+            </Button>
+            <Link to="/quizzes">
+              <Button variant="outline" className="rounded-full">
+                Back to Quizzes
+              </Button>
+            </Link>
+          </div>
         </div>
       </DashboardLayout>
     );

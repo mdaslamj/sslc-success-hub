@@ -57,6 +57,7 @@ function ExamPlayerPage() {
   const { examId } = Route.useParams();
   const [exam, setExam] = useState<MockExamDoc | null>(null);
   const [missing, setMissing] = useState(false);
+  const [retryToken, setRetryToken] = useState(0);
   const content = useContentCatalog();
 
   useEffect(() => {
@@ -109,17 +110,27 @@ function ExamPlayerPage() {
         console.debug("[exam] missing", { examId });
         setMissing(true);
       });
-  }, [examId, content.subjects, content.isLoading]);
+  }, [examId, content.subjects, content.isLoading, retryToken]);
 
   if (missing) {
     return (
       <DashboardLayout title="Mock Exam">
         <div className="mx-auto max-w-md rounded-3xl border border-border/60 bg-card p-8 text-center">
           <AlertTriangle className="mx-auto h-8 w-8 text-destructive" />
-          <p className="mt-3 text-sm">This exam could not be loaded.</p>
-          <Link to="/exams">
-            <Button className="mt-4 rounded-full">Back to exams</Button>
-          </Link>
+          <p className="mt-3 text-sm">Unable to load exam. Retry.</p>
+          <div className="mt-4 flex justify-center gap-2">
+            <Button
+              className="rounded-full"
+              onClick={() => setRetryToken((t) => t + 1)}
+            >
+              Retry
+            </Button>
+            <Link to="/exams">
+              <Button variant="outline" className="rounded-full">
+                Back to exams
+              </Button>
+            </Link>
+          </div>
         </div>
       </DashboardLayout>
     );

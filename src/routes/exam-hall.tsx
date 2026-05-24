@@ -1,5 +1,6 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { Clock, GraduationCap, Play, ShieldCheck, Sparkles, Timer } from "lucide-react";
+import { useState } from "react";
+import { Clock, GraduationCap, Loader2, Play, ShieldCheck, Sparkles, Timer } from "lucide-react";
 import { DashboardLayout } from "@/components/dashboard-layout";
 import { Button } from "@/components/ui/button";
 import { useExamHall, useExamHallList } from "@/hooks/use-exam-hall";
@@ -29,10 +30,22 @@ function ExamHallIndex() {
   const navigate = useNavigate();
   const { startSession } = useExamHall();
   const list = useExamHallList();
+  const [isStarting, setIsStarting] = useState(false);
+  const [startError, setStartError] = useState<string | null>(null);
 
   const handleStart = async () => {
-    const s = await startSession();
-    navigate({ to: "/exam-hall/$sessionId", params: { sessionId: s.id } });
+    if (isStarting) return;
+    setIsStarting(true);
+    setStartError(null);
+    try {
+      const s = await startSession();
+      console.debug("[exam-hall] launch", { sessionId: s.id });
+      navigate({ to: "/exam-hall/$sessionId", params: { sessionId: s.id } });
+    } catch (e) {
+      console.debug("[exam-hall] launch-failed", e);
+      setStartError("Unable to start the session. Retry.");
+      setIsStarting(false);
+    }
   };
 
   return (
@@ -56,10 +69,26 @@ function ExamHallIndex() {
             <Feature icon={Sparkles} title="Guidance" body="Calm reminders when timing or focus drifts." />
             <Feature icon={ShieldCheck} title="Anti-cheat" body="Tracks blur, paste and fullscreen exits." />
           </div>
-          <Button className="mt-6 w-full rounded-full gap-2" onClick={handleStart}>
-            <Play className="h-4 w-4" />
-            Start full board simulation
+          <Button
+            className="mt-6 w-full rounded-full gap-2"
+            onClick={handleStart}
+            disabled={isStarting}
+          >
+            {isStarting ? (
+              <>
+                <Loader2 className="h-4 w-4 animate-spin" />
+                Preparing your exam…
+              </>
+            ) : (
+              <>
+                <Play className="h-4 w-4" />
+                Start full board simulation
+              </>
+            )}
           </Button>
+          {startError && (
+            <p className="mt-2 text-center text-xs text-destructive">{startError}</p>
+          )}
         </section>
 
         {list.length > 0 && (
