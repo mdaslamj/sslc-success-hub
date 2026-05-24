@@ -1,5 +1,15 @@
 # Aura — Dev Status
 
+## Question Bank v3 swap — ✅ shipped
+
+`src/lib/question-bank/index.ts` `FILE_MAP` now points at the three v3 JSON
+files (`math_question_bank_v3.json`, `science_question_bank_v3.json`,
+`social_science_question_bank_v3.json`). v3 keeps the same
+`{ meta, blueprint, questions[] }` shape and `BankQuestion` fields, so
+`mockExamGenerator` (full mock + chapter test + weak-area + mixed practice)
+and chapter mappings work unchanged. Single loader / cache — no duplicate
+fetches. No UI changes.
+
 ## Mobile Production Fix Pass (focused) — ✅ shipped
 
 Targeted, surgical fixes to real rendered mobile breakage — no redesigns,
