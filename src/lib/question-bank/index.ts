@@ -3,9 +3,9 @@
  * -------------------------------------------------------------
  * Unified, lazy-loaded access to the three subject question banks:
  *
- *   math           -> /content/question-banks/math_question_bank_v2.json
- *   science        -> /content/question-banks/science_question_bank.json
- *   social-science -> /content/question-banks/social_science_question_bank_v2.json
+ *   math           -> /content/question-banks/math_question_bank_v3.json
+ *   science        -> /content/question-banks/science_question_bank_v3.json
+ *   social-science -> /content/question-banks/social_science_question_bank_v3.json
  *
  * Each bank ships in the same shape: { meta, blueprint, questions[] }.
  * Subject ids are normalized internally so callers can pass any of the
@@ -50,9 +50,9 @@ export interface QuestionBank {
 }
 
 const FILE_MAP: Record<SubjectKey, string> = {
-  math: "/content/question-banks/math_question_bank_v2.json",
-  science: "/content/question-banks/science_question_bank.json",
-  "social-science": "/content/question-banks/social_science_question_bank_v2.json",
+  math: "/content/question-banks/math_question_bank_v3.json",
+  science: "/content/question-banks/science_question_bank_v3.json",
+  "social-science": "/content/question-banks/social_science_question_bank_v3.json",
 };
 
 /** Accept common aliases and return the canonical subject key. */

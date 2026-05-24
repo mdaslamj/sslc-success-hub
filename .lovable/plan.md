@@ -1,51 +1,25 @@
-# Aura mobile production fix plan
+## Update question-bank references to v3
 
-## What I’ll fix
+Single source of truth: `src/lib/question-bank/index.ts` `FILE_MAP`. Everything (mock exam generator, chapter tests, weak-area picks) loads through `getQuestionBank()`, so updating the three paths is sufficient — no duplicate loaders exist.
 
-1. **Planner mobile breakage**
-   - Remove the remaining unsafe width/overflow points in the planner header, task rows, add-task form, calendar controls, and focus timer.
-   - Tighten the mobile app shell header so the title, notification button, and sign-in/profile controls cannot overlap or clip on narrow screens.
-   - Verify no horizontal overflow remains on planner and dashboard-adjacent mobile routes.
+### Changes
+1. `src/lib/question-bank/index.ts`
+   - `FILE_MAP.math` → `/content/question-banks/math_question_bank_v3.json`
+   - `FILE_MAP.science` → `/content/question-banks/science_question_bank_v3.json`
+   - `FILE_MAP["social-science"]` → `/content/question-banks/social_science_question_bank_v3.json`
+   - Update the matching paths in the file-header doc comment.
 
-2. **Chapter test flow that doesn’t reliably function**
-   - Replace the hardcoded `/chapter-test` page behavior with a route-safe chapter test flow that uses the actual selected chapter/test data rather than always loading one fixed chapter.
-   - Ensure chapter tests open from the existing quiz/test entry points, render questions consistently, and expose clear back/retry paths without dead ends.
-   - Keep it lightweight and local-only.
+2. `docs/dev-status.md` — note the v3 swap.
 
-3. **Maps interaction flow on mobile**
-   - Fix remaining mobile issues in the Social Science maps dialog and chapter detail view: viewport-safe modal sizing, scroll containment, tap targets, and any clipped content.
-   - Check the chapter picker/detail panes for narrow-screen usability so the user can open a map, read the explanation, practice related questions, and exit cleanly.
+### Why it's safe
+- v3 files keep the same `{ meta, blueprint, questions[] }` shape and `BankQuestion` field names (`id`, `chapter`, `chapter_name`, `marks`, `type`, `difficulty`, `concepts`, `options`, `answer`). Verified for all three subjects.
+- Chapter mappings are preserved (`chapter` number + `chapter_name` still present).
+- Mock exam blueprint (`mcq` / 1/2/3-mark buckets in `mockExamGenerator.ts`) filters by `type` + `marks` — both present in v3.
+- In-memory cache + inflight guard already prevent duplicate loads.
 
-4. **Stability cleanup tied to these screens only**
-   - Remove duplicate or stale logic uncovered in these flows.
-   - Clean any console/runtime issues surfaced by the audited planner, chapter test, and maps paths.
-   - Update `docs/dev-status.md` with the concrete production fixes and verification notes.
+### Verification
+- Grep confirms no other code path references the old v2/v1 filenames.
+- After the swap: open a chapter test and a mock exam to confirm questions render and submission works. No UI changes.
 
-## Verification after implementation
-
-- Planner fully aligned on mobile
-- No clipped UI or hidden controls in planner header/actions
-- No horizontal overflow on audited screens
-- Chapter test opens and questions render correctly
-- Maps flow opens, scrolls, practices, and closes correctly on mobile
-- No dead-end navigation on the audited flows
-- No console/runtime errors on the fixed paths
-
-## Technical notes
-
-- I’ll keep this as a **surgical frontend pass** only: no redesigns, no new dependencies, no architecture rewrite.
-- Main files likely affected:
-  - `src/components/dashboard-layout.tsx`
-  - `src/routes/planner.tsx`
-  - `src/components/planner/planner-calendar.tsx`
-  - `src/routes/chapter-test.tsx` and/or `src/pages/ChapterTest.tsx`
-  - `src/routes/quizzes.tsx` if the chapter-test entry path needs correcting
-  - `src/routes/subjects.$subjectId.tsx`
-  - `docs/dev-status.md`
-
-```text
-Audit actual mobile breakpoints
--> patch layout/flow bugs only
--> verify route + interaction paths
--> document shipped fixes
-```
+### Out of scope
+No UI, no business-logic, no schema changes.
