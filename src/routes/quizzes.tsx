@@ -1,6 +1,6 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
-import { Brain, Clock, Loader2, Sparkles, Target, Trophy } from "lucide-react";
+import { Brain, Clock, Loader2, Play, Sparkles, Target, Trophy } from "lucide-react";
 import { DashboardLayout } from "@/components/dashboard-layout";
 import { StatCard } from "@/components/widgets/stat-card";
 import { Button } from "@/components/ui/button";
@@ -201,7 +201,7 @@ function StartChapterTestButton({
     <Button
       type="button"
       size="sm"
-      className="rounded-full"
+      className="rounded-full gap-1.5"
       disabled={disabled || isLaunching}
       onClick={() => {
         if (isLaunching) return;
@@ -220,7 +220,22 @@ function StartChapterTestButton({
         navigate({ to: "/quiz/$quizId", params: { quizId: quiz.id } });
       }}
     >
-      {isLaunching ? "Starting…" : disabled ? "Loading…" : "Start"}
+      {isLaunching ? (
+        <>
+          <Loader2 className="h-3 w-3 animate-spin" />
+          Starting…
+        </>
+      ) : disabled ? (
+        <>
+          <Loader2 className="h-3 w-3 animate-spin" />
+          Loading…
+        </>
+      ) : (
+        <>
+          <Play className="h-3 w-3" />
+          Start
+        </>
+      )}
     </Button>
   );
 }
