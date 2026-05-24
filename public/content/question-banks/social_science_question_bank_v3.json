@@ -1,0 +1,3588 @@
+{
+  "meta": {
+    "subject": "Social Science",
+    "subject_code": "85-E",
+    "board": "Karnataka SSLC (KSEAB)",
+    "year": "2025-26",
+    "total_marks": 80,
+    "total_questions_in_exam": 38,
+    "version": "1.0",
+    "sources": [
+      "LBA_QuestionBank_2025",
+      "Social_Science_Textbook_Part1",
+      "Social_Science_Textbook_Part2",
+      "SS_Blueprint_2025_26",
+      "SSLC_ModelQP_SS_2025_26"
+    ]
+  },
+  "blueprint": {
+    "subjects": [
+      {
+        "name": "History",
+        "chapters": 9,
+        "total_marks": 25
+      },
+      {
+        "name": "Political Science",
+        "chapters": 4,
+        "total_marks": 11
+      },
+      {
+        "name": "Sociology",
+        "chapters": 4,
+        "total_marks": 8
+      },
+      {
+        "name": "Geography",
+        "chapters": 9,
+        "total_marks": 22
+      },
+      {
+        "name": "Economics",
+        "chapters": 3,
+        "total_marks": 7
+      },
+      {
+        "name": "Business Studies",
+        "chapters": 4,
+        "total_marks": 7
+      }
+    ],
+    "chapters": [
+      {
+        "id": 1,
+        "subject": "History",
+        "name": "The Advent of Europeans to India",
+        "marks": 3
+      },
+      {
+        "id": 2,
+        "subject": "History",
+        "name": "The Extension of the British Rule",
+        "marks": 2
+      },
+      {
+        "id": 3,
+        "subject": "History",
+        "name": "The Impact of the British Rule in India",
+        "marks": 1
+      },
+      {
+        "id": 4,
+        "subject": "History",
+        "name": "Opposition to British Rule in Karnataka and Wodeyars of Mysore",
+        "marks": 5
+      },
+      {
+        "id": 5,
+        "subject": "History",
+        "name": "Social and Religious Reform Movements",
+        "marks": 3
+      },
+      {
+        "id": 6,
+        "subject": "History",
+        "name": "The First War of Indian Independence (1857)",
+        "marks": 3
+      },
+      {
+        "id": 7,
+        "subject": "History",
+        "name": "The Freedom Struggle",
+        "marks": 4
+      },
+      {
+        "id": 8,
+        "subject": "History",
+        "name": "India After Independence",
+        "marks": 2
+      },
+      {
+        "id": 9,
+        "subject": "History",
+        "name": "World Wars and India's Role",
+        "marks": 2
+      },
+      {
+        "id": 10,
+        "subject": "Political Science",
+        "name": "Public Administration – An Introduction",
+        "marks": 2
+      },
+      {
+        "id": 11,
+        "subject": "Political Science",
+        "name": "Challenges of India and Their Remedies",
+        "marks": 4
+      },
+      {
+        "id": 12,
+        "subject": "Political Science",
+        "name": "India's Foreign Policy and Global Challenges",
+        "marks": 3
+      },
+      {
+        "id": 13,
+        "subject": "Political Science",
+        "name": "World Organisations",
+        "marks": 2
+      },
+      {
+        "id": 14,
+        "subject": "Sociology",
+        "name": "Social Stratification",
+        "marks": 1
+      },
+      {
+        "id": 15,
+        "subject": "Sociology",
+        "name": "Work and Economic Life",
+        "marks": 3
+      },
+      {
+        "id": 16,
+        "subject": "Sociology",
+        "name": "Collective Behaviour and Protests",
+        "marks": 2
+      },
+      {
+        "id": 17,
+        "subject": "Sociology",
+        "name": "Social Challenges",
+        "marks": 2
+      },
+      {
+        "id": 18,
+        "subject": "Geography",
+        "name": "India – Geographical Position and Physical Features",
+        "marks": 2
+      },
+      {
+        "id": 19,
+        "subject": "Geography",
+        "name": "India – Seasons",
+        "marks": 1
+      },
+      {
+        "id": 20,
+        "subject": "Geography",
+        "name": "India – Soils",
+        "marks": 4
+      },
+      {
+        "id": 21,
+        "subject": "Geography",
+        "name": "India – Forest Resources",
+        "marks": 3
+      },
+      {
+        "id": 22,
+        "subject": "Geography",
+        "name": "India – Water Resources",
+        "marks": 2
+      },
+      {
+        "id": 23,
+        "subject": "Geography",
+        "name": "India – Land Use and Agriculture",
+        "marks": 2
+      },
+      {
+        "id": 24,
+        "subject": "Geography",
+        "name": "India – Mineral and Power Resources",
+        "marks": 1
+      },
+      {
+        "id": 25,
+        "subject": "Geography",
+        "name": "India – Transport and Communication",
+        "marks": 2
+      },
+      {
+        "id": 26,
+        "subject": "Geography",
+        "name": "India – Major Industries",
+        "marks": 2
+      },
+      {
+        "id": 27,
+        "subject": "Geography",
+        "name": "India – Natural Disasters",
+        "marks": 3
+      },
+      {
+        "id": 28,
+        "subject": "Economics",
+        "name": "Economy and Government",
+        "marks": 2
+      },
+      {
+        "id": 29,
+        "subject": "Economics",
+        "name": "Rural Development",
+        "marks": 4
+      },
+      {
+        "id": 30,
+        "subject": "Economics",
+        "name": "Public Finance and Budget",
+        "marks": 1
+      },
+      {
+        "id": 31,
+        "subject": "Business Studies",
+        "name": "Bank Transactions",
+        "marks": 4
+      },
+      {
+        "id": 32,
+        "subject": "Business Studies",
+        "name": "Entrepreneurship",
+        "marks": 1
+      },
+      {
+        "id": 33,
+        "subject": "Business Studies",
+        "name": "Consumer Education and Protection",
+        "marks": 2
+      }
+    ],
+    "section_structure": [
+      {
+        "section": "I",
+        "type": "MCQ",
+        "count": 8,
+        "marks_each": 1,
+        "total": 8
+      },
+      {
+        "section": "II",
+        "type": "Direct Answer",
+        "count": 8,
+        "marks_each": 1,
+        "total": 8
+      },
+      {
+        "section": "III",
+        "type": "Short Answer",
+        "count": 8,
+        "marks_each": 2,
+        "total": 16
+      },
+      {
+        "section": "IV",
+        "type": "Long Answer",
+        "count": 9,
+        "marks_each": 3,
+        "total": 27
+      },
+      {
+        "section": "V",
+        "type": "Map",
+        "count": 1,
+        "marks_each": 5,
+        "total": 5
+      },
+      {
+        "section": "VI",
+        "type": "Essay",
+        "count": 1,
+        "marks_each": 4,
+        "total": 4
+      },
+      {
+        "section": "VII",
+        "type": "Essay",
+        "count": 1,
+        "marks_each": 4,
+        "total": 4
+      },
+      {
+        "section": "VIII",
+        "type": "Essay",
+        "count": 1,
+        "marks_each": 4,
+        "total": 4
+      }
+    ]
+  },
+  "questions": [
+    {
+      "id": "SS_CH1_Q001",
+      "chapter": 1,
+      "chapter_name": "The Advent of Europeans to India",
+      "subject": "History",
+      "source": "LBA_QuestionBank_2025",
+      "marks": 1,
+      "type": "mcq",
+      "difficulty": "easy",
+      "question": "The 'Gateway to European Trade' was",
+      "options": [
+        "A) Rome",
+        "B) Constantinople",
+        "C) Paris",
+        "D) Venice"
+      ],
+      "answer": "B) Constantinople",
+      "concepts": [
+        "European trade routes",
+        "Ottoman Turks"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SS_CH1_Q002",
+      "chapter": 1,
+      "chapter_name": "The Advent of Europeans to India",
+      "subject": "History",
+      "source": "LBA_QuestionBank_2025",
+      "marks": 1,
+      "type": "mcq",
+      "difficulty": "easy",
+      "question": "The person who discovered a new sea route to India was",
+      "options": [
+        "A) Vasco da Gama",
+        "B) Dupleix",
+        "C) Almeida",
+        "D) Albuquerque"
+      ],
+      "answer": "A) Vasco da Gama",
+      "concepts": [
+        "sea route to India",
+        "Portuguese"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SS_CH1_Q003",
+      "chapter": 1,
+      "chapter_name": "The Advent of Europeans to India",
+      "subject": "History",
+      "source": "LBA_QuestionBank_2025",
+      "marks": 1,
+      "type": "mcq",
+      "difficulty": "medium",
+      "question": "The Portuguese Viceroy who implemented the 'Blue Water Policy' was",
+      "options": [
+        "A) Vasco da Gama",
+        "B) Francisco de Almeida",
+        "C) Alfonso de Albuquerque",
+        "D) Dupleix"
+      ],
+      "answer": "B) Francisco de Almeida",
+      "concepts": [
+        "Blue Water Policy",
+        "Portuguese Viceroy"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "SS_CH1_Q004",
+      "chapter": 1,
+      "chapter_name": "The Advent of Europeans to India",
+      "subject": "History",
+      "source": "LBA_QuestionBank_2025",
+      "marks": 1,
+      "type": "mcq",
+      "difficulty": "medium",
+      "question": "The First Carnatic War ended with the treaty of",
+      "options": [
+        "A) Pondicherry",
+        "B) Aix-la-Chapelle",
+        "C) Paris",
+        "D) Wandiwash"
+      ],
+      "answer": "B) Aix-la-Chapelle",
+      "concepts": [
+        "Carnatic Wars",
+        "treaty"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SS_CH1_Q005",
+      "chapter": 1,
+      "chapter_name": "The Advent of Europeans to India",
+      "subject": "History",
+      "source": "LBA_QuestionBank_2025",
+      "marks": 1,
+      "type": "direct",
+      "difficulty": "easy",
+      "question": "Who introduced the Dual Government in Bengal?",
+      "answer": "Robert Clive",
+      "concepts": [
+        "Dual Government",
+        "Bengal",
+        "Robert Clive"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SS_CH1_Q006",
+      "chapter": 1,
+      "chapter_name": "The Advent of Europeans to India",
+      "subject": "History",
+      "source": "LBA_QuestionBank_2025",
+      "marks": 1,
+      "type": "direct",
+      "difficulty": "easy",
+      "question": "What is meant by Blue Water Policy?",
+      "answer": "The policy of strengthening naval power to monopolize the sea instead of dominating the land is called the Blue Water Policy.",
+      "concepts": [
+        "Blue Water Policy",
+        "naval supremacy"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "SS_CH1_Q007",
+      "chapter": 1,
+      "chapter_name": "The Advent of Europeans to India",
+      "subject": "History",
+      "source": "LBA_QuestionBank_2025",
+      "marks": 1,
+      "type": "direct",
+      "difficulty": "easy",
+      "question": "Who was the real founder of the Portuguese Empire in India?",
+      "answer": "Alfonso de Albuquerque",
+      "concepts": [
+        "Portuguese",
+        "Alfonso de Albuquerque"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "SS_CH1_Q008",
+      "chapter": 1,
+      "chapter_name": "The Advent of Europeans to India",
+      "subject": "History",
+      "source": "LBA_QuestionBank_2025",
+      "marks": 2,
+      "type": "short_answer",
+      "difficulty": "medium",
+      "question": "Discuss the factors that led to the discovery of a new sea route to India.",
+      "answer": "The Turks captured Constantinople and began imposing taxes on trade, making it unprofitable for merchants. European kings encouraged sailors to explore. Scientific inventions like the compass, astrolabe, and gunpowder helped exploration. The desire to break Arab and Turkish monopoly over trade also motivated discovery.",
+      "concepts": [
+        "sea route discovery",
+        "factors"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SS_CH1_Q009",
+      "chapter": 1,
+      "chapter_name": "The Advent of Europeans to India",
+      "subject": "History",
+      "source": "LBA_QuestionBank_2025",
+      "marks": 2,
+      "type": "short_answer",
+      "difficulty": "medium",
+      "question": "Explain the system of 'Dual Government' in Bengal.",
+      "answer": "Robert Clive introduced Dual Government in Bengal. The British had the right to collect land revenue (Diwani rights). The Nawab of Bengal performed administrative functions such as civil administration and justice. This gave British economic control while maintaining Indian facade of rule.",
+      "concepts": [
+        "Dual Government",
+        "Diwani rights",
+        "Bengal"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SS_CH1_Q010",
+      "chapter": 1,
+      "chapter_name": "The Advent of Europeans to India",
+      "subject": "History",
+      "source": "LBA_QuestionBank_2025",
+      "marks": 3,
+      "type": "long_answer",
+      "difficulty": "hard",
+      "question": "What were the causes and consequences of the Battle of Plassey?",
+      "answer": "Causes: Misuse of trade privileges by British employees; Siraj-ud-Daula demanded British to stop fortifying; British supported his rivals; repairing fort without permission. Consequences: British gained political power in Bengal; Robert Clive became Governor of Bengal; Mir Jafar became Nawab; British became dominant power in Bengal; paved way for further expansion.",
+      "concepts": [
+        "Battle of Plassey",
+        "1757",
+        "causes and effects"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SS_CH1_Q011",
+      "chapter": 1,
+      "chapter_name": "The Advent of Europeans to India",
+      "subject": "History",
+      "source": "LBA_QuestionBank_2025",
+      "marks": 3,
+      "type": "long_answer",
+      "difficulty": "hard",
+      "question": "The battle of Buxar helped the British to gain control over Bengal. Justify.",
+      "answer": "Shah Alam II granted East India Company the Diwani right over Bengal. Shah Alam had to give up his right over Bengal after receiving an annual salary of 26 lakh rupees. The company had to pay 50 lakh rupees as war compensation. Mir Zafar's son was given a pension. The complete administration of Bengal came under company control. Robert Clive introduced Dual Government. British became real holders of power over Bihar, Bengal and Odisha.",
+      "concepts": [
+        "Battle of Buxar",
+        "British control over Bengal"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SS_CH2_Q001",
+      "chapter": 2,
+      "chapter_name": "The Extension of the British Rule",
+      "subject": "History",
+      "source": "LBA_QuestionBank_2025",
+      "marks": 1,
+      "type": "mcq",
+      "difficulty": "easy",
+      "question": "The First Anglo-Maratha War ended with the treaty of",
+      "options": [
+        "A) Bassein",
+        "B) Salbai",
+        "C) Lahore",
+        "D) Poona"
+      ],
+      "answer": "B) Salbai",
+      "concepts": [
+        "Anglo-Maratha War",
+        "treaty"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "SS_CH2_Q002",
+      "chapter": 2,
+      "chapter_name": "The Extension of the British Rule",
+      "subject": "History",
+      "source": "LBA_QuestionBank_2025",
+      "marks": 1,
+      "type": "mcq",
+      "difficulty": "medium",
+      "question": "The system of Subsidiary Alliance was introduced by",
+      "options": [
+        "A) Dalhousie",
+        "B) Wellesley",
+        "C) Robert Clive",
+        "D) Count de Lally"
+      ],
+      "answer": "B) Wellesley",
+      "concepts": [
+        "Subsidiary Alliance",
+        "Wellesley"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SS_CH2_Q003",
+      "chapter": 2,
+      "chapter_name": "The Extension of the British Rule",
+      "subject": "History",
+      "source": "LBA_QuestionBank_2025",
+      "marks": 1,
+      "type": "mcq",
+      "difficulty": "medium",
+      "question": "The first state which accepted the system of Subsidiary Alliance was",
+      "options": [
+        "A) Hyderabad",
+        "B) Mysore",
+        "C) Maratha",
+        "D) Punjab"
+      ],
+      "answer": "A) Hyderabad",
+      "concepts": [
+        "Subsidiary Alliance",
+        "Hyderabad"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SS_CH2_Q004",
+      "chapter": 2,
+      "chapter_name": "The Extension of the British Rule",
+      "subject": "History",
+      "source": "LBA_QuestionBank_2025",
+      "marks": 3,
+      "type": "long_answer",
+      "difficulty": "hard",
+      "question": "What were the conditions of Subsidiary Alliance? / The Subsidiary Alliance weakened the native rulers. How?",
+      "answer": "The Indian king should keep a British military force in his state. The state should bear the cost of the army's salary and maintenance. A British resident should be appointed in the court. No European could be appointed at the court without British permission. Consent of British was required for war or negotiations with any state. The company should provide internal and external defense. This weakened rulers by: draining treasury for army costs, placing British spies as residents, removing independent military power, and making rulers dependent on British.",
+      "concepts": [
+        "Subsidiary Alliance",
+        "conditions",
+        "weakening of rulers"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SS_CH2_Q005",
+      "chapter": 2,
+      "chapter_name": "The Extension of the British Rule",
+      "subject": "History",
+      "source": "LBA_QuestionBank_2025",
+      "marks": 2,
+      "type": "short_answer",
+      "difficulty": "medium",
+      "question": "How did the Doctrine of Lapse support the expansion of British Empire in India?",
+      "answer": "Dalhousie implemented the Doctrine of Lapse. As per this, if a ruler died without a natural heir, the state would be annexed by the British. Adopted children had no succession rights. States like Satara, Jaipur, Sambalpur, Udaipur, Jhansi and Nagpur came under British control through this policy.",
+      "concepts": [
+        "Doctrine of Lapse",
+        "Dalhousie",
+        "annexation"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SS_CH3_Q001",
+      "chapter": 3,
+      "chapter_name": "The Impact of the British Rule in India",
+      "subject": "History",
+      "source": "LBA_QuestionBank_2025",
+      "marks": 1,
+      "type": "mcq",
+      "difficulty": "medium",
+      "question": "The law which allowed the establishment of the Supreme Court in Calcutta was",
+      "options": [
+        "A) Regulating Act of 1773",
+        "B) Charter Act of 1833",
+        "C) Government of India Act 1935",
+        "D) Indian Council Act 1909"
+      ],
+      "answer": "A) Regulating Act of 1773",
+      "concepts": [
+        "Regulating Act",
+        "Supreme Court",
+        "Calcutta"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "SS_CH3_Q002",
+      "chapter": 3,
+      "chapter_name": "The Impact of the British Rule in India",
+      "subject": "History",
+      "source": "LBA_QuestionBank_2025",
+      "marks": 1,
+      "type": "direct",
+      "difficulty": "easy",
+      "question": "Who implemented the Permanent Zamindari System?",
+      "answer": "Lord Cornwallis",
+      "concepts": [
+        "Permanent Zamindari System",
+        "Cornwallis"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "SS_CH3_Q003",
+      "chapter": 3,
+      "chapter_name": "The Impact of the British Rule in India",
+      "subject": "History",
+      "source": "LBA_QuestionBank_2025",
+      "marks": 3,
+      "type": "long_answer",
+      "difficulty": "hard",
+      "question": "How does the Government of India Act of 1935 become the base of the Indian Constitution?",
+      "answer": "The Government of India Act 1935 laid foundation for the Constitution of India. It formed an all-India Federation. A dual government (dyarchy) was established at the centre. Provinces were given autonomy. Reserve Bank of India was established. Federal Court was established in India. Most provisions of the Indian Constitution are based on this act. It allowed formation of fully responsible government by Indians.",
+      "concepts": [
+        "GOI Act 1935",
+        "Indian Constitution",
+        "federal system"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SS_CH3_Q004",
+      "chapter": 3,
+      "chapter_name": "The Impact of the British Rule in India",
+      "subject": "History",
+      "source": "LBA_QuestionBank_2025",
+      "marks": 2,
+      "type": "short_answer",
+      "difficulty": "medium",
+      "question": "What were the important features of the 1919 Government of India Act (Montague-Chelmsford Reforms)?",
+      "answer": "A bicameral legislature was formed at the Centre. A dual system of government (dyarchy) was introduced in the provinces. A High Commissioner was appointed for India. Development of local bodies was encouraged. Budget of provinces was separated from central budget. Separate electoral constituencies were extended to Sikhs, Anglo-Indians and Europeans.",
+      "concepts": [
+        "1919 Act",
+        "Montague-Chelmsford",
+        "dyarchy"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SS_CH4_Q001",
+      "chapter": 4,
+      "chapter_name": "Opposition to British Rule in Karnataka and Wodeyars of Mysore",
+      "subject": "History",
+      "source": "LBA_QuestionBank_2025",
+      "marks": 1,
+      "type": "mcq",
+      "difficulty": "medium",
+      "question": "The teacher and mentor of Krishnaraja Wadiyar was",
+      "options": [
+        "A) Basappa Shastri",
+        "B) Tipu Sultan",
+        "C) Hyder Ali",
+        "D) Sangolli Rayanna"
+      ],
+      "answer": "A) Basappa Shastri",
+      "concepts": [
+        "Krishnaraja Wadiyar",
+        "Wodeyars of Mysore"
+      ],
+      "board_frequency": "medium"
+    },
+    {
+      "id": "SS_CH4_Q002",
+      "chapter": 4,
+      "chapter_name": "Opposition to British Rule in Karnataka and Wodeyars of Mysore",
+      "subject": "History",
+      "source": "LBA_QuestionBank_2025",
+      "marks": 1,
+      "type": "direct",
+      "difficulty": "easy",
+      "question": "Who was Sangolli Rayanna?",
+      "answer": "Sangolli Rayanna was a brave commander who fought alongside Rani Chennamma in the Kittur Rebellion against the British. He continued the struggle even after Rani Chennamma's imprisonment and became a symbol of resistance.",
+      "concepts": [
+        "Kittur Rebellion",
+        "Sangolli Rayanna"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SS_CH4_Q003",
+      "chapter": 4,
+      "chapter_name": "Opposition to British Rule in Karnataka and Wodeyars of Mysore",
+      "subject": "History",
+      "source": "LBA_QuestionBank_2025",
+      "marks": 3,
+      "type": "long_answer",
+      "difficulty": "hard",
+      "question": "Explain the contributions of Hyder Ali and Tipu Sultan in opposing British rule.",
+      "answer": "Hyder Ali: Built a strong army with French support. Introduced iron rockets in warfare. Won the First Anglo-Mysore War (1767-69). Defeated British at Pollilur during Second Anglo-Mysore War. Tipu Sultan: Called 'Tiger of Mysore'. Continued wars against British. Used rockets effectively against British. Fought four Anglo-Mysore Wars. Built Lal Mahal, Srirangapatna fort. Died fighting the British in 1799 at the Fourth Anglo-Mysore War. Both were strong opponents of British expansion in South India.",
+      "concepts": [
+        "Hyder Ali",
+        "Tipu Sultan",
+        "Anglo-Mysore Wars"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SS_CH4_Q004",
+      "chapter": 4,
+      "chapter_name": "Opposition to British Rule in Karnataka and Wodeyars of Mysore",
+      "subject": "History",
+      "source": "LBA_QuestionBank_2025",
+      "marks": 2,
+      "type": "short_answer",
+      "difficulty": "medium",
+      "question": "Explain the Kittur Rebellion led by Rani Chennamma.",
+      "answer": "After the death of the king of Kittur, the British tried to annex Kittur through Doctrine of Lapse. Rani Chennamma of Kittur refused to accept British authority and fought against them in 1824. She initially defeated the British and captured their collector Thackeray. She was later captured and imprisoned in Bailhongal fort where she died in 1829. Her bravery inspired future freedom fighters.",
+      "concepts": [
+        "Kittur Rebellion",
+        "Rani Chennamma",
+        "1824"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SS_CH4_Q005",
+      "chapter": 4,
+      "chapter_name": "Opposition to British Rule in Karnataka and Wodeyars of Mysore",
+      "subject": "History",
+      "source": "LBA_QuestionBank_2025",
+      "marks": 4,
+      "type": "essay",
+      "difficulty": "hard",
+      "question": "Explain the achievements and contributions of Krishnaraja Wodeyar IV.",
+      "answer": "Krishnaraja Wadiyar IV ruled Mysore from 1902 to 1940. He was educated under Basappa Shastri. He implemented several reforms: established Vidhana Soudha, developed Krishnarajasagara Dam with Diwan Visvesvaraya, promoted industries like silk, sandalwood, etc. He was known as Rajarshi (Royal Saint). He promoted education, art and culture. He established Mysore Bank. He supported the Indian independence movement discreetly. He was respected by Mahatma Gandhi. He transformed Mysore into one of the most progressive states in India.",
+      "concepts": [
+        "Krishnaraja Wadiyar IV",
+        "Mysore",
+        "development"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SS_CH5_Q001",
+      "chapter": 5,
+      "chapter_name": "Social and Religious Reform Movements",
+      "subject": "History",
+      "source": "LBA_QuestionBank_2025",
+      "marks": 1,
+      "type": "mcq",
+      "difficulty": "medium",
+      "question": "Brahma Samaj was founded by",
+      "options": [
+        "A) Vivekananda",
+        "B) Dayananda Saraswathi",
+        "C) Raja Ram Mohan Roy",
+        "D) Annie Besant"
+      ],
+      "answer": "C) Raja Ram Mohan Roy",
+      "concepts": [
+        "Brahma Samaj",
+        "reform movements"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SS_CH5_Q002",
+      "chapter": 5,
+      "chapter_name": "Social and Religious Reform Movements",
+      "subject": "History",
+      "source": "LBA_QuestionBank_2025",
+      "marks": 1,
+      "type": "direct",
+      "difficulty": "easy",
+      "question": "Why is the 19th century known as the period of 'Indian Renaissance'?",
+      "answer": "The 19th century is called the period of Indian Renaissance because it saw a great awakening in India. Social reformers fought against caste discrimination, sati, child marriage and untouchability. Religious reformers purified Indian religion. New organizations were established. Education spread. Indians began questioning superstitions and working for social equality.",
+      "concepts": [
+        "Indian Renaissance",
+        "19th century",
+        "reform movements"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "SS_CH5_Q003",
+      "chapter": 5,
+      "chapter_name": "Social and Religious Reform Movements",
+      "subject": "History",
+      "source": "LBA_QuestionBank_2025",
+      "marks": 3,
+      "type": "long_answer",
+      "difficulty": "hard",
+      "question": "Explain the contribution of any two social reform organizations of India.",
+      "answer": "1. Brahma Samaj (1828): Founded by Raja Ram Mohan Roy. Opposed idol worship, caste system and sati. Promoted monotheism and rational thinking. Fought for widow remarriage. Led to abolition of Sati in 1829. 2. Arya Samaj (1875): Founded by Dayananda Saraswathi. Rejected idol worship and casteism. Based on Vedic principles. Promoted education, especially for women. Opposed untouchability. Shuddhi movement to reconvert people. Both contributed greatly to social awakening and laid foundation for nationalism.",
+      "concepts": [
+        "Brahma Samaj",
+        "Arya Samaj",
+        "social reform"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SS_CH6_Q001",
+      "chapter": 6,
+      "chapter_name": "The First War of Indian Independence (1857)",
+      "subject": "History",
+      "source": "LBA_QuestionBank_2025",
+      "marks": 1,
+      "type": "mcq",
+      "difficulty": "medium",
+      "question": "The immediate cause of the First War of Independence (1857) was",
+      "options": [
+        "A) Doctrine of Lapse",
+        "B) Greased cartridges",
+        "C) Subsidiary Alliance",
+        "D) Land tax policies"
+      ],
+      "answer": "B) Greased cartridges",
+      "concepts": [
+        "1857 revolt",
+        "immediate cause"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SS_CH6_Q002",
+      "chapter": 6,
+      "chapter_name": "The First War of Indian Independence (1857)",
+      "subject": "History",
+      "source": "LBA_QuestionBank_2025",
+      "marks": 1,
+      "type": "direct",
+      "difficulty": "easy",
+      "question": "What did British historians call the 1857 revolt?",
+      "answer": "The Sepoy Mutiny",
+      "concepts": [
+        "1857 revolt",
+        "British perspective"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "SS_CH6_Q003",
+      "chapter": 6,
+      "chapter_name": "The First War of Indian Independence (1857)",
+      "subject": "History",
+      "source": "LBA_QuestionBank_2025",
+      "marks": 3,
+      "type": "long_answer",
+      "difficulty": "hard",
+      "question": "Explain the political and economic causes of the First War of Independence (1857).",
+      "answer": "Political Causes: Princely states of Satara, Jaipur, Jhansi, Udaipur were captured through Doctrine of Lapse. Kingship of Thanjavur and Nawabs of Carnatic was abolished. Mughal emperor and Nawab of Oudh were deposed. Millions of soldiers who depended on them became unemployed. Economic Causes: Industrial revolution in England ruined Indian handicrafts. Indian craftsmen became unemployed. Textile and wool industries suffered. British imposed heavy tax on sale of Indian goods. Farmers were burdened with heavy land taxes. Indian agriculture was commercialized to serve British interests.",
+      "concepts": [
+        "1857 revolt",
+        "political causes",
+        "economic causes"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SS_CH6_Q004",
+      "chapter": 6,
+      "chapter_name": "The First War of Indian Independence (1857)",
+      "subject": "History",
+      "source": "LBA_QuestionBank_2025",
+      "marks": 2,
+      "type": "short_answer",
+      "difficulty": "medium",
+      "question": "What were the features of the declaration made by the British Queen in 1858?",
+      "answer": "The agreements made by the British East India Company with kings were accepted. Ambitious expansion plans had to be given up. A stable government had to be provided to Indians. There would be equality before law. The government would exhibit religious tolerance and not interfere in religious matters. Administration of India passed from the East India Company to the British Crown.",
+      "concepts": [
+        "Queen's Proclamation 1858",
+        "Magna Carta of India"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "SS_CH7_Q001",
+      "chapter": 7,
+      "chapter_name": "The Freedom Struggle",
+      "subject": "History",
+      "source": "LBA_QuestionBank_2025",
+      "marks": 1,
+      "type": "mcq",
+      "difficulty": "easy",
+      "question": "The Indian National Congress was founded by",
+      "options": [
+        "A) Mahatma Gandhi",
+        "B) A.O. Hume",
+        "C) Bal Gangadhar Tilak",
+        "D) Jawaharlal Nehru"
+      ],
+      "answer": "B) A.O. Hume",
+      "concepts": [
+        "Indian National Congress",
+        "founder"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SS_CH7_Q002",
+      "chapter": 7,
+      "chapter_name": "The Freedom Struggle",
+      "subject": "History",
+      "source": "LBA_QuestionBank_2025",
+      "marks": 1,
+      "type": "direct",
+      "difficulty": "easy",
+      "question": "In which year was the Indian National Congress established?",
+      "answer": "1885",
+      "concepts": [
+        "Indian National Congress",
+        "1885"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SS_CH7_Q003",
+      "chapter": 7,
+      "chapter_name": "The Freedom Struggle",
+      "subject": "History",
+      "source": "LBA_QuestionBank_2025",
+      "marks": 3,
+      "type": "long_answer",
+      "difficulty": "hard",
+      "question": "Explain the Civil Disobedience Movement.",
+      "answer": "The Civil Disobedience Movement was launched by Mahatma Gandhi in 1930. He marched from Sabarmati to Dandi (Dandi March) to break the Salt Law. People across India boycotted British goods, refused to pay taxes, and violated British laws deliberately. Many leaders like Gandhi, Nehru, Sardar Patel were imprisoned. The movement spread widely. It was suspended after Gandhi-Irwin Pact in 1931. It demonstrated the power of non-violent mass resistance and brought international attention to India's freedom struggle.",
+      "concepts": [
+        "Civil Disobedience",
+        "Dandi March",
+        "Salt Satyagraha"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SS_CH7_Q004",
+      "chapter": 7,
+      "chapter_name": "The Freedom Struggle",
+      "subject": "History",
+      "source": "LBA_QuestionBank_2025",
+      "marks": 3,
+      "type": "long_answer",
+      "difficulty": "hard",
+      "question": "Explain the Quit India Movement.",
+      "answer": "The Quit India Movement was launched by Mahatma Gandhi on August 8, 1942. Gandhi gave the call 'Do or Die'. Leaders like Gandhi, Nehru, Rajendra Prasad, Abul Kalam Azad, Sardar Patel were imprisoned immediately. Since Congress leaders were in jail, new leaders emerged including Jayaprakash Narayan. The movement spread across India. British used force to suppress it. Subhash Chandra Bose's INA activities complemented this from outside India. The movement accelerated India's path to independence.",
+      "concepts": [
+        "Quit India Movement",
+        "1942",
+        "Do or Die"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SS_CH7_Q005",
+      "chapter": 7,
+      "chapter_name": "The Freedom Struggle",
+      "subject": "History",
+      "source": "LBA_QuestionBank_2025",
+      "marks": 4,
+      "type": "essay",
+      "difficulty": "hard",
+      "question": "Explain the role of Moderates and Extremists in the Indian freedom struggle.",
+      "answer": "Moderates (1885-1905): Represented by Dadabai Naoroji, M.G. Ranade, Gopal Krishna Gokhale, Surendranath Banerjee. Believed in British justice and rule. Presented demands through prayers and petitions. Provided political education. Reduced military expenditure demands. Studied poverty. Demanded relief programs. Extremists (1905-1920): Represented by Bal Gangadhar Tilak, Bipin Chandra Pal, Lala Lajpat Rai (Lal-Bal-Pal). Demanded complete self-rule (Swaraj). Used mass agitation. Boycott of British goods. Used religious festivals to mobilize people. Tilak used Kesari and Maratha newspapers. Believed that rights must be seized, not begged. Both phases contributed to building a strong independence movement.",
+      "concepts": [
+        "Moderates",
+        "Extremists",
+        "INC phases"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SS_CH8_Q001",
+      "chapter": 8,
+      "chapter_name": "India After Independence",
+      "subject": "History",
+      "source": "LBA_QuestionBank_2025",
+      "marks": 1,
+      "type": "mcq",
+      "difficulty": "medium",
+      "question": "The States Reorganisation Act was passed in the year",
+      "options": [
+        "A) 1947",
+        "B) 1952",
+        "C) 1956",
+        "D) 1960"
+      ],
+      "answer": "C) 1956",
+      "concepts": [
+        "States Reorganisation Act",
+        "1956"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "SS_CH8_Q002",
+      "chapter": 8,
+      "chapter_name": "India After Independence",
+      "subject": "History",
+      "source": "LBA_QuestionBank_2025",
+      "marks": 2,
+      "type": "short_answer",
+      "difficulty": "medium",
+      "question": "What were the problems faced by India after independence?",
+      "answer": "India faced the following problems after independence: Partition of India led to communal violence and refugee crisis. Integration of princely states was a major challenge — Sardar Vallabhbhai Patel integrated over 562 states. Formation of a stable government was complex. States were reorganized on linguistic basis. Poverty, unemployment and economic underdevelopment were major challenges. Disputes with Pakistan over Kashmir began.",
+      "concepts": [
+        "India after independence",
+        "partition",
+        "integration of states"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SS_CH9_Q001",
+      "chapter": 9,
+      "chapter_name": "World Wars and India's Role",
+      "subject": "History",
+      "source": "LBA_QuestionBank_2025",
+      "marks": 1,
+      "type": "mcq",
+      "difficulty": "medium",
+      "question": "The countries that were involved in the Cold War after the Second World War were",
+      "options": [
+        "A) Britain and France",
+        "B) Germany and Japan",
+        "C) USA and Soviet Russia",
+        "D) India and China"
+      ],
+      "answer": "C) USA and Soviet Russia",
+      "concepts": [
+        "Cold War",
+        "USA",
+        "Soviet Russia"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SS_CH9_Q002",
+      "chapter": 9,
+      "chapter_name": "World Wars and India's Role",
+      "subject": "History",
+      "source": "LBA_QuestionBank_2025",
+      "marks": 2,
+      "type": "short_answer",
+      "difficulty": "medium",
+      "question": "Explain the causes of the First World War.",
+      "answer": "Causes: Aggressive nationalism in European countries. Alliance system divided Europe into two camps (Triple Alliance and Triple Entente). Colonial rivalries for markets and raw materials. Arms race between major powers. Militarism — glorification of military power. Immediate cause: Assassination of Archduke Franz Ferdinand of Austria in Sarajevo (1914) by Gavrilo Princip triggered the war.",
+      "concepts": [
+        "World War I",
+        "causes",
+        "1914"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "SS_CH10_Q001",
+      "chapter": 10,
+      "chapter_name": "Public Administration – An Introduction",
+      "subject": "Political Science",
+      "source": "LBA_QuestionBank_2025",
+      "marks": 1,
+      "type": "mcq",
+      "difficulty": "easy",
+      "question": "The central body that conducts recruitment examinations for central government services is",
+      "options": [
+        "A) State Public Service Commission",
+        "B) UPSC",
+        "C) Election Commission",
+        "D) Finance Commission"
+      ],
+      "answer": "B) UPSC",
+      "concepts": [
+        "UPSC",
+        "public administration",
+        "recruitment"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "SS_CH10_Q002",
+      "chapter": 10,
+      "chapter_name": "Public Administration – An Introduction",
+      "subject": "Political Science",
+      "source": "LBA_QuestionBank_2025",
+      "marks": 2,
+      "type": "short_answer",
+      "difficulty": "medium",
+      "question": "What is public administration? What is its scope?",
+      "answer": "Public Administration refers to the organization and management of government activities and policies. It includes planning, organizing, directing and controlling activities of the government. Scope includes: civil services, police administration, revenue collection, welfare schemes, judicial administration, public health, education, defense, and local body administration. It is essential for implementing government programs and maintaining law and order.",
+      "concepts": [
+        "public administration",
+        "scope",
+        "definition"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "SS_CH11_Q001",
+      "chapter": 11,
+      "chapter_name": "Challenges of India and Their Remedies",
+      "subject": "Political Science",
+      "source": "LBA_QuestionBank_2025",
+      "marks": 1,
+      "type": "mcq",
+      "difficulty": "medium",
+      "question": "The institution established at the national level to control corruption is",
+      "options": [
+        "A) Lokayukta",
+        "B) Lokpal",
+        "C) CVC",
+        "D) CAG"
+      ],
+      "answer": "B) Lokpal",
+      "concepts": [
+        "Lokpal",
+        "corruption control"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "SS_CH11_Q002",
+      "chapter": 11,
+      "chapter_name": "Challenges of India and Their Remedies",
+      "subject": "Political Science",
+      "source": "LBA_QuestionBank_2025",
+      "marks": 3,
+      "type": "long_answer",
+      "difficulty": "hard",
+      "question": "What are the measures taken by the Government of India to control corruption?",
+      "answer": "Government measures to control corruption: Lokpal established at national level; Lokayukta in states. Central Vigilance Commission (CVC) set up. Prevention of Corruption Act 1988 implemented. Right to Information Act 2005 (RTI) — citizens can seek information from government. CC Cameras installed in government offices. E-Office system implemented for quick file disposal. Schemes like Sakala, Janaspandana, Janasevaka implemented. Complaint boxes kept in government offices. Stricter penal systems for corrupt officials.",
+      "concepts": [
+        "corruption",
+        "government measures",
+        "Lokpal",
+        "RTI"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SS_CH11_Q003",
+      "chapter": 11,
+      "chapter_name": "Challenges of India and Their Remedies",
+      "subject": "Political Science",
+      "source": "LBA_QuestionBank_2025",
+      "marks": 2,
+      "type": "short_answer",
+      "difficulty": "medium",
+      "question": "What is communalism? What are the measures to control it?",
+      "answer": "Communalism is excessive attachment to one's religious community leading to hostility toward other communities. Measures to control: Promotion of national integration through education. Strict enforcement of law against communal violence. Promotion of inter-religious harmony. Media responsibility. Government schemes for minority welfare. Ban on organizations promoting religious hatred. Strong punishment for those spreading communal disharmony.",
+      "concepts": [
+        "communalism",
+        "national integration",
+        "measures"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "SS_CH12_Q001",
+      "chapter": 12,
+      "chapter_name": "India's Foreign Policy and Global Challenges",
+      "subject": "Political Science",
+      "source": "LBA_QuestionBank_2025",
+      "marks": 1,
+      "type": "direct",
+      "difficulty": "easy",
+      "question": "What is the foreign policy of India called?",
+      "answer": "India's foreign policy is based on the principle of Non-Alignment (NAM - Non-Aligned Movement). It is also called Panchsheel Policy based on five principles of peaceful coexistence.",
+      "concepts": [
+        "foreign policy",
+        "Non-Alignment",
+        "Panchsheel"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SS_CH12_Q002",
+      "chapter": 12,
+      "chapter_name": "India's Foreign Policy and Global Challenges",
+      "subject": "Political Science",
+      "source": "LBA_QuestionBank_2025",
+      "marks": 3,
+      "type": "long_answer",
+      "difficulty": "hard",
+      "question": "Explain the fundamental principles of India's foreign policy.",
+      "answer": "India's foreign policy is based on: 1. Non-Alignment: Not joining any military bloc. 2. Panchsheel: Five principles — mutual respect for sovereignty, non-aggression, non-interference in internal affairs, equality and mutual benefit, peaceful coexistence. 3. World peace and disarmament. 4. Opposition to colonialism and imperialism. 5. Support for United Nations. 6. Promotion of South-South cooperation. 7. Nuclear disarmament. 8. Respect for international law. These principles were shaped by Jawaharlal Nehru.",
+      "concepts": [
+        "foreign policy",
+        "Panchsheel",
+        "Non-Alignment"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SS_CH13_Q001",
+      "chapter": 13,
+      "chapter_name": "World Organisations",
+      "subject": "Political Science",
+      "source": "LBA_QuestionBank_2025",
+      "marks": 1,
+      "type": "mcq",
+      "difficulty": "easy",
+      "question": "The headquarters of the World Health Organization is in",
+      "options": [
+        "A) New York",
+        "B) London",
+        "C) Geneva",
+        "D) Paris"
+      ],
+      "answer": "C) Geneva",
+      "concepts": [
+        "WHO",
+        "headquarters"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SS_CH13_Q002",
+      "chapter": 13,
+      "chapter_name": "World Organisations",
+      "subject": "Political Science",
+      "source": "LBA_QuestionBank_2025",
+      "marks": 2,
+      "type": "short_answer",
+      "difficulty": "medium",
+      "question": "What are the main organs of the United Nations?",
+      "answer": "The United Nations has six main organs: 1. General Assembly — all member nations have equal vote. 2. Security Council — 5 permanent members (USA, UK, France, Russia, China) and 10 non-permanent members. 3. Secretariat — headed by Secretary General. 4. International Court of Justice — at The Hague. 5. Economic and Social Council. 6. Trusteeship Council (inactive since 1994). The UN aims to maintain international peace and security.",
+      "concepts": [
+        "United Nations",
+        "organs",
+        "structure"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SS_CH14_Q001",
+      "chapter": 14,
+      "chapter_name": "Social Stratification",
+      "subject": "Sociology",
+      "source": "LBA_QuestionBank_2025",
+      "marks": 1,
+      "type": "mcq",
+      "difficulty": "easy",
+      "question": "The division of society into hierarchical groups based on caste, class or gender is called",
+      "options": [
+        "A) Social mobility",
+        "B) Social stratification",
+        "C) Social control",
+        "D) Social change"
+      ],
+      "answer": "B) Social stratification",
+      "concepts": [
+        "social stratification",
+        "caste",
+        "class"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "SS_CH14_Q002",
+      "chapter": 14,
+      "chapter_name": "Social Stratification",
+      "subject": "Sociology",
+      "source": "LBA_QuestionBank_2025",
+      "marks": 1,
+      "type": "direct",
+      "difficulty": "easy",
+      "question": "What is untouchability?",
+      "answer": "Untouchability is a social evil practiced in India where certain castes were treated as impure and denied basic social rights. They were prevented from accessing wells, temples, schools, and were forced to do menial work. It was declared illegal under Article 17 of the Indian Constitution.",
+      "concepts": [
+        "untouchability",
+        "caste discrimination",
+        "Article 17"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "SS_CH15_Q001",
+      "chapter": 15,
+      "chapter_name": "Work and Economic Life",
+      "subject": "Sociology",
+      "source": "LBA_QuestionBank_2025",
+      "marks": 1,
+      "type": "mcq",
+      "difficulty": "medium",
+      "question": "The sector that includes government employees, banks, schools and hospitals is called",
+      "options": [
+        "A) Unorganized sector",
+        "B) Organized sector",
+        "C) Agricultural sector",
+        "D) Private sector"
+      ],
+      "answer": "B) Organized sector",
+      "concepts": [
+        "organized sector",
+        "work",
+        "employment"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "SS_CH15_Q002",
+      "chapter": 15,
+      "chapter_name": "Work and Economic Life",
+      "subject": "Sociology",
+      "source": "LBA_QuestionBank_2025",
+      "marks": 3,
+      "type": "long_answer",
+      "difficulty": "hard",
+      "question": "What are the causes and effects of unemployment in India?",
+      "answer": "Causes: Rapid population growth, inadequate education, lack of vocational training, slow industrial growth, over-dependence on agriculture, seasonal nature of work, lack of proper job placement. Effects: Poverty and hunger, social unrest, crime increase, wastage of human resources, brain drain, psychological problems, decrease in per capita income, slows economic development. Solutions: Promote vocational training, expand industries, develop agriculture, self-employment schemes, improve education quality.",
+      "concepts": [
+        "unemployment",
+        "causes",
+        "effects",
+        "solutions"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SS_CH16_Q001",
+      "chapter": 16,
+      "chapter_name": "Collective Behaviour and Protests",
+      "subject": "Sociology",
+      "source": "LBA_QuestionBank_2025",
+      "marks": 1,
+      "type": "mcq",
+      "difficulty": "medium",
+      "question": "The famous Silent Valley Movement was launched in the state of",
+      "options": [
+        "A) Kerala",
+        "B) Karnataka",
+        "C) Tamil Nadu",
+        "D) Andhra Pradesh"
+      ],
+      "answer": "A) Kerala",
+      "concepts": [
+        "Silent Valley Movement",
+        "environmental protests"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SS_CH16_Q002",
+      "chapter": 16,
+      "chapter_name": "Collective Behaviour and Protests",
+      "subject": "Sociology",
+      "source": "LBA_QuestionBank_2025",
+      "marks": 2,
+      "type": "short_answer",
+      "difficulty": "medium",
+      "question": "What are the various forms of collective behaviour?",
+      "answer": "Collective behaviour includes: 1. Crowd — gathering of people at a place for specific purpose (audiences, mobs). 2. Riots — violent collective behaviour. 3. Social movements — sustained collective effort for change (women's movement, farmers' movement, anti-untouchability movements). 4. Protests and demonstrations. 5. Strikes by workers. All forms of collective behaviour aim to express public opinion or bring social/political change.",
+      "concepts": [
+        "collective behaviour",
+        "crowd",
+        "social movements"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "SS_CH17_Q001",
+      "chapter": 17,
+      "chapter_name": "Social Challenges",
+      "subject": "Sociology",
+      "source": "LBA_QuestionBank_2025",
+      "marks": 1,
+      "type": "direct",
+      "difficulty": "easy",
+      "question": "What is child labour?",
+      "answer": "Child labour means employing children below the age of 14 years in any kind of work, especially hazardous occupations. It denies them their right to education, play and healthy growth. The Child Labour (Prohibition and Regulation) Act 1986 was enacted to prevent it.",
+      "concepts": [
+        "child labour",
+        "definition",
+        "law"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "SS_CH17_Q002",
+      "chapter": 17,
+      "chapter_name": "Social Challenges",
+      "subject": "Sociology",
+      "source": "LBA_QuestionBank_2025",
+      "marks": 2,
+      "type": "short_answer",
+      "difficulty": "medium",
+      "question": "What are the causes and effects of dowry system?",
+      "answer": "Causes: Social prestige, traditional customs, greed for wealth, illiteracy, unequal status of women. Effects: Financial burden on bride's family, harassment and torture of brides, female foeticide, dowry deaths (bride burning), suppression of women's status. The Dowry Prohibition Act 1961 makes giving and taking dowry a crime. Social awareness and women's education are key solutions.",
+      "concepts": [
+        "dowry",
+        "causes",
+        "effects",
+        "law"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "SS_CH18_Q001",
+      "chapter": 18,
+      "chapter_name": "India – Geographical Position and Physical Features",
+      "subject": "Geography",
+      "source": "LBA_QuestionBank_2025",
+      "marks": 1,
+      "type": "mcq",
+      "difficulty": "easy",
+      "question": "The First Iron and Steel Industry in India was established in",
+      "options": [
+        "A) Bhilai",
+        "B) Jamshedpur",
+        "C) Durgapur",
+        "D) Kulti"
+      ],
+      "answer": "D) Kulti",
+      "concepts": [
+        "Iron and Steel Industry",
+        "India"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SS_CH18_Q002",
+      "chapter": 18,
+      "chapter_name": "India – Geographical Position and Physical Features",
+      "subject": "Geography",
+      "source": "LBA_QuestionBank_2025",
+      "marks": 2,
+      "type": "short_answer",
+      "difficulty": "medium",
+      "question": "What are the main physical divisions of India?",
+      "answer": "India has five main physical divisions: 1. The Himalayan Mountain Region — Northern boundary, three parallel ranges. 2. The Northern Plains — formed by Indus, Ganga and Brahmaputra rivers, very fertile. 3. The Peninsular Plateau — Deccan plateau, oldest rock formation. 4. The Coastal Plains — Eastern (Coromandel, Utkal) and Western (Malabar, Konkan) coasts. 5. The Islands — Andaman & Nicobar in Bay of Bengal, Lakshadweep in Arabian Sea.",
+      "concepts": [
+        "physical divisions of India",
+        "geography"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SS_CH19_Q001",
+      "chapter": 19,
+      "chapter_name": "India – Seasons",
+      "subject": "Geography",
+      "source": "LBA_QuestionBank_2025",
+      "marks": 1,
+      "type": "mcq",
+      "difficulty": "medium",
+      "question": "The pre-monsoon rainfall which occurs in West Bengal due to local temperature and conventional currents is called",
+      "options": [
+        "A) Andhis",
+        "B) Kala Baisakhi",
+        "C) Coffee Blossoms",
+        "D) Mango Showers"
+      ],
+      "answer": "B) Kala Baisakhi",
+      "concepts": [
+        "India seasons",
+        "pre-monsoon rainfall",
+        "Kala Baisakhi"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SS_CH19_Q002",
+      "chapter": 19,
+      "chapter_name": "India – Seasons",
+      "subject": "Geography",
+      "source": "LBA_QuestionBank_2025",
+      "marks": 2,
+      "type": "short_answer",
+      "difficulty": "medium",
+      "question": "'Indian agriculture is a gambling with the monsoon.' Justify.",
+      "answer": "Indian agriculture is called a gamble with the monsoons because: The main occupation of Indians is agriculture which depends entirely on monsoon rains. Failure of rainfall leads to drought and crop failure. Heavy rains cause floods causing loss of life and property. There is great uncertainty about the amount and timing of rainfall. Since irrigation facilities are inadequate, most farmers depend on rain. Thus the success of agriculture — and therefore the economy — depends on unpredictable monsoons.",
+      "concepts": [
+        "monsoon",
+        "Indian agriculture",
+        "rainfall dependence"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SS_CH20_Q001",
+      "chapter": 20,
+      "chapter_name": "India – Soils",
+      "subject": "Geography",
+      "source": "LBA_QuestionBank_2025",
+      "marks": 1,
+      "type": "mcq",
+      "difficulty": "easy",
+      "question": "The soil which is also called 'Regur Soil' is",
+      "options": [
+        "A) Black soil",
+        "B) Desert soil",
+        "C) Laterite soil",
+        "D) Alluvial soil"
+      ],
+      "answer": "A) Black soil",
+      "concepts": [
+        "Regur soil",
+        "black soil",
+        "cotton"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SS_CH20_Q002",
+      "chapter": 20,
+      "chapter_name": "India – Soils",
+      "subject": "Geography",
+      "source": "LBA_QuestionBank_2025",
+      "marks": 1,
+      "type": "mcq",
+      "difficulty": "easy",
+      "question": "The most extensively spread soil in India is",
+      "options": [
+        "A) Mountain soil",
+        "B) Black soil",
+        "C) Alluvial soil",
+        "D) Red soil"
+      ],
+      "answer": "C) Alluvial soil",
+      "concepts": [
+        "alluvial soil",
+        "India soils"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SS_CH20_Q003",
+      "chapter": 20,
+      "chapter_name": "India – Soils",
+      "subject": "Geography",
+      "source": "LBA_QuestionBank_2025",
+      "marks": 1,
+      "type": "direct",
+      "difficulty": "easy",
+      "question": "Why is black soil called 'black cotton soil'?",
+      "answer": "Black soil is called black cotton soil because it is best suited for cotton cultivation. It retains moisture for a long time due to abundant clay particles, making it ideal for cotton which requires sustained moisture.",
+      "concepts": [
+        "black soil",
+        "cotton cultivation"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SS_CH20_Q004",
+      "chapter": 20,
+      "chapter_name": "India – Soils",
+      "subject": "Geography",
+      "source": "LBA_QuestionBank_2025",
+      "marks": 3,
+      "type": "long_answer",
+      "difficulty": "hard",
+      "question": "What are the effects of soil erosion? / Soil erosion creates many problems. How?",
+      "answer": "Effects of soil erosion: Loss of fertile topsoil reduces agricultural productivity. Siltation fills up reservoirs reducing their capacity. Floods increase as rivers carry more sediment. Desertification occurs in affected areas. Loss of biodiversity. Destruction of infrastructure. Reduced groundwater recharge. Food insecurity due to poor crop yields. Economic losses to farmers. Formation of ravines and badlands. River beds rise causing more flooding. Coastal erosion damages shorelines.",
+      "concepts": [
+        "soil erosion",
+        "effects",
+        "consequences"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SS_CH20_Q005",
+      "chapter": 20,
+      "chapter_name": "India – Soils",
+      "subject": "Geography",
+      "source": "LBA_QuestionBank_2025",
+      "marks": 3,
+      "type": "long_answer",
+      "difficulty": "hard",
+      "question": "How can we prevent soil erosion?",
+      "answer": "Methods to prevent soil erosion: Construction of bunds to check water flow. Terraced agricultural fields on slopes. Preventing deforestation and promoting afforestation. Encouraging the growth of forests and grass. Controlling excessive livestock grazing. Planned use of water resources. Construction of check dams in small rivers. Contour ploughing across slopes. Use of cover crops to protect bare soil. Windbreaks and shelterbelts in dry areas. Scientific crop rotation.",
+      "concepts": [
+        "soil conservation",
+        "prevention of erosion"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SS_CH21_Q001",
+      "chapter": 21,
+      "chapter_name": "India – Forest Resources",
+      "subject": "Geography",
+      "source": "LBA_QuestionBank_2025",
+      "marks": 1,
+      "type": "mcq",
+      "difficulty": "easy",
+      "question": "Sundarbans are found in",
+      "options": [
+        "A) Narmada delta",
+        "B) Ganges delta",
+        "C) Indus delta",
+        "D) Godavari delta"
+      ],
+      "answer": "B) Ganges delta",
+      "concepts": [
+        "Sundarbans",
+        "mangrove forests"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SS_CH21_Q002",
+      "chapter": 21,
+      "chapter_name": "India – Forest Resources",
+      "subject": "Geography",
+      "source": "LBA_QuestionBank_2025",
+      "marks": 1,
+      "type": "direct",
+      "difficulty": "easy",
+      "question": "Which was the first national park established in India?",
+      "answer": "Jim Corbett National Park in Uttarakhand (formerly United Provinces) was the first national park established in India in 1936.",
+      "concepts": [
+        "national parks",
+        "Jim Corbett"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "SS_CH21_Q003",
+      "chapter": 21,
+      "chapter_name": "India – Forest Resources",
+      "subject": "Geography",
+      "source": "LBA_QuestionBank_2025",
+      "marks": 3,
+      "type": "long_answer",
+      "difficulty": "hard",
+      "question": "Forests are a very useful resource for us and the environment. Justify.",
+      "answer": "Importance of forests: Provide pure air by absorbing CO2 and releasing oxygen. Provide food and fodder for animals and humans. Bring good rainfall by maintaining water cycle. Control soil erosion — tree roots hold soil. Provide timber for furniture, paper, and construction. Home to diverse wildlife — preserve biodiversity. Regulate river flow — reduce floods in rainy season, maintain flow in dry season. Provide medicinal plants. Source of livelihood for tribal communities. Regulate climate and temperature. Carbon sinks that reduce global warming.",
+      "concepts": [
+        "importance of forests",
+        "forest resources"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SS_CH22_Q001",
+      "chapter": 22,
+      "chapter_name": "India – Water Resources",
+      "subject": "Geography",
+      "source": "LBA_QuestionBank_2025",
+      "marks": 1,
+      "type": "mcq",
+      "difficulty": "medium",
+      "question": "The Bhakra Nangal Dam is built on which river?",
+      "options": [
+        "A) Ganga",
+        "B) Yamuna",
+        "C) Sutlej",
+        "D) Ravi"
+      ],
+      "answer": "C) Sutlej",
+      "concepts": [
+        "Bhakra Nangal",
+        "multipurpose projects"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "SS_CH22_Q002",
+      "chapter": 22,
+      "chapter_name": "India – Water Resources",
+      "subject": "Geography",
+      "source": "LBA_QuestionBank_2025",
+      "marks": 2,
+      "type": "short_answer",
+      "difficulty": "medium",
+      "question": "What are the objectives of multipurpose river valley projects?",
+      "answer": "Objectives: Irrigation — providing water for agriculture. Hydroelectric power generation. Flood control — regulate river flow. Navigation — inland waterways. Drinking water supply to cities. Development of fisheries. Recreation and tourism. Watershed development. Soil conservation. Integration of regional development. These projects are called 'temples of modern India' by Nehru.",
+      "concepts": [
+        "multipurpose river projects",
+        "objectives"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SS_CH23_Q001",
+      "chapter": 23,
+      "chapter_name": "India – Land Use and Agriculture",
+      "subject": "Geography",
+      "source": "LBA_QuestionBank_2025",
+      "marks": 1,
+      "type": "mcq",
+      "difficulty": "medium",
+      "question": "The type of farming in which the farmer grows crops mainly for self-consumption is called",
+      "options": [
+        "A) Commercial farming",
+        "B) Subsistence farming",
+        "C) Intensive farming",
+        "D) Extensive farming"
+      ],
+      "answer": "B) Subsistence farming",
+      "concepts": [
+        "types of farming",
+        "subsistence"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "SS_CH23_Q002",
+      "chapter": 23,
+      "chapter_name": "India – Land Use and Agriculture",
+      "subject": "Geography",
+      "source": "LBA_QuestionBank_2025",
+      "marks": 2,
+      "type": "short_answer",
+      "difficulty": "medium",
+      "question": "What are the factors that influence land use in India?",
+      "answer": "Factors influencing land use: Physical factors — relief, climate, soil type, rainfall. Human factors — population density, land ownership patterns, agricultural technology, irrigation facilities. Economic factors — market demand, transportation availability, cost of production. Government policies — land reforms, crop insurance, MSP. Historical factors — traditional practices. Industrial development affecting urban land use.",
+      "concepts": [
+        "land use",
+        "influencing factors"
+      ],
+      "board_frequency": "medium"
+    },
+    {
+      "id": "SS_CH24_Q001",
+      "chapter": 24,
+      "chapter_name": "India – Mineral and Power Resources",
+      "subject": "Geography",
+      "source": "LBA_QuestionBank_2025",
+      "marks": 1,
+      "type": "mcq",
+      "difficulty": "medium",
+      "question": "India's regional and independent GPS system is called",
+      "options": [
+        "A) INSAT",
+        "B) NavIC",
+        "C) GPS",
+        "D) GSAT"
+      ],
+      "answer": "B) NavIC",
+      "concepts": [
+        "NavIC",
+        "GPS",
+        "India satellite"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SS_CH25_Q001",
+      "chapter": 25,
+      "chapter_name": "India – Transport and Communication",
+      "subject": "Geography",
+      "source": "LBA_QuestionBank_2025",
+      "marks": 1,
+      "type": "mcq",
+      "difficulty": "easy",
+      "question": "The longest national highway in India is",
+      "options": [
+        "A) NH 44",
+        "B) NH 27",
+        "C) NH 48",
+        "D) NH 30"
+      ],
+      "answer": "A) NH 44",
+      "concepts": [
+        "national highways",
+        "transport"
+      ],
+      "board_frequency": "medium"
+    },
+    {
+      "id": "SS_CH25_Q002",
+      "chapter": 25,
+      "chapter_name": "India – Transport and Communication",
+      "subject": "Geography",
+      "source": "LBA_QuestionBank_2025",
+      "marks": 2,
+      "type": "short_answer",
+      "difficulty": "medium",
+      "question": "What is the importance of transport in India?",
+      "answer": "Importance of transport: Connects different parts of the country. Helps in movement of goods and people. Promotes trade and commerce. Facilitates agricultural marketing. Helps in industrialization. Helps in national integration. Helps during emergencies and disasters. Provides employment. Contributes to economic development. Promotes tourism. Without transport, no other economic activity is possible — it is the lifeline of the country.",
+      "concepts": [
+        "transport",
+        "importance",
+        "India"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "SS_CH26_Q001",
+      "chapter": 26,
+      "chapter_name": "India – Major Industries",
+      "subject": "Geography",
+      "source": "LBA_QuestionBank_2025",
+      "marks": 1,
+      "type": "mcq",
+      "difficulty": "medium",
+      "question": "The city known as the 'Manchester of India' is",
+      "options": [
+        "A) Mumbai",
+        "B) Ahmedabad",
+        "C) Surat",
+        "D) Coimbatore"
+      ],
+      "answer": "B) Ahmedabad",
+      "concepts": [
+        "textile industry",
+        "Ahmedabad"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "SS_CH26_Q002",
+      "chapter": 26,
+      "chapter_name": "India – Major Industries",
+      "subject": "Geography",
+      "source": "LBA_QuestionBank_2025",
+      "marks": 2,
+      "type": "short_answer",
+      "difficulty": "medium",
+      "question": "What are the factors influencing the location of industries?",
+      "answer": "Factors: Availability of raw materials near industry location. Cheap and abundant labour supply. Good transport — roads, rail, waterways, air. Power supply — electricity, coal, petroleum. Market access — nearness to consumers. Capital availability and banking facilities. Government policies and industrial zones. Water supply for manufacturing. Peaceful and stable environment. Technological infrastructure.",
+      "concepts": [
+        "industrial location",
+        "factors"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "SS_CH27_Q001",
+      "chapter": 27,
+      "chapter_name": "India – Natural Disasters",
+      "subject": "Geography",
+      "source": "LBA_QuestionBank_2025",
+      "marks": 1,
+      "type": "mcq",
+      "difficulty": "easy",
+      "question": "A natural event that causes great loss of life and property and disrupts normal activities is called",
+      "options": [
+        "A) Natural disaster",
+        "B) Climate change",
+        "C) Pollution",
+        "D) Deforestation"
+      ],
+      "answer": "A) Natural disaster",
+      "concepts": [
+        "natural disaster",
+        "definition"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "SS_CH27_Q002",
+      "chapter": 27,
+      "chapter_name": "India – Natural Disasters",
+      "subject": "Geography",
+      "source": "LBA_QuestionBank_2025",
+      "marks": 3,
+      "type": "long_answer",
+      "difficulty": "hard",
+      "question": "What are the causes and effects of floods in India?",
+      "answer": "Causes of floods: Excessive rainfall exceeding river capacity. Deforestation reducing water absorption. Silting of river beds. Melting of glaciers. Cyclones and storms causing heavy rain. Blocking of drainage systems. Effects: Many small rivers are blocked. Traffic movement is disrupted. Beaches and many vegetation types are submerged. Loss of life and property caused. Agricultural crops are destroyed. Spread of waterborne diseases. Displacement of people. Damage to infrastructure. Long-term soil damage.",
+      "concepts": [
+        "floods",
+        "causes",
+        "effects"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SS_CH28_Q001",
+      "chapter": 28,
+      "chapter_name": "Economy and Government",
+      "subject": "Economics",
+      "source": "LBA_QuestionBank_2025",
+      "marks": 1,
+      "type": "direct",
+      "difficulty": "easy",
+      "question": "Who said 'Planning is the mother of all success'?",
+      "answer": "Planning is considered essential in both personal life and national development. India adopted Five Year Plans since 1951 under Nehru's leadership to utilize resources systematically and achieve rapid economic development.",
+      "concepts": [
+        "economic planning",
+        "Five Year Plans",
+        "India"
+      ],
+      "board_frequency": "medium"
+    },
+    {
+      "id": "SS_CH28_Q002",
+      "chapter": 28,
+      "chapter_name": "Economy and Government",
+      "subject": "Economics",
+      "source": "LBA_QuestionBank_2025",
+      "marks": 2,
+      "type": "short_answer",
+      "difficulty": "medium",
+      "question": "What is the importance of economic planning in India?",
+      "answer": "Economic planning is important because: It ensures systematic use of resources. It helps achieve balanced regional development. It sets specific targets for economic growth. It reduces inequality of income and wealth. It provides direction for poverty alleviation. It coordinates different sectors of the economy. India adopted Five Year Plans from 1951. Now India has NITI Aayog replacing Planning Commission to guide economic development.",
+      "concepts": [
+        "economic planning",
+        "Five Year Plans",
+        "importance"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "SS_CH29_Q001",
+      "chapter": 29,
+      "chapter_name": "Rural Development",
+      "subject": "Economics",
+      "source": "LBA_QuestionBank_2025",
+      "marks": 1,
+      "type": "mcq",
+      "difficulty": "medium",
+      "question": "The scheme that provides 100 days of employment guarantee to rural households is",
+      "options": [
+        "A) PMGSY",
+        "B) MGNREGA",
+        "C) PMAY",
+        "D) PMKSY"
+      ],
+      "answer": "B) MGNREGA",
+      "concepts": [
+        "MGNREGA",
+        "rural employment",
+        "100 days"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SS_CH29_Q002",
+      "chapter": 29,
+      "chapter_name": "Rural Development",
+      "subject": "Economics",
+      "source": "LBA_QuestionBank_2025",
+      "marks": 3,
+      "type": "long_answer",
+      "difficulty": "hard",
+      "question": "What are the measures taken for rural development in India?",
+      "answer": "Measures for rural development: Land reforms — abolition of zamindari, land ceiling, cooperative farming. Green Revolution — improved seeds, fertilizers, irrigation. MGNREGA — 100 days employment guarantee. Pradhan Mantri Gram Sadak Yojana — rural road connectivity. Pradhan Mantri Awas Yojana — rural housing. National Rural Livelihood Mission — self-help groups. Pradhan Mantri Kisan Samman Nidhi — direct income support to farmers. Rural electrification — Saubhagya scheme. Digital India for rural connectivity. Swachh Bharat Mission — sanitation in villages.",
+      "concepts": [
+        "rural development",
+        "government schemes",
+        "measures"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SS_CH30_Q001",
+      "chapter": 30,
+      "chapter_name": "Public Finance and Budget",
+      "subject": "Economics",
+      "source": "LBA_QuestionBank_2025",
+      "marks": 1,
+      "type": "direct",
+      "difficulty": "easy",
+      "question": "What is a budget?",
+      "answer": "A budget is a statement of estimated income and expenditure of the government for a financial year. It is presented in Parliament by the Finance Minister every year on February 1st. The Union Budget includes revenue budget and capital budget.",
+      "concepts": [
+        "budget",
+        "government finance"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "SS_CH31_Q001",
+      "chapter": 31,
+      "chapter_name": "Bank Transactions",
+      "subject": "Business Studies",
+      "source": "LBA_QuestionBank_2025",
+      "marks": 1,
+      "type": "mcq",
+      "difficulty": "easy",
+      "question": "The central bank of India is",
+      "options": [
+        "A) State Bank of India",
+        "B) Reserve Bank of India",
+        "C) ICICI Bank",
+        "D) NABARD"
+      ],
+      "answer": "B) Reserve Bank of India",
+      "concepts": [
+        "Reserve Bank of India",
+        "central bank"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SS_CH31_Q002",
+      "chapter": 31,
+      "chapter_name": "Bank Transactions",
+      "subject": "Business Studies",
+      "source": "LBA_QuestionBank_2025",
+      "marks": 1,
+      "type": "mcq",
+      "difficulty": "easy",
+      "question": "The bank account that allows depositing and withdrawing money as many times as necessary in a day is",
+      "options": [
+        "A) Current account",
+        "B) Savings account",
+        "C) Recurring deposit",
+        "D) Fixed deposit"
+      ],
+      "answer": "A) Current account",
+      "concepts": [
+        "current account",
+        "bank accounts"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SS_CH31_Q003",
+      "chapter": 31,
+      "chapter_name": "Bank Transactions",
+      "subject": "Business Studies",
+      "source": "LBA_QuestionBank_2025",
+      "marks": 1,
+      "type": "direct",
+      "difficulty": "easy",
+      "question": "What is meant by ATM?",
+      "answer": "ATM stands for Automated Teller Machine. It is an electronic machine that allows bank customers to perform transactions like withdrawing cash, checking account balance, transferring funds, and depositing cash without visiting a bank branch.",
+      "concepts": [
+        "ATM",
+        "banking",
+        "technology"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "SS_CH31_Q004",
+      "chapter": 31,
+      "chapter_name": "Bank Transactions",
+      "subject": "Business Studies",
+      "source": "LBA_QuestionBank_2025",
+      "marks": 3,
+      "type": "long_answer",
+      "difficulty": "hard",
+      "question": "What are the functions of banks? / What are the services provided by banks?",
+      "answer": "Functions of banks: Accept deposits from public (savings, current, fixed, recurring). Grant loans for personal, business and agricultural needs. Transfer money through NEFT, RTGS, IMPS. Rent out safe deposit lockers for valuables. Issue debit cards and credit cards. Government financial transactions. Issue promissory notes and letters of guarantee. Act as agent for customers. Collect cheques and bills. Issue traveller's cheques. Provide foreign exchange services. Online banking services. Why banks are called RBI: Because all banking transactions in India are controlled by the Reserve Bank of India.",
+      "concepts": [
+        "functions of banks",
+        "banking services"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SS_CH31_Q005",
+      "chapter": 31,
+      "chapter_name": "Bank Transactions",
+      "subject": "Business Studies",
+      "source": "LBA_QuestionBank_2025",
+      "marks": 2,
+      "type": "short_answer",
+      "difficulty": "medium",
+      "question": "What are the steps involved in opening a bank account?",
+      "answer": "Steps to open a bank account: 1. Decide which account to open (savings, current, etc.). 2. Contact a bank officer and collect account opening form. 3. Fill the form with personal details. 4. Submit KYC documents — Aadhaar, PAN card, passport photo. 5. Get the form verified by a known bank customer. 6. Deposit minimum balance. 7. Receive passbook, cheque book and debit card. 8. Register for online/mobile banking if required.",
+      "concepts": [
+        "opening bank account",
+        "KYC",
+        "procedure"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "SS_CH32_Q001",
+      "chapter": 32,
+      "chapter_name": "Entrepreneurship",
+      "subject": "Business Studies",
+      "source": "LBA_QuestionBank_2025",
+      "marks": 1,
+      "type": "mcq",
+      "difficulty": "easy",
+      "question": "The word 'Entrepreneur' is derived from the French word",
+      "options": [
+        "A) Entreprende",
+        "B) Enterprise",
+        "C) Entrepot",
+        "D) Entrepreneur"
+      ],
+      "answer": "A) Entreprende",
+      "concepts": [
+        "entrepreneur",
+        "etymology"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "SS_CH32_Q002",
+      "chapter": 32,
+      "chapter_name": "Entrepreneurship",
+      "subject": "Business Studies",
+      "source": "LBA_QuestionBank_2025",
+      "marks": 1,
+      "type": "direct",
+      "difficulty": "easy",
+      "question": "What is an entrepreneur?",
+      "answer": "An entrepreneur is a person who organizes factors of production (land, labour, capital) and takes risks to start and run a business with the aim of making profit. They are innovators who identify opportunities and create value in the economy.",
+      "concepts": [
+        "entrepreneur",
+        "definition"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "SS_CH33_Q001",
+      "chapter": 33,
+      "chapter_name": "Consumer Education and Protection",
+      "subject": "Business Studies",
+      "source": "LBA_QuestionBank_2025",
+      "marks": 1,
+      "type": "mcq",
+      "difficulty": "medium",
+      "question": "The Consumer Protection Act in India was passed in the year",
+      "options": [
+        "A) 1978",
+        "B) 1986",
+        "C) 1995",
+        "D) 2002"
+      ],
+      "answer": "B) 1986",
+      "concepts": [
+        "Consumer Protection Act",
+        "1986"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SS_CH33_Q002",
+      "chapter": 33,
+      "chapter_name": "Consumer Education and Protection",
+      "subject": "Business Studies",
+      "source": "LBA_QuestionBank_2025",
+      "marks": 2,
+      "type": "short_answer",
+      "difficulty": "medium",
+      "question": "What are the rights of a consumer?",
+      "answer": "Rights of a consumer under Consumer Protection Act: 1. Right to Safety — protection from hazardous goods. 2. Right to Information — know about quality, quantity, price. 3. Right to Choose — freedom to choose from variety. 4. Right to be Heard — grievances to be addressed. 5. Right to Redressal — seek compensation for defective goods. 6. Right to Consumer Education — know rights and responsibilities. These rights are protected by Consumer Courts at district, state and national levels.",
+      "concepts": [
+        "consumer rights",
+        "Consumer Protection Act"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SS_CH7_Q006",
+      "chapter": 7,
+      "chapter_name": "The Freedom Struggle",
+      "subject": "History",
+      "source": "LBA_QuestionBank_2025",
+      "marks": 4,
+      "type": "essay",
+      "difficulty": "hard",
+      "question": "Give an account of the achievements of Subhash Chandra Bose in the independence struggle.",
+      "answer": "Subhash Chandra Bose (Netaji): Born in 1897. Joined INC and became president twice (1938, 1939). Disagreed with Gandhi on violent vs non-violent approach. Escaped from house arrest in 1941. Reached Germany and then Japan. Formed Indian National Army (INA/Azad Hind Fauj) in 1943. Established Azad Hind Government. Led INA troops from Singapore to Manipur (Imphal campaign 1944). INA soldiers fought with slogan 'Jai Hind'. Gave the call 'Give me blood, I will give you freedom.' INA trials after WWII sparked massive nationalist sentiment across India. His activities demonstrated India's determination for freedom internationally.",
+      "concepts": [
+        "Subhash Chandra Bose",
+        "INA",
+        "independence struggle"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SS_CH7_Q007",
+      "chapter": 7,
+      "chapter_name": "The Freedom Struggle",
+      "subject": "History",
+      "source": "LBA_QuestionBank_2025",
+      "marks": 4,
+      "type": "essay",
+      "difficulty": "hard",
+      "question": "Explain the struggle and contributions of Dr. B.R. Ambedkar in India's freedom struggle.",
+      "answer": "Dr. B.R. Ambedkar (1891−1956): Belonged to the Mahar caste, faced severe discrimination. Studied in USA and UK, became a great scholar. Fought against untouchability and caste discrimination. Founded Bahishkrit Hitakarini Sabha (1924) for depressed classes. Led Mahad Tank Satyagraha (1927) for water rights. Led Kalaram Temple entry movement (1930). Participated in all three Round Table Conferences. Demanded separate electorate for depressed classes (Poona Pact 1932 with Gandhi). Founded Independent Labour Party. Converted to Buddhism in 1956. Chief Architect of Indian Constitution as Chairman of Drafting Committee. His contributions are foundational to Indian democracy and social justice.",
+      "concepts": [
+        "Dr. B.R. Ambedkar",
+        "Dalit rights",
+        "Constitution"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SS_CH7_Q008",
+      "chapter": 7,
+      "chapter_name": "The Freedom Struggle",
+      "subject": "History",
+      "source": "LBA_QuestionBank_2025",
+      "marks": 4,
+      "type": "essay",
+      "difficulty": "hard",
+      "question": "What were the achievements of Jawaharlal Nehru?",
+      "answer": "Jawaharlal Nehru (1889−1964): First Prime Minister of India. Studied at Harrow, Cambridge and Inner Temple London. Joined INC under Gandhiji's inspiration. Led Non-Cooperation, Civil Disobedience, and Quit India movements. Imprisoned multiple times. Key role in framing Indian Constitution. As PM: Shaped India's foreign policy (Non-Alignment). Established IITs, IIMs for technological education. Developed nuclear program. Built steel plants, dams — 'temples of modern India'. Established Planning Commission for economic development. Championed secularism and democracy. Founded NAM (1961) with Nasser and Tito. Champion of world peace.",
+      "concepts": [
+        "Jawaharlal Nehru",
+        "first PM",
+        "achievements"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SS_CH20_Q006",
+      "chapter": 20,
+      "chapter_name": "India – Soils",
+      "subject": "Geography",
+      "source": "LBA_QuestionBank_2025",
+      "marks": 4,
+      "type": "essay",
+      "difficulty": "hard",
+      "question": "Which are the major soils found in India? Describe their characteristics.",
+      "answer": "1. Alluvial Soil: Most extensively spread; Ganga-Yamuna plains; fertile; grows wheat, paddy, sugarcane. 2. Black Soil (Regur): Deccan plateau; best for cotton; retains moisture; Maharashtra, Gujarat, MP. 3. Red Soil: Peninsular plateau; ragi, tobacco, oilseeds; Kanyakumari to Jhansi. 4. Laterite Soil: Heavy rainfall areas; Western Ghats; tea, coffee, rubber; iron and aluminium oxides make it red. 5. Desert Soil: Rajasthan and adjoining areas; deep-rooted thorny plants; low organic matter. 6. Mountain Soil: Himalayan slopes; rich in humus; supports diverse vegetation including forests.",
+      "concepts": [
+        "types of soils",
+        "characteristics",
+        "distribution"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SS_CH21_Q004",
+      "chapter": 21,
+      "chapter_name": "India – Forest Resources",
+      "subject": "Geography",
+      "source": "LBA_QuestionBank_2025",
+      "marks": 4,
+      "type": "essay",
+      "difficulty": "hard",
+      "question": "In recent years, forest areas have been decreasing. Why? What are the causes of deforestation?",
+      "answer": "Causes of deforestation in India: Agricultural expansion — forests cleared for cultivation. Dairy farming — overgrazing by livestock. Road and railway construction — forests cleared for infrastructure. Irrigation projects — forests submerged by dams. Forest fires — accidental and deliberate burning. Mining — forest land used for extraction. Urban expansion — cities growing into forest areas. Timber demand — illegal felling. Population pressure — more land needed for housing. Effects: Soil erosion, loss of biodiversity, climate change, reduced rainfall, desertification. Conservation methods: Social forestry, afforestation, national parks, wildlife sanctuaries, biosphere reserves, Joint Forest Management.",
+      "concepts": [
+        "deforestation",
+        "causes",
+        "conservation"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SS_CH27_Q003",
+      "chapter": 27,
+      "chapter_name": "India – Natural Disasters",
+      "subject": "Geography",
+      "source": "LBA_QuestionBank_2025",
+      "marks": 4,
+      "type": "essay",
+      "difficulty": "hard",
+      "question": "Explain the causes, effects and precautionary measures of earthquakes.",
+      "answer": "Causes of earthquakes: Movement of tectonic plates in the interior of the earth. Moving magma from one side to another. Urbanization causing vibrations. Deforestation. Construction of dams on fault lines. Effects: Large amount of land mass submerges. Houses, roads will be submerged and damaged. Loss of life and property. Fires, tsunamis triggered. Infrastructure destroyed. Precautionary measures: Earthquake-resistant building construction. Early warning systems. Disaster preparedness training. Avoiding construction in high-risk zones. Quick rescue operations. Post-disaster relief. NDMA (National Disaster Management Authority) coordinates responses in India.",
+      "concepts": [
+        "earthquake",
+        "causes",
+        "effects",
+        "precautions"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SS_CH11_Q004",
+      "chapter": 11,
+      "chapter_name": "Challenges of India and Their Remedies",
+      "subject": "Political Science",
+      "source": "LBA_QuestionBank_2025",
+      "marks": 4,
+      "type": "essay",
+      "difficulty": "hard",
+      "question": "Explain the major challenges faced by India and suggest remedies.",
+      "answer": "1. Communalism: Religious divisions; remedy: education, strict laws, promotion of harmony. 2. Regionalism: Demand for separate states; remedy: equal development of all regions, linguistic rights. 3. Illiteracy: Large uneducated population; remedy: RTE Act, Sarva Shiksha Abhiyan, skill development. 4. Gender Discrimination: Women face inequality; remedy: education, laws against dowry/child marriage, political representation. 5. Corruption: Misuse of public office; remedy: Lokpal, RTI, e-governance, strong penalties. 6. Poverty: Large population below poverty line; remedy: MGNREGA, food security, housing schemes. 7. Terrorism: Internal security threats; remedy: strong intelligence, international cooperation, addressing root causes.",
+      "concepts": [
+        "challenges of India",
+        "remedies",
+        "communalism",
+        "corruption"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SS_CH29_Q003",
+      "chapter": 29,
+      "chapter_name": "Rural Development",
+      "subject": "Economics",
+      "source": "LBA_QuestionBank_2025",
+      "marks": 4,
+      "type": "essay",
+      "difficulty": "hard",
+      "question": "Explain the impact of Green Revolution on Indian agriculture.",
+      "answer": "Green Revolution (1960s−70s): Introduction of High Yielding Variety (HYV) seeds for wheat and rice. Use of chemical fertilizers. Expansion of irrigation. Use of pesticides and modern machinery. Impact: India achieved self-sufficiency in food grains. Wheat production tripled. Reduced dependence on food imports. Punjab, Haryana, western UP became granaries. Per capita food availability increased. India could export food grains. Negative effects: Environmental pollution from chemicals. Decline of traditional varieties. Increased water depletion. Benefits limited to certain regions (Punjab-Green Revolution, not widespread). Created income inequality between regions. Soil degradation in long run.",
+      "concepts": [
+        "Green Revolution",
+        "impact on agriculture",
+        "HYV seeds"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SS_CH31_Q006",
+      "chapter": 31,
+      "chapter_name": "Bank Transactions",
+      "subject": "Business Studies",
+      "source": "LBA_QuestionBank_2025",
+      "marks": 4,
+      "type": "essay",
+      "difficulty": "hard",
+      "question": "What are the types of bank accounts? Explain each type with its features.",
+      "answer": "1. Savings Account: For individuals to save money. Earns interest. Limited withdrawals. Students and employees open this. 2. Current Account: For businesses requiring frequent transactions. No limit on deposits/withdrawals. No interest paid. Banks charge service fee. 3. Fixed Deposit Account: Money deposited for fixed period. Higher interest rate. Cannot withdraw before maturity without penalty. Good for long-term savings. 4. Recurring Deposit Account: Fixed amount deposited every month for specific period. Good for disciplined savings. Gets interest at maturity. Senior citizens and pensioners prefer this. Each serves different financial needs of customers.",
+      "concepts": [
+        "types of bank accounts",
+        "savings",
+        "current",
+        "fixed deposit",
+        "recurring"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SS_CH15_Q003",
+      "chapter": 15,
+      "chapter_name": "Work and Economic Life",
+      "subject": "Sociology",
+      "source": "LBA_QuestionBank_2025",
+      "marks": 3,
+      "type": "long_answer",
+      "difficulty": "hard",
+      "question": "What are the challenges faced by unorganized sector workers in India?",
+      "answer": "Unorganized sector workers (70%+ of Indian workforce) face: No job security — can be dismissed anytime. No fixed wages — irregular income. No social security — no PF, ESI, pension. No unions to bargain for rights. Seasonal employment — no income in off-season. Poor working conditions — unsafe, unhealthy. No legal protection effectively. Long working hours. Child labour in unorganized sector. No maternity benefits. Examples: domestic workers, street vendors, agricultural laborers, construction workers. Government schemes like Unorganized Workers Social Security Act 2008 aim to protect them.",
+      "concepts": [
+        "unorganized sector",
+        "challenges",
+        "workers rights"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "SS_CH17_Q003",
+      "chapter": 17,
+      "chapter_name": "Social Challenges",
+      "subject": "Sociology",
+      "source": "LBA_QuestionBank_2025",
+      "marks": 3,
+      "type": "long_answer",
+      "difficulty": "hard",
+      "question": "What are the causes and effects of child marriage? What are the measures to control it?",
+      "answer": "Causes: Poverty — early marriage reduces family burden. Social customs and traditions. Low status of women. Illiteracy. Fear of dowry increasing with age. Insecurity for girl child safety. Effects: Health risks for young girls (maternal mortality). Dropout from school. Perpetuation of poverty cycle. Low status of women continues. Effects mental development. Child becomes parent before maturity. Measures: Prohibition of Child Marriage Act 2006 (18 for girls, 21 for boys). Education of girls. Economic support to poor families. Awareness campaigns. Beti Bachao Beti Padhao scheme. Strict enforcement of law.",
+      "concepts": [
+        "child marriage",
+        "causes",
+        "effects",
+        "laws"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SS_CH22_Q003",
+      "chapter": 22,
+      "chapter_name": "India – Water Resources",
+      "subject": "Geography",
+      "source": "LBA_QuestionBank_2025",
+      "marks": 3,
+      "type": "long_answer",
+      "difficulty": "hard",
+      "question": "What is rainwater harvesting? Explain its importance.",
+      "answer": "Rainwater harvesting is the collection and storage of rainwater for later use. Methods: Rooftop collection into tanks. Check dams to collect runoff. Ponds and lakes. Percolation pits to recharge groundwater. Farm ponds. Importance: Reduces dependency on groundwater. Provides water during dry season. Recharges groundwater table. Reduces flooding in cities. Conserves water resources. Provides clean water for drinking and irrigation. Cost-effective method. Reduces water bills. Helps in areas with irregular rainfall. Many states have made it mandatory for new buildings.",
+      "concepts": [
+        "rainwater harvesting",
+        "importance",
+        "methods"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SS_CH26_Q003",
+      "chapter": 26,
+      "chapter_name": "India – Major Industries",
+      "subject": "Geography",
+      "source": "LBA_QuestionBank_2025",
+      "marks": 3,
+      "type": "long_answer",
+      "difficulty": "hard",
+      "question": "Explain the importance of the textile industry in India.",
+      "answer": "Textile industry importance in India: Second largest employer after agriculture — 35+ million people. Largest foreign exchange earner — 15% of export earnings. India's oldest industry. India is world's second largest producer of textiles. Cotton textile centers: Mumbai, Ahmedabad (Manchester of India), Coimbatore. Silk industry: Karnataka (Mysore silk world famous), Varanasi. Jute industry: West Bengal (Kolkata), world's largest producer. Synthetic fibers — Surat. Contributes 2% to GDP. Handloom sector preserves traditional crafts. Powerlooms provide employment in rural areas.",
+      "concepts": [
+        "textile industry",
+        "importance",
+        "employment",
+        "export"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "SS_CH7_Q009",
+      "chapter": 7,
+      "chapter_name": "The Freedom Struggle",
+      "subject": "History",
+      "source": "LBA_QuestionBank_2025",
+      "marks": 1,
+      "type": "mcq",
+      "difficulty": "medium",
+      "question": "Who was the founder of Anusheelan Samithi and Abhinava Bharata (revolutionary organizations)?",
+      "options": [
+        "A) Bhagat Singh",
+        "B) V.D. Savarkar and Aurobindo Ghosh",
+        "C) Chandrashekar Azad",
+        "D) Bal Gangadhar Tilak"
+      ],
+      "answer": "B) V.D. Savarkar and Aurobindo Ghosh",
+      "concepts": [
+        "revolutionary organizations",
+        "freedom struggle"
+      ],
+      "board_frequency": "medium"
+    },
+    {
+      "id": "SS_CH11_Q005",
+      "chapter": 11,
+      "chapter_name": "Challenges of India and Their Remedies",
+      "subject": "Political Science",
+      "source": "LBA_QuestionBank_2025",
+      "marks": 1,
+      "type": "mcq",
+      "difficulty": "easy",
+      "question": "The Right to Information Act (RTI) was enacted in the year",
+      "options": [
+        "A) 1988",
+        "B) 2000",
+        "C) 2005",
+        "D) 2010"
+      ],
+      "answer": "C) 2005",
+      "concepts": [
+        "RTI",
+        "Right to Information",
+        "2005"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SS_CH29_Q004",
+      "chapter": 29,
+      "chapter_name": "Rural Development",
+      "subject": "Economics",
+      "source": "LBA_QuestionBank_2025",
+      "marks": 1,
+      "type": "mcq",
+      "difficulty": "easy",
+      "question": "The scheme that provides housing to rural poor in India is",
+      "options": [
+        "A) MGNREGA",
+        "B) PMAY-G",
+        "C) PMGSY",
+        "D) PMKSY"
+      ],
+      "answer": "B) PMAY-G",
+      "concepts": [
+        "Pradhan Mantri Awas Yojana",
+        "rural housing"
+      ],
+      "board_frequency": "medium"
+    },
+    {
+      "id": "SS_CH21_Q005",
+      "chapter": 21,
+      "chapter_name": "India – Forest Resources",
+      "subject": "Geography",
+      "source": "LBA_QuestionBank_2025",
+      "marks": 1,
+      "type": "mcq",
+      "difficulty": "easy",
+      "question": "The state which has the highest forest area in India is",
+      "options": [
+        "A) Haryana",
+        "B) Karnataka",
+        "C) Maharashtra",
+        "D) Madhya Pradesh"
+      ],
+      "answer": "D) Madhya Pradesh",
+      "concepts": [
+        "forest area",
+        "states",
+        "Madhya Pradesh"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SS_CH19_Q003",
+      "chapter": 19,
+      "chapter_name": "India – Seasons",
+      "subject": "Geography",
+      "source": "LBA_QuestionBank_2025",
+      "marks": 1,
+      "type": "mcq",
+      "difficulty": "medium",
+      "question": "The pre-monsoon rainfall in Karnataka is called",
+      "options": [
+        "A) Andhis",
+        "B) Kala Baisakhi",
+        "C) Coffee Blossoms",
+        "D) Mango Showers"
+      ],
+      "answer": "C) Coffee Blossoms",
+      "concepts": [
+        "pre-monsoon rainfall",
+        "Karnataka",
+        "Coffee Blossoms"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SS_CH6_Q005",
+      "chapter": 6,
+      "chapter_name": "The First War of Indian Independence (1857)",
+      "subject": "History",
+      "source": "LBA_QuestionBank_2025",
+      "marks": 1,
+      "type": "direct",
+      "difficulty": "easy",
+      "question": "The declaration passed by the British Queen in 1858 is called",
+      "answer": "India's 'Magna Carta'",
+      "concepts": [
+        "Queen's Proclamation 1858",
+        "Magna Carta of India"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "SS_CH5_Q004",
+      "chapter": 5,
+      "chapter_name": "Social and Religious Reform Movements",
+      "subject": "History",
+      "source": "LBA_QuestionBank_2025",
+      "marks": 2,
+      "type": "short_answer",
+      "difficulty": "medium",
+      "question": "What were the teachings and objectives of the Ramakrishna Mission?",
+      "answer": "Ramakrishna Mission founded by Swami Vivekananda in 1897. Teachings: All religions lead to the same God. Service to man is service to God ('Shiva Jnane Jeeva Seva'). Harmony among all religions. Practical Vedanta. Objectives: Social service — education, hospitals, disaster relief. Spreading Vedanta philosophy. Women's education. Fighting superstition. Establishing schools and colleges. It combined spiritual and social reform.",
+      "concepts": [
+        "Ramakrishna Mission",
+        "Vivekananda",
+        "objectives"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "SS_CH9_Q003",
+      "chapter": 9,
+      "chapter_name": "World Wars and India's Role",
+      "subject": "History",
+      "source": "LBA_QuestionBank_2025",
+      "marks": 2,
+      "type": "short_answer",
+      "difficulty": "medium",
+      "question": "What was the role of India in the Second World War?",
+      "answer": "India's role in World War II: British India was declared at war in 1939 without consulting Indian leaders. Over 2.5 million Indians served in British forces. INC resigned from ministries in protest. Subhash Chandra Bose formed INA to fight British with Japanese support. Quit India Movement (1942) launched demanding independence. India was a major supply base for Allied forces. The war exposed British weakness and accelerated Indian independence movement, leading to independence in 1947.",
+      "concepts": [
+        "World War II",
+        "India's role",
+        "INA"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "SS_CH12_Q003",
+      "chapter": 12,
+      "chapter_name": "India's Foreign Policy and Global Challenges",
+      "subject": "Political Science",
+      "source": "LBA_QuestionBank_2025",
+      "marks": 2,
+      "type": "short_answer",
+      "difficulty": "medium",
+      "question": "What are the consequences of terrorism? How can it be controlled?",
+      "answer": "Consequences: Loss of innocent lives. Economic damage — disrupts tourism, investment. Political instability. Fear and social unrest. Strained international relations. Human rights violations. Displacement of populations. Control measures: Strong intelligence network. International cooperation (UN resolutions). Cutting financing of terrorist groups. Addressing root causes — poverty, inequality. Education to prevent radicalization. Strict anti-terrorism laws. India's POTA, UAPA for counter-terrorism. Regional cooperation through SAARC.",
+      "concepts": [
+        "terrorism",
+        "consequences",
+        "control"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "SS_CH23_Q003",
+      "chapter": 23,
+      "chapter_name": "India – Land Use and Agriculture",
+      "subject": "Geography",
+      "source": "LBA_QuestionBank_2025",
+      "marks": 2,
+      "type": "short_answer",
+      "difficulty": "medium",
+      "question": "What is the importance of agriculture in India?",
+      "answer": "Importance of agriculture: Livelihood for 58% of population. Contributes 18% to GDP. Raw materials for industries — cotton for textiles, sugarcane for sugar, etc. Food security for 1.4 billion people. Export earnings from agricultural products. Employment generation, especially in rural areas. Foundation of rural economy. Basis for allied industries — food processing. Cultural importance — farming is traditional livelihood.",
+      "concepts": [
+        "importance of agriculture",
+        "Indian economy"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "SS_CH30_Q002",
+      "chapter": 30,
+      "chapter_name": "Public Finance and Budget",
+      "subject": "Economics",
+      "source": "LBA_QuestionBank_2025",
+      "marks": 2,
+      "type": "short_answer",
+      "difficulty": "medium",
+      "question": "What is the difference between revenue budget and capital budget?",
+      "answer": "Revenue Budget: Deals with day-to-day income and expenditure of government. Revenue income includes taxes, fees, dividends. Revenue expenditure includes salaries, subsidies, interest payments. No asset creation. Capital Budget: Deals with long-term financial transactions. Capital receipts include loans, sale of assets. Capital expenditure includes investment in infrastructure, loans given to states. Creates assets. Together they form the Union Budget presented in Parliament on February 1st.",
+      "concepts": [
+        "budget",
+        "revenue",
+        "capital",
+        "difference"
+      ],
+      "board_frequency": "medium"
+    },
+    {
+      "id": "SS_CH33_Q003",
+      "chapter": 33,
+      "chapter_name": "Consumer Education and Protection",
+      "subject": "Business Studies",
+      "source": "LBA_QuestionBank_2025",
+      "marks": 2,
+      "type": "short_answer",
+      "difficulty": "medium",
+      "question": "What is the three-tier consumer dispute redressal system in India?",
+      "answer": "Under Consumer Protection Act, India has three-tier system: 1. District Consumer Disputes Redressal Forum: At district level. Handles claims up to ₹1 crore. 2. State Consumer Disputes Redressal Commission: At state level. Handles claims between ₹1 crore to ₹10 crore. Appeals from district forum. 3. National Consumer Disputes Redressal Commission: At national level (New Delhi). Handles claims above ₹10 crore. Highest appellate authority. This system is fast, inexpensive and accessible to all consumers.",
+      "concepts": [
+        "consumer courts",
+        "three-tier",
+        "redressal"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SS_CH4_Q006",
+      "chapter": 4,
+      "chapter_name": "Opposition to British Rule in Karnataka",
+      "subject": "History",
+      "source": "LBA_2025",
+      "marks": 1,
+      "type": "mcq",
+      "difficulty": "easy",
+      "question": "Rani Chennamma was imprisoned in",
+      "options": [
+        "A) Kittur fort",
+        "B) Bellary jail",
+        "C) Bailhongal fort",
+        "D) Srirangapatna"
+      ],
+      "answer": "C) Bailhongal fort",
+      "concepts": [
+        "Rani Chennamma"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "SS_CH8_Q003",
+      "chapter": 8,
+      "chapter_name": "India After Independence",
+      "subject": "History",
+      "source": "LBA_2025",
+      "marks": 1,
+      "type": "mcq",
+      "difficulty": "easy",
+      "question": "Who was called the 'Iron Man of India'?",
+      "options": [
+        "A) Nehru",
+        "B) Sardar Vallabhbhai Patel",
+        "C) Ambedkar",
+        "D) Lal Bahadur Shastri"
+      ],
+      "answer": "B) Sardar Vallabhbhai Patel",
+      "concepts": [
+        "Sardar Patel"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SS_CH9_Q004",
+      "chapter": 9,
+      "chapter_name": "World Wars and India's Role",
+      "subject": "History",
+      "source": "LBA_2025",
+      "marks": 1,
+      "type": "mcq",
+      "difficulty": "medium",
+      "question": "The First World War started in the year",
+      "options": [
+        "A) 1905",
+        "B) 1914",
+        "C) 1918",
+        "D) 1939"
+      ],
+      "answer": "B) 1914",
+      "concepts": [
+        "World War I"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SS_CH10_Q003",
+      "chapter": 10,
+      "chapter_name": "Public Administration",
+      "subject": "Political Science",
+      "source": "LBA_2025",
+      "marks": 1,
+      "type": "direct",
+      "difficulty": "easy",
+      "question": "What is the full form of UPSC?",
+      "answer": "Union Public Service Commission — the central body that conducts examinations for recruitment to central government services.",
+      "concepts": [
+        "UPSC",
+        "civil services"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "SS_CH12_Q004",
+      "chapter": 12,
+      "chapter_name": "India's Foreign Policy",
+      "subject": "Political Science",
+      "source": "LBA_2025",
+      "marks": 1,
+      "type": "mcq",
+      "difficulty": "medium",
+      "question": "The Panchsheel agreement was signed between India and",
+      "options": [
+        "A) Pakistan",
+        "B) China",
+        "C) USA",
+        "D) USSR"
+      ],
+      "answer": "B) China",
+      "concepts": [
+        "Panchsheel",
+        "India-China"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SS_CH13_Q003",
+      "chapter": 13,
+      "chapter_name": "World Organisations",
+      "subject": "Political Science",
+      "source": "LBA_2025",
+      "marks": 1,
+      "type": "mcq",
+      "difficulty": "easy",
+      "question": "The United Nations was established in the year",
+      "options": [
+        "A) 1919",
+        "B) 1939",
+        "C) 1945",
+        "D) 1947"
+      ],
+      "answer": "C) 1945",
+      "concepts": [
+        "United Nations"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SS_CH15_Q004",
+      "chapter": 15,
+      "chapter_name": "Work and Economic Life",
+      "subject": "Sociology",
+      "source": "LBA_2025",
+      "marks": 1,
+      "type": "mcq",
+      "difficulty": "easy",
+      "question": "Which of the following is an example of organized sector work?",
+      "options": [
+        "A) Street vendor",
+        "B) Domestic servant",
+        "C) Bank employee",
+        "D) Construction labourer"
+      ],
+      "answer": "C) Bank employee",
+      "concepts": [
+        "organized sector"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "SS_CH20_Q007",
+      "chapter": 20,
+      "chapter_name": "India - Soils",
+      "subject": "Geography",
+      "source": "LBA_2025",
+      "marks": 1,
+      "type": "mcq",
+      "difficulty": "easy",
+      "question": "Which soil is also called 'Black Cotton Soil'?",
+      "options": [
+        "A) Alluvial soil",
+        "B) Red soil",
+        "C) Black soil",
+        "D) Laterite soil"
+      ],
+      "answer": "C) Black soil",
+      "concepts": [
+        "black soil",
+        "cotton"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SS_CH21_Q006",
+      "chapter": 21,
+      "chapter_name": "India – Forest Resources",
+      "subject": "Geography",
+      "source": "LBA_2025",
+      "marks": 1,
+      "type": "mcq",
+      "difficulty": "easy",
+      "question": "India's first biosphere reserve is",
+      "options": [
+        "A) Sundarbans",
+        "B) Manas",
+        "C) Nilgiri",
+        "D) Nanda Devi"
+      ],
+      "answer": "C) Nilgiri",
+      "concepts": [
+        "biosphere reserve"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SS_CH27_Q004",
+      "chapter": 27,
+      "chapter_name": "India – Natural Disasters",
+      "subject": "Geography",
+      "source": "LBA_2025",
+      "marks": 1,
+      "type": "mcq",
+      "difficulty": "medium",
+      "question": "The movement of tectonic plates causes",
+      "options": [
+        "A) Flood",
+        "B) Cyclone",
+        "C) Earthquake",
+        "D) Drought"
+      ],
+      "answer": "C) Earthquake",
+      "concepts": [
+        "earthquake",
+        "tectonic plates"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "SS_CH31_Q007",
+      "chapter": 31,
+      "chapter_name": "Bank Transactions",
+      "subject": "Business Studies",
+      "source": "LBA_2025",
+      "marks": 1,
+      "type": "mcq",
+      "difficulty": "easy",
+      "question": "Which type of account gives the highest interest rate?",
+      "options": [
+        "A) Savings",
+        "B) Current",
+        "C) Fixed deposit",
+        "D) Recurring deposit"
+      ],
+      "answer": "C) Fixed deposit",
+      "concepts": [
+        "interest rate",
+        "bank accounts"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "SS_CH7_Q010",
+      "chapter": 7,
+      "chapter_name": "The Freedom Struggle",
+      "subject": "History",
+      "source": "LBA_2025",
+      "marks": 1,
+      "type": "direct",
+      "difficulty": "easy",
+      "question": "What was Gandhiji's famous slogan during the Quit India Movement?",
+      "answer": "'Do or Die' (Karo ya Maro) — Gandhiji gave this call on August 8, 1942.",
+      "concepts": [
+        "Quit India Movement",
+        "Do or Die"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SS_CH5_Q005",
+      "chapter": 5,
+      "chapter_name": "Social and Religious Reform Movements",
+      "subject": "History",
+      "source": "LBA_2025",
+      "marks": 1,
+      "type": "direct",
+      "difficulty": "easy",
+      "question": "Who founded the Arya Samaj?",
+      "answer": "Dayananda Saraswathi founded the Arya Samaj in 1875. It promoted Vedic principles and opposed idol worship and caste discrimination.",
+      "concepts": [
+        "Arya Samaj",
+        "Dayananda Saraswathi"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SS_CH3_Q005",
+      "chapter": 3,
+      "chapter_name": "The Impact of the British Rule",
+      "subject": "History",
+      "source": "LBA_2025",
+      "marks": 1,
+      "type": "mcq",
+      "difficulty": "medium",
+      "question": "The Ryotwari system was implemented in",
+      "options": [
+        "A) Bengal and Bihar",
+        "B) Madras and Mysore provinces",
+        "C) Punjab and Haryana",
+        "D) Gujarat and Maharashtra"
+      ],
+      "answer": "B) Madras and Mysore provinces",
+      "concepts": [
+        "Ryotwari system"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "SS_CH1_Q012",
+      "chapter": 1,
+      "chapter_name": "The Advent of Europeans to India",
+      "subject": "History",
+      "source": "LBA_2025",
+      "marks": 2,
+      "type": "short_answer",
+      "difficulty": "medium",
+      "question": "What were the consequences of the Second Carnatic War?",
+      "answer": "Ended with Treaty of Pondicherry. The French recalled Dupleix back to France. It gave the French a political setback. British gained political prestige. British emerged stronger after the Second Carnatic War.",
+      "concepts": [
+        "Second Carnatic War",
+        "Dupleix"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SS_CH2_Q006",
+      "chapter": 2,
+      "chapter_name": "The Extension of the British Rule",
+      "subject": "History",
+      "source": "LBA_2025",
+      "marks": 2,
+      "type": "short_answer",
+      "difficulty": "medium",
+      "question": "Which states came under the Doctrine of Lapse policy?",
+      "answer": "States absorbed: Satara (1848), Jaipur, Sambalpur (1849), Udaipur (1852), Jhansi (1853), Nagpur (1854). Adopted children were denied succession rights.",
+      "concepts": [
+        "Doctrine of Lapse",
+        "states annexed"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SS_CH7_Q011",
+      "chapter": 7,
+      "chapter_name": "The Freedom Struggle",
+      "subject": "History",
+      "source": "LBA_2025",
+      "marks": 2,
+      "type": "short_answer",
+      "difficulty": "medium",
+      "question": "What were the methods used by Moderates in the Indian National Congress?",
+      "answer": "Moderates used petitions and prayers to government. Led by Dadabai Naoroji, Gokhale. Believed in British justice. Provided political education. Demanded reduced military expenditure. Studied poverty. Demanded relief programs. Believed British would grant rights peacefully.",
+      "concepts": [
+        "Moderates",
+        "INC methods"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SS_CH10_Q004",
+      "chapter": 10,
+      "chapter_name": "Public Administration",
+      "subject": "Political Science",
+      "source": "LBA_2025",
+      "marks": 2,
+      "type": "short_answer",
+      "difficulty": "medium",
+      "question": "What is the difference between direct recruitment and promotion in public administration?",
+      "answer": "Direct recruitment: Selected through competitive examinations or interviews (UPSC, KPSC). No prior government service required. Promotion/Indirect recruitment: Government employees promoted from lower posts based on seniority and merit. Experience in government service required.",
+      "concepts": [
+        "recruitment",
+        "direct",
+        "promotion"
+      ],
+      "board_frequency": "medium"
+    },
+    {
+      "id": "SS_CH11_Q006",
+      "chapter": 11,
+      "chapter_name": "Challenges of India",
+      "subject": "Political Science",
+      "source": "LBA_2025",
+      "marks": 2,
+      "type": "short_answer",
+      "difficulty": "medium",
+      "question": "What is regionalism? How does it affect national unity?",
+      "answer": "Regionalism: Excessive love for one's own region over the nation, leading to demands for separate states. Effects: Creates divisions. Conflicts between states over resources, water, borders. Hinders national integration. Promotes sub-national loyalties.",
+      "concepts": [
+        "regionalism",
+        "national unity"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "SS_CH13_Q004",
+      "chapter": 13,
+      "chapter_name": "World Organisations",
+      "subject": "Political Science",
+      "source": "LBA_2025",
+      "marks": 2,
+      "type": "short_answer",
+      "difficulty": "medium",
+      "question": "What are the powers of the UN Security Council?",
+      "answer": "Maintain international peace. Investigate disputes. Recommend measures. Call for sanctions. Authorize military force. 5 permanent members have veto power. Can declare ceasefire. Admits new UN members.",
+      "concepts": [
+        "Security Council",
+        "powers",
+        "veto"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SS_CH22_Q004",
+      "chapter": 22,
+      "chapter_name": "India – Water Resources",
+      "subject": "Geography",
+      "source": "LBA_2025",
+      "marks": 2,
+      "type": "short_answer",
+      "difficulty": "medium",
+      "question": "What are the different types of irrigation in India?",
+      "answer": "1. Well irrigation — groundwater; hard rock areas. 2. Canal irrigation — from rivers; Indo-Gangetic plains. 3. Tank irrigation — rainwater collection; peninsular India. 4. Drip irrigation — water to roots; saves water. 5. Sprinkler irrigation — water sprayed; uneven terrain.",
+      "concepts": [
+        "types of irrigation",
+        "canal",
+        "well",
+        "tank"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "SS_CH28_Q003",
+      "chapter": 28,
+      "chapter_name": "Economy and Government",
+      "subject": "Economics",
+      "source": "LBA_2025",
+      "marks": 2,
+      "type": "short_answer",
+      "difficulty": "medium",
+      "question": "What is NITI Aayog? How does it differ from the Planning Commission?",
+      "answer": "NITI Aayog (2015) replaced Planning Commission. Differences: Planning Commission made centrally planned Five Year Plans; NITI Aayog is a think tank. Planning Commission allocated resources; NITI Aayog is advisory. NITI Aayog promotes cooperative federalism and private sector participation.",
+      "concepts": [
+        "NITI Aayog",
+        "Planning Commission"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "SS_CH32_Q003",
+      "chapter": 32,
+      "chapter_name": "Entrepreneurship",
+      "subject": "Business Studies",
+      "source": "LBA_2025",
+      "marks": 2,
+      "type": "short_answer",
+      "difficulty": "medium",
+      "question": "What are the objectives of establishing the District Industrial Centre (DIC)?",
+      "answer": "DIC objectives: Promote small and cottage industries. Provide information and guidance to entrepreneurs. Help obtain licenses, raw materials, finance and market access. Train local entrepreneurs. Create employment. Support women entrepreneurs and weaker sections. One-stop industrial service.",
+      "concepts": [
+        "District Industrial Centre",
+        "DIC",
+        "objectives"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SS_CH1_Q013",
+      "chapter": 1,
+      "chapter_name": "The Advent of Europeans to India",
+      "subject": "History",
+      "source": "LBA_2025",
+      "marks": 3,
+      "type": "long_answer",
+      "difficulty": "hard",
+      "question": "How did Marthanda Varma control the Dutch in Travancore?",
+      "answer": "Marthanda Varma ruled Travancore (1729-1758). Dutch tried to monopolize pepper trade in Kerala. Dutch allied with Kayamkulam, Kochi, Purakkad and Vadakunkur attacked Travancore. Marthanda Varma strongly repelled the attack (Battle of Colachel 1741). Dutch suffered huge losses. He captured trading centers. Strengthened army and administration. Shifted capital to Thiruvananthapuram. Made Travancore a great kingdom resisting Dutch interference. His victory was one of the first defeats of Europeans in India.",
+      "concepts": [
+        "Marthanda Varma",
+        "Dutch",
+        "Battle of Colachel"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SS_CH9_Q005",
+      "chapter": 9,
+      "chapter_name": "World Wars and India's Role",
+      "subject": "History",
+      "source": "LBA_2025",
+      "marks": 3,
+      "type": "long_answer",
+      "difficulty": "hard",
+      "question": "Explain Hitler's Nazism and its impact.",
+      "answer": "Hitler was dictator of Germany (1933-1945). Nazism features: Extreme nationalism. Racial superiority — Aryans master race; persecuted Jews (Holocaust — 6 million killed). Anti-communism. Totalitarian state. Militarism. Anti-democracy. Propaganda. Impact: Holocaust. Triggered WW2 with invasion of Poland (1939). Occupied most of Europe. Led to UN formation (1945). War crimes trials at Nuremberg. End of European colonial empires. Shaped modern international law.",
+      "concepts": [
+        "Hitler",
+        "Nazism",
+        "Holocaust"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "SS_CH11_Q007",
+      "chapter": 11,
+      "chapter_name": "Challenges of India",
+      "subject": "Political Science",
+      "source": "LBA_2025",
+      "marks": 3,
+      "type": "long_answer",
+      "difficulty": "hard",
+      "question": "What are the causes and effects of illiteracy in India? What government measures have been taken to eliminate it?",
+      "answer": "Causes: Poverty (children need to work). Lack of schools in rural areas. Social customs (girls not educated). Child labour. Physical barriers. Effects: Exploitation. Low productivity. Political manipulation. Poor health. Hindrance to development. Government measures: Right to Education Act 2009 (6-14 years). Sarva Shiksha Abhiyan. Mid-day meal scheme. Rashtriya Madhyamik Shiksha Abhiyan. National Literacy Mission. Digital literacy programs.",
+      "concepts": [
+        "illiteracy",
+        "causes",
+        "effects",
+        "RTE Act"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SS_CH19_Q004",
+      "chapter": 19,
+      "chapter_name": "India – Seasons",
+      "subject": "Geography",
+      "source": "LBA_2025",
+      "marks": 3,
+      "type": "long_answer",
+      "difficulty": "hard",
+      "question": "Which are the main climatic seasons of India? Describe each briefly.",
+      "answer": "1. Cold Weather (Dec-Feb): Cold and dry. Low temperatures north, pleasant south. Westerly disturbances bring rain to northwest. 2. Hot Weather (Mar-May): Extremely hot. Loo winds in north. Local storms — Andhis (UP), Kala Baisakhi (Bengal), Coffee Blossoms (Karnataka). 3. Southwest Monsoon (Jun-Sep): Main rainy season. 75-90% of annual rainfall. Two branches: Arabian Sea (west) and Bay of Bengal (east). 4. Retreating Monsoon (Oct-Nov): Monsoon withdraws. Bay of Bengal cyclones. Tamil Nadu gets northeast monsoon rain.",
+      "concepts": [
+        "seasons of India",
+        "monsoon",
+        "cold weather"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SS_CH31_Q008",
+      "chapter": 31,
+      "chapter_name": "Bank Transactions",
+      "subject": "Business Studies",
+      "source": "LBA_2025",
+      "marks": 3,
+      "type": "long_answer",
+      "difficulty": "hard",
+      "question": "What are the different types of banks in India? Explain each type.",
+      "answer": "Types of banks: 1. Reserve Bank of India (Central Bank): Controls all banking, issues currency, banker's bank. 2. Commercial Banks (Nationalized): SBI, PNB — accept deposits, give loans. 3. Industrial Development Banks: IDBI, SIDBI — long-term finance for industries. 4. Agricultural Banks: NABARD — credit for agriculture and rural development. 5. Cooperative Banks — serve local communities and farmers. 6. Foreign Banks: HSBC, Citibank — international trade and MNC services.",
+      "concepts": [
+        "types of banks",
+        "RBI",
+        "commercial",
+        "cooperative"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SS_CH29_Q005",
+      "chapter": 29,
+      "chapter_name": "Rural Development",
+      "subject": "Economics",
+      "source": "LBA_2025",
+      "marks": 3,
+      "type": "long_answer",
+      "difficulty": "hard",
+      "question": "Explain the role of cooperatives in rural development.",
+      "answer": "Cooperatives are voluntary associations for common economic benefit. Role: Agricultural cooperatives provide seeds, fertilizers at reasonable prices. Credit cooperatives — low-interest loans to farmers. Marketing cooperatives — help farmers sell at fair prices (AMUL model). Consumer cooperatives — goods at wholesale prices. Dairy cooperatives — Operation Flood success. Housing cooperatives — affordable homes. Reduce dependence on moneylenders. Build economic self-reliance. Government supports through NABARD.",
+      "concepts": [
+        "cooperatives",
+        "AMUL",
+        "rural development"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "SS_CH1_Q014",
+      "chapter": 1,
+      "chapter_name": "The Advent of Europeans to India",
+      "subject": "History",
+      "source": "LBA_2025",
+      "marks": 4,
+      "type": "essay",
+      "difficulty": "hard",
+      "question": "Explain the causes and effects of the Battle of Buxar (1764).",
+      "answer": "Causes: Mir Qasim made all trade duty-free in Bengal to compete with British. British employees misused duty-free privileges. British restored Mir Jafar. Mir Qasim allied with Nawab of Awadh and Mughal Emperor Shah Alam II against British. Battle fought and British won under Hector Munro. Effects: Shah Alam II granted Diwani rights (revenue collection) to East India Company over Bengal, Bihar, Odisha. Company paid Shah Alam 26 lakh annually. Paid 50 lakh as war compensation. Robert Clive introduced Dual Government in Bengal (1765). British became undisputed power in Bengal. More significant than Plassey in establishing British power. Led to complete British domination of eastern India.",
+      "concepts": [
+        "Battle of Buxar",
+        "Diwani rights",
+        "Dual Government"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SS_CH2_Q007",
+      "chapter": 2,
+      "chapter_name": "The Extension of the British Rule",
+      "subject": "History",
+      "source": "LBA_2025",
+      "marks": 4,
+      "type": "essay",
+      "difficulty": "hard",
+      "question": "Explain the expansion of British power through the Anglo-Maratha Wars.",
+      "answer": "Three Anglo-Maratha Wars: First (1775-1782): British interference in Maratha succession. Treaty of Salbai (1782) — status quo restored. Second (1803-1806): Wellesley used Subsidiary Alliance. British defeated Scindia and Bhonsle. Treaty of Bassein (1802). British gained Surat and Broach. Third (1817-1818): Last stand by Marathas. Peshwa Baji Rao II resisted. British completely defeated Marathas. Peshwa deposed. British gained control of most of India. The Maratha confederacy was destroyed. The Maratha power, once the greatest after Mughals, ended through these wars.",
+      "concepts": [
+        "Anglo-Maratha Wars",
+        "Subsidiary Alliance",
+        "Treaty of Salbai"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SS_CH4_Q007",
+      "chapter": 4,
+      "chapter_name": "Opposition to British Rule in Karnataka",
+      "subject": "History",
+      "source": "LBA_2025",
+      "marks": 4,
+      "type": "essay",
+      "difficulty": "hard",
+      "question": "Explain the rebellion of Halagali Bedas and its significance.",
+      "answer": "Halagali Beda Rebellion (1857-58): British Arms Act required Indians to surrender weapons. Beda community of Halagali in Bijapur district depended on weapons for livelihood. Ramappa Nayak led the Bedas in refusal. They fought against British soldiers sent to collect weapons. British suppressed the rebellion with overwhelming force. Ramappa Nayak and leaders were executed. Significance: One of earliest armed revolts in Karnataka. Shows how British policies threatened traditional occupations. Part of broader 1857 resistance. Even common people ready to fight British injustice. Shows how Arms Act disarmed Indian resistance.",
+      "concepts": [
+        "Halagali Bedas",
+        "Arms Act",
+        "Karnataka rebellion"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "SS_CH8_Q004",
+      "chapter": 8,
+      "chapter_name": "India After Independence",
+      "subject": "History",
+      "source": "LBA_2025",
+      "marks": 4,
+      "type": "essay",
+      "difficulty": "hard",
+      "question": "Explain the importance and process of integration of princely states after Indian independence.",
+      "answer": "At independence in 1947, India had 562+ princely states. Challenge: States had to choose between India, Pakistan or independence. Sardar Patel as Deputy PM and Home Minister led integration. Used diplomacy, persuasion and firmness. Most states signed Instrument of Accession willingly. Special cases: Hyderabad — Nizam wanted independence. Operation Polo (1948) forced integration. Kashmir — Maharaja Hari Singh initially neutral. Pakistan-backed tribal invasion forced accession to India (October 1947). Junagadh — Plebiscite brought it to India. Significance: Created unified India. Prevented Balkanization. States reorganized linguistically (States Reorganization Act 1956). Essential for democracy and development. Patel's achievement in 1-2 years was remarkable.",
+      "concepts": [
+        "integration",
+        "Sardar Patel",
+        "Instrument of Accession",
+        "Hyderabad"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SS_CH11_Q008",
+      "chapter": 11,
+      "chapter_name": "Challenges of India",
+      "subject": "Political Science",
+      "source": "LBA_2025",
+      "marks": 4,
+      "type": "essay",
+      "difficulty": "hard",
+      "question": "Explain the problems of poverty in India and the government measures to alleviate poverty.",
+      "answer": "Poverty characteristics: Large population below poverty line. Concentrated in rural areas. Affects SCs, STs disproportionately. Causes: Unequal wealth distribution. Unemployment. Illiteracy. Caste and gender discrimination. Population pressure. Effects: Malnutrition. Child labour. Crime. Economic underdevelopment. Government measures: MGNREGA (100 days employment). Pradhan Mantri Jan Dhan Yojana (financial inclusion). National Food Security Act (subsidized food). Pradhan Mantri Awas Yojana (housing). Ujjwala Yojana (LPG for BPL families). Ayushman Bharat (health insurance). Skill India Mission. PM Kisan Samman Nidhi.",
+      "concepts": [
+        "poverty",
+        "causes",
+        "effects",
+        "MGNREGA",
+        "government measures"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SS_CH20_Q008",
+      "chapter": 20,
+      "chapter_name": "India – Soils",
+      "subject": "Geography",
+      "source": "LBA_2025",
+      "marks": 4,
+      "type": "essay",
+      "difficulty": "hard",
+      "question": "How is black soil different from laterite soil? Explain the characteristics of each.",
+      "answer": "Black Soil: Found in Deccan Trap — Maharashtra, Gujarat, MP, N.Karnataka. Also called Regur or Black Cotton Soil. Formed from weathering of volcanic rocks. Contains abundant clay particles — retains moisture well. Rich in calcium, potassium, magnesium. Best suited for cotton, also jowar, wheat, sugarcane. Highly suitable for dry farming. Becomes sticky when wet, cracks when dry. Laterite Soil: Found in Western Ghats, NE states, Odisha, Tamil Nadu. Formed in high rainfall and high temperature regions by leaching. Red-coloured due to iron and aluminium oxides. Deficient in nitrogen, phosphorus. Not very fertile after topsoil removed. Good for tea, coffee, rubber, cashew. Less suitable for grain crops.",
+      "concepts": [
+        "black soil vs laterite soil",
+        "characteristics",
+        "distribution"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SS_CH21_Q007",
+      "chapter": 21,
+      "chapter_name": "India – Forest Resources",
+      "subject": "Geography",
+      "source": "LBA_2025",
+      "marks": 4,
+      "type": "essay",
+      "difficulty": "hard",
+      "question": "Explain the types of forests found in India and their characteristics.",
+      "answer": "Types: 1. Evergreen Forests: >250cm rainfall — Western Ghats, NE India. Always green. Dense. Teak, rosewood, ebony. 2. Deciduous Monsoon Forests: Most widespread. 75-250cm rainfall. Shed leaves in dry season. Sal, teak, bamboo, sandalwood. Found in MP, Odisha. 3. Tropical Grassland: 60-75cm rainfall. Central peninsular plateau. Babul, Seesum. 4. Mangrove Forests: River deltas and coastal areas — Sundarbans (Ganga delta), Godavari, Krishna. Sundari trees. Salt-tolerant. Protect coasts. 5. Desert Forests: <50cm rainfall. Rajasthan. Thorny plants. 6. Alpine Forests: Himalayan slopes. Sal, Silver Spruce. Change with altitude.",
+      "concepts": [
+        "types of forests",
+        "evergreen",
+        "deciduous",
+        "mangrove",
+        "alpine"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SS_CH27_Q005",
+      "chapter": 27,
+      "chapter_name": "India – Natural Disasters",
+      "subject": "Geography",
+      "source": "LBA_2025",
+      "marks": 4,
+      "type": "essay",
+      "difficulty": "hard",
+      "question": "Explain the causes, effects and precautionary measures of cyclones in India.",
+      "answer": "Causes: Warm ocean water (above 26°C). Difference in temperature and pressure. Coriolis effect causes rotation. Bay of Bengal experiences cyclones during retreating monsoon (Oct-Nov). Effects: Devastation of coastal areas. Floods and storm surges. Loss of life and property. Destruction of agriculture. Infrastructure damage. Displacement of people. Disease spread. Environmental damage to mangroves. Precautionary measures: Early warning system — IMD. Cyclone shelters in coastal areas. Evacuation of coastal population. Strengthening embankments. NDMA coordinates. Satellite-based tracking. Planting mangroves as natural barriers. States affected: Odisha, AP, Tamil Nadu, West Bengal.",
+      "concepts": [
+        "cyclones",
+        "causes",
+        "effects",
+        "precautions",
+        "Bay of Bengal"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SS_CH29_Q006",
+      "chapter": 29,
+      "chapter_name": "Rural Development",
+      "subject": "Economics",
+      "source": "LBA_2025",
+      "marks": 4,
+      "type": "essay",
+      "difficulty": "hard",
+      "question": "Explain the importance of education and health in rural development.",
+      "answer": "Education: Creates awareness about rights, health, farming techniques. Educated farmers adopt scientific methods — better yields. Reduces child labour and early marriage. Empowers women. Sarva Shiksha Abhiyan and RTE Act expanded rural education. Midday meal scheme increased enrollment. Reduces migration to cities. Health: Healthy workers are more productive. Primary Health Centres (PHC) provide basic healthcare. Janani Suraksha Yojana — safe motherhood. Ayushman Bharat — health insurance. ASHA workers improve rural health. Immunization programs prevent diseases. Swachh Bharat Mission — sanitation. Combined impact: Education + Health = human capital development. Well-educated, healthy rural population drives economic growth and reduces poverty.",
+      "concepts": [
+        "education",
+        "health",
+        "rural development",
+        "human capital"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "SS_CH33_Q004",
+      "chapter": 33,
+      "chapter_name": "Consumer Education and Protection",
+      "subject": "Business Studies",
+      "source": "LBA_2025",
+      "marks": 4,
+      "type": "essay",
+      "difficulty": "hard",
+      "question": "Explain the Consumer Protection Act 2019 and the responsibilities of a consumer.",
+      "answer": "Consumer Protection Act 2019: Establishment of Central Consumer Protection Authority (CCPA). E-commerce regulations included. Product liability — manufacturers liable for defective products. Simplified consumer dispute redressal. Online filing of complaints. Penalties for misleading advertisements. Three-tier redressal: District (up to ₹1 crore), State (₹1-10 crore), National (above ₹10 crore). Consumer Responsibilities: Buy quality products — look for ISI, AGMARK, BIS marks. Keep bills and receipts. Read labels carefully. Report unfair trade practices. Be aware of rights. Avoid wasteful consumption. Use sustainable products. Spread consumer awareness. Not buy illegal or counterfeit products.",
+      "concepts": [
+        "Consumer Protection Act 2019",
+        "CCPA",
+        "consumer responsibilities"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SS_CH30_Q003",
+      "chapter": 30,
+      "chapter_name": "Public Finance and Budget",
+      "subject": "Economics",
+      "source": "LBA_2025",
+      "marks": 4,
+      "type": "essay",
+      "difficulty": "hard",
+      "question": "Explain the different types of taxes in India and their importance.",
+      "answer": "1. Direct Taxes: Paid directly by individuals/companies. Income Tax — on personal income. Corporate Tax — on company profits. Capital Gains Tax. Advantages: Progressive — rich pay more. Cannot be shifted to others. 2. Indirect Taxes: Collected by intermediaries. GST (Goods and Services Tax) — replaced many taxes in 2017. Customs duty — on imports/exports. Advantages: Easy to collect. Broader tax base. Importance of taxes: Finance government expenditure — defense, education, health, infrastructure. Reduce inequality through progressive taxation. Control inflation. Fund social welfare programs. Promote economic development. Encourage savings (tax deductions).",
+      "concepts": [
+        "direct taxes",
+        "indirect taxes",
+        "GST",
+        "importance"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "SS_CH7_Q012",
+      "chapter": 7,
+      "chapter_name": "The Freedom Struggle",
+      "subject": "History",
+      "source": "LBA_2025",
+      "marks": 5,
+      "type": "essay",
+      "difficulty": "hard",
+      "question": "Describe the role of Gandhiji in India's freedom struggle from 1920 to 1947.",
+      "answer": "Gandhian Era (1920-1947): Non-Cooperation Movement (1920-22): First mass civil disobedience. Boycott of British goods, courts, schools. Suspended after Chauri Chaura violence (1922). Salt March/Civil Disobedience (1930): 241-mile Dandi March to break Salt Law. International attention drawn to India. Gandhi-Irwin Pact (1931). Round Table Conferences (1930-32): Represented India in London. Poona Pact (1932) with Ambedkar on separate electorate. Quit India Movement (1942): 'Do or Die' slogan. Mass arrest of all leaders. Underground resistance continued. Partition and Independence (1947): Worked for Hindu-Muslim unity. Opposed partition but accepted to prevent civil war. Anti-violence work in Noakhali and Calcutta during communal riots. Assassination (January 30, 1948): Martyred by Nathuram Godse. Philosophy: Non-violence (Ahimsa) and Truth (Satyagraha) as weapons. Mobilized millions of ordinary Indians. Made independence movement truly national.",
+      "concepts": [
+        "Gandhiji",
+        "Non-Cooperation",
+        "Salt March",
+        "Quit India",
+        "Gandhian era"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SS_CH9_Q006",
+      "chapter": 9,
+      "chapter_name": "World Wars and India's Role",
+      "subject": "History",
+      "source": "LBA_2025",
+      "marks": 5,
+      "type": "essay",
+      "difficulty": "hard",
+      "question": "Explain the causes and consequences of the Second World War.",
+      "answer": "Causes: Rise of Fascism (Mussolini in Italy) and Nazism (Hitler in Germany). Failure of League of Nations. Treaty of Versailles humiliated Germany. Great Depression (1929) led to extremism. Appeasement policy by Britain and France. Japan's aggression in Asia. Immediate cause: Germany's invasion of Poland (September 1, 1939). World War II (1939-1945): Allies (UK, France, USA, USSR, India) vs Axis Powers (Germany, Italy, Japan). Key events: Fall of France (1940). Battle of Britain. German invasion of USSR (1941). Pearl Harbor — USA joins (1941). D-Day (1944). Atomic bombs on Hiroshima and Nagasaki (1945). Germany surrenders May 1945. Japan surrenders September 1945. Consequences: 70-85 million deaths. Holocaust — 6 million Jews killed. Germany divided East and West. United Nations formed (1945). USA and USSR emerged as superpowers — Cold War. Decolonization wave — India independent 1947. Marshall Plan rebuilt Europe. NATO formed. Nuclear age began.",
+      "concepts": [
+        "World War II",
+        "causes",
+        "Nazism",
+        "Fascism",
+        "consequences"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SS_CH12_Q005",
+      "chapter": 12,
+      "chapter_name": "India's Foreign Policy",
+      "subject": "Political Science",
+      "source": "LBA_2025",
+      "marks": 5,
+      "type": "essay",
+      "difficulty": "hard",
+      "question": "Explain the principles of India's foreign policy and India's contribution to world peace.",
+      "answer": "Foreign Policy Principles: 1. Non-Alignment: India does not join any military bloc. Founded NAM (1961) with Nasser (Egypt) and Tito (Yugoslavia). 2. Panchsheel (1954 with China): Five principles — mutual respect for sovereignty; non-aggression; non-interference; equality and mutual benefit; peaceful coexistence. 3. World Peace: India opposed nuclear weapons. Led disarmament campaigns. 4. Anti-Colonialism: Supported liberation movements. 5. Support to UN: Peacekeeping troops. India's Contribution: UN peacekeeping missions. South-South cooperation. SAARC — regional cooperation. Nehru's diplomacy during Korean War. Indo-Soviet Treaty (1971). Climate change cooperation. IBSA forum (India-Brazil-South Africa). Disaster relief to neighbours.",
+      "concepts": [
+        "foreign policy",
+        "Panchsheel",
+        "Non-Alignment",
+        "world peace",
+        "NAM"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SS_CH20_Q009",
+      "chapter": 20,
+      "chapter_name": "India – Soils",
+      "subject": "Geography",
+      "source": "LBA_2025",
+      "marks": 5,
+      "type": "essay",
+      "difficulty": "hard",
+      "question": "What are the types of soils found in India? Explain their distribution and the crops grown in them.",
+      "answer": "1. Alluvial Soil: Most extensively spread. Ganga-Yamuna plains, coastal areas. Very fertile. Wheat, paddy, sugarcane, cotton, jute. Covers UP, Bihar, WB, Punjab, Haryana. 2. Black Soil: Deccan Trap — Maharashtra, Gujarat, MP, N.Karnataka. Best for cotton. Also jowar, wheat, oil seeds. Retains moisture. 3. Red Soil: Peninsular plateau. Millets, tobacco, oil seeds, ragi. Red due to iron oxide. 4. Laterite Soil: Western Ghats, NE states, Odisha hills. High leaching. Tea, coffee, rubber, cashew. 5. Desert Soil: Rajasthan Thar desert. Sandy, limited agriculture with irrigation. 6. Mountain Soil: Himalayan slopes. Rich in humus. Apple, tea, forests. All soils need conservation: afforestation, terracing, check dams, contour farming.",
+      "concepts": [
+        "soil types",
+        "distribution",
+        "crops"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SS_CH27_Q006",
+      "chapter": 27,
+      "chapter_name": "India – Natural Disasters",
+      "subject": "Geography",
+      "source": "LBA_2025",
+      "marks": 5,
+      "type": "essay",
+      "difficulty": "hard",
+      "question": "Explain the types of natural disasters in India, their causes and precautionary measures.",
+      "answer": "Types: 1. Floods: Causes: Excessive rainfall, deforestation, river silting. Effects: Crop failure, disease, displacement. Precautions: Embankments, forestation, check dams, early warning. 2. Droughts: Causes: Insufficient rainfall, climate change. Effects: Crop failure, water scarcity, migration. Precautions: Rainwater harvesting, irrigation, drought-resistant crops. 3. Earthquakes: Causes: Tectonic plate movements. Effects: Building collapse, tsunamis. Precautions: Earthquake-resistant construction, early warning. 4. Cyclones: Causes: Warm ocean water, pressure difference. Effects: Storm surge, wind damage. Precautions: Cyclone shelters, IMD warnings, mangroves. 5. Landslides: Causes: Heavy rain, deforestation in hilly areas. Effects: Road blockage, casualties. Precautions: Forestation, retaining walls. NDMA coordinates all disaster responses.",
+      "concepts": [
+        "natural disasters",
+        "floods",
+        "droughts",
+        "earthquakes",
+        "cyclones",
+        "NDMA"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SS_CH31_Q009",
+      "chapter": 31,
+      "chapter_name": "Bank Transactions",
+      "subject": "Business Studies",
+      "source": "LBA_2025",
+      "marks": 5,
+      "type": "essay",
+      "difficulty": "hard",
+      "question": "Explain the functions of Reserve Bank of India (RBI) and how it controls the banking system.",
+      "answer": "RBI — Established 1935. Central bank of India. Functions: 1. Issue of Currency: Sole authority to issue currency notes. 2. Banker's Bank: Lends to commercial banks. Holds their reserves. Lender of last resort. 3. Banker to Government: Manages government accounts. Issues government securities. 4. Monetary Policy Control: Sets Repo Rate, Reverse Repo Rate, CRR, SLR. Controls money supply and inflation. 5. Foreign Exchange Management: Manages forex reserves. Regulates exchange rate. Controls capital flows (FEMA). 6. Regulatory Functions: Licences and regulates commercial banks. Sets capital adequacy norms. Protects depositors. 7. Development Functions: Promotes rural banking. Supports NABARD. Financial inclusion — Jan Dhan Yojana. Banking control tools: CRR — banks keep % of deposits with RBI. SLR — banks invest in government securities. Repo Rate — RBI's lending rate to banks. Open Market Operations.",
+      "concepts": [
+        "RBI",
+        "functions",
+        "monetary policy",
+        "CRR",
+        "SLR",
+        "Repo Rate"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SS_CH7_Q013",
+      "chapter": 7,
+      "chapter_name": "The Freedom Struggle",
+      "subject": "History",
+      "source": "LBA_2025",
+      "marks": 5,
+      "type": "essay",
+      "difficulty": "hard",
+      "question": "Explain the partition of India and its consequences.",
+      "answer": "Partition of India (1947): Background: Two-nation theory — Muslim League (Jinnah) demanded separate Pakistan. Direct Action Day (1946) — communal violence. Mountbatten Plan (3 June 1947) announced partition. Radcliffe Commission demarcated border in 40 days. India and Pakistan became independent Aug 14-15, 1947. Punjab and Bengal divided. Consequences: Mass migration: 12-17 million people displaced — largest human migration in history. Communal violence: Hundreds of thousands killed during partition riots. Refugee crisis. Economic disruption — industries separated from raw materials. Kashmir dispute — Maharaja Hari Singh's late accession led to India-Pakistan war (1947). Three wars between India and Pakistan (1947, 1965, 1971). Bangladesh created (1971) — East Pakistan separated. Partition remains one of most tragic events of 20th century.",
+      "concepts": [
+        "partition",
+        "two-nation theory",
+        "Radcliffe",
+        "migration",
+        "communal violence"
+      ],
+      "board_frequency": "very_high"
+    }
+  ]
+}

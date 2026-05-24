@@ -1,0 +1,3409 @@
+{
+  "meta": {
+    "subject": "Science",
+    "subject_code": "83-E",
+    "board": "Karnataka SSLC (KSEAB)",
+    "year": "2025-26",
+    "total_marks": 80,
+    "total_questions_in_exam": 38,
+    "version": "1.0",
+    "parts": [
+      "Part A: Physics",
+      "Part B: Chemistry",
+      "Part C: Biology"
+    ],
+    "sources": [
+      "MQP1_Science_2025_26",
+      "MQP2_Science_2025_26",
+      "MQP3_Science_2025_26",
+      "MQP4_Science_2025_26",
+      "Board_QP_Exam1_83E_A",
+      "Board_QP_Exam2_83E_A",
+      "MA1_ModelAnswers",
+      "MA2_ModelAnswers",
+      "MA3_ModelAnswers",
+      "MA4_ModelAnswers",
+      "Science_Textbook_Part1",
+      "Science_Textbook_Part2"
+    ]
+  },
+  "blueprint": {
+    "chapters": [
+      {
+        "id": 1,
+        "part": "Chemistry",
+        "name": "Chemical Reactions and Equations",
+        "marks": 4,
+        "1M": 1,
+        "2M": 0,
+        "3M": 1,
+        "4M": 0,
+        "5M": 0
+      },
+      {
+        "id": 2,
+        "part": "Chemistry",
+        "name": "Acids, Bases and Salts",
+        "marks": 6,
+        "1M": 1,
+        "2M": 1,
+        "3M": 1,
+        "4M": 0,
+        "5M": 0
+      },
+      {
+        "id": 3,
+        "part": "Chemistry",
+        "name": "Metals and Nonmetals",
+        "marks": 7,
+        "1M": 2,
+        "2M": 1,
+        "3M": 1,
+        "4M": 0,
+        "5M": 0
+      },
+      {
+        "id": 4,
+        "part": "Chemistry",
+        "name": "Carbon and Its Compounds",
+        "marks": 8,
+        "1M": 2,
+        "2M": 1,
+        "3M": 0,
+        "4M": 1,
+        "5M": 0
+      },
+      {
+        "id": 5,
+        "part": "Biology",
+        "name": "Life Processes",
+        "marks": 8,
+        "1M": 2,
+        "2M": 1,
+        "3M": 0,
+        "4M": 1,
+        "5M": 0
+      },
+      {
+        "id": 6,
+        "part": "Biology",
+        "name": "Control and Coordination",
+        "marks": 6,
+        "1M": 1,
+        "2M": 1,
+        "3M": 1,
+        "4M": 0,
+        "5M": 0
+      },
+      {
+        "id": 7,
+        "part": "Biology",
+        "name": "How Do Organisms Reproduce?",
+        "marks": 7,
+        "1M": 2,
+        "2M": 0,
+        "3M": 0,
+        "4M": 0,
+        "5M": 1
+      },
+      {
+        "id": 8,
+        "part": "Biology",
+        "name": "Heredity",
+        "marks": 4,
+        "1M": 1,
+        "2M": 0,
+        "3M": 1,
+        "4M": 0,
+        "5M": 0
+      },
+      {
+        "id": 9,
+        "part": "Physics",
+        "name": "Light – Reflection and Refraction",
+        "marks": 8,
+        "1M": 1,
+        "2M": 0,
+        "3M": 1,
+        "4M": 1,
+        "5M": 0
+      },
+      {
+        "id": 10,
+        "part": "Physics",
+        "name": "The Human Eye and the Colourful World",
+        "marks": 5,
+        "1M": 0,
+        "2M": 1,
+        "3M": 1,
+        "4M": 0,
+        "5M": 0
+      },
+      {
+        "id": 11,
+        "part": "Physics",
+        "name": "Electricity",
+        "marks": 8,
+        "1M": 2,
+        "2M": 1,
+        "3M": 0,
+        "4M": 1,
+        "5M": 0
+      },
+      {
+        "id": 12,
+        "part": "Physics",
+        "name": "Magnetic Effects of Electric Current",
+        "marks": 6,
+        "1M": 1,
+        "2M": 1,
+        "3M": 1,
+        "4M": 0,
+        "5M": 0
+      },
+      {
+        "id": 13,
+        "part": "Biology",
+        "name": "Our Environment",
+        "marks": 3,
+        "1M": 0,
+        "2M": 0,
+        "3M": 1,
+        "4M": 0,
+        "5M": 0
+      }
+    ],
+    "exam_sections": {
+      "Part_A_Physics": [
+        {
+          "section": "I",
+          "type": "MCQ",
+          "count": 2,
+          "marks_each": 1,
+          "total": 2
+        },
+        {
+          "section": "II",
+          "type": "Direct",
+          "count": 2,
+          "marks_each": 1,
+          "total": 2
+        },
+        {
+          "section": "III",
+          "type": "2-mark",
+          "count": 3,
+          "marks_each": 2,
+          "total": 6
+        },
+        {
+          "section": "IV",
+          "type": "3-mark",
+          "count": 3,
+          "marks_each": 3,
+          "total": 9
+        },
+        {
+          "section": "V",
+          "type": "4-mark",
+          "count": 2,
+          "marks_each": 4,
+          "total": 8
+        }
+      ],
+      "Part_B_Chemistry": [
+        {
+          "section": "VI",
+          "type": "MCQ",
+          "count": 3,
+          "marks_each": 1,
+          "total": 3
+        },
+        {
+          "section": "VII",
+          "type": "Direct",
+          "count": 3,
+          "marks_each": 1,
+          "total": 3
+        },
+        {
+          "section": "VIII",
+          "type": "2-mark",
+          "count": 3,
+          "marks_each": 2,
+          "total": 6
+        },
+        {
+          "section": "IX",
+          "type": "3-mark",
+          "count": 3,
+          "marks_each": 3,
+          "total": 9
+        },
+        {
+          "section": "X",
+          "type": "4-mark",
+          "count": 1,
+          "marks_each": 4,
+          "total": 4
+        }
+      ],
+      "Part_C_Biology": [
+        {
+          "section": "XI",
+          "type": "MCQ",
+          "count": 3,
+          "marks_each": 1,
+          "total": 3
+        },
+        {
+          "section": "XII",
+          "type": "Direct",
+          "count": 3,
+          "marks_each": 1,
+          "total": 3
+        },
+        {
+          "section": "XIII",
+          "type": "2-mark",
+          "count": 2,
+          "marks_each": 2,
+          "total": 4
+        },
+        {
+          "section": "XIV",
+          "type": "3-mark",
+          "count": 3,
+          "marks_each": 3,
+          "total": 9
+        },
+        {
+          "section": "XV",
+          "type": "4-mark",
+          "count": 1,
+          "marks_each": 4,
+          "total": 4
+        },
+        {
+          "section": "XVI",
+          "type": "5-mark",
+          "count": 1,
+          "marks_each": 5,
+          "total": 5
+        }
+      ]
+    },
+    "internal_choices": {
+      "2M": 2,
+      "3M": 4,
+      "4M": 2,
+      "5M": 1
+    }
+  },
+  "questions": [
+    {
+      "id": "SCI_CH1_Q001",
+      "chapter": 1,
+      "chapter_name": "Chemical Reactions and Equations",
+      "part": "Chemistry",
+      "source": "MQP1_2025_26",
+      "section": "IX",
+      "marks": 3,
+      "type": "calculation",
+      "difficulty": "medium",
+      "question": "Write the balanced chemical equations for the following word equations: (i) Manganese oxide + hydrochloric acid → manganese chloride + chlorine + water (ii) Calcium hydroxide + carbon dioxide → calcium carbonate + water (iii) Zinc carbonate → zinc oxide + carbon dioxide",
+      "answer": "(i) MnO₂ + 4HCl → MnCl₂ + 2H₂O + Cl₂ (ii) Ca(OH)₂ + CO₂ → CaCO₃ + H₂O (iii) ZnCO₃ → ZnO + CO₂",
+      "concepts": [
+        "balancing chemical equations",
+        "word equations"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SCI_CH1_Q002",
+      "chapter": 1,
+      "chapter_name": "Chemical Reactions and Equations",
+      "part": "Chemistry",
+      "source": "MQP2_2025_26",
+      "section": "IX",
+      "marks": 3,
+      "type": "calculation",
+      "difficulty": "medium",
+      "question": "Balance the following equations: (i) Mg + N₂ → Mg₃N₂ (ii) NaOH + H₂SO₄ → Na₂SO₄ + H₂O (iii) Al(OH)₃ → Al₂O₃ + H₂O",
+      "answer": "(i) 3Mg + N₂ → Mg₃N₂ (ii) 2NaOH + H₂SO₄ → Na₂SO₄ + 2H₂O (iii) 2Al(OH)₃ → Al₂O₃ + 3H₂O",
+      "concepts": [
+        "balancing equations",
+        "law of conservation of mass"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SCI_CH1_Q003",
+      "chapter": 1,
+      "chapter_name": "Chemical Reactions and Equations",
+      "part": "Chemistry",
+      "source": "MQP2_2025_26",
+      "section": "IX",
+      "marks": 3,
+      "type": "calculation",
+      "difficulty": "medium",
+      "question": "Convert the following into chemical equations: (i) Copper reacts with concentrated nitric acid. (ii) Silver nitrate solution is added to potassium bromide solution. (iii) Zinc oxide is reduced by coke.",
+      "answer": "(i) Cu + 4HNO₃ → Cu(NO₃)₂ + 2NO₂ + 2H₂O (ii) KBr + AgNO₃ → KNO₃ + AgBr (iii) ZnO + C → Zn + CO",
+      "concepts": [
+        "chemical equations",
+        "reactions"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "SCI_CH1_Q004",
+      "chapter": 1,
+      "chapter_name": "Chemical Reactions and Equations",
+      "part": "Chemistry",
+      "source": "MQP3_2025_26",
+      "section": "IX",
+      "marks": 3,
+      "type": "application",
+      "difficulty": "medium",
+      "question": "(a) Magnesium ribbon burns with a dazzling white flame in the air and changes into magnesium oxide. Mention the type of this reaction. (b) List out the observations that help us to determine that a chemical reaction has taken place.",
+      "answer": "(a) Chemical combination reaction (synthesis reaction). (b) Indicators that a reaction has occurred: Change in colour; Evolution of a gas; Change in temperature; Change in state; Formation of precipitate. (Any two)",
+      "concepts": [
+        "types of reactions",
+        "indicators of chemical change"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SCI_CH1_Q005",
+      "chapter": 1,
+      "chapter_name": "Chemical Reactions and Equations",
+      "part": "Chemistry",
+      "source": "MQP3_2025_26",
+      "section": "IX",
+      "marks": 3,
+      "type": "application",
+      "difficulty": "medium",
+      "question": "(a) Chemical equations have to be balanced. Why? (b) Mention the measures that are followed to prevent rusting of iron.",
+      "answer": "(a) According to the law of conservation of mass, the number of atoms of each element remains the same before and after a chemical reaction. So equations must be balanced. (b) Oiling; Greasing; Painting; Galvanisation; Chrome plating; Anodisation. (Any four)",
+      "concepts": [
+        "balancing equations",
+        "rusting prevention"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "SCI_CH1_Q006",
+      "chapter": 1,
+      "chapter_name": "Chemical Reactions and Equations",
+      "part": "Chemistry",
+      "source": "MQP4_2025_26",
+      "section": "IX",
+      "marks": 3,
+      "type": "calculation",
+      "difficulty": "medium",
+      "question": "Write the balanced chemical equations for the following reactions: (a) Calcium carbonate → Calcium oxide + carbon dioxide (b) Hydrogen + chlorine → Hydrogen chloride (c) Magnesium + hydrochloric acid → Magnesium chloride + Hydrogen",
+      "answer": "(a) CaCO₃ → CaO + CO₂ (b) H₂ + Cl₂ → 2HCl (c) Mg + 2HCl → MgCl₂ + H₂",
+      "concepts": [
+        "balancing equations",
+        "thermal decomposition"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SCI_CH1_Q007",
+      "chapter": 1,
+      "chapter_name": "Chemical Reactions and Equations",
+      "part": "Chemistry",
+      "source": "MQP1_2025_26",
+      "section": "VI",
+      "marks": 1,
+      "type": "mcq",
+      "difficulty": "easy",
+      "question": "Which of the following is a decomposition reaction?",
+      "options": [
+        "A) 2H₂ + O₂ → 2H₂O",
+        "B) CaCO₃ → CaO + CO₂",
+        "C) AgNO₃ + NaCl → AgCl + NaNO₃",
+        "D) Zn + CuSO₄ → ZnSO₄ + Cu"
+      ],
+      "answer": "B) CaCO₃ → CaO + CO₂",
+      "concepts": [
+        "types of reactions",
+        "decomposition"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "SCI_CH2_Q001",
+      "chapter": 2,
+      "chapter_name": "Acids, Bases and Salts",
+      "part": "Chemistry",
+      "source": "MQP1_2025_26",
+      "section": "IX",
+      "marks": 3,
+      "type": "application",
+      "difficulty": "medium",
+      "question": "Four solutions A, B, C and D when tested with universal indicator showed pH as 5, 2, 7 and 11 respectively. Which solution (i) has more hydronium ions? (ii) is neutral? (iii) is the weak acid?",
+      "answer": "(i) B (pH=2, most acidic, most hydronium ions) (ii) C (pH=7, neutral) (iii) A (pH=5, weak acid)",
+      "concepts": [
+        "pH scale",
+        "acids and bases",
+        "hydronium ions"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SCI_CH2_Q002",
+      "chapter": 2,
+      "chapter_name": "Acids, Bases and Salts",
+      "part": "Chemistry",
+      "source": "MQP2_2025_26",
+      "section": "IX",
+      "marks": 3,
+      "type": "application",
+      "difficulty": "medium",
+      "question": "(a) What is acid rain? (b) Which gas is liberated when an acid reacts with a metal carbonate? (c) Write the chemical name and molecular formula of baking soda.",
+      "answer": "(a) When pH of rain water is less than 5.6, it is called acid rain. Caused by SO₂ and NO₂ dissolving in rain water. (b) Carbon dioxide (CO₂) (c) Chemical name: Sodium hydrogen carbonate / Sodium bicarbonate. Molecular formula: NaHCO₃",
+      "concepts": [
+        "acid rain",
+        "metal carbonates",
+        "baking soda"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SCI_CH2_Q003",
+      "chapter": 2,
+      "chapter_name": "Acids, Bases and Salts",
+      "part": "Chemistry",
+      "source": "MQP4_2025_26",
+      "section": "IX",
+      "marks": 3,
+      "type": "application",
+      "difficulty": "medium",
+      "question": "(a) What is neutralization? (b) Name the acid present in the following substances: (i) Curd (ii) Gastric juice",
+      "answer": "(a) The reaction between an acid and a base to give salt and water is known as a neutralisation reaction. Acid + Base → Salt + Water (b) (i) Lactic acid (ii) Hydrochloric acid (HCl)",
+      "concepts": [
+        "neutralization",
+        "acids in food",
+        "gastric juice"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SCI_CH2_Q004",
+      "chapter": 2,
+      "chapter_name": "Acids, Bases and Salts",
+      "part": "Chemistry",
+      "source": "MQP4_2025_26",
+      "section": "IX",
+      "marks": 3,
+      "type": "application",
+      "difficulty": "medium",
+      "question": "(a) What is water of crystallisation? (b) Name the salts used in the following processes: (i) Removing permanent hardness of water (ii) Bleaching wood pulp in paper factories",
+      "answer": "(a) Water of crystallisation is the fixed number of water molecules present in one formula unit of a salt. Example: CuSO₄.5H₂O (b) (i) Sodium carbonate (Na₂CO₃ / Washing soda) (ii) Calcium oxychloride (CaOCl₂ / Bleaching powder)",
+      "concepts": [
+        "water of crystallisation",
+        "salts",
+        "bleaching powder"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "SCI_CH2_Q005",
+      "chapter": 2,
+      "chapter_name": "Acids, Bases and Salts",
+      "part": "Chemistry",
+      "source": "MQP3_2025_26",
+      "section": "VIII",
+      "marks": 2,
+      "type": "application",
+      "difficulty": "easy",
+      "question": "A solution of baking soda is commonly applied to the area of a honey bee sting. Justify this action.",
+      "answer": "Sting of honey bee contains methanoic acid (formic acid) which causes pain and irritation. Applying baking soda (sodium hydrogen carbonate — a mild base) on the stung area neutralises the acid and gives relief.",
+      "concepts": [
+        "neutralization",
+        "acids in daily life",
+        "baking soda"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SCI_CH2_Q006",
+      "chapter": 2,
+      "chapter_name": "Acids, Bases and Salts",
+      "part": "Chemistry",
+      "source": "MQP2_2025_26",
+      "section": "VII",
+      "marks": 1,
+      "type": "direct",
+      "difficulty": "easy",
+      "question": "Hydrochloric acid is considered as a strong acid. Why?",
+      "answer": "Hydrochloric acid completely dissociates (ionises) in water to produce a large number of hydrogen ions (H⁺) / hydronium ions (H₃O⁺). Since it completely ionises, it is called a strong acid.",
+      "concepts": [
+        "strong acid",
+        "ionisation",
+        "HCl"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "SCI_CH2_Q007",
+      "chapter": 2,
+      "chapter_name": "Acids, Bases and Salts",
+      "part": "Chemistry",
+      "source": "MQP1_2025_26",
+      "section": "VII",
+      "marks": 1,
+      "type": "direct",
+      "difficulty": "easy",
+      "question": "How do you detect a base using blue litmus paper?",
+      "answer": "The colour of blue litmus paper does NOT change when dipped in a basic solution. (Blue litmus remains blue in a base. It changes to red in an acid.)",
+      "concepts": [
+        "litmus paper",
+        "testing bases",
+        "indicators"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SCI_CH2_Q008",
+      "chapter": 2,
+      "chapter_name": "Acids, Bases and Salts",
+      "part": "Chemistry",
+      "source": "MQP3_2025_26",
+      "section": "VI",
+      "marks": 1,
+      "type": "mcq",
+      "difficulty": "medium",
+      "question": "The chemical formula of bleaching powder is",
+      "options": [
+        "A) NaCl",
+        "B) Na₂CO₃",
+        "C) CaCO₃",
+        "D) CaOCl₂"
+      ],
+      "answer": "D) CaOCl₂",
+      "concepts": [
+        "bleaching powder",
+        "chemical formula"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SCI_CH3_Q001",
+      "chapter": 3,
+      "chapter_name": "Metals and Nonmetals",
+      "part": "Chemistry",
+      "source": "MQP1_2025_26",
+      "section": "IX",
+      "marks": 3,
+      "type": "application",
+      "difficulty": "medium",
+      "question": "(a) Explain the formation of sodium chloride molecule by the transfer of electrons. (b) What are the products obtained when aluminium metal reacts with steam?",
+      "answer": "(a) Na has electronic configuration 2,8,1. It loses one electron to become Na⁺ (2,8). Cl has configuration 2,8,7. It gains one electron to become Cl⁻ (2,8,8). The electrostatic attraction between Na⁺ and Cl⁻ forms NaCl. (b) Al + steam → Al₂O₃ + H₂. Aluminium oxide and hydrogen gas are produced.",
+      "concepts": [
+        "ionic bond",
+        "NaCl formation",
+        "metals and steam"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SCI_CH3_Q002",
+      "chapter": 3,
+      "chapter_name": "Metals and Nonmetals",
+      "part": "Chemistry",
+      "source": "MQP3_2025_26",
+      "section": "IX",
+      "marks": 3,
+      "type": "application",
+      "difficulty": "medium",
+      "question": "(a) Show the formation of magnesium chloride molecule by transfer of electrons. (b) Aluminium oxide is called an amphoteric oxide. Why?",
+      "answer": "(a) Mg (2,8,2) loses 2 electrons → Mg²⁺ (2,8). Each Cl (2,8,7) gains 1 electron → Cl⁻ (2,8,8). One Mg²⁺ combines with two Cl⁻ to form MgCl₂. (b) Aluminium oxide reacts with both acid and base to produce salt and water. Al₂O₃ + 6HCl → 2AlCl₃ + 3H₂O; Al₂O₃ + 2NaOH → 2NaAlO₂ + H₂O. Hence it is amphoteric.",
+      "concepts": [
+        "ionic bond",
+        "MgCl₂ formation",
+        "amphoteric oxide"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SCI_CH3_Q003",
+      "chapter": 3,
+      "chapter_name": "Metals and Nonmetals",
+      "part": "Chemistry",
+      "source": "MQP2_2025_26",
+      "section": "VIII",
+      "marks": 2,
+      "type": "application",
+      "difficulty": "medium",
+      "question": "Write the properties of ionic compounds with respect to solubility, melting point, physical state and electrical conductivity.",
+      "answer": "Solubility: Generally soluble in water. Melting point: High melting and boiling points due to strong electrostatic forces. Physical state: Solid at room temperature; crystals. Electrical conductivity: Do not conduct electricity in solid state (ions not free to move); conduct electricity in molten state or in aqueous solution.",
+      "concepts": [
+        "ionic compounds",
+        "properties"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "SCI_CH3_Q004",
+      "chapter": 3,
+      "chapter_name": "Metals and Nonmetals",
+      "part": "Chemistry",
+      "source": "MQP2_2025_26",
+      "section": "VIII",
+      "marks": 2,
+      "type": "application",
+      "difficulty": "medium",
+      "question": "Give reasons: (i) Magnesium metal displaces copper in copper sulphate solution. (ii) Sodium metal is stored in kerosene.",
+      "answer": "(i) Magnesium is more reactive than copper (higher in the reactivity series). A more reactive metal displaces a less reactive metal from its salt solution. Mg + CuSO₄ → MgSO₄ + Cu (ii) Sodium is a very reactive metal. It reacts vigorously with oxygen, moisture (water) and air. Storing in kerosene prevents contact with air and moisture and thus prevents unwanted chemical reactions.",
+      "concepts": [
+        "reactivity series",
+        "reactive metals",
+        "displacement"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SCI_CH3_Q005",
+      "chapter": 3,
+      "chapter_name": "Metals and Nonmetals",
+      "part": "Chemistry",
+      "source": "MQP2_2025_26",
+      "section": "VII",
+      "marks": 1,
+      "type": "direct",
+      "difficulty": "easy",
+      "question": "What is roasting in metallurgy?",
+      "answer": "Roasting is the process of heating a sulphide ore strongly in the presence of excess air (oxygen) to convert it into the metal oxide. 2ZnS + 3O₂ → 2ZnO + 2SO₂",
+      "concepts": [
+        "metallurgy",
+        "roasting",
+        "sulphide ore"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "SCI_CH3_Q006",
+      "chapter": 3,
+      "chapter_name": "Metals and Nonmetals",
+      "part": "Chemistry",
+      "source": "MQP3_2025_26",
+      "section": "VIII",
+      "marks": 2,
+      "type": "application",
+      "difficulty": "medium",
+      "question": "How is pure mercury obtained from cinnabar?",
+      "answer": "Cinnabar (HgS) is roasted in the presence of air to obtain mercurous oxide (HgO) and sulphur dioxide. 2HgS + 3O₂ → 2HgO + 2SO₂. Mercurous oxide is then calcinated (heated further) to decompose it into mercury and oxygen. 2HgO → 2Hg + O₂. The mercury vapour is then condensed.",
+      "concepts": [
+        "metallurgy",
+        "extraction of mercury",
+        "cinnabar"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "SCI_CH3_Q007",
+      "chapter": 3,
+      "chapter_name": "Metals and Nonmetals",
+      "part": "Chemistry",
+      "source": "MQP3_2025_26",
+      "section": "VI",
+      "marks": 1,
+      "type": "mcq",
+      "difficulty": "medium",
+      "question": "CuSO₄ + Fe → FeSO₄ + Cu and 2AgNO₃ + Cu → Cu(NO₃)₂ + 2Ag. From these reactions, the correct conclusion is",
+      "options": [
+        "A) Copper is more reactive than iron and silver",
+        "B) Iron is less reactive than copper and silver",
+        "C) Copper is more reactive than silver but less reactive than iron",
+        "D) Silver is more reactive than copper and iron"
+      ],
+      "answer": "C) Copper is more reactive than silver but less reactive than iron",
+      "concepts": [
+        "reactivity series",
+        "displacement reactions"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SCI_CH3_Q008",
+      "chapter": 3,
+      "chapter_name": "Metals and Nonmetals",
+      "part": "Chemistry",
+      "source": "MQP1_2025_26",
+      "section": "VI",
+      "marks": 1,
+      "type": "mcq",
+      "difficulty": "medium",
+      "question": "The constituent metals in brass are",
+      "options": [
+        "A) Copper and zinc",
+        "B) Aluminium and tin",
+        "C) Copper and tin",
+        "D) Zinc and aluminium"
+      ],
+      "answer": "A) Copper and zinc",
+      "concepts": [
+        "alloys",
+        "brass"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SCI_CH4_Q001",
+      "chapter": 4,
+      "chapter_name": "Carbon and Its Compounds",
+      "part": "Chemistry",
+      "source": "MQP3_2025_26",
+      "section": "VIII",
+      "marks": 2,
+      "type": "explanation",
+      "difficulty": "medium",
+      "question": "Carbon compounds are found in larger numbers in nature. Why? Clarify the reasons.",
+      "answer": "Two unique properties make carbon form the largest number of compounds: (1) Tetravalency: Carbon has a valency of four. It is capable of bonding with four other atoms (carbon or other elements). This gives variety of structures. (2) Catenation: Carbon has a unique ability to form bonds with other carbon atoms, giving rise to large molecules. These chains can be straight, branched or ring-shaped. Due to these properties, millions of carbon compounds exist.",
+      "concepts": [
+        "tetravalency",
+        "catenation",
+        "carbon compounds"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SCI_CH4_Q002",
+      "chapter": 4,
+      "chapter_name": "Carbon and Its Compounds",
+      "part": "Chemistry",
+      "source": "MQP2_2025_26",
+      "section": "X",
+      "marks": 4,
+      "type": "application",
+      "difficulty": "hard",
+      "question": "(a) How many single bonds and double bonds are there in the molecule of C₃H₇COOH? (b) Write the structural formulae of cyclopentane and propanol.",
+      "answer": "(a) C₃H₇COOH = butanoic acid = CH₃CH₂CH₂COOH. Carbon skeleton: 4 carbons. Single bonds: C-C bonds (3) + C-H bonds (7) + C-OH bond (1) + O-H bond (1) = 12 single bonds. Double bond: C=O bond (1) = 1 double bond. (b) Cyclopentane: pentagon ring of 5 CH₂ groups. Propanol: CH₃-CH₂-CH₂-OH (propan-1-ol structural formula).",
+      "concepts": [
+        "structural formula",
+        "organic compounds",
+        "functional groups"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "SCI_CH4_Q003",
+      "chapter": 4,
+      "chapter_name": "Carbon and Its Compounds",
+      "part": "Chemistry",
+      "source": "MQP1_2025_26",
+      "section": "X",
+      "marks": 4,
+      "type": "application",
+      "difficulty": "hard",
+      "question": "(a) Write any two differences between saturated and unsaturated carbon compounds. (b) Write the molecular formula and structural formula of the following: (i) Propanoic acid (ii) Cyclohexane",
+      "answer": "(a) Saturated: Contains only single bonds; general formula CₙH₂ₙ₊₂ (alkanes); less reactive; do not decolourise bromine water. Unsaturated: Contains double/triple bonds; more reactive; decolourise bromine water. (b)(i) Propanoic acid: CH₃CH₂COOH (C₃H₆O₂). Structural: CH₃-CH₂-COOH. (ii) Cyclohexane: C₆H₁₂. Six-membered carbon ring, each with two H atoms.",
+      "concepts": [
+        "saturated vs unsaturated",
+        "organic acids",
+        "cyclic compounds"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SCI_CH4_Q004",
+      "chapter": 4,
+      "chapter_name": "Carbon and Its Compounds",
+      "part": "Chemistry",
+      "source": "MQP2_2025_26",
+      "section": "VIII",
+      "marks": 2,
+      "type": "explanation",
+      "difficulty": "medium",
+      "question": "Explain the cleansing action of soap on dirt.",
+      "answer": "Soap molecules have a hydrophilic (water-loving) head and a hydrophobic (water-hating / oil-loving) tail. When soap is added to dirty water: The hydrophobic ends attach to the oil/grease particles. The hydrophilic ends face outward towards water. This forms spherical clusters called micelles, with dirt trapped inside. When rinsed with water, the micelles (with dirt) are washed away. This is how soap removes oily dirt.",
+      "concepts": [
+        "cleansing action",
+        "micelles",
+        "hydrophilic",
+        "hydrophobic"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SCI_CH4_Q005",
+      "chapter": 4,
+      "chapter_name": "Carbon and Its Compounds",
+      "part": "Chemistry",
+      "source": "MQP2_2025_26",
+      "section": "VIII",
+      "marks": 2,
+      "type": "explanation",
+      "difficulty": "medium",
+      "question": "Carbon atoms do not form C⁴⁺ cation ions or C⁴⁻ anions. Why?",
+      "answer": "If carbon loses four electrons to form C⁴⁺, it would require a very large amount of energy to remove four electrons from the nucleus. The energy required is too high — so C⁴⁺ is not formed. If carbon gains four electrons to form C⁴⁻, it would be difficult for the 6 protons in the nucleus to hold on to 10 electrons (6+4). The nucleus cannot attract these extra electrons. Hence carbon shares electrons (covalent bond) instead.",
+      "concepts": [
+        "covalent bonding",
+        "carbon tetravalency",
+        "ionic bond not formed"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "SCI_CH4_Q006",
+      "chapter": 4,
+      "chapter_name": "Carbon and Its Compounds",
+      "part": "Chemistry",
+      "source": "MQP1_2025_26",
+      "section": "VII",
+      "marks": 1,
+      "type": "direct",
+      "difficulty": "medium",
+      "question": "Write the structural formula of an unsaturated carbon compound containing four carbon atoms and a ketone functional group.",
+      "answer": "CH₃-CO-CH=CH₂ (but-3-en-2-one) OR CH₃-C(=O)-CH₂ is a partial. For 4 carbons with ketone (C=O in middle): CH₃COCH₂ has only 3 carbons. So: CH₃-CO-C≡CH (but-3-yn-2-one) or CH₂=CH-CO-CH₃ (but-3-en-2-one): CH₂=C-CO-CH₃",
+      "concepts": [
+        "ketone functional group",
+        "structural formula",
+        "unsaturated compound"
+      ],
+      "board_frequency": "medium"
+    },
+    {
+      "id": "SCI_CH4_Q007",
+      "chapter": 4,
+      "chapter_name": "Carbon and Its Compounds",
+      "part": "Chemistry",
+      "source": "MQP3_2025_26",
+      "section": "VII",
+      "marks": 1,
+      "type": "direct",
+      "difficulty": "easy",
+      "question": "What are the applications of the thermite reaction?",
+      "answer": "Applications of thermite reaction: (i) To join (weld) railway tracks (thermite welding). (ii) To join broken machine parts. (The thermite reaction produces intense heat by the reduction of iron oxide by aluminium: 2Al + Fe₂O₃ → Al₂O₃ + 2Fe + Heat)",
+      "concepts": [
+        "thermite reaction",
+        "welding applications"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "SCI_CH4_Q008",
+      "chapter": 4,
+      "chapter_name": "Carbon and Its Compounds",
+      "part": "Chemistry",
+      "source": "MQP4_2025_26",
+      "section": "VIII",
+      "marks": 2,
+      "type": "application",
+      "difficulty": "medium",
+      "question": "Name the catalyst used and the product obtained in the hydrogenation of ethene.",
+      "answer": "In the hydrogenation of ethene: CH₂=CH₂ + H₂ → CH₃-CH₃ (ethane). Catalyst used: Nickel (Ni) or Palladium (Pd) or Platinum (Pt) — generally nickel. Product obtained: Ethane (saturated hydrocarbon).",
+      "concepts": [
+        "hydrogenation",
+        "catalyst",
+        "ethene to ethane"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "SCI_CH4_Q009",
+      "chapter": 4,
+      "chapter_name": "Carbon and Its Compounds",
+      "part": "Chemistry",
+      "source": "MQP4_2025_26",
+      "section": "VIII",
+      "marks": 2,
+      "type": "application",
+      "difficulty": "medium",
+      "question": "The molecular formula of the first member of a homologous series is CH₂O (HCHO). Determine the name and molecular formula of the third member of this group. Mention the general name of this group.",
+      "answer": "First member: HCHO (methanal / formaldehyde). Each successive member adds CH₂. Second member: CH₃CHO (ethanal / acetaldehyde). Third member: CH₃CH₂CHO — molecular formula C₃H₆O (propanal / propionaldehyde). General name of group: Aldehydes (general formula: R-CHO).",
+      "concepts": [
+        "homologous series",
+        "aldehydes",
+        "molecular formula"
+      ],
+      "board_frequency": "medium"
+    },
+    {
+      "id": "SCI_CH4_Q010",
+      "chapter": 4,
+      "chapter_name": "Carbon and Its Compounds",
+      "part": "Chemistry",
+      "source": "MQP4_2025_26",
+      "section": "VIII",
+      "marks": 2,
+      "type": "application",
+      "difficulty": "medium",
+      "question": "Explain the formation of ionic bond between sodium and chlorine atoms.",
+      "answer": "Sodium (Na): Electronic configuration 2,8,1. It has 1 electron in its outermost shell. Sodium loses this electron to become Na⁺ ion (2,8) — stable octet. Chlorine (Cl): Configuration 2,8,7. It needs one electron to complete its octet. Cl gains one electron to become Cl⁻ ion (2,8,8). The electrostatic attraction between the oppositely charged Na⁺ and Cl⁻ ions forms the ionic bond, creating NaCl.",
+      "concepts": [
+        "ionic bond",
+        "NaCl",
+        "electron transfer"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SCI_CH5_Q001",
+      "chapter": 5,
+      "chapter_name": "Life Processes",
+      "part": "Biology",
+      "source": "MQP1_2025_26",
+      "section": "XVI",
+      "marks": 5,
+      "type": "explanation",
+      "difficulty": "hard",
+      "question": "(a) List the three methods of contraception that are usually followed by human beings. (b) What is the function of the vas deferens and prostate gland in the human male reproductive system?",
+      "answer": "(a) Methods of contraception: (i) Barrier methods — condoms (male/female), diaphragm (ii) Chemical methods — oral contraceptive pills (iii) Intrauterine devices — Copper-T. Other methods: Surgical — vasectomy (male), tubectomy (female). (b) Vas deferens: Carries sperms from the testes to the urethra. Prostate gland: Secretes a fluid that nourishes the sperms and forms part of the semen. It also activates sperms and helps in their transport.",
+      "concepts": [
+        "contraception",
+        "male reproductive system",
+        "vas deferens",
+        "prostate"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "SCI_CH5_Q002",
+      "chapter": 5,
+      "chapter_name": "Life Processes",
+      "part": "Biology",
+      "source": "MQP1_2025_26",
+      "section": "XI",
+      "marks": 1,
+      "type": "mcq",
+      "difficulty": "easy",
+      "question": "An enzyme that secretes by the pancreas to digest protein is",
+      "options": [
+        "A) Amylase",
+        "B) Pepsin",
+        "C) Trypsin",
+        "D) Lipase"
+      ],
+      "answer": "C) Trypsin",
+      "concepts": [
+        "digestive enzymes",
+        "pancreas",
+        "protein digestion"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SCI_CH5_Q003",
+      "chapter": 5,
+      "chapter_name": "Life Processes",
+      "part": "Biology",
+      "source": "MQP1_2025_26",
+      "section": "XI",
+      "marks": 1,
+      "type": "mcq",
+      "difficulty": "medium",
+      "question": "In a zygote there are 24 pairs of chromosomes. Then the number of chromosomes present in the gametes are",
+      "options": [
+        "A) 24 pairs",
+        "B) 48",
+        "C) 6 pairs",
+        "D) 24"
+      ],
+      "answer": "D) 24",
+      "concepts": [
+        "chromosomes",
+        "meiosis",
+        "gametes",
+        "haploid"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SCI_CH5_Q004",
+      "chapter": 5,
+      "chapter_name": "Life Processes",
+      "part": "Biology",
+      "source": "MQP4_2025_26",
+      "section": "XII",
+      "marks": 1,
+      "type": "direct",
+      "difficulty": "easy",
+      "question": "The respiration rate of aquatic animals is faster than that found in terrestrial animals. Why?",
+      "answer": "Because the amount of dissolved oxygen in water is fairly low compared to the amount of oxygen in the air. To meet their oxygen needs, aquatic animals have to breathe (move water over their gills) much faster.",
+      "concepts": [
+        "respiration",
+        "aquatic animals",
+        "dissolved oxygen"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SCI_CH5_Q005",
+      "chapter": 5,
+      "chapter_name": "Life Processes",
+      "part": "Biology",
+      "source": "Board_QP_Exam2_83E",
+      "section": "XIV",
+      "marks": 3,
+      "type": "explanation",
+      "difficulty": "medium",
+      "question": "(a) What is anaerobic respiration? What products will be produced in this process? (b) What is double circulation of blood? How is this type of blood circulation advantageous to birds and mammals?",
+      "answer": "(a) Anaerobic respiration: Breakdown of glucose without oxygen. Products in yeast: glucose → ethanol + CO₂ + energy. Products in muscle cells: glucose → lactic acid + energy. (b) Double circulation: Blood passes through the heart twice in one complete circulation — once through the right side (pulmonary circuit — to lungs) and once through the left side (systemic circuit — to body). Advantage: Oxygenated and deoxygenated blood are kept separate. This allows efficient supply of oxygen to body cells, which generates the extra energy needed to maintain constant body temperature in warm-blooded birds and mammals.",
+      "concepts": [
+        "anaerobic respiration",
+        "double circulation",
+        "warm-blooded animals"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SCI_CH5_Q006",
+      "chapter": 5,
+      "chapter_name": "Life Processes",
+      "part": "Biology",
+      "source": "Board_QP_Exam1_83E",
+      "section": "XIV",
+      "marks": 3,
+      "type": "application",
+      "difficulty": "medium",
+      "question": "What is the role of the following enzymes in the human alimentary canal? (i) Trypsin (ii) Amylase (iii) Lipase",
+      "answer": "(i) Trypsin: Secreted by the pancreas. Digests proteins into smaller peptides/amino acids. Acts in the small intestine. (ii) Amylase: Secreted by salivary glands (salivary amylase) and pancreas (pancreatic amylase). Digests starch (carbohydrates) into maltose/sugars. Acts in the mouth and small intestine. (iii) Lipase: Secreted by the pancreas. Digests fats (lipids) into fatty acids and glycerol. Acts in the small intestine.",
+      "concepts": [
+        "digestive enzymes",
+        "alimentary canal",
+        "digestion"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SCI_CH5_Q007",
+      "chapter": 5,
+      "chapter_name": "Life Processes",
+      "part": "Biology",
+      "source": "MQP3_2025_26",
+      "section": "XII",
+      "marks": 1,
+      "type": "direct",
+      "difficulty": "easy",
+      "question": "Double circulation of the blood is essential to maintain constant temperature in mammals. How?",
+      "answer": "Double circulation allows more efficient supply of oxygen to the body cells. It ensures that oxygenated and deoxygenated blood are completely separated. This generates the extra energy needed to maintain constant (warm) body temperature in mammals.",
+      "concepts": [
+        "double circulation",
+        "mammals",
+        "constant temperature"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "SCI_CH5_Q008",
+      "chapter": 5,
+      "chapter_name": "Life Processes",
+      "part": "Biology",
+      "source": "MQP1_2025_26",
+      "section": "XV",
+      "marks": 4,
+      "type": "diagram",
+      "difficulty": "hard",
+      "question": "Draw a diagram showing the schematic sectional view of the human heart. Label the following parts: (i) Septum (ii) Right atrium",
+      "answer": "[Diagram required showing: Right atrium (RA), Right ventricle (RV), Left atrium (LA), Left ventricle (LV), Septum dividing right and left sides, Aorta, Pulmonary artery and veins, Vena cava, Valves.] Description: The heart has four chambers. The septum divides the right and left sides. The right atrium receives deoxygenated blood from the body. The left ventricle pumps oxygenated blood to the body through the aorta.",
+      "concepts": [
+        "heart structure",
+        "septum",
+        "atria",
+        "ventricles"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SCI_CH6_Q001",
+      "chapter": 6,
+      "chapter_name": "Control and Coordination",
+      "part": "Biology",
+      "source": "MQP3_2025_26",
+      "section": "XIII",
+      "marks": 2,
+      "type": "explanation",
+      "difficulty": "medium",
+      "question": "What is reflex arc? In many animals reflex arcs have been found an effective way of functioning. Why?",
+      "answer": "Reflex arc: The pathway through which the impulses of reflexes travel to set a response. It goes from receptor → sensory neuron → spinal cord → motor neuron → effector (muscle/gland). Why effective: Because the thinking process of the brain is not fast enough to respond quickly to sudden stimuli. Many animals have little complex neuron network for thinking. The reflex arc allows quick responses without brain involvement, which is faster and more efficient.",
+      "concepts": [
+        "reflex arc",
+        "nervous system",
+        "quick response"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SCI_CH6_Q002",
+      "chapter": 6,
+      "chapter_name": "Control and Coordination",
+      "part": "Biology",
+      "source": "MQP4_2025_26",
+      "section": "XIII",
+      "marks": 2,
+      "type": "application",
+      "difficulty": "medium",
+      "question": "What is geotropism? Name the plant part that is positively geotropic.",
+      "answer": "Geotropism: The movement of a plant part in response to gravity. Positive geotropism — movement towards gravity. Negative geotropism — movement away from gravity. Plant part that is positively geotropic: Roots (grow downward — towards gravity). Plant part that is negatively geotropic: Shoot/stem (grows upward — away from gravity).",
+      "concepts": [
+        "geotropism",
+        "tropism",
+        "plant movements",
+        "gravity"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SCI_CH6_Q003",
+      "chapter": 6,
+      "chapter_name": "Control and Coordination",
+      "part": "Biology",
+      "source": "MQP4_2025_26",
+      "section": "XIII",
+      "marks": 2,
+      "type": "application",
+      "difficulty": "medium",
+      "question": "Name the hormones that perform the following functions in humans: (i) Controlling the level of sugar in the blood. (ii) Preparing the body to face the emergency situation.",
+      "answer": "(i) Insulin — secreted by the pancreas. Controls blood sugar level by converting excess glucose to glycogen. Glucagon also from pancreas raises blood sugar. (ii) Adrenaline (epinephrine) — secreted by adrenal glands. Prepares the body for 'fight or flight' response. Increases heart rate, breathing rate, and blood flow to muscles.",
+      "concepts": [
+        "hormones",
+        "insulin",
+        "adrenaline",
+        "endocrine system"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SCI_CH6_Q004",
+      "chapter": 6,
+      "chapter_name": "Control and Coordination",
+      "part": "Biology",
+      "source": "MQP1_2025_26",
+      "section": "XII",
+      "marks": 1,
+      "type": "direct",
+      "difficulty": "medium",
+      "question": "Name the hormones that perform the following functions in humans: (i) Controlling the sugar level in the blood (ii) Preparing the body to deal with emergency situations (iii) Controlling the fats, proteins and carbohydrates metabolism",
+      "answer": "(i) Insulin (from pancreas) (ii) Adrenaline (from adrenal glands) (iii) Thyroxine (from thyroid gland) — controls metabolism of fats, proteins and carbohydrates. Also growth hormone from pituitary.",
+      "concepts": [
+        "hormones",
+        "endocrine system",
+        "metabolism"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SCI_CH6_Q005",
+      "chapter": 6,
+      "chapter_name": "Control and Coordination",
+      "part": "Biology",
+      "source": "MQP3_2025_26",
+      "section": "XI",
+      "marks": 1,
+      "type": "mcq",
+      "difficulty": "easy",
+      "question": "The plant hormone responsible for phototropism in plants is",
+      "options": [
+        "A) Auxin",
+        "B) Cytokinin",
+        "C) Abscisic acid",
+        "D) Gibberellin"
+      ],
+      "answer": "A) Auxin",
+      "concepts": [
+        "auxin",
+        "phototropism",
+        "plant hormones"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SCI_CH6_Q006",
+      "chapter": 6,
+      "chapter_name": "Control and Coordination",
+      "part": "Biology",
+      "source": "MQP3_2025_26",
+      "section": "XIV",
+      "marks": 3,
+      "type": "diagram",
+      "difficulty": "hard",
+      "question": "Draw the diagram to show the structure of the human brain. Label the following parts: (i) Hypothalamus (ii) Pons",
+      "answer": "[Diagram required showing: Cerebrum (largest part), Cerebellum (rear/lower), Brain stem (medulla oblongata + pons), Hypothalamus.] Hypothalamus: Located below the thalamus; controls body temperature, hunger, thirst, sleep, and hormonal regulation. Pons: Part of the brainstem; helps coordinate movements and relay signals between cerebrum and cerebellum.",
+      "concepts": [
+        "human brain",
+        "hypothalamus",
+        "pons",
+        "nervous system"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SCI_CH7_Q001",
+      "chapter": 7,
+      "chapter_name": "How Do Organisms Reproduce?",
+      "part": "Biology",
+      "source": "MQP3_2025_26",
+      "section": "XII",
+      "marks": 1,
+      "type": "direct",
+      "difficulty": "easy",
+      "question": "Is self-pollination possible in flowers that have only stamens? Justify your answer.",
+      "answer": "No, self-pollination is not possible in flowers that have only stamens. Because for self-pollination a flower must have both stamen (male) and pistil (female). A flower with only stamens is a unisexual (male) flower and lacks the pistil/stigma needed for self-pollination.",
+      "concepts": [
+        "self-pollination",
+        "unisexual flowers",
+        "stamens",
+        "pistil"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SCI_CH7_Q002",
+      "chapter": 7,
+      "chapter_name": "How Do Organisms Reproduce?",
+      "part": "Biology",
+      "source": "MQP2_2025_26",
+      "section": "XI",
+      "marks": 1,
+      "type": "mcq",
+      "difficulty": "medium",
+      "question": "Observe the figure below. The characteristic and function of the structure 'X' (spore of Rhizopus) are respectively",
+      "options": [
+        "A) Wall is absent and pollinates",
+        "B) It has a thick wall and grows into a new Rhizopus",
+        "C) It has a thin wall and grows into a new Rhizopus",
+        "D) It has a thick wall and pollinates"
+      ],
+      "answer": "B) It has a thick wall and grows into a new Rhizopus",
+      "concepts": [
+        "Rhizopus",
+        "asexual reproduction",
+        "spores"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "SCI_CH7_Q003",
+      "chapter": 7,
+      "chapter_name": "How Do Organisms Reproduce?",
+      "part": "Biology",
+      "source": "Board_QP_Exam2_83E",
+      "section": "XVI",
+      "marks": 5,
+      "type": "explanation",
+      "difficulty": "hard",
+      "question": "What is DNA replication? How does re-establishment of chromosome number occur in sexual reproduction?",
+      "answer": "DNA replication: During the interphase of cell division, the cellular DNA duplicates itself (makes an exact copy). This process is called DNA replication. Each daughter cell gets a complete copy of the DNA. Re-establishment of chromosome number: In sexual reproduction, gametes (eggs and sperms) are formed by meiosis — a special type of cell division that halves the chromosome number (n = haploid). When two gametes (each with n chromosomes) fuse during fertilisation, the resulting zygote has the full diploid number (2n) restored. This maintains the chromosome number constant across generations.",
+      "concepts": [
+        "DNA replication",
+        "meiosis",
+        "fertilisation",
+        "chromosome number"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SCI_CH7_Q004",
+      "chapter": 7,
+      "chapter_name": "How Do Organisms Reproduce?",
+      "part": "Biology",
+      "source": "Board_QP_Exam2_83E",
+      "section": "XVI",
+      "marks": 5,
+      "type": "explanation",
+      "difficulty": "hard",
+      "question": "What is placenta? What is its function? In human body, testes are located in scrotum outside the abdominal cavity. Why?",
+      "answer": "Placenta: A special tissue/disc-shaped structure that connects the developing embryo/foetus to the wall of the uterus in placental mammals. Function of placenta: (i) Provides nourishment (glucose, oxygen) from mother's blood to the foetus. (ii) Removes waste products (CO₂, urea) from foetus to mother's blood. (iii) Provides immune protection. (iv) Produces hormones during pregnancy. Testes in scrotum: Sperms are sensitive to temperature. The temperature inside the abdominal cavity is higher than the required temperature for sperm production. The scrotum is outside the abdominal cavity where the temperature is 2-3°C lower, which is optimal for sperm production and storage.",
+      "concepts": [
+        "placenta",
+        "foetal nutrition",
+        "scrotum",
+        "sperm production"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SCI_CH7_Q005",
+      "chapter": 7,
+      "chapter_name": "How Do Organisms Reproduce?",
+      "part": "Biology",
+      "source": "Board_QP_Exam1_83E",
+      "section": "XIV",
+      "marks": 3,
+      "type": "application",
+      "difficulty": "medium",
+      "question": "(a) Sexual type of reproduction leads to more variations. Justify. (b) In women's uterus the role of placenta is significant for the development of foetus.",
+      "answer": "(a) Sexual reproduction involves fusion of gametes from two different individuals. Gametes are formed by meiosis which creates new combinations of chromosomes. Random fertilisation further increases variety. Additionally, DNA copying during meiosis has small errors creating variations. These variations help species adapt to changing environments — survival advantage. (b) The placenta provides a large surface area for exchange of nutrients, oxygen, and waste products between mother's blood and foetus blood. It nourishes the foetus throughout development. Without placenta, the foetus cannot get nutrition or eliminate waste.",
+      "concepts": [
+        "sexual reproduction",
+        "variations",
+        "placenta",
+        "foetal development"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SCI_CH7_Q006",
+      "chapter": 7,
+      "chapter_name": "How Do Organisms Reproduce?",
+      "part": "Biology",
+      "source": "MQP1_2025_26",
+      "section": "XI",
+      "marks": 1,
+      "type": "mcq",
+      "difficulty": "easy",
+      "question": "A common bacterial infection that spreads through sexual contact in human beings is",
+      "options": [
+        "A) Gonorrhoea",
+        "B) AIDS",
+        "C) Hepatitis B",
+        "D) Warts"
+      ],
+      "answer": "A) Gonorrhoea",
+      "concepts": [
+        "STI",
+        "sexually transmitted infections",
+        "bacterial infection"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "SCI_CH8_Q001",
+      "chapter": 8,
+      "chapter_name": "Heredity",
+      "part": "Biology",
+      "source": "MQP3_2025_26",
+      "section": "XIV",
+      "marks": 3,
+      "type": "application",
+      "difficulty": "hard",
+      "question": "(a) Father only determines the sex of a child. Why? (b) Yellow seed producing pea plant (YY) is crossed with green seed producing plant (yy). Draw a checker board showing the results obtained in F₂ generation.",
+      "answer": "(a) Females have XX chromosomes. All males have XY chromosomes. Females can only give X chromosomes to gametes. Father (XY) can give either X or Y chromosome to gametes. If father gives X → XX (girl); if father gives Y → XY (boy). Since father has the ability to give X or Y chromosome, father alone determines the sex of the child. (b) F₁: YY × yy → All Yy (yellow seeds). F₁ × F₁: Yy × Yy. Checker board F₂: YY, Yy, Yy, yy. Phenotypic ratio: 3 yellow : 1 green. Genotypic ratio: 1YY : 2Yy : 1yy.",
+      "concepts": [
+        "sex determination",
+        "Mendelian genetics",
+        "checker board",
+        "F2 generation"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SCI_CH8_Q002",
+      "chapter": 8,
+      "chapter_name": "Heredity",
+      "part": "Biology",
+      "source": "MQP2_2025_26",
+      "section": "XIV",
+      "marks": 3,
+      "type": "application",
+      "difficulty": "hard",
+      "question": "Red flowering tall pea plant (TTRR) is hybridised with white flowering short pea plant (ttrr). Draw a checker board showing the results obtained in F₂ generation and write the ratio of types of plants.",
+      "answer": "P: TTRR × ttrr. F₁: All TtRr (tall, red — both dominant). F₁ × F₁: TtRr × TtRr. Gametes: TR, Tr, tR, tr (each parent produces 4 types). Checker board produces 16 combinations in F₂: 9 T_R_ (tall red) : 3 T_rr (tall white) : 3 ttR_ (short red) : 1 ttrr (short white). Ratio = 9:3:3:1.",
+      "concepts": [
+        "dihybrid cross",
+        "Mendel's law",
+        "F2 ratio",
+        "independent assortment"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SCI_CH8_Q003",
+      "chapter": 8,
+      "chapter_name": "Heredity",
+      "part": "Biology",
+      "source": "MQP1_2025_26",
+      "section": "XIV",
+      "marks": 3,
+      "type": "application",
+      "difficulty": "hard",
+      "question": "(a) Draw a checker board showing the determination of the sex of the male child in humans. OR (b) A red flowering pea plant (RR) is crossed with a white flowering pea plant (rr). Show the result of F₂ generation. Write the phenotypic ratio and genotypic ratio.",
+      "answer": "(a) Father: XY, Mother: XX. Gametes: Father gives X or Y; Mother gives only X. F₁: XX (girl) or XY (boy). 1:1 ratio of girls to boys. Male children receive Y chromosome from father. (b) F₁: RR × rr → all Rr (red, dominant). F₂ Rr × Rr: RR, Rr, Rr, rr. Phenotypic ratio = 3 red : 1 white. Genotypic ratio = 1RR : 2Rr : 1rr.",
+      "concepts": [
+        "sex determination",
+        "monohybrid cross",
+        "Mendel",
+        "phenotypic ratio"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SCI_CH8_Q004",
+      "chapter": 8,
+      "chapter_name": "Heredity",
+      "part": "Biology",
+      "source": "MQP4_2025_26",
+      "section": "XI",
+      "marks": 1,
+      "type": "mcq",
+      "difficulty": "medium",
+      "question": "Organisms that reproduce sexually are more likely to survive in their environment. Because in sexual reproduction these organisms",
+      "options": [
+        "A) do not produce any variations",
+        "B) will not have any errors during DNA replication",
+        "C) will have the same body structure in all generations",
+        "D) will have the maximum number of successful variations in the subsequent generations"
+      ],
+      "answer": "D) will have the maximum number of successful variations in the subsequent generations",
+      "concepts": [
+        "sexual reproduction",
+        "variations",
+        "survival advantage"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SCI_CH8_Q005",
+      "chapter": 8,
+      "chapter_name": "Heredity",
+      "part": "Biology",
+      "source": "MQP3_2025_26",
+      "section": "XII",
+      "marks": 1,
+      "type": "direct",
+      "difficulty": "easy",
+      "question": "What is DNA replication?",
+      "answer": "During interphase of cell division, the cellular DNA duplicates itself (makes an exact copy). This process is called DNA replication. It ensures that each daughter cell receives a complete copy of the genetic information.",
+      "concepts": [
+        "DNA replication",
+        "cell division",
+        "interphase"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "SCI_CH9_Q001",
+      "chapter": 9,
+      "chapter_name": "Light – Reflection and Refraction",
+      "part": "Physics",
+      "source": "MQP3_2025_26",
+      "section": "I",
+      "marks": 1,
+      "type": "mcq",
+      "difficulty": "easy",
+      "question": "A mirror produces erect and enlarged image of an object. Then the type of mirror and the nature of that image is respectively",
+      "options": [
+        "A) Convex mirror and virtual image",
+        "B) Concave mirror and real image",
+        "C) Convex mirror and real image",
+        "D) Concave mirror and virtual image"
+      ],
+      "answer": "D) Concave mirror and virtual image",
+      "concepts": [
+        "concave mirror",
+        "virtual image",
+        "erect image"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SCI_CH9_Q002",
+      "chapter": 9,
+      "chapter_name": "Light – Reflection and Refraction",
+      "part": "Physics",
+      "source": "MQP4_2025_26",
+      "section": "I",
+      "marks": 1,
+      "type": "mcq",
+      "difficulty": "easy",
+      "question": "The diameter of the reflecting surface of a spherical mirror is",
+      "options": [
+        "A) Pole of the mirror",
+        "B) Centre of curvature",
+        "C) Principal axis",
+        "D) Aperture"
+      ],
+      "answer": "D) Aperture",
+      "concepts": [
+        "spherical mirror",
+        "aperture",
+        "terminology"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "SCI_CH9_Q003",
+      "chapter": 9,
+      "chapter_name": "Light – Reflection and Refraction",
+      "part": "Physics",
+      "source": "MQP1_2025_26",
+      "section": "I",
+      "marks": 1,
+      "type": "mcq",
+      "difficulty": "easy",
+      "question": "The S I unit of potential difference is",
+      "options": [
+        "A) Volt (V)",
+        "B) Ampere (A)",
+        "C) Coulomb (C)",
+        "D) Ohm metre (Ωm)"
+      ],
+      "answer": "A) Volt (V)",
+      "concepts": [
+        "SI units",
+        "potential difference",
+        "volt"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SCI_CH9_Q004",
+      "chapter": 9,
+      "chapter_name": "Light – Reflection and Refraction",
+      "part": "Physics",
+      "source": "MQP1_2025_26",
+      "section": "I",
+      "marks": 1,
+      "type": "mcq",
+      "difficulty": "medium",
+      "question": "The reciprocal of focal length of lens is",
+      "options": [
+        "A) The power of lens",
+        "B) The radius of curvature of lens",
+        "C) Equal to sum of object distance and image distance",
+        "D) Equal to difference between object distance and image distance"
+      ],
+      "answer": "A) The power of lens",
+      "concepts": [
+        "power of lens",
+        "focal length",
+        "optics"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SCI_CH9_Q005",
+      "chapter": 9,
+      "chapter_name": "Light – Reflection and Refraction",
+      "part": "Physics",
+      "source": "MQP1_2025_26",
+      "section": "IV",
+      "marks": 3,
+      "type": "application",
+      "difficulty": "medium",
+      "question": "(a) State two laws of reflection of light. (b) What is magnification of mirror? What does the negative sign indicate in the magnification value?",
+      "answer": "(a) Laws of reflection: 1st Law: The angle of incidence equals the angle of reflection. 2nd Law: The incident ray, the reflected ray and the normal to the surface at the point of incidence — all lie in the same plane. (b) Magnification: Ratio of the size (height) of the image to the size (height) of the object. m = h'/h = -v/u. A negative sign in magnification indicates that the image formed is a real and inverted image.",
+      "concepts": [
+        "laws of reflection",
+        "magnification",
+        "real image",
+        "sign convention"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SCI_CH9_Q006",
+      "chapter": 9,
+      "chapter_name": "Light – Reflection and Refraction",
+      "part": "Physics",
+      "source": "Board_QP_Exam2_83E",
+      "section": "III",
+      "marks": 2,
+      "type": "explanation",
+      "difficulty": "medium",
+      "question": "State the laws of refraction of light.",
+      "answer": "Laws of Refraction (Snell's Law): 1st Law: The incident ray, the refracted ray and the normal to the interface of two media at the point of incidence — all lie in the same plane. 2nd Law: The ratio of the sine of the angle of incidence to the sine of the angle of refraction is constant for a given pair of media. sin i / sin r = n₂/n₁ = constant. This constant is called the refractive index.",
+      "concepts": [
+        "laws of refraction",
+        "Snell's law",
+        "refractive index"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SCI_CH9_Q007",
+      "chapter": 9,
+      "chapter_name": "Light – Reflection and Refraction",
+      "part": "Physics",
+      "source": "MQP2_2025_26",
+      "section": "V",
+      "marks": 4,
+      "type": "calculation",
+      "difficulty": "hard",
+      "question": "(a) An object is placed perpendicular to principal axis of a convex lens of focal length 20 cm. If the distance of image is to be 60 cm, then at what distance the object is to be placed from the lens? (b) The object distance and image distance of a lens are −30 cm and −10 cm respectively. Decide the type of lens and nature of image.",
+      "answer": "(a) f = 20 cm, v = 60 cm, u = ? Using lens formula: 1/f = 1/v − 1/u. 1/u = 1/v − 1/f = 1/60 − 1/20 = (1-3)/60 = -2/60. u = -30 cm. Object is placed 30 cm in front of lens. (b) u = -30 cm, v = -10 cm. 1/f = 1/v − 1/u = 1/(−10) − 1/(−30) = −1/10 + 1/30 = −3/30 + 1/30 = −2/30. f = −15 cm. Negative focal length → Concave lens. Virtual image formed on same side as object (v is negative).",
+      "concepts": [
+        "lens formula",
+        "convex lens",
+        "concave lens",
+        "image formation"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SCI_CH9_Q008",
+      "chapter": 9,
+      "chapter_name": "Light – Reflection and Refraction",
+      "part": "Physics",
+      "source": "MQP4_2025_26",
+      "section": "IV",
+      "marks": 3,
+      "type": "application",
+      "difficulty": "medium",
+      "question": "(a) State two laws of reflection of light. (b) What is the colour of danger signal lights? Why is that colour preferred?",
+      "answer": "(a) 1st Law: Angle of incidence = Angle of reflection. 2nd Law: Incident ray, reflected ray and normal at point of incidence all lie in the same plane. (b) Danger signals are Red colour. Red colour is preferred because it is scattered the least by fog, smoke or rain (it has the longest wavelength among visible light colours). So red light can be seen from the greatest distance even in adverse weather conditions.",
+      "concepts": [
+        "laws of reflection",
+        "red light",
+        "scattering",
+        "danger signals"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SCI_CH10_Q001",
+      "chapter": 10,
+      "chapter_name": "The Human Eye and the Colourful World",
+      "part": "Physics",
+      "source": "MQP3_2025_26",
+      "section": "III",
+      "marks": 2,
+      "type": "explanation",
+      "difficulty": "medium",
+      "question": "(a) Define the phenomenon of dispersion of light. (b) Which colours do H and M represent in the visible spectrum?",
+      "answer": "(a) Dispersion of light: The phenomenon in which a ray of white light splits into its seven constituent colours (VIBGYOR) when it passes through a glass prism. It occurs because different colours have different wavelengths and travel at different speeds in glass. (b) H — Red (longest wavelength, scattered least). M — Blue/Violet (shortest wavelength, scattered most). [Note: In context of spectrum representation, H typically represents the Red end and M the Violet end.] VIBGYOR: Violet, Indigo, Blue, Green, Yellow, Orange, Red.",
+      "concepts": [
+        "dispersion",
+        "prism",
+        "spectrum",
+        "VIBGYOR"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SCI_CH10_Q002",
+      "chapter": 10,
+      "chapter_name": "The Human Eye and the Colourful World",
+      "part": "Physics",
+      "source": "MQP2_2025_26",
+      "section": "III",
+      "marks": 2,
+      "type": "diagram",
+      "difficulty": "medium",
+      "question": "Draw a diagram of the experiment conducted by Newton to show the recombination of white light.",
+      "answer": "Newton's recombination experiment: Two prisms are placed with their refracting surfaces facing each other (second prism inverted relative to first). White light enters first prism → disperses into VIBGYOR spectrum. The spectrum enters the second prism → recombines back into white light. [Diagram: White light → Prism 1 → Spectrum → Prism 2 → White light on screen]",
+      "concepts": [
+        "Newton's experiment",
+        "recombination of white light",
+        "prism"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "SCI_CH10_Q003",
+      "chapter": 10,
+      "chapter_name": "The Human Eye and the Colourful World",
+      "part": "Physics",
+      "source": "MQP4_2025_26",
+      "section": "IV",
+      "marks": 3,
+      "type": "application",
+      "difficulty": "medium",
+      "question": "(a) What is the colour of danger signal lights? Why is that colour preferred? (b) Why does the sky appear blue?",
+      "answer": "(a) Red. Red is preferred because it has the longest wavelength and is scattered the least by fog, smoke and rain — it can be seen from great distances in adverse weather. (b) The sky appears blue due to scattering of light (Rayleigh scattering). Sunlight consists of all colours. Fine particles and gas molecules in the atmosphere scatter shorter wavelengths (blue, violet) more than longer wavelengths (red). Blue light is scattered in all directions reaching our eyes from the sky. Hence the sky appears blue.",
+      "concepts": [
+        "scattering of light",
+        "blue sky",
+        "red danger light",
+        "Rayleigh scattering"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SCI_CH10_Q004",
+      "chapter": 10,
+      "chapter_name": "The Human Eye and the Colourful World",
+      "part": "Physics",
+      "source": "MQP1_2025_26",
+      "section": "II",
+      "marks": 1,
+      "type": "direct",
+      "difficulty": "easy",
+      "question": "Why does the sun appear reddish at the time of sunrise and sunset?",
+      "answer": "At sunrise and sunset, the sun is near the horizon. Sunlight has to travel a greater distance through the atmosphere to reach our eyes. The shorter wavelengths (blue, green, violet) are scattered away. Only longer wavelengths (red, orange) reach our eyes. Hence the sun appears reddish at sunrise and sunset.",
+      "concepts": [
+        "sunrise sunset",
+        "scattering",
+        "red colour"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SCI_CH11_Q001",
+      "chapter": 11,
+      "chapter_name": "Electricity",
+      "part": "Physics",
+      "source": "MQP2_2025_26",
+      "section": "I",
+      "marks": 1,
+      "type": "mcq",
+      "difficulty": "easy",
+      "question": "The S I unit of electric current is",
+      "options": [
+        "A) Ampere (A)",
+        "B) Ohm (Ω)",
+        "C) Volt (V)",
+        "D) Watt (W)"
+      ],
+      "answer": "A) Ampere (A)",
+      "concepts": [
+        "SI units",
+        "electric current",
+        "ampere"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SCI_CH11_Q002",
+      "chapter": 11,
+      "chapter_name": "Electricity",
+      "part": "Physics",
+      "source": "MQP3_2025_26",
+      "section": "I",
+      "marks": 1,
+      "type": "mcq",
+      "difficulty": "easy",
+      "question": "The rate of energy consumed in an electrical circuit is, electric",
+      "options": [
+        "A) Current",
+        "B) Potential difference",
+        "C) Resistance",
+        "D) Power"
+      ],
+      "answer": "D) Power",
+      "concepts": [
+        "electric power",
+        "energy consumption",
+        "watt"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SCI_CH11_Q003",
+      "chapter": 11,
+      "chapter_name": "Electricity",
+      "part": "Physics",
+      "source": "MQP4_2025_26",
+      "section": "I",
+      "marks": 1,
+      "type": "mcq",
+      "difficulty": "medium",
+      "question": "When three resistors of different resistance are connected in parallel in an electric circuit, the quantity that remains the same in all the resistors is",
+      "options": [
+        "A) Current",
+        "B) Potential difference",
+        "C) Resistance",
+        "D) Resistivity"
+      ],
+      "answer": "B) Potential difference",
+      "concepts": [
+        "parallel circuit",
+        "potential difference",
+        "constant voltage"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SCI_CH11_Q004",
+      "chapter": 11,
+      "chapter_name": "Electricity",
+      "part": "Physics",
+      "source": "MQP1_2025_26",
+      "section": "III",
+      "marks": 2,
+      "type": "explanation",
+      "difficulty": "medium",
+      "question": "What precautionary measures have to be taken to avoid overload in domestic circuit?",
+      "answer": "Precautions to avoid overload: (i) Live and neutral wires in the circuit should not come in direct contact (short circuit prevention). (ii) Insulating coating on wires should not be damaged. (iii) No fault in the electrical appliances. (iv) Many appliances should not be connected to a single socket. (v) Using a fuse of the appropriate current rating in the electrical circuit. (vi) Using circuit breakers (MCBs). (Any four)",
+      "concepts": [
+        "domestic electric circuit",
+        "overloading",
+        "fuse",
+        "safety"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SCI_CH11_Q005",
+      "chapter": 11,
+      "chapter_name": "Electricity",
+      "part": "Physics",
+      "source": "MQP1_2025_26",
+      "section": "III",
+      "marks": 2,
+      "type": "explanation",
+      "difficulty": "medium",
+      "question": "Mention the factors on which resistance of a conductor depends.",
+      "answer": "Resistance of a conductor depends on: (i) Length of conductor (R ∝ l) — longer wire has more resistance. (ii) Area of cross-section of conductor (R ∝ 1/A) — thicker wire has less resistance. (iii) Nature of conductor — different materials have different resistivities. (iv) Temperature of conductor — resistance increases with temperature for metals.",
+      "concepts": [
+        "resistance",
+        "factors affecting resistance",
+        "Ohm's law"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SCI_CH11_Q006",
+      "chapter": 11,
+      "chapter_name": "Electricity",
+      "part": "Physics",
+      "source": "MQP2_2025_26",
+      "section": "V",
+      "marks": 4,
+      "type": "application",
+      "difficulty": "hard",
+      "question": "(a) State Joule's law of heating and name four appliances which work on the heating effect of electricity. (b) Give reason: (i) Tungsten is used almost exclusively for filament of electric lamps. (ii) Copper and aluminium wires are usually employed for electricity transmission.",
+      "answer": "(a) Joule's law: Heat produced in a resistor is directly proportional to: square of current (H ∝ I²), resistance for a given current (H ∝ R), and time for which current flows (H ∝ t). H = I²Rt. Appliances: Iron box (iron), Geyser, Oven, Toaster, Electric heater, Electric kettle. (b)(i) Tungsten has very high melting point (~3380°C) and high resistivity — it can withstand the extremely high temperatures needed to produce light without melting. (ii) Copper and aluminium are excellent conductors of electricity (low resistivity) — they allow current to flow with minimum energy loss as heat.",
+      "concepts": [
+        "Joule's law",
+        "heating effect",
+        "tungsten",
+        "electrical transmission"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SCI_CH11_Q007",
+      "chapter": 11,
+      "chapter_name": "Electricity",
+      "part": "Physics",
+      "source": "MQP2_2025_26",
+      "section": "V",
+      "marks": 4,
+      "type": "application",
+      "difficulty": "hard",
+      "question": "(a) State Ohm's law. List the factors on which the resistance of conductor depends. (b) 'The potential difference between two points is 1V.' Mention the meaning of this statement.",
+      "answer": "(a) Ohm's Law: The potential difference across the ends of a given metallic wire in an electric circuit is directly proportional to the current flowing through it at constant temperature. V ∝ I, or V = IR (R = constant). Factors affecting resistance: length, cross-sectional area, nature of conductor, temperature. (b) Potential difference of 1V between two points means: 1 joule of work is done in moving 1 coulomb of charge from one point to another. V = W/Q. 1V = 1J/1C.",
+      "concepts": [
+        "Ohm's law",
+        "potential difference",
+        "1 volt meaning"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SCI_CH11_Q008",
+      "chapter": 11,
+      "chapter_name": "Electricity",
+      "part": "Physics",
+      "source": "MQP4_2025_26",
+      "section": "V",
+      "marks": 4,
+      "type": "calculation",
+      "difficulty": "hard",
+      "question": "(a) Two resistors of resistance 10Ω and 40Ω are connected in series and connected to a 12V battery. Calculate the equivalent resistance and total current flowing. (b) A washing machine rated 500W is used for 2 hours a day for 30 days. Calculate the cost of using this appliance at Rs.3 per 1 kWh.",
+      "answer": "(a) Series: Rs = R₁ + R₂ = 10 + 40 = 50Ω. I = V/Rs = 12/50 = 0.24A. (b) Power = 500W = 0.5 kW. Energy per day = 0.5 × 2 = 1 kWh. Energy for 30 days = 30 kWh. Cost = 30 × 3 = Rs. 90.",
+      "concepts": [
+        "series resistance",
+        "Ohm's law",
+        "electrical energy cost"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SCI_CH11_Q009",
+      "chapter": 11,
+      "chapter_name": "Electricity",
+      "part": "Physics",
+      "source": "MQP3_2025_26",
+      "section": "V",
+      "marks": 4,
+      "type": "calculation",
+      "difficulty": "hard",
+      "question": "(a) Observe the diagram of the given electric circuit with 12Ω, 8Ω and 16Ω resistors in parallel combination plus 3Ω in series with a 9V battery. Find the total resistance and total current. (b) An electric fan rated 50W is used for 6 hours in a day. What is the cost of energy it consumes for 30 days at Rs.4 per 1kWh?",
+      "answer": "(a) Parallel combination of 12Ω, 8Ω, 16Ω: 1/Rp = 1/12 + 1/8 + 1/16 = 4/48 + 6/48 + 3/48 = 13/48. Rp = 48/13 ≈ 3.69Ω. Total R = Rp + 3 = 48/13 + 3 = (48+39)/13 = 87/13 ≈ 6.69Ω. I = V/R = 9/(87/13) = 9×13/87 = 117/87 ≈ 1.34A. (b) Energy per day = 50W × 6h = 300Wh = 0.3 kWh. For 30 days: 0.3 × 30 = 9 kWh. Cost = 9 × 4 = Rs. 36.",
+      "concepts": [
+        "parallel resistance",
+        "series-parallel",
+        "energy cost",
+        "calculation"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "SCI_CH11_Q010",
+      "chapter": 11,
+      "chapter_name": "Electricity",
+      "part": "Physics",
+      "source": "MQP2_2025_26",
+      "section": "III",
+      "marks": 2,
+      "type": "diagram",
+      "difficulty": "medium",
+      "question": "Draw a simple electric circuit. Label ammeter and voltmeter.",
+      "answer": "[Diagram: Battery/cell, switch, resistor connected in a loop. Ammeter (A) connected in series (to measure current). Voltmeter (V) connected in parallel across the resistor (to measure potential difference).] Key: Ammeter — series connection, low resistance. Voltmeter — parallel connection, high resistance.",
+      "concepts": [
+        "electric circuit",
+        "ammeter",
+        "voltmeter",
+        "circuit diagram"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SCI_CH11_Q011",
+      "chapter": 11,
+      "chapter_name": "Electricity",
+      "part": "Physics",
+      "source": "MQP2_2025_26",
+      "section": "III",
+      "marks": 2,
+      "type": "calculation",
+      "difficulty": "medium",
+      "question": "An electric motor receives 10A electric current from 220V electric source. Find the power of motor.",
+      "answer": "V = 220V, I = 10A. P = VI = 220 × 10 = 2200W = 2.2 kW.",
+      "concepts": [
+        "electric power",
+        "P=VI",
+        "calculation"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SCI_CH11_Q012",
+      "chapter": 11,
+      "chapter_name": "Electricity",
+      "part": "Physics",
+      "source": "MQP4_2025_26",
+      "section": "V",
+      "marks": 4,
+      "type": "calculation",
+      "difficulty": "hard",
+      "question": "(a) Resistance of a metal wire of length 2m is 28Ω at 20°C. If the diameter of the wire is 0.04mm, find the resistivity of the metal at that temperature. (b) 1000J of heat is produced each 2 seconds in a 5Ω resistor. Find the potential difference across the resistor.",
+      "answer": "(a) R = ρl/A. A = π(d/2)² = π(0.02×10⁻³)² = π × 4×10⁻¹⁰ = 12.57×10⁻¹⁰ m². ρ = RA/l = 28 × 12.57×10⁻¹⁰ / 2 = 1.76×10⁻⁷ Ωm. (b) H = I²Rt. 1000 = I² × 5 × 2. I² = 100. I = 10A. V = IR = 10 × 5 = 50V.",
+      "concepts": [
+        "resistivity",
+        "Joule's law",
+        "potential difference calculation"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "SCI_CH11_Q013",
+      "chapter": 11,
+      "chapter_name": "Electricity",
+      "part": "Physics",
+      "source": "MQP4_2025_26",
+      "section": "II",
+      "marks": 1,
+      "type": "direct",
+      "difficulty": "easy",
+      "question": "What are the reasons for overload in an electric circuit?",
+      "answer": "Reasons for overload: (i) Direct contact between live wire and neutral wire (short circuit). (ii) Accidental hike in the supplied voltage. (iii) Connecting too many appliances to a single socket. (iv) Faulty appliances or faulty connections.",
+      "concepts": [
+        "overloading",
+        "short circuit",
+        "domestic circuit"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SCI_CH12_Q001",
+      "chapter": 12,
+      "chapter_name": "Magnetic Effects of Electric Current",
+      "part": "Physics",
+      "source": "MQP2_2025_26",
+      "section": "I",
+      "marks": 1,
+      "type": "mcq",
+      "difficulty": "medium",
+      "question": "Observe the figure given below. The magnetic field at the centre 'C' of a circular coil carrying currents I₁ and I₂ in opposite directions is",
+      "options": [
+        "A) Zero",
+        "B) I₁",
+        "C) 2I₁",
+        "D) 2I₂"
+      ],
+      "answer": "A) Zero",
+      "concepts": [
+        "magnetic field",
+        "circular coil",
+        "opposing currents"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "SCI_CH12_Q002",
+      "chapter": 12,
+      "chapter_name": "Magnetic Effects of Electric Current",
+      "part": "Physics",
+      "source": "MQP2_2025_26",
+      "section": "II",
+      "marks": 1,
+      "type": "direct",
+      "difficulty": "easy",
+      "question": "Which mirror is used as rear view mirror?",
+      "answer": "Convex mirror is used as rear view mirror because it always forms a virtual, erect and diminished image. It gives a wider field of view, enabling the driver to see more of the traffic behind.",
+      "concepts": [
+        "convex mirror",
+        "rear view mirror",
+        "field of view"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SCI_CH12_Q003",
+      "chapter": 12,
+      "chapter_name": "Magnetic Effects of Electric Current",
+      "part": "Physics",
+      "source": "MQP1_2025_26",
+      "section": "II",
+      "marks": 1,
+      "type": "direct",
+      "difficulty": "medium",
+      "question": "Observe the figure showing a solenoid with switch. When switch is closed, does the B end of the solenoid attract the N end of the bar magnet? Clarify the answer.",
+      "answer": "No — the B end of the solenoid repels the N end of the bar magnet. When the switch is closed, the B end of the solenoid behaves like the N pole (by right-hand rule or given current direction). Since both N poles face each other, like poles repel.",
+      "concepts": [
+        "solenoid",
+        "magnetic poles",
+        "right-hand rule",
+        "repulsion"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "SCI_CH12_Q004",
+      "chapter": 12,
+      "chapter_name": "Magnetic Effects of Electric Current",
+      "part": "Physics",
+      "source": "MQP4_2025_26",
+      "section": "II",
+      "marks": 1,
+      "type": "direct",
+      "difficulty": "medium",
+      "question": "Two freely suspended parallel copper wires carry current. In which situation (same direction or opposite direction) do the wires attract each other? Justify.",
+      "answer": "Situation 1 — when currents flow in the same direction, the wires attract each other. When current flows in the same direction in both conductors, each conductor experiences a magnetic force towards the other conductor (attraction). The direction of force depends on the direction of current — same direction currents attract, opposite direction currents repel.",
+      "concepts": [
+        "parallel conductors",
+        "magnetic force",
+        "attraction/repulsion"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "SCI_CH12_Q005",
+      "chapter": 12,
+      "chapter_name": "Magnetic Effects of Electric Current",
+      "part": "Physics",
+      "source": "MQP4_2025_26",
+      "section": "I",
+      "marks": 1,
+      "type": "direct",
+      "difficulty": "easy",
+      "question": "What happens if the fuse is connected to the neutral wire instead of connecting to the live wire in the meter board of the house?",
+      "answer": "The appliances will remain live (at mains potential) even when the fuse blows. This can result in a fatal electric shock if someone touches the appliance. The electric equipment will be damaged as the fuse will not work to protect the circuit. The fuse should always be connected to the live wire for safety.",
+      "concepts": [
+        "fuse",
+        "live wire",
+        "neutral wire",
+        "electrical safety"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SCI_CH12_Q006",
+      "chapter": 12,
+      "chapter_name": "Magnetic Effects of Electric Current",
+      "part": "Physics",
+      "source": "MQP3_2025_26",
+      "section": "III",
+      "marks": 2,
+      "type": "explanation",
+      "difficulty": "medium",
+      "question": "How does the resistance of a conductor relate to (a) its length and (b) its area of cross-section?",
+      "answer": "(a) Resistance is directly proportional to the length of the conductor (R ∝ l). If the length doubles, resistance doubles. A longer wire offers more resistance because electrons have to travel farther through more collisions. (b) Resistance is inversely proportional to the area of cross-section (R ∝ 1/A). A thicker wire (larger area) has less resistance because more electrons can flow through at once. Formula: R = ρl/A",
+      "concepts": [
+        "resistance",
+        "length",
+        "cross-section area",
+        "resistivity"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SCI_CH12_Q007",
+      "chapter": 12,
+      "chapter_name": "Magnetic Effects of Electric Current",
+      "part": "Physics",
+      "source": "MQP4_2025_26",
+      "section": "IV",
+      "marks": 3,
+      "type": "explanation",
+      "difficulty": "medium",
+      "question": "(a) State two laws of reflection of light. (b) What is the colour of danger signal lights? Why is that colour preferred?",
+      "answer": "(a) Law 1: The angle of incidence equals the angle of reflection. Law 2: The incident ray, reflected ray and normal at point of incidence all lie in the same plane. (b) Red colour. Preferred because red has the longest wavelength and is scattered least by particles in the atmosphere (fog, smoke, rain). Red light can travel the longest distance and remain visible.",
+      "concepts": [
+        "laws of reflection",
+        "red colour",
+        "scattering"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "SCI_CH13_Q001",
+      "chapter": 13,
+      "chapter_name": "Our Environment",
+      "part": "Biology",
+      "source": "MQP4_2025_26",
+      "section": "XIV",
+      "marks": 3,
+      "type": "application",
+      "difficulty": "medium",
+      "question": "(a) What are biodegradable substances? (b) Which synthetic chemical is responsible for the depletion of the ozone layer? (c) Write two examples of decomposers.",
+      "answer": "(a) Biodegradable substances: Substances that can be broken down by biological processes (microorganisms) into simpler substances. Examples: food waste, paper, cow dung, dead plants and animals. (b) Chlorofluorocarbons (CFCs) — used in refrigerants and aerosols — are responsible for ozone layer depletion. (c) Decomposers: Bacteria and fungi. (e.g., Rhizobium, Penicillium, Aspergillus)",
+      "concepts": [
+        "biodegradable",
+        "ozone depletion",
+        "CFCs",
+        "decomposers"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SCI_CH13_Q002",
+      "chapter": 13,
+      "chapter_name": "Our Environment",
+      "part": "Biology",
+      "source": "MQP3_2025_26",
+      "section": "XIV",
+      "marks": 3,
+      "type": "application",
+      "difficulty": "medium",
+      "question": "(a) Grass → Frog → Snake; If the amount of energy in the first trophic level is about 100J, what is the amount of energy available for the organism at the third trophic level? (b) What are biodegradable substances? Give two examples.",
+      "answer": "(a) 10% law: Only 10% of energy is transferred from one trophic level to the next. 1st level (Grass) = 100J. 2nd level (Frog) = 10% of 100 = 10J. 3rd level (Snake) = 10% of 10 = 1J. Energy available for snake = 1J. (b) Biodegradable substances: Materials that can be broken down by microorganisms. Examples: dead leaves, vegetable peels, paper, cotton, wool.",
+      "concepts": [
+        "energy flow",
+        "trophic levels",
+        "10% law",
+        "biodegradable"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SCI_CH13_Q003",
+      "chapter": 13,
+      "chapter_name": "Our Environment",
+      "part": "Biology",
+      "source": "MQP1_2025_26",
+      "section": "XIV",
+      "marks": 3,
+      "type": "application",
+      "difficulty": "medium",
+      "question": "(a) What is biological magnification? (b) Write the full form of DDT. Why was the use of DDT discouraged?",
+      "answer": "(a) Biological magnification (biomagnification): The progressive increase in concentration of a harmful/toxic substance (like pesticides) in the bodies of organisms at successive higher trophic levels in a food chain. Organisms at higher trophic levels accumulate more toxins. (b) DDT: Dichlorodiphenyltrichloroethane. Use discouraged because: DDT is non-biodegradable; it accumulates in the food chain (biomagnification); it harms non-target organisms including birds and mammals; it persists in the environment for long periods causing ecological damage.",
+      "concepts": [
+        "biological magnification",
+        "DDT",
+        "food chain",
+        "pesticides"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SCI_CH13_Q004",
+      "chapter": 13,
+      "chapter_name": "Our Environment",
+      "part": "Biology",
+      "source": "MQP2_2025_26",
+      "section": "XI",
+      "marks": 1,
+      "type": "mcq",
+      "difficulty": "easy",
+      "question": "The function of stomata among the following is",
+      "options": [
+        "A) Exchange of gases",
+        "B) Transportation of water and food",
+        "C) Preparation of food",
+        "D) Establishing osmotic pressure"
+      ],
+      "answer": "A) Exchange of gases",
+      "concepts": [
+        "stomata",
+        "gas exchange",
+        "transpiration"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SCI_CH1_Q008",
+      "chapter": 1,
+      "chapter_name": "Chemical Reactions and Equations",
+      "part": "Chemistry",
+      "source": "LBA_2025",
+      "marks": 1,
+      "type": "mcq",
+      "difficulty": "easy",
+      "question": "The chemical reaction that is used in photography is",
+      "options": [
+        "A) Combination reaction",
+        "B) Displacement reaction",
+        "C) Decomposition reaction",
+        "D) Double displacement reaction"
+      ],
+      "answer": "C) Decomposition reaction",
+      "concepts": [
+        "photography",
+        "silver bromide"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "SCI_CH2_Q009",
+      "chapter": 2,
+      "chapter_name": "Acids, Bases and Salts",
+      "part": "Chemistry",
+      "source": "LBA_2025",
+      "marks": 1,
+      "type": "mcq",
+      "difficulty": "easy",
+      "question": "The substance used to remove permanent hardness of water is",
+      "options": [
+        "A) Baking soda",
+        "B) Washing soda",
+        "C) Bleaching powder",
+        "D) Common salt"
+      ],
+      "answer": "B) Washing soda",
+      "concepts": [
+        "washing soda",
+        "hardness of water"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SCI_CH3_Q009",
+      "chapter": 3,
+      "chapter_name": "Metals and Nonmetals",
+      "part": "Chemistry",
+      "source": "LBA_2025",
+      "marks": 1,
+      "type": "mcq",
+      "difficulty": "easy",
+      "question": "The metal which does not react with dilute HCl is",
+      "options": [
+        "A) Zinc",
+        "B) Iron",
+        "C) Copper",
+        "D) Aluminium"
+      ],
+      "answer": "C) Copper",
+      "concepts": [
+        "reactivity series",
+        "metal and HCl"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SCI_CH4_Q011",
+      "chapter": 4,
+      "chapter_name": "Carbon and Its Compounds",
+      "part": "Chemistry",
+      "source": "LBA_2025",
+      "marks": 1,
+      "type": "mcq",
+      "difficulty": "medium",
+      "question": "A property of carbon that is responsible for giving rise to large molecules is",
+      "options": [
+        "A) Tetravalency",
+        "B) Catenation",
+        "C) Inflammability",
+        "D) Allotropism"
+      ],
+      "answer": "B) Catenation",
+      "concepts": [
+        "catenation",
+        "carbon compounds"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SCI_CH5_Q009",
+      "chapter": 5,
+      "chapter_name": "Life Processes",
+      "part": "Biology",
+      "source": "LBA_2025",
+      "marks": 1,
+      "type": "mcq",
+      "difficulty": "easy",
+      "question": "The process by which green plants make their own food using sunlight is called",
+      "options": [
+        "A) Respiration",
+        "B) Transpiration",
+        "C) Photosynthesis",
+        "D) Nutrition"
+      ],
+      "answer": "C) Photosynthesis",
+      "concepts": [
+        "photosynthesis",
+        "autotrophic nutrition"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SCI_CH6_Q007",
+      "chapter": 6,
+      "chapter_name": "Control and Coordination",
+      "part": "Biology",
+      "source": "LBA_2025",
+      "marks": 1,
+      "type": "mcq",
+      "difficulty": "easy",
+      "question": "Which part of the brain controls balance and coordination of body movements?",
+      "options": [
+        "A) Cerebrum",
+        "B) Medulla",
+        "C) Hypothalamus",
+        "D) Cerebellum"
+      ],
+      "answer": "D) Cerebellum",
+      "concepts": [
+        "cerebellum",
+        "brain parts",
+        "balance"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SCI_CH7_Q007",
+      "chapter": 7,
+      "chapter_name": "How Do Organisms Reproduce?",
+      "part": "Biology",
+      "source": "LBA_2025",
+      "marks": 1,
+      "type": "mcq",
+      "difficulty": "easy",
+      "question": "The male reproductive organ of a flower is",
+      "options": [
+        "A) Pistil",
+        "B) Stigma",
+        "C) Stamen",
+        "D) Ovary"
+      ],
+      "answer": "C) Stamen",
+      "concepts": [
+        "flower parts",
+        "male reproductive organ"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "SCI_CH8_Q006",
+      "chapter": 8,
+      "chapter_name": "Heredity",
+      "part": "Biology",
+      "source": "LBA_2025",
+      "marks": 1,
+      "type": "direct",
+      "difficulty": "easy",
+      "question": "What are chromosomes?",
+      "answer": "Thread-like structures found in the nucleus containing DNA for inheritance. Human body cells have 46 chromosomes (23 pairs).",
+      "concepts": [
+        "chromosomes",
+        "DNA",
+        "heredity"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SCI_CH9_Q018",
+      "chapter": 9,
+      "chapter_name": "Light – Reflection and Refraction",
+      "part": "Physics",
+      "source": "LBA_2025",
+      "marks": 1,
+      "type": "direct",
+      "difficulty": "easy",
+      "question": "What is the refractive index of a medium? Write its formula.",
+      "answer": "n = c/v (speed of light in vacuum / speed in medium). Also n = sin i / sin r (Snell's Law).",
+      "concepts": [
+        "refractive index",
+        "Snell's law"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SCI_CH10_Q005",
+      "chapter": 10,
+      "chapter_name": "The Human Eye and the Colourful World",
+      "part": "Physics",
+      "source": "LBA_2025",
+      "marks": 1,
+      "type": "mcq",
+      "difficulty": "easy",
+      "question": "The defect of vision in which a person cannot see distant objects clearly is",
+      "options": [
+        "A) Hypermetropia",
+        "B) Myopia",
+        "C) Presbyopia",
+        "D) Astigmatism"
+      ],
+      "answer": "B) Myopia",
+      "concepts": [
+        "myopia",
+        "vision defects"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SCI_CH11_Q020",
+      "chapter": 11,
+      "chapter_name": "Electricity",
+      "part": "Physics",
+      "source": "LBA_2025",
+      "marks": 1,
+      "type": "mcq",
+      "difficulty": "easy",
+      "question": "According to Ohm's law, if the potential difference across a conductor is doubled, the current",
+      "options": [
+        "A) Becomes half",
+        "B) Remains same",
+        "C) Doubles",
+        "D) Becomes four times"
+      ],
+      "answer": "C) Doubles",
+      "concepts": [
+        "Ohm's law"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SCI_CH12_Q008",
+      "chapter": 12,
+      "chapter_name": "Magnetic Effects of Electric Current",
+      "part": "Physics",
+      "source": "LBA_2025",
+      "marks": 1,
+      "type": "mcq",
+      "difficulty": "easy",
+      "question": "A device that converts electrical energy into mechanical energy is",
+      "options": [
+        "A) Generator",
+        "B) Electric motor",
+        "C) Transformer",
+        "D) Galvanometer"
+      ],
+      "answer": "B) Electric motor",
+      "concepts": [
+        "electric motor",
+        "energy conversion"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SCI_CH13_Q005",
+      "chapter": 13,
+      "chapter_name": "Our Environment",
+      "part": "Biology",
+      "source": "LBA_2025",
+      "marks": 1,
+      "type": "mcq",
+      "difficulty": "easy",
+      "question": "Organisms that feed on dead and decaying organic matter are called",
+      "options": [
+        "A) Producers",
+        "B) Consumers",
+        "C) Decomposers",
+        "D) Parasites"
+      ],
+      "answer": "C) Decomposers",
+      "concepts": [
+        "decomposers",
+        "food chain"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SCI_CH1_Q009",
+      "chapter": 1,
+      "chapter_name": "Chemical Reactions and Equations",
+      "part": "Chemistry",
+      "source": "LBA_2025",
+      "marks": 2,
+      "type": "explanation",
+      "difficulty": "medium",
+      "question": "What is a redox reaction? Give one example.",
+      "answer": "A redox reaction involves simultaneous oxidation and reduction. Oxidation = loss of electrons. Reduction = gain of electrons. Example: CuO + H₂ → Cu + H₂O. CuO is reduced (loses O). H₂ is oxidised (gains O). Both occur simultaneously.",
+      "concepts": [
+        "redox reaction",
+        "oxidation",
+        "reduction"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SCI_CH2_Q010",
+      "chapter": 2,
+      "chapter_name": "Acids, Bases and Salts",
+      "part": "Chemistry",
+      "source": "LBA_2025",
+      "marks": 2,
+      "type": "explanation",
+      "difficulty": "medium",
+      "question": "What is pH? Why is it important in daily life?",
+      "answer": "pH measures hydrogen ion concentration. Scale 0-14. pH<7 = acidic, pH=7 = neutral, pH>7 = basic. Importance: Stomach acid pH 1.5-3.5. Tooth decay starts at pH<5.5. Acid rain pH<5.6. Blood pH must remain 7.35-7.45. Soil pH affects crop growth.",
+      "concepts": [
+        "pH scale",
+        "importance in daily life"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SCI_CH3_Q010",
+      "chapter": 3,
+      "chapter_name": "Metals and Nonmetals",
+      "part": "Chemistry",
+      "source": "LBA_2025",
+      "marks": 2,
+      "type": "explanation",
+      "difficulty": "medium",
+      "question": "What is the reactivity series of metals? What is its importance?",
+      "answer": "Reactivity series: K>Na>Ca>Mg>Al>Zn>Fe>Sn>Pb>H>Cu>Hg>Ag>Au>Pt. Importance: Predicts reactions with acids/water. More reactive metal displaces less reactive from salt solution. Helps in extraction. Determines uses of metals.",
+      "concepts": [
+        "reactivity series",
+        "metals",
+        "importance"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SCI_CH4_Q012",
+      "chapter": 4,
+      "chapter_name": "Carbon and Its Compounds",
+      "part": "Chemistry",
+      "source": "LBA_2025",
+      "marks": 2,
+      "type": "explanation",
+      "difficulty": "medium",
+      "question": "What is a homologous series? Give an example.",
+      "answer": "A series with same general formula, similar chemical properties, differing by CH₂ group. Example — Alkanes: CH₄, C₂H₆, C₃H₈, C₄H₁₀. General formula CₙH₂ₙ₊₂. Properties vary gradually.",
+      "concepts": [
+        "homologous series",
+        "alkanes"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SCI_CH5_Q010",
+      "chapter": 5,
+      "chapter_name": "Life Processes",
+      "part": "Biology",
+      "source": "LBA_2025",
+      "marks": 2,
+      "type": "explanation",
+      "difficulty": "medium",
+      "question": "What is transpiration? What are its advantages to plants?",
+      "answer": "Transpiration: Loss of water as vapour through leaves (mainly through stomata). Advantages: Creates transpirational pull — helps water move upward from roots. Cools the plant. Helps absorption of mineral salts. Maintains water balance. Contributes to water cycle.",
+      "concepts": [
+        "transpiration",
+        "advantages",
+        "transpirational pull"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SCI_CH6_Q008",
+      "chapter": 6,
+      "chapter_name": "Control and Coordination",
+      "part": "Biology",
+      "source": "LBA_2025",
+      "marks": 2,
+      "type": "explanation",
+      "difficulty": "medium",
+      "question": "What are plant hormones? Name four plant hormones and their functions.",
+      "answer": "Plant hormones regulate growth and development. 1. Auxin — cell elongation; phototropism. 2. Gibberellin — stem elongation, seed germination, flowering. 3. Cytokinin — cell division, delays leaf aging. 4. Abscisic acid (ABA) — inhibits growth, causes dormancy, closes stomata in drought.",
+      "concepts": [
+        "plant hormones",
+        "auxin",
+        "gibberellin",
+        "cytokinin",
+        "ABA"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SCI_CH7_Q008",
+      "chapter": 7,
+      "chapter_name": "How Do Organisms Reproduce?",
+      "part": "Biology",
+      "source": "LBA_2025",
+      "marks": 2,
+      "type": "explanation",
+      "difficulty": "medium",
+      "question": "What are the advantages of sexual reproduction over asexual reproduction?",
+      "answer": "Sexual reproduction: Creates genetic diversity from two parents. Variations help species adapt to changing environments. Natural selection improves species. Harmful mutations can be eliminated. Allows evolution of new species. Asexual reproduction produces identical clones with less variation and adaptability.",
+      "concepts": [
+        "sexual vs asexual",
+        "advantages",
+        "variation",
+        "evolution"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "SCI_CH8_Q007",
+      "chapter": 8,
+      "chapter_name": "Heredity",
+      "part": "Biology",
+      "source": "LBA_2025",
+      "marks": 2,
+      "type": "explanation",
+      "difficulty": "medium",
+      "question": "What is the difference between dominant and recessive traits? Give one example.",
+      "answer": "Dominant: Appears in F₁ when pure-breeding organisms with different traits cross. Denoted by capital letter (T=tall). Recessive: Suppressed in F₁, reappears in F₂ in 25% offspring. Denoted by small letter (t=dwarf). Example: Tall (TT)×Dwarf (tt): F₁ all Tt (tall dominant). F₂: 3 tall:1 dwarf.",
+      "concepts": [
+        "dominant",
+        "recessive",
+        "Mendel"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SCI_CH10_Q006",
+      "chapter": 10,
+      "chapter_name": "The Human Eye and the Colourful World",
+      "part": "Physics",
+      "source": "LBA_2025",
+      "marks": 2,
+      "type": "explanation",
+      "difficulty": "medium",
+      "question": "What is myopia? How can it be corrected?",
+      "answer": "Myopia (short-sightedness): Cannot see distant objects clearly. Cause: Eyeball too long OR lens too convex — image forms in front of retina. Correction: Concave (diverging) lens of appropriate focal length. Concave lens diverges rays so image falls on retina.",
+      "concepts": [
+        "myopia",
+        "concave lens",
+        "correction"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SCI_CH11_Q021",
+      "chapter": 11,
+      "chapter_name": "Electricity",
+      "part": "Physics",
+      "source": "LBA_2025",
+      "marks": 2,
+      "type": "calculation",
+      "difficulty": "medium",
+      "question": "A wire of resistance 20Ω is bent into a circle. What is the effective resistance between two points at the ends of a diameter?",
+      "answer": "Each half = 10Ω. Two halves in parallel. 1/R = 1/10 + 1/10 = 2/10. R = 5Ω.",
+      "concepts": [
+        "parallel resistance",
+        "wire bent into circle"
+      ],
+      "board_frequency": "medium"
+    },
+    {
+      "id": "SCI_CH12_Q009",
+      "chapter": 12,
+      "chapter_name": "Magnetic Effects of Electric Current",
+      "part": "Physics",
+      "source": "LBA_2025",
+      "marks": 2,
+      "type": "explanation",
+      "difficulty": "medium",
+      "question": "State Fleming's Left-Hand Rule. Mention its application.",
+      "answer": "Stretch thumb, forefinger and middle finger of left hand mutually perpendicular. Forefinger = magnetic field direction. Middle finger = current direction. Thumb = direction of force/motion of conductor. Application: Determines force on current-carrying conductor in magnetic field — used in electric motors.",
+      "concepts": [
+        "Fleming's left-hand rule",
+        "force on conductor",
+        "electric motor"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SCI_CH13_Q006",
+      "chapter": 13,
+      "chapter_name": "Our Environment",
+      "part": "Biology",
+      "source": "LBA_2025",
+      "marks": 2,
+      "type": "explanation",
+      "difficulty": "medium",
+      "question": "What is an ecosystem? Give two examples.",
+      "answer": "Ecosystem: Community of living organisms (biotic — plants, animals, microorganisms) interacting with each other and non-living (abiotic — air, water, soil, temperature, sunlight) components. Examples: 1. Forest ecosystem. 2. Pond ecosystem. Maintains energy flow through food chains and nutrient cycling.",
+      "concepts": [
+        "ecosystem",
+        "biotic",
+        "abiotic"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SCI_CH5_Q011",
+      "chapter": 5,
+      "chapter_name": "Life Processes",
+      "part": "Biology",
+      "source": "LBA_2025",
+      "marks": 2,
+      "type": "explanation",
+      "difficulty": "medium",
+      "question": "What is the difference between aerobic and anaerobic respiration?",
+      "answer": "Aerobic: With oxygen. C₆H₁₂O₆+6O₂→6CO₂+6H₂O+38ATP. More energy. In mitochondria. Anaerobic: Without oxygen. Yeast: glucose→ethanol+CO₂+2ATP. Muscles: glucose→lactic acid+2ATP. Less energy. In cytoplasm.",
+      "concepts": [
+        "aerobic",
+        "anaerobic respiration",
+        "ATP"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SCI_CH1_Q010",
+      "chapter": 1,
+      "chapter_name": "Chemical Reactions and Equations",
+      "part": "Chemistry",
+      "source": "LBA_2025",
+      "marks": 3,
+      "type": "explanation",
+      "difficulty": "medium",
+      "question": "List out the five types of chemical reactions with one example each.",
+      "answer": "1. Combination: 2Mg+O₂→2MgO. 2. Decomposition: 2H₂O→2H₂+O₂. 3. Displacement: Zn+CuSO₄→ZnSO₄+Cu. 4. Double displacement: Na₂SO₄+BaCl₂→BaSO₄+2NaCl. 5. Redox: CuO+H₂→Cu+H₂O.",
+      "concepts": [
+        "types of reactions"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SCI_CH2_Q011",
+      "chapter": 2,
+      "chapter_name": "Acids, Bases and Salts",
+      "part": "Chemistry",
+      "source": "LBA_2025",
+      "marks": 3,
+      "type": "explanation",
+      "difficulty": "medium",
+      "question": "What are olfactory indicators? How do acids and bases affect them? Give two examples.",
+      "answer": "Olfactory indicators: Substances whose smell changes in presence of acid or base. Examples: 1. Onion: Retains smell in acid. Smell disappears in base (NaOH). 2. Vanilla essence: Retained in acid, disappears in base. How they work: Active compounds react with bases, altering molecular structure and changing smell. Useful for people with colour blindness.",
+      "concepts": [
+        "olfactory indicators",
+        "onion",
+        "vanilla"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "SCI_CH3_Q011",
+      "chapter": 3,
+      "chapter_name": "Metals and Nonmetals",
+      "part": "Chemistry",
+      "source": "LBA_2025",
+      "marks": 3,
+      "type": "explanation",
+      "difficulty": "medium",
+      "question": "What is electrolytic refining? Explain with description for copper refining.",
+      "answer": "Electrolytic refining: Obtaining highly pure metals from impure metals using electrolysis. Copper refining: Anode = impure copper (blister copper). Cathode = pure copper strip. Electrolyte = acidified CuSO₄ solution. Process: Anode dissolves (Cu→Cu²⁺+2e⁻). Cu²⁺ ions migrate to cathode. Cathode deposits pure copper (Cu²⁺+2e⁻→Cu). Impurities settle as anode mud (gold, silver). 99.9% pure copper obtained.",
+      "concepts": [
+        "electrolytic refining",
+        "copper",
+        "electrolysis"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SCI_CH4_Q013",
+      "chapter": 4,
+      "chapter_name": "Carbon and Its Compounds",
+      "part": "Chemistry",
+      "source": "LBA_2025",
+      "marks": 3,
+      "type": "explanation",
+      "difficulty": "medium",
+      "question": "Write any three differences between soaps and detergents.",
+      "answer": "1. Chemical nature: Soaps = salts of long-chain fatty acids. Detergents = salts of sulphonic acids. 2. Hard water: Soaps don't work well (form scum with Ca²⁺, Mg²⁺). Detergents work in hard water. 3. Biodegradability: Soaps are biodegradable. Some detergents are non-biodegradable, causing water pollution. 4. Raw material: Soaps from natural fats/oils. Detergents from petroleum. 5. pH: Soaps mildly alkaline; some detergents neutral.",
+      "concepts": [
+        "soaps vs detergents",
+        "hard water",
+        "biodegradable"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SCI_CH5_Q012",
+      "chapter": 5,
+      "chapter_name": "Life Processes",
+      "part": "Biology",
+      "source": "LBA_2025",
+      "marks": 3,
+      "type": "explanation",
+      "difficulty": "medium",
+      "question": "Explain the process of nutrition in Amoeba (holozoic nutrition).",
+      "answer": "Holozoic nutrition steps: 1. Ingestion: Amoeba engulfs food by extending pseudopodia. Food enclosed in food vacuole. 2. Digestion: Digestive enzymes secreted into food vacuole — intracellular digestion. 3. Absorption: Digested food absorbed into cytoplasm. 4. Assimilation: Used for energy and body building. 5. Egestion: Undigested waste expelled through cell membrane. No fixed opening for ingestion or egestion.",
+      "concepts": [
+        "Amoeba",
+        "holozoic nutrition",
+        "pseudopodia"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "SCI_CH6_Q009",
+      "chapter": 6,
+      "chapter_name": "Control and Coordination",
+      "part": "Biology",
+      "source": "LBA_2025",
+      "marks": 3,
+      "type": "explanation",
+      "difficulty": "hard",
+      "question": "Explain the structure and function of the neuron (nerve cell).",
+      "answer": "Neuron: Structural and functional unit of nervous system. Structure: Cell body (cyton) — nucleus and cytoplasm. Dendrites — short branched projections that receive impulses. Axon — long single projection carrying impulse away from cell body. Myelin sheath — protective covering. Nodes of Ranvier — gaps in myelin. Axon terminal (synaptic knob) — connects to next neuron. Function: Dendrites receive → cell body → axon → axon terminal. Synapse: Junction using neurotransmitters. Sensory neurons (receptor→brain), Motor neurons (brain→effector), Interneurons (connecting).",
+      "concepts": [
+        "neuron",
+        "structure",
+        "dendrites",
+        "axon",
+        "synapse"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SCI_CH7_Q009",
+      "chapter": 7,
+      "chapter_name": "How Do Organisms Reproduce?",
+      "part": "Biology",
+      "source": "LBA_2025",
+      "marks": 3,
+      "type": "explanation",
+      "difficulty": "medium",
+      "question": "What are the different methods of asexual reproduction in plants? Explain any two with examples.",
+      "answer": "Methods: 1. Vegetative propagation: Using vegetative parts. Cutting — rose, sugarcane. Layering — jasmine. Grafting — mango. 2. Budding: Yeast cells — bud grows and separates. 3. Fragmentation: Spirogyra breaks into fragments. 4. Spore formation: Rhizopus, ferns, mosses. 5. Tissue culture: Orchids, bananas, potatoes in laboratory.",
+      "concepts": [
+        "asexual reproduction",
+        "vegetative propagation",
+        "spores"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "SCI_CH8_Q008",
+      "chapter": 8,
+      "chapter_name": "Heredity",
+      "part": "Biology",
+      "source": "LBA_2025",
+      "marks": 3,
+      "type": "explanation",
+      "difficulty": "hard",
+      "question": "Explain Mendel's Law of Segregation with an example.",
+      "answer": "Law of Segregation: When a pair of alleles are brought together in a hybrid, they do not mix but remain separate. During gamete formation, alleles segregate so each gamete receives only one allele. Example: Tall (TT)×Dwarf (tt) pea plant. F₁: All Tt (tall dominant). Gametes of F₁: T and t (not mixed). F₂ Tt×Tt: TT, Tt, Tt, tt → 3 tall:1 dwarf. Dwarf trait (t) present but hidden in F₁ — segregated and reappeared in F₂. Proves alleles remain pure and do not blend.",
+      "concepts": [
+        "Mendel",
+        "law of segregation",
+        "purity of gametes",
+        "F2"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SCI_CH9_Q020",
+      "chapter": 9,
+      "chapter_name": "Light – Reflection and Refraction",
+      "part": "Physics",
+      "source": "LBA_2025",
+      "marks": 3,
+      "type": "explanation",
+      "difficulty": "medium",
+      "question": "Describe the image formed by a concave mirror when an object is placed (a) at the centre of curvature C and (b) between F and C.",
+      "answer": "(a) Object at C: Image formed at C itself. Real, inverted, same size (m=−1). (b) Object between F and C: Image formed beyond C. Real, inverted, enlarged (m<−1, magnified). Use: Between F and C used in projectors, searchlights.",
+      "concepts": [
+        "concave mirror",
+        "image formation",
+        "centre of curvature"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SCI_CH10_Q007",
+      "chapter": 10,
+      "chapter_name": "The Human Eye and the Colourful World",
+      "part": "Physics",
+      "source": "LBA_2025",
+      "marks": 3,
+      "type": "explanation",
+      "difficulty": "medium",
+      "question": "What is hypermetropia? Explain its cause and correction.",
+      "answer": "Hypermetropia (Long-sightedness): Cannot see nearby objects clearly. Cause: Eyeball too short OR lens too thin/flat — image of nearby objects forms behind retina. Correction: Convex (converging) lens. Convex lens converges diverging rays from nearby objects, making image fall on retina.",
+      "concepts": [
+        "hypermetropia",
+        "convex lens",
+        "correction"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SCI_CH11_Q022",
+      "chapter": 11,
+      "chapter_name": "Electricity",
+      "part": "Physics",
+      "source": "LBA_2025",
+      "marks": 3,
+      "type": "calculation",
+      "difficulty": "hard",
+      "question": "Three resistors of 2Ω, 3Ω and 6Ω are connected in parallel. What is the equivalent resistance? If connected to a 12V battery, find current drawn.",
+      "answer": "1/Rp = 1/2 + 1/3 + 1/6 = 3/6+2/6+1/6 = 6/6 = 1. Rp = 1Ω. I = V/R = 12/1 = 12A.",
+      "concepts": [
+        "parallel resistors",
+        "equivalent resistance",
+        "current"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SCI_CH12_Q010",
+      "chapter": 12,
+      "chapter_name": "Magnetic Effects of Electric Current",
+      "part": "Physics",
+      "source": "LBA_2025",
+      "marks": 3,
+      "type": "explanation",
+      "difficulty": "medium",
+      "question": "What is electromagnetic induction? State Faraday's law of electromagnetic induction.",
+      "answer": "Electromagnetic induction: Production of EMF in a conductor when placed in a changing magnetic field or when there is relative motion between conductor and magnet. Faraday's Laws: 1st Law: When magnetic flux changes, EMF is induced. 2nd Law: Induced EMF ∝ rate of change of magnetic flux. E = −NΔΦ/Δt. Application: Used in electric generators to convert mechanical energy to electrical energy.",
+      "concepts": [
+        "electromagnetic induction",
+        "Faraday's law",
+        "generator"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SCI_CH13_Q007",
+      "chapter": 13,
+      "chapter_name": "Our Environment",
+      "part": "Biology",
+      "source": "LBA_2025",
+      "marks": 3,
+      "type": "explanation",
+      "difficulty": "medium",
+      "question": "What is ozone layer? Why is it important? What causes its depletion?",
+      "answer": "Ozone layer: Layer of O₃ molecules in stratosphere (15-35 km above Earth). Importance: Absorbs harmful UV radiation. Protects from skin cancer, cataracts, immune suppression. Protects plants' photosynthesis. Causes of depletion: CFCs used in refrigerators, ACs, aerosols. Halons in fire extinguishers. Nitrogen oxides from aircraft. Cl atoms from CFCs react with O₃, destroying it. Montreal Protocol (1987) — international agreement to phase out CFCs.",
+      "concepts": [
+        "ozone layer",
+        "UV radiation",
+        "CFCs",
+        "Montreal Protocol"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SCI_CH1_Q011",
+      "chapter": 1,
+      "chapter_name": "Chemical Reactions and Equations",
+      "part": "Chemistry",
+      "source": "LBA_2025",
+      "marks": 4,
+      "type": "application",
+      "difficulty": "hard",
+      "question": "(a) What is corrosion? Explain the conditions for rusting of iron. (b) Name four methods to prevent corrosion.",
+      "answer": "(a) Corrosion: Gradual destruction of metals by chemical reaction with environment. Rusting conditions (experiment): Test tube 1 — nail in water+air → rusts. Test tube 2 — nail in boiled water sealed with oil (no air) → doesn't rust. Test tube 3 — nail with dry CaCl₂ (no moisture), dry air → doesn't rust. Both water AND oxygen are necessary for rusting. (b) Prevention: Painting. Oiling and greasing. Galvanisation (zinc coating). Electroplating. Anodisation. Chrome plating. Alloying (stainless steel). Tinning.",
+      "concepts": [
+        "corrosion",
+        "rusting",
+        "conditions",
+        "prevention"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SCI_CH2_Q012",
+      "chapter": 2,
+      "chapter_name": "Acids, Bases and Salts",
+      "part": "Chemistry",
+      "source": "LBA_2025",
+      "marks": 4,
+      "type": "application",
+      "difficulty": "hard",
+      "question": "(a) What is the chlor-alkali process? Write the products and their uses. (b) Write the chemical name, molecular formula and uses of Plaster of Paris.",
+      "answer": "(a) Chlor-alkali process: Electrolysis of brine. 2NaCl(aq)+2H₂O→2NaOH(aq)+Cl₂(g)+H₂(g). Products: NaOH — soap, paper, textile industries. Cl₂ — water purification, bleaching powder, PVC. H₂ — fuel, margarine, ammonia. (b) Plaster of Paris: Chemical name = Calcium sulphate hemihydrate. Formula = CaSO₄.½H₂O. Made by heating gypsum at 100°C. Uses: Setting broken bones in casts. Statues, decorations. Fireproofing. Dental work. Building construction.",
+      "concepts": [
+        "chlor-alkali",
+        "NaOH",
+        "chlorine",
+        "Plaster of Paris"
+      ],
+      "board_frequency": "high"
+    },
+    {
+      "id": "SCI_CH3_Q012",
+      "chapter": 3,
+      "chapter_name": "Metals and Nonmetals",
+      "part": "Chemistry",
+      "source": "LBA_2025",
+      "marks": 4,
+      "type": "application",
+      "difficulty": "hard",
+      "question": "(a) Explain the extraction of metals — with reference to highly reactive and moderately reactive metals. (b) What is an alloy? Give two examples with compositions and uses.",
+      "answer": "(a) Highly reactive metals (K,Na,Ca,Mg,Al): Cannot be reduced by coke. Extracted by electrolysis. Al from bauxite by Hall-Heroult process. Moderately reactive (Zn,Fe,Pb,Cu): Ores smelted with coke. ZnO+C→Zn+CO. Roasting then reduction. Less reactive (Hg,Ag,Au): Heated alone or mild reduction. (b) Alloy = homogeneous mixture of metals. Brass = copper(70%)+zinc(30%) — electrical fittings, musical instruments. Stainless steel = iron+carbon+chromium+nickel — utensils, surgical instruments.",
+      "concepts": [
+        "extraction of metals",
+        "electrolysis",
+        "alloy",
+        "brass",
+        "stainless steel"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SCI_CH4_Q014",
+      "chapter": 4,
+      "chapter_name": "Carbon and Its Compounds",
+      "part": "Chemistry",
+      "source": "LBA_2025",
+      "marks": 4,
+      "type": "application",
+      "difficulty": "hard",
+      "question": "(a) What are the functional groups of alcohol, aldehyde, carboxylic acid? Give general formula. (b) What is ethanol? Write its properties and uses.",
+      "answer": "(a) Alcohol: -OH group. CₙH₂ₙ₊₁OH. Aldehyde: -CHO group. CₙH₂ₙO. Carboxylic acid: -COOH group. CₙH₂ₙO₂. (b) Ethanol C₂H₅OH: Properties: Colourless liquid. Sweet smell. BP 78.4°C. Soluble in water. Burns with clean blue flame. Reacts with Na to give H₂. Oxidized to ethanoic acid. Uses: Alcoholic beverages. Solvent in pharmaceuticals, perfumes. Biofuel. Manufacturing vinegar, rubber, dyes. Antiseptic.",
+      "concepts": [
+        "functional groups",
+        "ethanol",
+        "properties",
+        "uses"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SCI_CH5_Q013",
+      "chapter": 5,
+      "chapter_name": "Life Processes",
+      "part": "Biology",
+      "source": "LBA_2025",
+      "marks": 4,
+      "type": "explanation",
+      "difficulty": "hard",
+      "question": "Explain the structure and function of the human excretory system.",
+      "answer": "Human Excretory System removes nitrogenous waste (urea). Organs: Kidneys (pair): Main excretory organs. Each has ~1 million nephrons. Nephron structure: Bowman's capsule surrounds glomerulus (capillary tuft). Glomerular filtration: Blood filtered under pressure → filtrate enters Bowman's capsule. Renal tubule: Selective reabsorption of glucose, amino acids, water, Na⁺. Collecting duct: Final concentration of urine. Functions: Filtration of blood. Osmoregulation — controls water balance. Maintains blood pressure. Removes excess salts. Ureters: Carry urine from kidneys to urinary bladder. Urinary bladder: Stores urine. Urethra: Expels urine.",
+      "concepts": [
+        "excretory system",
+        "kidney",
+        "nephron",
+        "filtration",
+        "urine"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SCI_CH6_Q010",
+      "chapter": 6,
+      "chapter_name": "Control and Coordination",
+      "part": "Biology",
+      "source": "LBA_2025",
+      "marks": 4,
+      "type": "diagram",
+      "difficulty": "hard",
+      "question": "Draw a labelled diagram of human brain. Describe the functions of (a) cerebrum (b) cerebellum (c) medulla oblongata.",
+      "answer": "[Diagram: Cerebrum (large upper), Cerebellum (lower rear), Brain stem (medulla+pons).] (a) Cerebrum: Thinking, memory, intelligence, speech, voluntary movement, emotions. Processes sensory information. (b) Cerebellum: Controls balance, posture, coordination of muscle movements. Ensures smooth, coordinated movements. (c) Medulla oblongata: Controls involuntary functions — heart rate, breathing, swallowing, blood pressure, coughing, sneezing.",
+      "concepts": [
+        "human brain",
+        "cerebrum",
+        "cerebellum",
+        "medulla"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SCI_CH7_Q010",
+      "chapter": 7,
+      "chapter_name": "How Do Organisms Reproduce?",
+      "part": "Biology",
+      "source": "LBA_2025",
+      "marks": 4,
+      "type": "explanation",
+      "difficulty": "hard",
+      "question": "Describe the menstrual cycle and explain what happens if egg is fertilized or not fertilized.",
+      "answer": "Menstrual cycle (~28 days): Day 1-5: Menstruation — uterine lining sheds. Day 6-13: Uterine lining rebuilds. Day 14: Ovulation — egg released from ovary. Day 15-28: Uterine lining thickens further. If NOT fertilized: Corpus luteum degenerates. Progesterone falls. Uterine lining breaks down — menstruation begins. If IS fertilized: Sperm fertilizes egg in fallopian tube. Zygote formed. Zygote divides → embryo → implants in uterine wall. HCG maintains corpus luteum. Progesterone maintains pregnancy. Menstruation does not occur. Pregnancy lasts 9 months.",
+      "concepts": [
+        "menstrual cycle",
+        "menstruation",
+        "ovulation",
+        "fertilization",
+        "pregnancy"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SCI_CH8_Q009",
+      "chapter": 8,
+      "chapter_name": "Heredity",
+      "part": "Biology",
+      "source": "LBA_2025",
+      "marks": 4,
+      "type": "explanation",
+      "difficulty": "hard",
+      "question": "Explain the various sources of variation in organisms. Why are variations important?",
+      "answer": "Sources: 1. Errors in DNA copying: Minor mutations during replication. 2. Meiosis: Independent assortment of chromosomes. Crossing over. 3. Random fertilization: Any sperm + any egg — enormous diversity. 4. Environmental factors: Somatic modifications. 5. Mutations: Due to radiation, chemicals. Importance: Natural selection — variations help survival in changing environments. Evolution — accumulated variations lead to new species. Adaptability — organisms with beneficial variations reproduce more. Genetic diversity protects species from extinction. Basis of selective breeding in agriculture.",
+      "concepts": [
+        "sources of variation",
+        "meiosis",
+        "importance",
+        "evolution"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SCI_CH9_Q021",
+      "chapter": 9,
+      "chapter_name": "Light – Reflection and Refraction",
+      "part": "Physics",
+      "source": "LBA_2025",
+      "marks": 4,
+      "type": "calculation",
+      "difficulty": "hard",
+      "question": "(a) A concave mirror produces a real image 3 times the size of object. Object is 20 cm from mirror. Find image distance and focal length. (b) Write two differences between real and virtual images.",
+      "answer": "(a) m=−3. m=−v/u → −3=−v/(−20) → v=−60 cm. 1/f=1/v+1/u=1/(−60)+1/(−20)=−4/60. f=−15 cm. (b) Real image: Actual intersection of rays. Can be projected on screen. Inverted. Virtual image: Apparent intersection of extended rays. Cannot be projected. Erect.",
+      "concepts": [
+        "concave mirror",
+        "magnification",
+        "real vs virtual image"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SCI_CH10_Q008",
+      "chapter": 10,
+      "chapter_name": "The Human Eye and the Colourful World",
+      "part": "Physics",
+      "source": "LBA_2025",
+      "marks": 4,
+      "type": "explanation",
+      "difficulty": "hard",
+      "question": "Explain the structure and functions of the human eye. What is the power of accommodation?",
+      "answer": "Structure: Cornea (refracts most light), Iris (controls pupil), Pupil (controls light), Lens (fine focuses on retina), Retina (rods and cones), Optic nerve (signals to brain), Aqueous humour, Vitreous humour. Function: Light → cornea → pupil → lens focuses → retina → optic nerve → brain. Power of Accommodation: Ability of eye lens to change focal length to focus on objects at different distances. Near: ciliary muscles tighten → lens thicker → shorter focal length. Far: ciliary muscles relax → lens thinner → longer focal length. Normal eye range: near point (25 cm) to far point (infinity).",
+      "concepts": [
+        "eye structure",
+        "cornea",
+        "retina",
+        "power of accommodation"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SCI_CH11_Q023",
+      "chapter": 11,
+      "chapter_name": "Electricity",
+      "part": "Physics",
+      "source": "LBA_2025",
+      "marks": 4,
+      "type": "application",
+      "difficulty": "hard",
+      "question": "(a) Derive the formula for equivalent resistance when resistors are in series. (b) Three resistors 3Ω, 4Ω, 5Ω connected to 24V battery in series. Find equivalent resistance, current, and voltage across each.",
+      "answer": "(a) Series: Same current I. V=V₁+V₂+V₃=IR₁+IR₂+IR₃=I(R₁+R₂+R₃). Rs=R₁+R₂+R₃. (b) Rs=3+4+5=12Ω. I=24/12=2A. V₁=2×3=6V. V₂=2×4=8V. V₃=2×5=10V. Check: 6+8+10=24V ✓.",
+      "concepts": [
+        "series resistance",
+        "derivation",
+        "voltage distribution"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SCI_CH12_Q011",
+      "chapter": 12,
+      "chapter_name": "Magnetic Effects of Electric Current",
+      "part": "Physics",
+      "source": "LBA_2025",
+      "marks": 4,
+      "type": "explanation",
+      "difficulty": "hard",
+      "question": "Explain the working principle of an electric generator. What is the difference between AC and DC generator?",
+      "answer": "Electric Generator: Converts mechanical energy to electrical energy using electromagnetic induction. Principle (Faraday's law): When coil rotates in magnetic field, flux changes → EMF induced → current flows. Working: Rectangular coil rotates between magnet poles. Changing flux induces EMF. AC Generator: Slip rings. Current alternates direction each half rotation. Used in power stations. DC Generator: Split-ring commutator. Output current always in same direction. Used in motors, electroplating. Difference: AC uses slip rings, current alternates; DC uses commutator, current unidirectional. Indian supply: 220V, 50Hz AC.",
+      "concepts": [
+        "electric generator",
+        "AC",
+        "DC",
+        "commutator",
+        "slip rings"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SCI_CH13_Q008",
+      "chapter": 13,
+      "chapter_name": "Our Environment",
+      "part": "Biology",
+      "source": "LBA_2025",
+      "marks": 4,
+      "type": "explanation",
+      "difficulty": "hard",
+      "question": "(a) Explain the different types of food chains. (b) What is the 10% law of energy transfer? Explain with an example.",
+      "answer": "(a) Food chains: 1. Grazing food chain: Starts with producers. Grass→Grasshopper→Frog→Snake→Eagle. Most common. 2. Detritus food chain: Starts with dead organic matter. Dead leaves→Earthworm→Robin→Hawk. Important in forest/soil. (b) 10% Law: Only 10% of energy at one trophic level transfers to next. 90% lost as heat and metabolic activities. Example: Grass (1000J)→Grasshopper (100J)→Frog (10J)→Snake (1J)→Eagle (0.1J). Food chains limited to 3-5 links. Explains why vegetarian diet is more energy-efficient.",
+      "concepts": [
+        "food chains",
+        "grazing",
+        "detritus",
+        "10% law",
+        "energy transfer"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SCI_CH5_Q014",
+      "chapter": 5,
+      "chapter_name": "Life Processes",
+      "part": "Biology",
+      "source": "LBA_2025",
+      "marks": 4,
+      "type": "diagram",
+      "difficulty": "hard",
+      "question": "Draw a labelled diagram of the human heart and explain the flow of blood through it.",
+      "answer": "[Diagram: 4 chambers — RA, RV, LA, LV. Valves: Tricuspid (RA-RV), Pulmonary (RV-PA), Mitral (LA-LV), Aortic (LV-Aorta). Vessels: Vena Cava→RA, Pulmonary Artery→lungs, Pulmonary Veins→LA, Aorta→body.] Blood flow: Deoxygenated: Vena Cava→RA→Tricuspid→RV→Pulmonary Artery→Lungs (oxygenation). Oxygenated: Pulmonary Veins→LA→Mitral→LV→Aorta→Body. Double circulation: pulmonary + systemic. Septum keeps oxygenated and deoxygenated blood separate.",
+      "concepts": [
+        "human heart",
+        "blood flow",
+        "double circulation",
+        "chambers",
+        "valves"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SCI_CH3_Q013",
+      "chapter": 3,
+      "chapter_name": "Metals and Nonmetals",
+      "part": "Chemistry",
+      "source": "LBA_2025",
+      "marks": 5,
+      "type": "explanation",
+      "difficulty": "hard",
+      "question": "Explain the properties of metals and nonmetals with respect to physical and chemical properties. Give examples.",
+      "answer": "Physical Properties: Metals: Lustrous, good conductors of heat/electricity, hard (except Na,K), high melting/boiling points (except Hg), malleable and ductile, solid at room temperature (except Hg), sonorous. Nonmetals: Dull (except graphite), poor conductors (except graphite), soft (except diamond), low melting/boiling points, brittle, gas/liquid at room temperature (except carbon, sulphur). Chemical Properties: Metals: React with O₂ → basic metal oxides. React with water → hydroxide+H₂. React with acids → salt+H₂. Reducing agents. Form ionic compounds. Nonmetals: React with O₂ → acidic oxides. Don't react with water/acids generally. Oxidizing agents. Form covalent compounds. Examples: Metals: Fe, Cu, Al, Au, Na. Nonmetals: O₂, N₂, S, C, Cl₂, H₂.",
+      "concepts": [
+        "metals",
+        "nonmetals",
+        "physical properties",
+        "chemical properties",
+        "comparison"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SCI_CH4_Q015",
+      "chapter": 4,
+      "chapter_name": "Carbon and Its Compounds",
+      "part": "Chemistry",
+      "source": "LBA_2025",
+      "marks": 5,
+      "type": "explanation",
+      "difficulty": "hard",
+      "question": "(a) What are the allotropes of carbon? Explain structure and properties of two allotropes. (b) Explain the cleansing action of soap.",
+      "answer": "(a) Diamond: Each C bonded to 4 others — tetrahedral 3D network. Very hard (hardest natural substance). No electrical conductivity. High melting point. Used in cutting tools, jewellery. Graphite: Each C bonded to 3 others in hexagonal layers. Layers held by weak forces — slippery. Conducts electricity (one free electron per C). Used as lubricant, pencils, electrodes. Fullerene (C₆₀): Spherical cage. Used in nanotechnology. (b) Cleansing action of soap: Soap molecules have hydrophilic head (water-loving) and hydrophobic tail (oil-loving). In water with oily dirt: Tails point into oil droplet. Heads point outward into water. Forms spherical micelle cluster. Dirt/oil trapped inside. Rinsed away with micelles. This is how soap removes grease.",
+      "concepts": [
+        "allotropes of carbon",
+        "diamond",
+        "graphite",
+        "soap",
+        "micelles"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SCI_CH5_Q015",
+      "chapter": 5,
+      "chapter_name": "Life Processes",
+      "part": "Biology",
+      "source": "LBA_2025",
+      "marks": 5,
+      "type": "explanation",
+      "difficulty": "hard",
+      "question": "Explain the process of photosynthesis. What are the factors affecting photosynthesis?",
+      "answer": "Photosynthesis: Green plants synthesize glucose using sunlight, CO₂ and water. Equation: 6CO₂+6H₂O+Light energy→C₆H₁₂O₆+6O₂. Location: Chloroplasts (chlorophyll pigment). Two stages: 1. Light reaction (thylakoids): Light absorbed by chlorophyll. Water photolysis: 2H₂O→4H⁺+O₂+4e⁻. ATP and NADPH formed. O₂ released. 2. Dark reaction/Calvin cycle (stroma): CO₂ fixed using ATP and NADPH. Glucose synthesized. Stomata: CO₂ enters, O₂ exits, water exits. Factors: 1. Light intensity (increases rate to saturation). 2. CO₂ concentration (higher = faster). 3. Temperature (optimum 25-30°C). 4. Water (essential for photolysis). 5. Chlorophyll content. 6. Mineral salts (N,Mg,Fe needed). Importance: Produces O₂ for all aerobic life. Primary food source. Reduces CO₂ — controls climate.",
+      "concepts": [
+        "photosynthesis",
+        "light reaction",
+        "Calvin cycle",
+        "factors",
+        "chloroplast"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SCI_CH7_Q011",
+      "chapter": 7,
+      "chapter_name": "How Do Organisms Reproduce?",
+      "part": "Biology",
+      "source": "LBA_2025",
+      "marks": 5,
+      "type": "explanation",
+      "difficulty": "hard",
+      "question": "Explain the process of reproduction in flowering plants (from pollination to seed formation).",
+      "answer": "Flower parts: Stamen (male: anther+filament); Pistil (female: stigma+style+ovary+ovules). Pollination: Transfer of pollen from anther to stigma. Self-pollination (within plant). Cross-pollination (between plants — wind, insects, water, birds). Fertilization: Pollen germinates on stigma → pollen tube grows down style → carries two male gametes to ovule. Double fertilization: 1. Male gamete + egg → Zygote (2n). 2. Second male gamete + two polar nuclei → Endosperm (3n) — food for developing seed. Seed and Fruit formation: Zygote → embryo. Ovule → seed. Ovary wall → fruit. Seeds dispersed by wind, water, animals, explosive mechanisms. Germination: Moisture, warmth, oxygen → new plant. Significance: Creates variation through genetic combinations.",
+      "concepts": [
+        "pollination",
+        "double fertilization",
+        "seed formation",
+        "flower reproduction"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SCI_CH9_Q022",
+      "chapter": 9,
+      "chapter_name": "Light – Reflection and Refraction",
+      "part": "Physics",
+      "source": "LBA_2025",
+      "marks": 5,
+      "type": "application",
+      "difficulty": "hard",
+      "question": "(a) State mirror formula and lens formula. (b) Object 4 cm high placed 10 cm from convex lens of focal length 20 cm. Find position, size and nature of image. Also find magnification.",
+      "answer": "(a) Mirror formula: 1/f=1/v+1/u. Lens formula: 1/f=1/v−1/u. (b) f=+20cm, u=−10cm. 1/v=1/f+1/u=1/20+1/(−10)=1/20−2/20=−1/20. v=−20cm. Image at 20cm on same side as object (virtual). m=v/u=(−20)/(−10)=+2. Image height=2×4=8cm. Nature: Virtual, erect, enlarged (magnifying glass effect). Object inside F of convex lens gives virtual, magnified image.",
+      "concepts": [
+        "lens formula",
+        "convex lens",
+        "magnifying glass",
+        "calculation"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SCI_CH11_Q024",
+      "chapter": 11,
+      "chapter_name": "Electricity",
+      "part": "Physics",
+      "source": "LBA_2025",
+      "marks": 5,
+      "type": "application",
+      "difficulty": "hard",
+      "question": "(a) Derive the relationship P=V²/R=I²R for electric power. (b) Three appliances — 100W bulb, 500W iron, 1000W heater — connected in parallel to 220V supply. Find current drawn by each and total current. (c) Why are household appliances connected in parallel?",
+      "answer": "(a) P=W/t. V=W/Q→W=VQ. P=VI. By Ohm's law V=IR: P=I²R. Also I=V/R: P=V²/R. Hence P=VI=I²R=V²/R. (b) Bulb: I=P/V=100/220=0.45A. Iron: I=500/220=2.27A. Heater: I=1000/220=4.55A. Total=7.27A. (c) Parallel advantages: Each appliance gets full 220V. Each can be switched independently. Failure of one doesn't affect others. Different power ratings work together. Standard household wiring design.",
+      "concepts": [
+        "electric power",
+        "P=VI",
+        "parallel circuit",
+        "household wiring"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SCI_CH12_Q012",
+      "chapter": 12,
+      "chapter_name": "Magnetic Effects of Electric Current",
+      "part": "Physics",
+      "source": "LBA_2025",
+      "marks": 5,
+      "type": "explanation",
+      "difficulty": "hard",
+      "question": "(a) What is a solenoid? Explain the magnetic field produced. (b) Explain the working of a DC motor with labelled diagram description.",
+      "answer": "(a) Solenoid: Coil of insulated wire wound in cylinder form. Magnetic field: Each turn acts as small electromagnet. Inside: Strong, uniform field (parallel lines). Outside: Weak field like bar magnet. One end = N pole (by right-hand rule), other = S pole. Stronger than bar magnet — can be switched off, field strength varied. (b) DC Motor: Converts electrical energy to mechanical energy. Principle: Current-carrying conductor in magnetic field experiences force (Fleming's Left-Hand Rule). Components: Rectangular coil (armature) in magnetic field. Split-ring commutator — reverses current every half rotation. Carbon brushes maintain contact. Battery/DC supply. Working: Current flows → magnetic force pushes one side up, other down → coil rotates. After half rotation, commutator reverses current → coil continues same direction. Uses: Electric fans, mixers, toys, electric vehicles, washing machines.",
+      "concepts": [
+        "solenoid",
+        "magnetic field",
+        "DC motor",
+        "Fleming's rule",
+        "commutator"
+      ],
+      "board_frequency": "very_high"
+    },
+    {
+      "id": "SCI_CH6_Q011",
+      "chapter": 6,
+      "chapter_name": "Control and Coordination",
+      "part": "Biology",
+      "source": "LBA_2025",
+      "marks": 5,
+      "type": "explanation",
+      "difficulty": "hard",
+      "question": "Explain the endocrine system in humans. Name the major endocrine glands, hormones they secrete and their functions.",
+      "answer": "Endocrine system: Ductless glands secreting hormones into bloodstream. Hormones are chemical messengers. Major glands: 1. Pituitary (Master gland): GH (body growth), TSH (controls thyroid), FSH/LH (reproductive), ADH (water regulation), Oxytocin (childbirth). 2. Thyroid (neck): Thyroxine — regulates metabolism, growth. Deficiency: Goitre. 3. Parathyroid: PTH — controls calcium. 4. Adrenal glands: Cortex: Cortisol (stress, metabolism). Medulla: Adrenaline (fight or flight — increases heart rate, blood pressure). 5. Pancreas: Insulin — lowers blood glucose. Glucagon — raises blood glucose. Diabetes: insulin deficiency. 6. Gonads: Testes → Testosterone (male). Ovaries → Estrogen, Progesterone (female). 7. Thymus: Thymosin — immune system. Hormones vs Nervous system: Hormones slow, long-lasting via blood. Nervous system fast, short-lived electrical impulses.",
+      "concepts": [
+        "endocrine system",
+        "hormones",
+        "pituitary",
+        "thyroid",
+        "adrenal",
+        "insulin",
+        "diabetes"
+      ],
+      "board_frequency": "very_high"
+    }
+  ]
+}
