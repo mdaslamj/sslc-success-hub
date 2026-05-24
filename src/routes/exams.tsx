@@ -145,10 +145,10 @@ function ExamsPage() {
               New · Board Exam Hall
             </div>
             <h2 className="mt-1 font-display text-lg font-semibold">
-              Full SSLC simulation with AI invigilator
+              Full SSLC simulation with auto-grading and revision guidance
             </h2>
             <p className="mt-1 text-xs text-muted-foreground">
-              Strict timing · presentation analysis · stress patterns · predicted marks.
+              Strict timing · auto-grading · revision guidance · predicted marks.
             </p>
           </div>
           <Button className="rounded-full gap-2 shrink-0">

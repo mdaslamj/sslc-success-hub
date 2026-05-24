@@ -12,13 +12,13 @@ export const Route = createFileRoute("/exam-hall")({
       {
         name: "description",
         content:
-          "Full SSLC board exam simulation with AI invigilator, strict timing, presentation analysis and post-exam intelligence.",
+          "Timed SSLC simulation with auto-grading and revision guidance.",
       },
       { property: "og:title", content: "Exam Hall — Aura Board Simulation" },
       {
         property: "og:description",
         content:
-          "Practise like the real board day. AI invigilator, strict timing, and a calm exam-mode interface.",
+          "Practise like the real board day. Timed simulation, auto-grading, and a calm exam-mode interface.",
       },
     ],
   }),
@@ -47,13 +47,13 @@ function ExamHallIndex() {
             Step into a real SSLC exam hall.
           </h1>
           <p className="mt-2 text-sm text-muted-foreground">
-            Distraction-free interface, strict section timers, AI invigilator and a
-            detailed post-exam breakdown — predicted marks, weak areas, presentation
-            and stress pattern.
+            Distraction-free interface, strict section timers, and a
+            detailed post-exam breakdown — predicted marks, weak areas, and
+            revision guidance.
           </p>
           <div className="mt-5 grid gap-3 sm:grid-cols-3">
             <Feature icon={Timer} title="Strict timing" body="Section + total timers, auto-submit when time ends." />
-            <Feature icon={Sparkles} title="AI invigilator" body="Detects panic, slow solving, fatigue." />
+            <Feature icon={Sparkles} title="Guidance" body="Calm reminders when timing or focus drifts." />
             <Feature icon={ShieldCheck} title="Anti-cheat" body="Tracks blur, paste and fullscreen exits." />
           </div>
           <Button className="mt-6 w-full rounded-full gap-2" onClick={handleStart}>
