@@ -95,7 +95,14 @@ function LoginPage() {
               localStorage.setItem(GUEST_KEY, "1");
             } catch {}
             toast.success("Continuing as guest — progress saved on this device");
-            navigate({ to: "/onboarding" });
+            // If onboarding was already completed earlier (e.g. first-time
+            // visitor finished the flow before landing on /login), skip
+            // straight into the app instead of showing onboarding twice.
+            let alreadyOnboarded = false;
+            try {
+              alreadyOnboarded = !!localStorage.getItem(GUEST_ONBOARDING_KEY);
+            } catch {}
+            navigate({ to: alreadyOnboarded ? "/" : "/onboarding" });
           }}
         >
           Continue as guest
