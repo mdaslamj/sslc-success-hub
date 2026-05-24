@@ -44,6 +44,7 @@ function QuizPlayerPage() {
     setMissing(false);
     const cached = readCachedQuiz(quizId);
     if (cached) {
+      console.debug("[quiz] cache-hit", { quizId });
       setRebuilding(false);
       setQuiz(cached);
       return;
@@ -55,6 +56,7 @@ function QuizPlayerPage() {
       })),
     });
     if (built) {
+      console.debug("[quiz] rebuild-hit", { quizId });
       cacheQuiz(built);
       setRebuilding(false);
       setQuiz(built);
@@ -63,9 +65,11 @@ function QuizPlayerPage() {
     // Wait for the content catalogue before declaring the quiz missing —
     // chapter-test ids are derived from that data.
     if (content.isLoading) {
+      console.debug("[quiz] waiting-catalog", { quizId });
       setRebuilding(true);
       return;
     }
+    console.debug("[quiz] missing", { quizId });
     setRebuilding(false);
     setMissing(true);
   }, [quizId, content.subjects, content.isLoading]);
@@ -95,7 +99,9 @@ function QuizPlayerPage() {
             <div className="h-10 animate-pulse rounded-xl bg-muted/70" />
           </div>
           <p className="pt-1 text-center text-xs text-muted-foreground">
-            {rebuilding ? "Restoring your quiz from chapter content…" : "Preparing your quiz…"}
+            {rebuilding || content.isLoading
+              ? "Restoring quiz…"
+              : "Preparing your quiz…"}
           </p>
         </div>
       </DashboardLayout>

@@ -38,6 +38,7 @@ import type { MockExamDoc } from "@/integrations/firebase/types";
 import { UploadAnswerButton } from "@/components/answer-upload/upload-answer-button";
 import { useContentCatalog } from "@/hooks/use-content-catalog";
 import { rebuildContentExamById } from "@/lib/content-exam-builder";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export const Route = createFileRoute("/exams/$examId")({
   head: ({ params }) => ({
@@ -65,6 +66,7 @@ function ExamPlayerPage() {
     setMissing(false);
     const cached = readCachedExam(examId);
     if (cached) {
+      console.debug("[exam] cache-hit", { examId });
       setExam(cached);
       return;
     }
@@ -77,20 +79,36 @@ function ExamPlayerPage() {
       })),
     });
     if (built) {
+      console.debug("[exam] rebuild-hit", { examId });
       setExam(built);
       return;
     }
     const seed = SEED_MOCK_EXAMS.find((e) => e.id === examId);
     if (seed) {
+      console.debug("[exam] seed-hit", { examId });
       setExam(seed);
       return;
     }
     // Wait until the content catalogue has finished loading before
     // giving up — chapter / subject mock ids are built from that data.
-    if (content.isLoading) return;
+    if (content.isLoading) {
+      console.debug("[exam] waiting-catalog", { examId });
+      return;
+    }
     fetchMockExam(examId)
-      .then((e) => (e ? setExam(e) : setMissing(true)))
-      .catch(() => setMissing(true));
+      .then((e) => {
+        if (e) {
+          console.debug("[exam] remote-hit", { examId });
+          setExam(e);
+        } else {
+          console.debug("[exam] missing", { examId });
+          setMissing(true);
+        }
+      })
+      .catch(() => {
+        console.debug("[exam] missing", { examId });
+        setMissing(true);
+      });
   }, [examId, content.subjects, content.isLoading]);
 
   if (missing) {
@@ -110,8 +128,22 @@ function ExamPlayerPage() {
   if (!exam) {
     return (
       <DashboardLayout title="Mock Exam">
-        <div className="mx-auto max-w-md rounded-3xl border border-border/60 bg-card p-8 text-center text-sm text-muted-foreground">
-          Loading exam…
+        <div className="mx-auto max-w-2xl space-y-4">
+          <div className="rounded-3xl border border-border/60 bg-card p-5">
+            <Skeleton className="h-4 w-32" />
+            <Skeleton className="mt-3 h-6 w-3/4" />
+            <Skeleton className="mt-2 h-1.5 w-full" />
+          </div>
+          <div className="rounded-3xl border border-border/60 bg-card p-6 space-y-3">
+            <Skeleton className="h-5 w-2/3" />
+            <Skeleton className="h-12 w-full rounded-2xl" />
+            <Skeleton className="h-12 w-full rounded-2xl" />
+            <Skeleton className="h-12 w-full rounded-2xl" />
+            <Skeleton className="h-12 w-full rounded-2xl" />
+          </div>
+          <p className="text-center text-xs text-muted-foreground">
+            {content.isLoading ? "Restoring exam…" : "Loading exam…"}
+          </p>
         </div>
       </DashboardLayout>
     );
