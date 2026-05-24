@@ -7,6 +7,7 @@ import { ProgressRing } from "@/components/widgets/progress-ring";
 import { AchievementBadge } from "@/components/achievement-badge";
 import { AchievementUnlockStack } from "@/components/achievement-unlock-toast";
 import { useAchievements } from "@/hooks/use-achievements";
+import { useAnalytics } from "@/hooks/use-analytics";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import type { AchievementCategory } from "@/lib/achievements-catalog";
@@ -18,7 +19,7 @@ export const Route = createFileRoute("/achievements")({
       {
         name: "description",
         content:
-          "Earn XP, level up, and unlock badges as you build study streaks and complete the SSLC syllabus.",
+          "Earn XP, level up, and unlock badges as you build a steady rhythm and complete the SSLC syllabus.",
       },
     ],
   }),
@@ -29,16 +30,17 @@ type Filter = "all" | AchievementCategory;
 
 const FILTERS: { id: Filter; label: string }[] = [
   { id: "all", label: "All" },
-  { id: "streak", label: "Streaks" },
+  { id: "streak", label: "Consistency" },
   { id: "chapters", label: "Chapters" },
   { id: "focus", label: "Focus" },
   { id: "hours", label: "Hours" },
   { id: "mastery", label: "Mastery" },
-  { id: "consistency", label: "Consistency" },
+  { id: "consistency", label: "Rhythm" },
 ];
 
 function AchievementsPage() {
   const ach = useAchievements();
+  const a = useAnalytics();
   const [filter, setFilter] = useState<Filter>("all");
 
   const visible = useMemo(() => {
@@ -69,11 +71,11 @@ function AchievementsPage() {
             Your achievements
           </h1>
           <p className="text-sm text-muted-foreground">
-            Earn XP for every focus session, chapter, and streak day. Unlock badges as you progress.
+            Earn XP for every focus session, chapter, and calm day of study. Unlock badges as you progress.
           </p>
         </header>
 
-        {/* Level + streak summary */}
+        {/* Level + consistency summary */}
         <section className="grid gap-4 md:grid-cols-[auto,1fr,auto,auto]">
           <div className="rounded-2xl border border-border/60 bg-card p-5 shadow-card flex items-center gap-4 animate-fade-in">
             <ProgressRing
@@ -101,11 +103,11 @@ function AchievementsPage() {
             hint={ach.earned.length === 0 ? "Start a focus session to earn your first" : "Keep going"}
           />
           <StatCard
-            label="Current streak"
-            value={`${ach.streak.current}d`}
+            label="Consistency"
+            value={`${a.consistency.daysActiveLast14}/14`}
             icon={<Flame className="h-4 w-4" />}
             accent="warning"
-            hint={`Longest ${ach.streak.longest}d`}
+            hint={a.consistency.label}
           />
           <StatCard
             label="Next milestone"

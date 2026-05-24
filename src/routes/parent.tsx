@@ -69,7 +69,7 @@ function ParentPage() {
                   <Stat label="Today" value={`${d.snapshot.todayMinutes}m`} hint="study time" />
                   <Stat label="This week" value={`${Math.round(d.snapshot.weeklyMinutes / 60)}h`} hint="focus" />
                   <Stat label="Planner" value={`${d.snapshot.plannerCompletionPct}%`} hint="completion" />
-                  <Stat label="Streak" value={`${d.snapshot.streakCurrent}d`} hint="consistency" />
+                  <Stat label="Consistency" value={`${d.snapshot.streakCurrent}d`} hint="recent rhythm" />
                   <Stat label="Confidence" value={d.snapshot.averageConfidence.toFixed(1)} hint="of 5.0" />
                   <Stat label="Readiness" value={`${Math.round(d.snapshot.boardReadiness)}%`} hint={`${d.snapshot.readinessDelta >= 0 ? "+" : ""}${d.snapshot.readinessDelta} this week`} />
                 </div>

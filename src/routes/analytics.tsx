@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import {
-  Flame,
+  Waves,
   CheckCircle2,
   Clock,
   Timer,
@@ -31,7 +31,7 @@ export const Route = createFileRoute("/analytics")({
       {
         name: "description",
         content:
-          "Track your study time, streaks, focus sessions, and subject-wise progress across the Karnataka SSLC syllabus.",
+          "Track your study time, consistency, focus sessions, and subject-wise progress across the Karnataka SSLC syllabus.",
       },
     ],
   }),
@@ -67,7 +67,7 @@ function AnalyticsPage() {
               Your learning, <span className="gradient-text">measured.</span>
             </h1>
             <p className="text-sm text-muted-foreground">
-              Overall progress, study time, streaks, and per-subject breakdown.
+              Overall progress, study time, consistency, and per-subject breakdown.
             </p>
           </div>
           <Button
@@ -105,10 +105,10 @@ function AnalyticsPage() {
             accent="warning"
           />
           <StatCard
-            label="Current Streak"
-            value={`${a.streak.current}d`}
-            hint={`Longest: ${a.streak.longest}d`}
-            icon={<Flame className="h-4 w-4" />}
+            label="Consistency"
+            value={`${a.consistency.daysActiveLast14}/14`}
+            hint={a.consistency.label}
+            icon={<Waves className="h-4 w-4" />}
             accent="success"
           />
         </section>
