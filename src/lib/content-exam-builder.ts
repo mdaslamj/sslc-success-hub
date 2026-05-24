@@ -43,6 +43,35 @@ export function chapterTestQuizId(
   return `ct_${subjectId}_${chapterId}_${level}`;
 }
 
+const CHAPTER_TEST_LEVELS: ChapterTestLevel[] = ["easy", "board", "challenge"];
+
+/**
+ * Reconstruct a chapter-test QuizDoc from its stable id. Mirrors
+ * `rebuildContentExamById` — used by the quiz player when a deep link or
+ * refresh hits a cold cache. Id shape: `ct_{subjectId}_{chapterId}_{level}`.
+ */
+export function rebuildContentQuizById(
+  quizId: string,
+  catalogue: {
+    subjects: { runtimeId: string; chapters: IndexedChapter[] }[];
+  },
+): QuizDoc | null {
+  if (!quizId.startsWith("ct_")) return null;
+  const level = CHAPTER_TEST_LEVELS.find((l) => quizId.endsWith(`_${l}`));
+  if (!level) return null;
+  const middle = quizId.slice("ct_".length, quizId.length - (`_${level}`.length));
+  for (const s of catalogue.subjects) {
+    const prefix = `${s.runtimeId}_`;
+    if (!middle.startsWith(prefix)) continue;
+    const chapterId = middle.slice(prefix.length);
+    const chapter = s.chapters.find((c) => c.chapterId === chapterId);
+    if (chapter) {
+      return buildChapterTestQuiz({ chapter, level });
+    }
+  }
+  return null;
+}
+
 export function buildChapterTestQuiz(args: {
   chapter: IndexedChapter;
   level: ChapterTestLevel;

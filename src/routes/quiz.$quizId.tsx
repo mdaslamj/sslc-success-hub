@@ -14,7 +14,9 @@ import { DashboardLayout } from "@/components/dashboard-layout";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useQuiz } from "@/hooks/use-quiz";
-import { readCachedQuiz } from "@/lib/quiz-store";
+import { cacheQuiz, readCachedQuiz } from "@/lib/quiz-store";
+import { useContentCatalog } from "@/hooks/use-content-catalog";
+import { rebuildContentQuizById } from "@/lib/content-exam-builder";
 import type { QuizDoc } from "@/integrations/firebase/types";
 import { UploadAnswerButton } from "@/components/answer-upload/upload-answer-button";
 
@@ -35,12 +37,31 @@ function QuizPlayerPage() {
   const { quizId } = Route.useParams();
   const [quiz, setQuiz] = useState<QuizDoc | null>(null);
   const [missing, setMissing] = useState(false);
+  const content = useContentCatalog();
 
   useEffect(() => {
-    const q = readCachedQuiz(quizId);
-    if (q) setQuiz(q);
-    else setMissing(true);
-  }, [quizId]);
+    setMissing(false);
+    const cached = readCachedQuiz(quizId);
+    if (cached) {
+      setQuiz(cached);
+      return;
+    }
+    const built = rebuildContentQuizById(quizId, {
+      subjects: content.subjects.map((s) => ({
+        runtimeId: s.runtimeId,
+        chapters: s.chapters,
+      })),
+    });
+    if (built) {
+      cacheQuiz(built);
+      setQuiz(built);
+      return;
+    }
+    // Wait for the content catalogue before declaring the quiz missing —
+    // chapter-test ids are derived from that data.
+    if (content.isLoading) return;
+    setMissing(true);
+  }, [quizId, content.subjects, content.isLoading]);
 
   if (missing) {
     return (

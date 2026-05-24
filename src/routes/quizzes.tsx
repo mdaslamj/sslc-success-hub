@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { Brain, Clock, Loader2, Sparkles, Target, Trophy } from "lucide-react";
 import { DashboardLayout } from "@/components/dashboard-layout";
@@ -199,21 +199,15 @@ function QuizzesPage() {
  * just because the user opened the Quizzes page.
  */
 function StartChapterTestButton({ ensureId }: { ensureId: () => string | null }) {
-  const [id, setId] = useState<string | null>(null);
-  if (id) {
-    return (
-      <Link to="/quiz/$quizId" params={{ quizId: id }}>
-        <Button size="sm" className="rounded-full">
-          Start
-        </Button>
-      </Link>
-    );
-  }
+  const navigate = useNavigate();
   return (
     <Button
       size="sm"
       className="rounded-full"
-      onClick={() => setId(ensureId())}
+      onClick={() => {
+        const id = ensureId();
+        if (id) navigate({ to: "/quiz/$quizId", params: { quizId: id } });
+      }}
     >
       Start
     </Button>
