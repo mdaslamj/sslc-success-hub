@@ -34,7 +34,10 @@ function LoginPage() {
   }, [loading, user, navigate]);
 
   return (
-    <div className="min-h-screen bg-background grid place-items-center px-4 py-6 sm:py-10 lg:py-12">
+    <div
+      className="min-h-[100dvh] w-full overflow-x-hidden bg-background grid place-items-center px-4 py-6 sm:py-10 lg:py-12 kb-safe"
+      style={{ paddingTop: "max(env(safe-area-inset-top), 1.5rem)" }}
+    >
       <div className="w-full max-w-md rounded-3xl border border-border/60 bg-card p-6 sm:p-8 shadow-card">
         <div className="flex flex-col items-center text-center">
           <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl gradient-brand shadow-glow">
