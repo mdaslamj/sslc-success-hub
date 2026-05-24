@@ -89,7 +89,7 @@ function ExamHallSession() {
 
   if (loading || !session) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-background text-sm text-muted-foreground">
+      <div className="flex min-h-[100dvh] items-center justify-center bg-background text-sm text-muted-foreground">
         Loading exam hall…
       </div>
     );
@@ -132,7 +132,7 @@ function ExamHallSession() {
       : 0;
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <div className="min-h-[100dvh] bg-background text-foreground">
       {/* Top bar — minimal exam-mode chrome */}
       <header className="sticky top-0 z-10 border-b border-border/60 bg-card/95 backdrop-blur">
         <div className="mx-auto flex max-w-3xl items-center justify-between gap-3 px-4 py-3">
@@ -334,13 +334,13 @@ function ExamHallSession() {
     const r = result;
     if (!r) {
       return (
-        <div className="flex min-h-screen items-center justify-center text-sm text-muted-foreground">
+        <div className="flex min-h-[100dvh] items-center justify-center text-sm text-muted-foreground">
           Generating analysis…
         </div>
       );
     }
     return (
-      <div className="min-h-screen bg-background">
+      <div className="min-h-[100dvh] bg-background">
         <div className="mx-auto max-w-3xl space-y-5 px-4 py-6">
           <header>
             <div className="text-[11px] uppercase tracking-widest text-muted-foreground">
