@@ -7,6 +7,7 @@ import { ProgressRing } from "@/components/widgets/progress-ring";
 import { AchievementBadge } from "@/components/achievement-badge";
 import { AchievementUnlockStack } from "@/components/achievement-unlock-toast";
 import { useAchievements } from "@/hooks/use-achievements";
+import { useAnalytics } from "@/hooks/use-analytics";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import type { AchievementCategory } from "@/lib/achievements-catalog";
