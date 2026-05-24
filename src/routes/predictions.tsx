@@ -48,7 +48,7 @@ function PredictionsPage() {
               AI Prediction
             </h1>
             <p className="text-sm text-muted-foreground">
-              Rule-based forecast from your quiz accuracy, streak and progress.
+              Rule-based forecast from your quiz accuracy, consistency and progress.
             </p>
           </div>
           <Button asChild variant="ghost" size="sm" className="gap-1">

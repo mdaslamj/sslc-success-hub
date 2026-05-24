@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
-import { Flame, Plus, CheckCircle2, Clock, Repeat } from "lucide-react";
+import { Waves, Plus, CheckCircle2, Clock, Repeat } from "lucide-react";
 import { DashboardLayout } from "@/components/dashboard-layout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -21,7 +21,7 @@ export const Route = createFileRoute("/log")({
   head: () => ({
     meta: [
       { title: "Study log — Project Aura" },
-      { name: "description", content: "Daily study log, streak calendar, and revision-due overlays." },
+      { name: "description", content: "Daily study log, consistency calendar, and revision-due overlays." },
     ],
   }),
   component: StudyLogPage,
@@ -62,16 +62,18 @@ function StudyLogPage() {
   return (
     <DashboardLayout title="Study log">
       <div className="mx-auto max-w-md space-y-5 md:max-w-2xl">
-        {/* Streak header */}
+        {/* Consistency header */}
         <section className="rounded-3xl bg-card p-5 shadow-soft">
           <div className="flex items-center gap-4">
             <div className="flex h-16 w-16 items-center justify-center rounded-full gradient-brand text-brand-foreground shadow-soft">
-              <Flame className="h-7 w-7" />
+              <Waves className="h-7 w-7" />
             </div>
             <div>
-              <div className="text-xs uppercase tracking-wider text-muted-foreground">Current streak</div>
-              <div className="font-display text-3xl font-bold">{a.streak.current} days</div>
-              <div className="text-xs text-muted-foreground">Longest: {a.streak.longest}</div>
+              <div className="text-xs uppercase tracking-wider text-muted-foreground">Consistency</div>
+              <div className="font-display text-3xl font-bold">
+                {a.consistency.daysActiveLast14} of 14 days
+              </div>
+              <div className="text-xs text-muted-foreground">{a.consistency.message}</div>
             </div>
           </div>
         </section>

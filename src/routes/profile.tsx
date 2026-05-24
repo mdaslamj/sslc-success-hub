@@ -534,10 +534,10 @@ function ProgressCard() {
       sub: `Level ${ach.level.level}`,
     },
     {
-      label: "Streak",
-      value: `${ach.streak.current}d`,
+      label: "Consistency",
+      value: `${a.consistency.daysActiveLast14}/14`,
       icon: <Flame className="h-4 w-4" />,
-      sub: `Best ${ach.streak.longest}d`,
+      sub: a.consistency.label,
     },
     {
       label: "Chapters",

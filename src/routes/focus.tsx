@@ -42,7 +42,7 @@ export const Route = createFileRoute("/focus")({
       {
         name: "description",
         content:
-          "Distraction-free Pomodoro focus mode for SSLC study sessions. Track chapters, subjects, streaks and total focus time.",
+          "Distraction-free Pomodoro focus mode for SSLC study sessions. Track chapters, subjects, consistency and total focus time.",
       },
     ],
   }),
@@ -56,7 +56,7 @@ type SubjectChapters = { id: string; name: string };
 const PLACEHOLDER_CHAPTERS: Record<string, SubjectChapters[]> = {};
 
 function FocusPage() {
-  const { logSession, streak, weekly, todayMinutes, focusSessions } =
+  const { logSession, consistency, weekly, todayMinutes, focusSessions } =
     useAnalytics();
   const [subjectId, setSubjectId] = useState<string>(subjects[0]?.id ?? "");
   const [chapterTitle, setChapterTitle] = useState<string>("");
@@ -149,7 +149,7 @@ function FocusPage() {
         </div>
         <div className="flex items-center gap-2">
           <Badge variant="outline" className="rounded-full">
-            🔥 {streak.current}-day streak
+            In rhythm · {consistency.daysActiveLast7}/7 days
           </Badge>
           <Badge variant="outline" className="rounded-full">
             {todayMinutes}m today
