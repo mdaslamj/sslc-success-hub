@@ -10,6 +10,7 @@ import type { StudySessionDoc } from "@/integrations/firebase/types";
 import { readSessions, appendSession } from "@/lib/analytics-store";
 import { useCurrentUserId } from "./use-current-user";
 import { subjects as mockSubjects } from "@/lib/mock-data";
+import { computeConsistency, type Consistency } from "@/lib/consistency";
 
 export type AnalyticsSnapshot = {
   userId: string;
@@ -20,7 +21,9 @@ export type AnalyticsSnapshot = {
   totalStudyMinutes: number;
   totalStudyHours: number;
   focusSessions: number;
+  /** @deprecated UI should read `consistency` instead. Kept for engines that still depend on it. */
   streak: { current: number; longest: number };
+  consistency: Consistency;
   weekly: { dayKey: string; label: string; minutes: number }[];
   bySubject: {
     id: string;
@@ -57,6 +60,7 @@ export function useAnalytics(): AnalyticsSnapshot {
   const snapshot = useMemo(() => {
     const minutes = sumStudyMinutes(sessions);
     const streak = computeStreak(sessions);
+    const consistency = computeConsistency(sessions);
     const weekly = buildWeeklyActivity(sessions);
     const todayKey = toDayKey(new Date());
     const todayMinutes = sessions
@@ -93,6 +97,7 @@ export function useAnalytics(): AnalyticsSnapshot {
       totalStudyHours: Math.round((minutes / 60) * 10) / 10,
       focusSessions: countFocusSessions(sessions),
       streak,
+      consistency,
       weekly,
       bySubject,
       todayMinutes,
