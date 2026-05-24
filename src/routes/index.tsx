@@ -55,7 +55,7 @@ export const Route = createFileRoute("/")({
 function HomePage() {
   const { user, profile, loading: authLoading } = useAuth();
   const navigate = useNavigate();
-  const firstName = (profile?.studentName || profile?.displayName || user?.displayName || "friend")
+  const firstName = (profile?.studentName || profile?.displayName || user?.displayName || "")
     .split(" ")[0];
 
   const [quote, setQuote] = useState(motivationalQuotes[0]);
@@ -160,7 +160,7 @@ function HomePage() {
             Good {greet.label}
           </div>
           <h1 className="mt-2 font-display text-[28px] font-bold leading-tight tracking-tight text-foreground">
-            Hi {firstName} 🌱
+            {firstName ? `Good ${greet.label}, ${firstName} 🌱` : "Hello 🌱"}
           </h1>
           <p className="mt-1 text-sm text-muted-foreground">{engine.motivation}</p>
           {user && (
