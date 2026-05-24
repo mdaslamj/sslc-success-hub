@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import {
@@ -8,6 +8,7 @@ import {
   GraduationCap,
   History,
   Layers,
+  Loader2,
   Play,
   Sparkles,
   Target,
@@ -231,6 +232,8 @@ function Stat({ label, value }: { label: string; value: string | number }) {
 }
 
 function ExamCard({ exam }: { exam: MockExamDoc }) {
+  const navigate = useNavigate();
+  const [isPreparing, setIsPreparing] = useState(false);
   const Meta = KIND_META[exam.kind];
   const Icon = Meta.icon;
   const subjectName =
@@ -274,16 +277,30 @@ function ExamCard({ exam }: { exam: MockExamDoc }) {
         )}
         {exam.year && <span className="rounded-full bg-muted px-2 py-0.5">{exam.year}</span>}
       </div>
-      <Link
-        to="/exams/$examId"
-        params={{ examId: exam.id }}
-        onClick={() => cacheExam(exam)}
+      <Button
+        type="button"
+        className="w-full rounded-full gap-2"
+        disabled={isPreparing}
+        onClick={() => {
+          if (isPreparing) return;
+          setIsPreparing(true);
+          cacheExam(exam);
+          console.debug("[exams] launch", { examId: exam.id, kind: exam.kind });
+          navigate({ to: "/exams/$examId", params: { examId: exam.id } });
+        }}
       >
-        <Button className="w-full rounded-full gap-2">
-          <Play className="h-3.5 w-3.5" />
-          Start exam
-        </Button>
-      </Link>
+        {isPreparing ? (
+          <>
+            <Loader2 className="h-3.5 w-3.5 animate-spin" />
+            Preparing…
+          </>
+        ) : (
+          <>
+            <Play className="h-3.5 w-3.5" />
+            Start exam
+          </>
+        )}
+      </Button>
     </article>
   );
 }
