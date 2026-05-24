@@ -37,12 +37,14 @@ function QuizPlayerPage() {
   const { quizId } = Route.useParams();
   const [quiz, setQuiz] = useState<QuizDoc | null>(null);
   const [missing, setMissing] = useState(false);
+  const [rebuilding, setRebuilding] = useState(false);
   const content = useContentCatalog();
 
   useEffect(() => {
     setMissing(false);
     const cached = readCachedQuiz(quizId);
     if (cached) {
+      setRebuilding(false);
       setQuiz(cached);
       return;
     }
@@ -54,12 +56,17 @@ function QuizPlayerPage() {
     });
     if (built) {
       cacheQuiz(built);
+      setRebuilding(false);
       setQuiz(built);
       return;
     }
     // Wait for the content catalogue before declaring the quiz missing —
     // chapter-test ids are derived from that data.
-    if (content.isLoading) return;
+    if (content.isLoading) {
+      setRebuilding(true);
+      return;
+    }
+    setRebuilding(false);
     setMissing(true);
   }, [quizId, content.subjects, content.isLoading]);
 
@@ -87,7 +94,9 @@ function QuizPlayerPage() {
             <div className="h-10 animate-pulse rounded-xl bg-muted/70" />
             <div className="h-10 animate-pulse rounded-xl bg-muted/70" />
           </div>
-          <p className="pt-1 text-center text-xs text-muted-foreground">Preparing your quiz…</p>
+          <p className="pt-1 text-center text-xs text-muted-foreground">
+            {rebuilding ? "Restoring your quiz from chapter content…" : "Preparing your quiz…"}
+          </p>
         </div>
       </DashboardLayout>
     );
