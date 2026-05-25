@@ -463,8 +463,15 @@ function SubjectDetailPage() {
                   chapters={(manifestQuery.data as ManifestDoc).chapters as ManifestChapter[]}
                   color={subject.color}
                   onSelect={(id) => {
-                    setSelectedContentId(id);
-                    setChapterDetailOpen(true);
+                    if (isSocial) {
+                      setSelectedContentId(id);
+                      setChapterDetailOpen(true);
+                    } else {
+                      navigate({
+                        to: "/subjects/$subjectId/topics/$chapterId",
+                        params: { subjectId, chapterId: id },
+                      });
+                    }
                   }}
                 />
               )
