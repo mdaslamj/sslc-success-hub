@@ -508,20 +508,17 @@ function SubjectDetailPage() {
 
           {isContentDriven && !isSocial && (
             <TabsContent value="formulas" className="mt-4">
-              <ContentChapterPane
+              <ChapterLinkGrid
                 chapters={normalizedChapters}
-                activeId={activeContentId}
-                onSelect={setSelectedContentId}
                 loading={anyChapterLoading}
-                emptyMessage="No formulas available for this chapter yet."
-              >
-                {(ch) => (
-                  <FormulasSection
-                    formulas={ch.formulas ?? []}
-                    loading={false}
-                  />
-                )}
-              </ContentChapterPane>
+                emptyMessage="No formulas available yet."
+                buildTo={(id) => ({
+                  to: "/subjects/$subjectId/formulas/$chapterId" as const,
+                  params: { subjectId, chapterId: id },
+                })}
+                icon="formulas"
+                color={subject.color}
+              />
             </TabsContent>
           )}
 
@@ -530,15 +527,17 @@ function SubjectDetailPage() {
           <TabsContent value="topics" className="mt-4">
             {isContentDriven ? (
               <div className="space-y-4">
-                <ContentChapterPane
+                <ChapterLinkGrid
                   chapters={normalizedChapters}
-                  activeId={activeContentId}
-                  onSelect={setSelectedContentId}
                   loading={anyChapterLoading}
-                  emptyMessage="No topics available for this chapter yet."
-                >
-                  {(ch) => <ChapterContentOverview chapter={ch} />}
-                </ContentChapterPane>
+                  emptyMessage="No topics available yet."
+                  buildTo={(id) => ({
+                    to: "/subjects/$subjectId/topics/$chapterId" as const,
+                    params: { subjectId, chapterId: id },
+                  })}
+                  icon="topics"
+                  color={subject.color}
+                />
                 <TopicsSection
                   weak={subject.weakTopics}
                   strong={subject.strongTopics}
