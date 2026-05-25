@@ -49,6 +49,7 @@ import { Route as AdminOpsRouteImport } from './routes/admin.ops'
 import { Route as AdminImportRouteImport } from './routes/admin.import'
 import { Route as AccountDeleteRouteImport } from './routes/account.delete'
 import { Route as SubjectsMathChapterIdRouteImport } from './routes/subjects.math.$chapterId'
+import { Route as SubjectsSubjectIdTopicsChapterIdRouteImport } from './routes/subjects.$subjectId.topics.$chapterId'
 import { Route as SubjectsSubjectIdFormulasChapterIdRouteImport } from './routes/subjects.$subjectId.formulas.$chapterId'
 
 const VoiceRoute = VoiceRouteImport.update({
@@ -251,6 +252,12 @@ const SubjectsMathChapterIdRoute = SubjectsMathChapterIdRouteImport.update({
   path: '/subjects/math/$chapterId',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SubjectsSubjectIdTopicsChapterIdRoute =
+  SubjectsSubjectIdTopicsChapterIdRouteImport.update({
+    id: '/topics/$chapterId',
+    path: '/topics/$chapterId',
+    getParentRoute: () => SubjectsSubjectIdRoute,
+  } as any)
 const SubjectsSubjectIdFormulasChapterIdRoute =
   SubjectsSubjectIdFormulasChapterIdRouteImport.update({
     id: '/formulas/$chapterId',
@@ -300,6 +307,7 @@ export interface FileRoutesByFullPath {
   '/subjects/': typeof SubjectsIndexRoute
   '/subjects/math/$chapterId': typeof SubjectsMathChapterIdRoute
   '/subjects/$subjectId/formulas/$chapterId': typeof SubjectsSubjectIdFormulasChapterIdRoute
+  '/subjects/$subjectId/topics/$chapterId': typeof SubjectsSubjectIdTopicsChapterIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -343,6 +351,7 @@ export interface FileRoutesByTo {
   '/subjects': typeof SubjectsIndexRoute
   '/subjects/math/$chapterId': typeof SubjectsMathChapterIdRoute
   '/subjects/$subjectId/formulas/$chapterId': typeof SubjectsSubjectIdFormulasChapterIdRoute
+  '/subjects/$subjectId/topics/$chapterId': typeof SubjectsSubjectIdTopicsChapterIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -387,6 +396,7 @@ export interface FileRoutesById {
   '/subjects/': typeof SubjectsIndexRoute
   '/subjects/math/$chapterId': typeof SubjectsMathChapterIdRoute
   '/subjects/$subjectId/formulas/$chapterId': typeof SubjectsSubjectIdFormulasChapterIdRoute
+  '/subjects/$subjectId/topics/$chapterId': typeof SubjectsSubjectIdTopicsChapterIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -432,6 +442,7 @@ export interface FileRouteTypes {
     | '/subjects/'
     | '/subjects/math/$chapterId'
     | '/subjects/$subjectId/formulas/$chapterId'
+    | '/subjects/$subjectId/topics/$chapterId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -475,6 +486,7 @@ export interface FileRouteTypes {
     | '/subjects'
     | '/subjects/math/$chapterId'
     | '/subjects/$subjectId/formulas/$chapterId'
+    | '/subjects/$subjectId/topics/$chapterId'
   id:
     | '__root__'
     | '/'
@@ -518,6 +530,7 @@ export interface FileRouteTypes {
     | '/subjects/'
     | '/subjects/math/$chapterId'
     | '/subjects/$subjectId/formulas/$chapterId'
+    | '/subjects/$subjectId/topics/$chapterId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -840,6 +853,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SubjectsMathChapterIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/subjects/$subjectId/topics/$chapterId': {
+      id: '/subjects/$subjectId/topics/$chapterId'
+      path: '/topics/$chapterId'
+      fullPath: '/subjects/$subjectId/topics/$chapterId'
+      preLoaderRoute: typeof SubjectsSubjectIdTopicsChapterIdRouteImport
+      parentRoute: typeof SubjectsSubjectIdRoute
+    }
     '/subjects/$subjectId/formulas/$chapterId': {
       id: '/subjects/$subjectId/formulas/$chapterId'
       path: '/formulas/$chapterId'
@@ -908,11 +928,13 @@ const ScanRouteWithChildren = ScanRoute._addFileChildren(ScanRouteChildren)
 
 interface SubjectsSubjectIdRouteChildren {
   SubjectsSubjectIdFormulasChapterIdRoute: typeof SubjectsSubjectIdFormulasChapterIdRoute
+  SubjectsSubjectIdTopicsChapterIdRoute: typeof SubjectsSubjectIdTopicsChapterIdRoute
 }
 
 const SubjectsSubjectIdRouteChildren: SubjectsSubjectIdRouteChildren = {
   SubjectsSubjectIdFormulasChapterIdRoute:
     SubjectsSubjectIdFormulasChapterIdRoute,
+  SubjectsSubjectIdTopicsChapterIdRoute: SubjectsSubjectIdTopicsChapterIdRoute,
 }
 
 const SubjectsSubjectIdRouteWithChildren =
