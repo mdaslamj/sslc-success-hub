@@ -697,6 +697,78 @@ function HeaderStat({ label, value }: { label: string; value: string }) {
   );
 }
 
+/* ---------------- Chapter link grid (formulas/topics tabs) ---------------- */
+
+function ChapterLinkGrid({
+  chapters,
+  loading,
+  emptyMessage,
+  buildTo,
+  icon,
+  color,
+}: {
+  chapters: NormalizedChapter[];
+  loading: boolean;
+  emptyMessage: string;
+  buildTo: (id: string) => {
+    to:
+      | "/subjects/$subjectId/formulas/$chapterId"
+      | "/subjects/$subjectId/topics/$chapterId";
+    params: { subjectId: string; chapterId: string };
+  };
+  icon: "formulas" | "topics";
+  color: string;
+}) {
+  if (loading && chapters.length === 0) {
+    return <Skeleton className="h-48 w-full rounded-2xl" />;
+  }
+  if (chapters.length === 0) {
+    return (
+      <div className="rounded-2xl border border-dashed border-border/60 p-10 text-center text-sm text-muted-foreground">
+        {emptyMessage}
+      </div>
+    );
+  }
+  const Icon = icon === "formulas" ? Sigma : Sparkles;
+  return (
+    <div className="grid gap-3 md:grid-cols-2">
+      {chapters.map((c, i) => (
+        <Link
+          key={c.id}
+          {...buildTo(c.id)}
+          className="group rounded-2xl border border-border/60 bg-card p-4 transition hover:border-brand/40 focus:outline-none focus:ring-2 focus:ring-brand/40"
+        >
+          <div className="flex items-start gap-3">
+            <div
+              className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-brand/10 text-brand"
+              style={{ color }}
+            >
+              <Icon className="h-4 w-4" />
+            </div>
+            <div className="min-w-0 flex-1">
+              <div className="text-[11px] text-muted-foreground">
+                Chapter {c.chapterNumber || i + 1}
+              </div>
+              <div className="font-display font-semibold">{c.title}</div>
+              {icon === "formulas" ? (
+                <div className="mt-1 text-xs text-muted-foreground">
+                  {(c.formulas?.length ?? 0)} formulas
+                </div>
+              ) : (
+                <div className="mt-1 text-xs text-muted-foreground">
+                  {(c.learningPoints?.length ?? 0)} learning points ·{" "}
+                  {(c.exercises?.length ?? 0)} exercises
+                </div>
+              )}
+            </div>
+            <ArrowRight className="h-4 w-4 text-muted-foreground transition group-hover:translate-x-0.5" />
+          </div>
+        </Link>
+      ))}
+    </div>
+  );
+}
+
 /* ---------------- Content Resources (from chapter JSON) ---------------- */
 
 function ManifestChaptersGrid({
