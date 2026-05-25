@@ -31,8 +31,7 @@ import {
 import { Clock, Map as MapIcon, Landmark } from "lucide-react";
 import { type MCQ } from "@/lib/mock-data";
 import { fetchChapters, fetchSubject } from "@/integrations/firebase/subjects";
-import type { ChapterDoc, SubjectDoc, MathChapterDoc } from "@/integrations/firebase/types";
-import { fetchMathChapters } from "@/integrations/firebase/services";
+import type { ChapterDoc, SubjectDoc } from "@/integrations/firebase/types";
 import { toast } from "sonner";
 import { ChapterResources } from "@/components/chapter-resources";
 import { useAllChapterMastery } from "@/hooks/use-math-mastery";
@@ -145,7 +144,7 @@ function SubjectDetailPage() {
   const contentFolder = contentFolderFor(subjectId);
   const isContentDriven = contentFolder != null;
 
-  const [subjectQuery, chaptersQuery, mathChaptersQuery] = useQueries({
+  const [subjectQuery, chaptersQuery] = useQueries({
     queries: [
       {
         queryKey: ["subject", subjectId],
@@ -154,12 +153,6 @@ function SubjectDetailPage() {
       {
         queryKey: ["chapters", subjectId],
         queryFn: () => fetchChapters(subjectId),
-      },
-      {
-        queryKey: ["math", "chapters"],
-        queryFn: fetchMathChapters,
-        enabled: subjectId === "math",
-        staleTime: 5 * 60 * 1000,
       },
     ],
   });
