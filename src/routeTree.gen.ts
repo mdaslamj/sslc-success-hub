@@ -49,6 +49,7 @@ import { Route as AdminOpsRouteImport } from './routes/admin.ops'
 import { Route as AdminImportRouteImport } from './routes/admin.import'
 import { Route as AccountDeleteRouteImport } from './routes/account.delete'
 import { Route as SubjectsMathChapterIdRouteImport } from './routes/subjects.math.$chapterId'
+import { Route as SubjectsSubjectIdFormulasChapterIdRouteImport } from './routes/subjects.$subjectId.formulas.$chapterId'
 
 const VoiceRoute = VoiceRouteImport.update({
   id: '/voice',
@@ -250,6 +251,12 @@ const SubjectsMathChapterIdRoute = SubjectsMathChapterIdRouteImport.update({
   path: '/subjects/math/$chapterId',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SubjectsSubjectIdFormulasChapterIdRoute =
+  SubjectsSubjectIdFormulasChapterIdRouteImport.update({
+    id: '/formulas/$chapterId',
+    path: '/formulas/$chapterId',
+    getParentRoute: () => SubjectsSubjectIdRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -289,9 +296,10 @@ export interface FileRoutesByFullPath {
   '/mock-test/$testId': typeof MockTestTestIdRoute
   '/quiz/$quizId': typeof QuizQuizIdRoute
   '/scan/$scanId': typeof ScanScanIdRoute
-  '/subjects/$subjectId': typeof SubjectsSubjectIdRoute
+  '/subjects/$subjectId': typeof SubjectsSubjectIdRouteWithChildren
   '/subjects/': typeof SubjectsIndexRoute
   '/subjects/math/$chapterId': typeof SubjectsMathChapterIdRoute
+  '/subjects/$subjectId/formulas/$chapterId': typeof SubjectsSubjectIdFormulasChapterIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -331,9 +339,10 @@ export interface FileRoutesByTo {
   '/mock-test/$testId': typeof MockTestTestIdRoute
   '/quiz/$quizId': typeof QuizQuizIdRoute
   '/scan/$scanId': typeof ScanScanIdRoute
-  '/subjects/$subjectId': typeof SubjectsSubjectIdRoute
+  '/subjects/$subjectId': typeof SubjectsSubjectIdRouteWithChildren
   '/subjects': typeof SubjectsIndexRoute
   '/subjects/math/$chapterId': typeof SubjectsMathChapterIdRoute
+  '/subjects/$subjectId/formulas/$chapterId': typeof SubjectsSubjectIdFormulasChapterIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -374,9 +383,10 @@ export interface FileRoutesById {
   '/mock-test/$testId': typeof MockTestTestIdRoute
   '/quiz/$quizId': typeof QuizQuizIdRoute
   '/scan/$scanId': typeof ScanScanIdRoute
-  '/subjects/$subjectId': typeof SubjectsSubjectIdRoute
+  '/subjects/$subjectId': typeof SubjectsSubjectIdRouteWithChildren
   '/subjects/': typeof SubjectsIndexRoute
   '/subjects/math/$chapterId': typeof SubjectsMathChapterIdRoute
+  '/subjects/$subjectId/formulas/$chapterId': typeof SubjectsSubjectIdFormulasChapterIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -421,6 +431,7 @@ export interface FileRouteTypes {
     | '/subjects/$subjectId'
     | '/subjects/'
     | '/subjects/math/$chapterId'
+    | '/subjects/$subjectId/formulas/$chapterId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -463,6 +474,7 @@ export interface FileRouteTypes {
     | '/subjects/$subjectId'
     | '/subjects'
     | '/subjects/math/$chapterId'
+    | '/subjects/$subjectId/formulas/$chapterId'
   id:
     | '__root__'
     | '/'
@@ -505,6 +517,7 @@ export interface FileRouteTypes {
     | '/subjects/$subjectId'
     | '/subjects/'
     | '/subjects/math/$chapterId'
+    | '/subjects/$subjectId/formulas/$chapterId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -540,7 +553,7 @@ export interface RootRouteChildren {
   AdminOpsRoute: typeof AdminOpsRoute
   ExamResultsAttemptIdRoute: typeof ExamResultsAttemptIdRoute
   QuizQuizIdRoute: typeof QuizQuizIdRoute
-  SubjectsSubjectIdRoute: typeof SubjectsSubjectIdRoute
+  SubjectsSubjectIdRoute: typeof SubjectsSubjectIdRouteWithChildren
   SubjectsIndexRoute: typeof SubjectsIndexRoute
   SubjectsMathChapterIdRoute: typeof SubjectsMathChapterIdRoute
 }
@@ -827,6 +840,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SubjectsMathChapterIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/subjects/$subjectId/formulas/$chapterId': {
+      id: '/subjects/$subjectId/formulas/$chapterId'
+      path: '/formulas/$chapterId'
+      fullPath: '/subjects/$subjectId/formulas/$chapterId'
+      preLoaderRoute: typeof SubjectsSubjectIdFormulasChapterIdRouteImport
+      parentRoute: typeof SubjectsSubjectIdRoute
+    }
   }
 }
 
@@ -886,6 +906,18 @@ const ScanRouteChildren: ScanRouteChildren = {
 
 const ScanRouteWithChildren = ScanRoute._addFileChildren(ScanRouteChildren)
 
+interface SubjectsSubjectIdRouteChildren {
+  SubjectsSubjectIdFormulasChapterIdRoute: typeof SubjectsSubjectIdFormulasChapterIdRoute
+}
+
+const SubjectsSubjectIdRouteChildren: SubjectsSubjectIdRouteChildren = {
+  SubjectsSubjectIdFormulasChapterIdRoute:
+    SubjectsSubjectIdFormulasChapterIdRoute,
+}
+
+const SubjectsSubjectIdRouteWithChildren =
+  SubjectsSubjectIdRoute._addFileChildren(SubjectsSubjectIdRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AchievementsRoute: AchievementsRoute,
@@ -919,7 +951,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminOpsRoute: AdminOpsRoute,
   ExamResultsAttemptIdRoute: ExamResultsAttemptIdRoute,
   QuizQuizIdRoute: QuizQuizIdRoute,
-  SubjectsSubjectIdRoute: SubjectsSubjectIdRoute,
+  SubjectsSubjectIdRoute: SubjectsSubjectIdRouteWithChildren,
   SubjectsIndexRoute: SubjectsIndexRoute,
   SubjectsMathChapterIdRoute: SubjectsMathChapterIdRoute,
 }
