@@ -141,6 +141,7 @@ export const Route = createFileRoute("/subjects/$subjectId")({
 
 function SubjectDetailPage() {
   const { subjectId } = Route.useParams();
+  const navigate = useNavigate();
   const contentFolder = contentFolderFor(subjectId);
   const isContentDriven = contentFolder != null;
 
