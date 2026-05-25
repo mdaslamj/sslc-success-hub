@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { useQueries, useQuery } from "@tanstack/react-query";
 import { DashboardLayout } from "@/components/dashboard-layout";
@@ -31,8 +31,7 @@ import {
 import { Clock, Map as MapIcon, Landmark } from "lucide-react";
 import { type MCQ } from "@/lib/mock-data";
 import { fetchChapters, fetchSubject } from "@/integrations/firebase/subjects";
-import type { ChapterDoc, SubjectDoc, MathChapterDoc } from "@/integrations/firebase/types";
-import { fetchMathChapters } from "@/integrations/firebase/services";
+import type { ChapterDoc, SubjectDoc } from "@/integrations/firebase/types";
 import { toast } from "sonner";
 import { ChapterResources } from "@/components/chapter-resources";
 import { useAllChapterMastery } from "@/hooks/use-math-mastery";
@@ -141,10 +140,11 @@ export const Route = createFileRoute("/subjects/$subjectId")({
 
 function SubjectDetailPage() {
   const { subjectId } = Route.useParams();
+  const navigate = useNavigate();
   const contentFolder = contentFolderFor(subjectId);
   const isContentDriven = contentFolder != null;
 
-  const [subjectQuery, chaptersQuery, mathChaptersQuery] = useQueries({
+  const [subjectQuery, chaptersQuery] = useQueries({
     queries: [
       {
         queryKey: ["subject", subjectId],
@@ -153,12 +153,6 @@ function SubjectDetailPage() {
       {
         queryKey: ["chapters", subjectId],
         queryFn: () => fetchChapters(subjectId),
-      },
-      {
-        queryKey: ["math", "chapters"],
-        queryFn: fetchMathChapters,
-        enabled: subjectId === "math",
-        staleTime: 5 * 60 * 1000,
       },
     ],
   });
@@ -253,32 +247,11 @@ function SubjectDetailPage() {
 
   const subject = subjectQuery.data as SubjectDoc | null;
   const rawChapters: ChapterDoc[] = chaptersQuery.data ?? [];
-  const mathChapters = (mathChaptersQuery.data ?? []) as MathChapterDoc[];
-  // For the Math subject, prefer the math-intelligence chapters so that the
-  // chapter list's IDs match the Firestore docs that
-  // /subjects/math/$chapterId reads from. Falls back to the generic chapters
-  // when math intelligence has not been seeded yet.
-  const chapters: ChapterDoc[] =
-    subjectId === "math" && mathChapters.length > 0
-      ? mathChapters.map((c, i) => ({
-          id: c.id,
-          subjectId: "math",
-          title: c.title,
-          titleKn: c.titleKn,
-          progress: 0,
-          done: false,
-          difficulty:
-            c.difficultyMix.hard + c.difficultyMix.hots >= 50
-              ? "Hard"
-              : c.difficultyMix.easy >= 50
-                ? "Easy"
-                : "Medium",
-          order: c.chapterNumber ?? i,
-          chapterNumber: c.chapterNumber,
-          estimatedStudyTime: c.estimatedStudyTime,
-          importantTopics: c.keyConcepts,
-        }))
-      : rawChapters;
+  // Chapter list is sourced purely from the JSON manifest for content-driven
+  // subjects (math/science/social). Legacy Firestore math-intelligence
+  // mapping was removed so chapter clicks no longer hit the
+  // "Math data not seeded yet" path.
+  const chapters: ChapterDoc[] = rawChapters;
 
   if (!subject) {
     return (
@@ -462,8 +435,15 @@ function SubjectDetailPage() {
                   chapters={(manifestQuery.data as ManifestDoc).chapters as ManifestChapter[]}
                   color={subject.color}
                   onSelect={(id) => {
-                    setSelectedContentId(id);
-                    setChapterDetailOpen(true);
+                    if (isSocial) {
+                      setSelectedContentId(id);
+                      setChapterDetailOpen(true);
+                    } else {
+                      navigate({
+                        to: "/subjects/$subjectId/topics/$chapterId",
+                        params: { subjectId, chapterId: id },
+                      });
+                    }
                   }}
                 />
               )
@@ -500,20 +480,17 @@ function SubjectDetailPage() {
 
           {isContentDriven && !isSocial && (
             <TabsContent value="formulas" className="mt-4">
-              <ContentChapterPane
+              <ChapterLinkGrid
                 chapters={normalizedChapters}
-                activeId={activeContentId}
-                onSelect={setSelectedContentId}
                 loading={anyChapterLoading}
-                emptyMessage="No formulas available for this chapter yet."
-              >
-                {(ch) => (
-                  <FormulasSection
-                    formulas={ch.formulas ?? []}
-                    loading={false}
-                  />
-                )}
-              </ContentChapterPane>
+                emptyMessage="No formulas available yet."
+                buildTo={(id) => ({
+                  to: "/subjects/$subjectId/formulas/$chapterId" as const,
+                  params: { subjectId, chapterId: id },
+                })}
+                icon="formulas"
+                color={subject.color}
+              />
             </TabsContent>
           )}
 
@@ -522,15 +499,17 @@ function SubjectDetailPage() {
           <TabsContent value="topics" className="mt-4">
             {isContentDriven ? (
               <div className="space-y-4">
-                <ContentChapterPane
+                <ChapterLinkGrid
                   chapters={normalizedChapters}
-                  activeId={activeContentId}
-                  onSelect={setSelectedContentId}
                   loading={anyChapterLoading}
-                  emptyMessage="No topics available for this chapter yet."
-                >
-                  {(ch) => <ChapterContentOverview chapter={ch} />}
-                </ContentChapterPane>
+                  emptyMessage="No topics available yet."
+                  buildTo={(id) => ({
+                    to: "/subjects/$subjectId/topics/$chapterId" as const,
+                    params: { subjectId, chapterId: id },
+                  })}
+                  icon="topics"
+                  color={subject.color}
+                />
                 <TopicsSection
                   weak={subject.weakTopics}
                   strong={subject.strongTopics}
@@ -686,6 +665,78 @@ function HeaderStat({ label, value }: { label: string; value: string }) {
     <div className="rounded-2xl bg-white/15 p-2 text-center backdrop-blur">
       <div className="text-[10px] uppercase tracking-widest text-white/70">{label}</div>
       <div className="font-display text-lg font-bold">{value}</div>
+    </div>
+  );
+}
+
+/* ---------------- Chapter link grid (formulas/topics tabs) ---------------- */
+
+function ChapterLinkGrid({
+  chapters,
+  loading,
+  emptyMessage,
+  buildTo,
+  icon,
+  color,
+}: {
+  chapters: NormalizedChapter[];
+  loading: boolean;
+  emptyMessage: string;
+  buildTo: (id: string) => {
+    to:
+      | "/subjects/$subjectId/formulas/$chapterId"
+      | "/subjects/$subjectId/topics/$chapterId";
+    params: { subjectId: string; chapterId: string };
+  };
+  icon: "formulas" | "topics";
+  color: string;
+}) {
+  if (loading && chapters.length === 0) {
+    return <Skeleton className="h-48 w-full rounded-2xl" />;
+  }
+  if (chapters.length === 0) {
+    return (
+      <div className="rounded-2xl border border-dashed border-border/60 p-10 text-center text-sm text-muted-foreground">
+        {emptyMessage}
+      </div>
+    );
+  }
+  const Icon = icon === "formulas" ? Sigma : Sparkles;
+  return (
+    <div className="grid gap-3 md:grid-cols-2">
+      {chapters.map((c, i) => (
+        <Link
+          key={c.id}
+          {...buildTo(c.id)}
+          className="group rounded-2xl border border-border/60 bg-card p-4 transition hover:border-brand/40 focus:outline-none focus:ring-2 focus:ring-brand/40"
+        >
+          <div className="flex items-start gap-3">
+            <div
+              className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-brand/10 text-brand"
+              style={{ color }}
+            >
+              <Icon className="h-4 w-4" />
+            </div>
+            <div className="min-w-0 flex-1">
+              <div className="text-[11px] text-muted-foreground">
+                Chapter {c.chapterNumber || i + 1}
+              </div>
+              <div className="font-display font-semibold">{c.title}</div>
+              {icon === "formulas" ? (
+                <div className="mt-1 text-xs text-muted-foreground">
+                  {(c.formulas?.length ?? 0)} formulas
+                </div>
+              ) : (
+                <div className="mt-1 text-xs text-muted-foreground">
+                  {(c.learningPoints?.length ?? 0)} learning points ·{" "}
+                  {(c.exercises?.length ?? 0)} exercises
+                </div>
+              )}
+            </div>
+            <ArrowRight className="h-4 w-4 text-muted-foreground transition group-hover:translate-x-0.5" />
+          </div>
+        </Link>
+      ))}
     </div>
   );
 }
