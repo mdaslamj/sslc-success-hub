@@ -247,32 +247,11 @@ function SubjectDetailPage() {
 
   const subject = subjectQuery.data as SubjectDoc | null;
   const rawChapters: ChapterDoc[] = chaptersQuery.data ?? [];
-  const mathChapters = (mathChaptersQuery.data ?? []) as MathChapterDoc[];
-  // For the Math subject, prefer the math-intelligence chapters so that the
-  // chapter list's IDs match the Firestore docs that
-  // /subjects/math/$chapterId reads from. Falls back to the generic chapters
-  // when math intelligence has not been seeded yet.
-  const chapters: ChapterDoc[] =
-    subjectId === "math" && mathChapters.length > 0
-      ? mathChapters.map((c, i) => ({
-          id: c.id,
-          subjectId: "math",
-          title: c.title,
-          titleKn: c.titleKn,
-          progress: 0,
-          done: false,
-          difficulty:
-            c.difficultyMix.hard + c.difficultyMix.hots >= 50
-              ? "Hard"
-              : c.difficultyMix.easy >= 50
-                ? "Easy"
-                : "Medium",
-          order: c.chapterNumber ?? i,
-          chapterNumber: c.chapterNumber,
-          estimatedStudyTime: c.estimatedStudyTime,
-          importantTopics: c.keyConcepts,
-        }))
-      : rawChapters;
+  // Chapter list is sourced purely from the JSON manifest for content-driven
+  // subjects (math/science/social). Legacy Firestore math-intelligence
+  // mapping was removed so chapter clicks no longer hit the
+  // "Math data not seeded yet" path.
+  const chapters: ChapterDoc[] = rawChapters;
 
   if (!subject) {
     return (
