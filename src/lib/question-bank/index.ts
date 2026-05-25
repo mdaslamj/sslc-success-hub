@@ -1,233 +1,94 @@
 /**
- * Aura Question Bank Service
- * -------------------------------------------------------------
- * Unified, lazy-loaded access to the three subject question banks:
+ * Question Bank — Master Index
+ * Central registry for all subjects, chapters, and questions.
  *
- *   math           -> /content/question-banks/math_question_bank_v3.json
- *   science        -> /content/question-banks/science_question_bank_v3.json
- *   social-science -> /content/question-banks/social_science_question_bank_v3.json
+ * Usage:
+ *   import { getQuestionsByChapter, SUBJECTS } from "@/lib/question-bank"
  *
- * Each bank ships in the same shape: { meta, blueprint, questions[] }.
- * Subject ids are normalized internally so callers can pass any of the
- * common variants (e.g. "mathematics", "math", "social_science").
- *
- * Public API (kept stable for backward compatibility):
- *   - getQuestionBank(subject)
- *   - getQuestionsByChapter(subject, chapter)
- *   - getQuestionsByType(subject, type)
- *   - getRandomQuestions(subject, count, opts?)
- *   - getWeakAreaQuestions(subject, weakConcepts, opts?)
+ *   const questions = getQuestionsByChapter("physics-light")
+ *   const chapters  = getChaptersBySubject("Science")
  */
 
-export type SubjectKey = "math" | "science" | "social-science";
+import type { Question } from "@/hooks/use-exam-engine";
+import { scienceChapters } from "./science";
+import { socialScienceChapters } from "./social-science";
 
-export type Difficulty = "easy" | "medium" | "hard" | string;
+// ---------------------------------------------------------------------------
+// Types
+// ---------------------------------------------------------------------------
 
-export interface BankQuestion {
+export type Chapter = {
   id: string;
-  chapter: number;
-  chapter_name: string;
-  /** Social Science only: History | Geography | Civics | Economics | Business Studies */
-  subject?: string;
-  /** Science only: Physics | Chemistry | Biology */
-  part?: string;
-  source?: string;
-  section?: string;
-  marks: number;
-  type: string; // mcq | direct | calculation | ...
-  difficulty: Difficulty;
-  question: string;
-  options?: string[];
-  answer?: string;
-  concepts?: string[];
-  [k: string]: unknown;
-}
-
-export interface QuestionBank {
-  meta: Record<string, unknown>;
-  blueprint: Record<string, unknown>;
-  questions: BankQuestion[];
-}
-
-const FILE_MAP: Record<SubjectKey, string> = {
-  math: "/content/question-banks/math_question_bank_v3.json",
-  science: "/content/question-banks/science_question_bank_v3.json",
-  "social-science": "/content/question-banks/social_science_question_bank_v3.json",
+  name: string;
+  questions: Question[];
 };
 
-/** Accept common aliases and return the canonical subject key. */
-export function normalizeSubject(input: string): SubjectKey {
-  const s = input.trim().toLowerCase().replace(/_/g, "-");
-  if (s === "math" || s === "maths" || s === "mathematics") return "math";
-  if (s === "science" || s === "sci") return "science";
-  if (
-    s === "social-science" ||
-    s === "social-studies" ||
-    s === "socialscience" ||
-    s === "social" ||
-    s === "ss"
-  )
-    return "social-science";
-  throw new Error(`Unknown subject for question bank: "${input}"`);
+export type Subject = {
+  id: string;
+  name: string;
+  icon: string;
+  color: string;   // Tailwind bg colour class
+  chapters: Chapter[];
+};
+
+// ---------------------------------------------------------------------------
+// Subject registry
+// ---------------------------------------------------------------------------
+
+export const SUBJECTS: Subject[] = [
+  {
+    id: "science",
+    name: "Science",
+    icon: "🔬",
+    color: "bg-blue-500",
+    chapters: scienceChapters,
+  },
+  {
+    id: "social-science",
+    name: "Social Science",
+    icon: "🌍",
+    color: "bg-green-500",
+    chapters: socialScienceChapters,
+  },
+  // Maths will be added here once the question bank is populated
+  // {
+  //   id: "maths",
+  //   name: "Mathematics",
+  //   icon: "📐",
+  //   color: "bg-purple-500",
+  //   chapters: mathsChapters,
+  // },
+];
+
+// ---------------------------------------------------------------------------
+// Lookup helpers
+// ---------------------------------------------------------------------------
+
+/** Get all chapters for a given subject id */
+export function getChaptersBySubject(subjectId: string): Chapter[] {
+  return SUBJECTS.find((s) => s.id === subjectId)?.chapters ?? [];
 }
 
-// ---------- Lazy in-memory cache ----------
-const cache = new Map<SubjectKey, QuestionBank>();
-const inflight = new Map<SubjectKey, Promise<QuestionBank>>();
-
-/** Lazy-load a subject's question bank. Cached after first call. */
-export async function getQuestionBank(
-  subject: SubjectKey | string,
-): Promise<QuestionBank> {
-  const key = normalizeSubject(subject);
-  const cached = cache.get(key);
-  if (cached) return cached;
-  const pending = inflight.get(key);
-  if (pending) return pending;
-
-  const p = (async () => {
-    const res = await fetch(FILE_MAP[key]);
-    if (!res.ok) {
-      throw new Error(
-        `Failed to load question bank for ${key} (${res.status})`,
-      );
-    }
-    const data = (await res.json()) as QuestionBank;
-    if (!data || !Array.isArray(data.questions)) {
-      throw new Error(`Malformed question bank for ${key}`);
-    }
-    cache.set(key, data);
-    inflight.delete(key);
-    return data;
-  })();
-
-  inflight.set(key, p);
-  return p;
-}
-
-/** Questions belonging to a single chapter (by number or by name, case-insensitive). */
-export async function getQuestionsByChapter(
-  subject: SubjectKey | string,
-  chapter: number | string,
-): Promise<BankQuestion[]> {
-  const bank = await getQuestionBank(subject);
-  if (typeof chapter === "number") {
-    return bank.questions.filter((q) => q.chapter === chapter);
+/** Get all questions for a given chapter id */
+export function getQuestionsByChapter(chapterId: string): Question[] {
+  for (const subject of SUBJECTS) {
+    const chapter = subject.chapters.find((c) => c.id === chapterId);
+    if (chapter) return chapter.questions;
   }
-  const needle = chapter.trim().toLowerCase();
-  return bank.questions.filter(
-    (q) => (q.chapter_name ?? "").toLowerCase() === needle,
-  );
+  return [];
 }
 
-/** Questions filtered by question type (mcq, direct, calculation, ...). */
-export async function getQuestionsByType(
-  subject: SubjectKey | string,
-  type: string,
-): Promise<BankQuestion[]> {
-  const bank = await getQuestionBank(subject);
-  const t = type.trim().toLowerCase();
-  return bank.questions.filter((q) => (q.type ?? "").toLowerCase() === t);
+/** Get all questions across a whole subject */
+export function getQuestionsBySubject(subjectId: string): Question[] {
+  return getChaptersBySubject(subjectId).flatMap((c) => c.questions);
 }
 
-export interface RandomOptions {
-  chapter?: number | string;
-  type?: string;
-  difficulty?: Difficulty;
-  /** Optional deterministic seed for reproducible picks. */
-  seed?: number;
+/** Get total question count for a chapter */
+export function getChapterQuestionCount(chapterId: string): number {
+  return getQuestionsByChapter(chapterId).length;
 }
 
-/** Random sample of N questions with optional filters. */
-export async function getRandomQuestions(
-  subject: SubjectKey | string,
-  count: number,
-  opts: RandomOptions = {},
-): Promise<BankQuestion[]> {
-  const bank = await getQuestionBank(subject);
-  let pool = bank.questions;
-  if (opts.chapter !== undefined) {
-    pool =
-      typeof opts.chapter === "number"
-        ? pool.filter((q) => q.chapter === opts.chapter)
-        : pool.filter(
-            (q) =>
-              (q.chapter_name ?? "").toLowerCase() ===
-              String(opts.chapter).toLowerCase(),
-          );
-  }
-  if (opts.type) {
-    const t = opts.type.toLowerCase();
-    pool = pool.filter((q) => (q.type ?? "").toLowerCase() === t);
-  }
-  if (opts.difficulty) {
-    const d = opts.difficulty.toLowerCase();
-    pool = pool.filter((q) => (q.difficulty ?? "").toLowerCase() === d);
-  }
-  return sampleN(pool, count, opts.seed);
-}
-
-/**
- * Questions matched against weak concepts/chapters/topics for the learner.
- * Matches on `concepts[]` and `chapter_name`, case-insensitive substring.
- */
-export async function getWeakAreaQuestions(
-  subject: SubjectKey | string,
-  weakAreas: string[],
-  opts: { limit?: number } = {},
-): Promise<BankQuestion[]> {
-  if (!weakAreas?.length) return [];
-  const bank = await getQuestionBank(subject);
-  const needles = weakAreas
-    .map((w) => w.trim().toLowerCase())
-    .filter(Boolean);
-
-  const scored = bank.questions
-    .map((q) => {
-      const hay = [
-        q.chapter_name ?? "",
-        ...(q.concepts ?? []),
-      ]
-        .join(" | ")
-        .toLowerCase();
-      let score = 0;
-      for (const n of needles) if (hay.includes(n)) score += 1;
-      return { q, score };
-    })
-    .filter((x) => x.score > 0)
-    .sort((a, b) => b.score - a.score)
-    .map((x) => x.q);
-
-  return opts.limit ? scored.slice(0, opts.limit) : scored;
-}
-
-// ---------- internals ----------
-function sampleN<T>(arr: T[], n: number, seed?: number): T[] {
-  if (n >= arr.length) return shuffle(arr.slice(), seed);
-  return shuffle(arr.slice(), seed).slice(0, n);
-}
-
-function shuffle<T>(a: T[], seed?: number): T[] {
-  const rand = seed === undefined ? Math.random : mulberry32(seed);
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(rand() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
-}
-
-function mulberry32(seed: number): () => number {
-  let t = seed >>> 0;
-  return () => {
-    t = (t + 0x6d2b79f5) >>> 0;
-    let r = Math.imul(t ^ (t >>> 15), 1 | t);
-    r = (r + Math.imul(r ^ (r >>> 7), 61 | r)) ^ r;
-    return ((r ^ (r >>> 14)) >>> 0) / 4294967296;
-  };
-}
-
-/** Test-only: clear caches. */
-export function __resetQuestionBankCache() {
-  cache.clear();
-  inflight.clear();
+/** Get subject metadata for a given chapter id */
+export function getSubjectByChapterId(chapterId: string): Subject | null {
+  return SUBJECTS.find((s) => s.chapters.some((c) => c.id === chapterId)) ?? null;
 }
