@@ -1,73 +1,55 @@
-## Scope
+## Goal
 
-Surgical reliability fixes for chapter-test + mock-exam launch flows. No redesigns, no logic changes outside navigation/recovery. Four files touched.
+Replace inline Formula/Topic rendering on the Mathematics subject page with dedicated route-based pages, loaded purely from JSON. Remove the legacy Firestore "Math data not seeded" path for chapter clicks.
 
----
+## New routes
 
-## 1. `src/routes/quizzes.tsx` — single-click chapter test launch
+1. `src/routes/subjects.$subjectId.formulas.$chapterId.tsx`
+   - Loads `/content/chapters/{folder}/{chapterId}.json` via existing `loadChapter()` helper (`src/lib/contentLoader`), mapping `subjectId` → folder (`mathematics`, `science`, `social-science`) using the same `contentFolderFor()` logic already in `subjects.$subjectId.tsx`.
+   - Normalizes via `normalizeChapterData` and renders `<FormulasSection formulas={chapter.formulas} />` (reused from `subjects.$subjectId.tsx`, extracted into a shared component file).
+   - Page chrome: DashboardLayout, back link to `/subjects/$subjectId`, chapter title header, skeleton + "Unable to load chapter. Retry." error state (same pattern used in exam/quiz routes).
 
-Current `StartChapterTestButton` already calls `ensureId()` + `navigate()` in one handler, but the perceived two-click bug comes from two real edge cases:
+2. `src/routes/subjects.$subjectId.topics.$chapterId.tsx`
+   - Same loader pattern.
+   - Renders the chapter's topic content: summary, learning points, key terms, exercises (i.e. the `<ChapterContentOverview chapter={ch} />` already used inline today).
+   - Same chrome + skeleton/error states.
 
-- When the content catalog is still loading for the active subject, `chapters` is `[]` so the button never renders — but for chapters whose JSON loads after first paint, the row renders with stale closure. Click → `ensureChapterQuizId` runs against the live chapter but the navigate fires before `cacheQuiz` flushes synchronously, and on slow mobile the route mounts before localStorage is visible to the next read.
-- Button is rendered inside the card; without `type="button"` and `e.preventDefault()` it can interact with parent click handlers in some layouts.
+Both routes use `createFileRoute` and define `head()` with chapter-aware title/description.
 
-Changes:
-- Add `type="button"` to `StartChapterTestButton`.
-- Inline the build+cache+navigate flow so it runs in a single synchronous handler with one localStorage write, then navigate. Add a brief `isLaunching` state to disable the button after click (prevents double-tap creating two attempts on slow mobile).
-- Add a console log: `console.debug("[quizzes] launch", { quizId, chapterId, level })`.
-- Disable the Start button (with subtle "Loading…" label) while `catalog.isLoading` is true for that subject row.
+## Shared extraction
 
-No styling changes — reuse existing `Button` variant.
+Move two presentational components out of `subjects.$subjectId.tsx` into `src/components/subject/`:
+- `FormulasSection` → `formulas-section.tsx`
+- `ChapterContentOverview` → `chapter-content-overview.tsx`
 
-## 2. `src/routes/quiz.$quizId.tsx` — verify rebuild fallback + instrument
+Both are imported by the original page and the two new pages. No logic changes.
 
-Rebuild fallback already exists (lines 43–71). Only additions:
-- Console instrumentation: log `[quiz] cache-hit`, `[quiz] rebuild-hit`, `[quiz] waiting-catalog`, `[quiz] missing` at the matching branches.
-- The existing skeleton loader already covers the rebuilding state; tweak the helper text to read "Restoring quiz…" consistently when `rebuilding || content.isLoading`.
+## Changes to `src/routes/subjects.$subjectId.tsx`
 
-No structural changes.
+- Remove inline rendering of formulas/topics for non-social subjects:
+  - `TabsContent value="formulas"`: replace `<ContentChapterPane>` with a simple grid of chapter cards that are `<Link to="/subjects/$subjectId/formulas/$chapterId">` links.
+  - `TabsContent value="topics"`: same — grid of `<Link to="/subjects/$subjectId/topics/$chapterId">` cards. Keep the existing `<TopicsSection weak/strong/>` block below as before (it is subject-level weak/strong, not chapter content).
+- Remove `selectedContentId` / `chapterDetailOpen` only from the non-social branches; the social-science branch keeps its current behavior unchanged (scope says no social changes).
+- `ManifestChaptersGrid.onSelect` for math/science: navigate to the topics page (`/subjects/$subjectId/topics/$chapterId`) instead of opening inline. Social-science behavior unchanged.
 
-## 3. `src/routes/exams.tsx` — Start Exam button pending state
+## "Math data not seeded" fix
 
-`ExamCard` currently wraps `<Button>` in `<Link>` with `onClick={cacheExam}`. On slow devices the user sees no feedback between tap and route mount.
+- The message originates from `src/routes/subjects.math.$chapterId.tsx` (Firestore-backed). The math chapter cards in the chapters tab currently route there.
+- Repoint math chapter clicks to the new JSON-based topics page (`/subjects/mathematics/topics/$chapterId` — using `mathematics` as the canonical URL subjectId, which already matches the manifest folder and how `subjects.index.tsx` links).
+- Drop the `mathChaptersQuery` / `fetchMathChapters` / math-intelligence mapping branch from `subjects.$subjectId.tsx` so the chapter list is sourced from the JSON manifest only. Do NOT delete `subjects.math.$chapterId.tsx` or `fetchMathChapters` themselves in this pass — only remove the references from the subject page so nothing links into the legacy route.
 
-Changes:
-- Convert the card CTA from `<Link><Button/></Link>` to a controlled `<Button>` that:
-  1. sets local `isPreparing = true`
-  2. calls `cacheExam(exam)`
-  3. logs `console.debug("[exams] launch", { examId: exam.id, kind: exam.kind })`
-  4. `navigate({ to: "/exams/$examId", params: { examId: exam.id } })`
-- While `isPreparing`, render `<Loader2 className="animate-spin" /> Preparing…` and `disabled`.
-- Preserve the card layout, full-width rounded button, spacing, and existing classes exactly.
+## Out of scope (explicit)
 
-Filters, hero card, recent attempts list — untouched.
+- No changes to social-science timeline/maps/civics tabs.
+- No redesigns; cards reuse existing visual language.
+- No edits to exam/quiz/planner/analytics flows.
+- No deletion of legacy Firestore math routes/services.
 
-## 4. `src/routes/exams.$examId.tsx` — loading skeleton + instrumentation
+## Verification
 
-Current "Loading exam…" fallback is a bare card. Replace with a small skeleton (header bar + 4 option rows) using the existing `Skeleton` primitive when `!exam && !missing`. Keep layout identical to player to avoid layout shift on resolve.
-
-Console instrumentation in the resolve effect:
-- `[exam] cache-hit` when `readCachedExam` hits
-- `[exam] rebuild-hit` when `rebuildContentExamById` succeeds
-- `[exam] seed-hit` for `SEED_MOCK_EXAMS`
-- `[exam] waiting-catalog` when deferring
-- `[exam] remote-hit` / `[exam] missing` for the final fetch branch
-
-No changes to player, timer, navigator, or submit dialog.
-
----
-
-## Explicit non-goals
-
-- No edits to planner, onboarding, analytics, gamification, styling tokens, exam grading logic, question-bank architecture, or `useMockExam` / `useQuiz` hooks.
-- No new files, no dependency changes.
-- `src/routeTree.gen.ts` is auto-generated — not touched.
-
-## Verification checklist
-
-- `Start` on `/quizzes` navigates to `/quiz/$quizId` on the first click (desktop + mobile viewport 798×611).
-- Hard refresh on `/quiz/$quizId` for a chapter-test id rebuilds and renders the player.
-- Hard refresh on `/exams/$examId` for a content-built id rebuilds; skeleton visible during rebuild.
-- `Start exam` on `/exams` shows "Preparing…" then navigates.
-- Console shows the new `[quizzes] / [quiz] / [exams] / [exam]` debug lines at expected branches.
-- No layout shift on cards, no new console errors, build passes.
+- Clicking a Formula chapter card opens `/subjects/mathematics/formulas/<id>` and renders only that chapter's formulas; nothing renders below the chapter list on the subject page.
+- Clicking a Topic chapter card opens `/subjects/mathematics/topics/<id>` with summary, learning points, key terms, exercises.
+- Direct URL / refresh works (JSON load + skeleton + retry).
+- "Math data not seeded yet" no longer surfaces from normal chapter navigation.
+- Mobile viewport (current 428px) unchanged: no horizontal scroll, cards readable.
+- No console errors; build passes.
