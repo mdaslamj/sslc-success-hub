@@ -1,4 +1,5 @@
 export { PracticeEngine } from "./PracticeEngine";
+export { MockExamEngine } from "./MockExamEngine";
 export { QuestionCard } from "./QuestionCard";
 export { AnswerOptions } from "./AnswerOptions";
 export { ExplanationPanel } from "./ExplanationPanel";
