@@ -12,6 +12,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { Link } from "@tanstack/react-router";
 import { DashboardLayout } from "@/components/dashboard-layout";
+import { useMockExamHistory } from "@/hooks/use-mock-exam-history";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Clock, ChevronLeft, ChevronRight, AlertTriangle, Trophy } from "lucide-react";
@@ -79,6 +80,7 @@ export default function MockExamPage() {
   const [timeLeft, setTimeLeft] = useState(EXAM_DURATION_SECS);
   const [results, setResults] = useState<ExamResult[]>([]);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const { addRecord } = useMockExamHistory();
 
   // ── Timer ─────────────────────────────────────────────────────────────────
 
@@ -114,9 +116,26 @@ export default function MockExamPage() {
       selectedOption: answers[q.id] ?? null,
       isCorrect: answers[q.id] === q.correctAnswer,
     }));
+    const correctCount = res.filter((r) => r.isCorrect).length;
+    const accuracy = Math.round((correctCount / res.length) * 100);
+    // Save to history — T13
+    addRecord({
+      score: correctCount,
+      total: res.length,
+      accuracy,
+      timeTakenSecs: EXAM_DURATION_SECS - timeLeft,
+      subjectBreakdown: SUBJECTS.map((subject) => {
+        const subjectRes = res.filter((r) => r.question.subject === subject.name);
+        return {
+          subjectName: subject.name,
+          correct: subjectRes.filter((r) => r.isCorrect).length,
+          total: subjectRes.length,
+        };
+      }),
+    });
     setResults(res);
     setPhase("results");
-  }, [questions, answers]);
+  }, [questions, answers, timeLeft, addRecord]);
 
   const currentQuestion = questions[currentIndex];
   const answeredCount = Object.keys(answers).length;
