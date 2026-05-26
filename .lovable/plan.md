@@ -1,55 +1,92 @@
-## Goal
+## Build failure — root cause
 
-Replace inline Formula/Topic rendering on the Mathematics subject page with dedicated route-based pages, loaded purely from JSON. Remove the legacy Firestore "Math data not seeded" path for chapter clicks.
+The preview 404 (`Worker bundle not found: dwl:pre:…:12601537:_worker_bundle.json`) is downstream of a failed Worker build. `bunx tsc --noEmit` reports ~120 compile errors all stemming from three breakages:
 
-## New routes
+### 1. `src/hooks/use-analytics.ts` was rewritten (PRIMARY CAUSE)
 
-1. `src/routes/subjects.$subjectId.formulas.$chapterId.tsx`
-   - Loads `/content/chapters/{folder}/{chapterId}.json` via existing `loadChapter()` helper (`src/lib/contentLoader`), mapping `subjectId` → folder (`mathematics`, `science`, `social-science`) using the same `contentFolderFor()` logic already in `subjects.$subjectId.tsx`.
-   - Normalizes via `normalizeChapterData` and renders `<FormulasSection formulas={chapter.formulas} />` (reused from `subjects.$subjectId.tsx`, extracted into a shared component file).
-   - Page chrome: DashboardLayout, back link to `/subjects/$subjectId`, chapter title header, skeleton + "Unable to load chapter. Retry." error state (same pattern used in exam/quiz routes).
+The file now exports a new `AnalyticsEngine` shape:
 
-2. `src/routes/subjects.$subjectId.topics.$chapterId.tsx`
-   - Same loader pattern.
-   - Renders the chapter's topic content: summary, learning points, key terms, exercises (i.e. the `<ChapterContentOverview chapter={ch} />` already used inline today).
-   - Same chrome + skeleton/error states.
+```
+{ data, recordAttempt, getChapterStats, getSubjectStats, getWeakChapters, clearData }
+```
 
-Both routes use `createFileRoute` and define `head()` with chapter-aware title/description.
+But ~10 consumers still import `useAnalytics()` expecting the previous snapshot shape with these fields/methods:
 
-## Shared extraction
+`userId`, `loading`, `streak`, `recentSessions`, `weekly`, `bySubject`, `todayMinutes`, `overallProgress`, `completedChapters`, `totalChapters`, `totalStudyHours`, `totalStudyMinutes`, `focusSessions`, `consistency`, `logSession()`, `refresh()`.
 
-Move two presentational components out of `subjects.$subjectId.tsx` into `src/components/subject/`:
-- `FormulasSection` → `formulas-section.tsx`
-- `ChapterContentOverview` → `chapter-content-overview.tsx`
+Affected files (all failing typecheck):
 
-Both are imported by the original page and the two new pages. No logic changes.
+- `src/components/revision-planner-card.tsx`
+- `src/hooks/use-achievements.ts`
+- `src/hooks/use-gamification.ts`
+- `src/hooks/use-planner.ts`
+- `src/hooks/use-recommendations.ts`
+- `src/routes/achievements.tsx`
+- `src/routes/analytics.tsx`
+- `src/routes/focus.tsx`
+- `src/routes/log.tsx`
+- `src/routes/planner.tsx`
+- `src/routes/profile.tsx`
 
-## Changes to `src/routes/subjects.$subjectId.tsx`
+### 2. `src/lib/mockExamGenerator.ts` — missing exports
 
-- Remove inline rendering of formulas/topics for non-social subjects:
-  - `TabsContent value="formulas"`: replace `<ContentChapterPane>` with a simple grid of chapter cards that are `<Link to="/subjects/$subjectId/formulas/$chapterId">` links.
-  - `TabsContent value="topics"`: same — grid of `<Link to="/subjects/$subjectId/topics/$chapterId">` cards. Keep the existing `<TopicsSection weak/strong/>` block below as before (it is subject-level weak/strong, not chapter content).
-- Remove `selectedContentId` / `chapterDetailOpen` only from the non-social branches; the social-science branch keeps its current behavior unchanged (scope says no social changes).
-- `ManifestChaptersGrid.onSelect` for math/science: navigate to the topics page (`/subjects/$subjectId/topics/$chapterId`) instead of opening inline. Social-science behavior unchanged.
+Imports that don't exist on `./question-bank`:
 
-## "Math data not seeded" fix
+```
+getQuestionBank, normalizeSubject, BankQuestion, SubjectKey
+```
 
-- The message originates from `src/routes/subjects.math.$chapterId.tsx` (Firestore-backed). The math chapter cards in the chapters tab currently route there.
-- Repoint math chapter clicks to the new JSON-based topics page (`/subjects/mathematics/topics/$chapterId` — using `mathematics` as the canonical URL subjectId, which already matches the manifest folder and how `subjects.index.tsx` links).
-- Drop the `mathChaptersQuery` / `fetchMathChapters` / math-intelligence mapping branch from `subjects.$subjectId.tsx` so the chapter list is sourced from the JSON manifest only. Do NOT delete `subjects.math.$chapterId.tsx` or `fetchMathChapters` themselves in this pass — only remove the references from the subject page so nothing links into the legacy route.
+Plus several implicit-`any` parameters inside the file.
 
-## Out of scope (explicit)
+### 3. `src/components/practice/PracticePage.tsx:124`
 
-- No changes to social-science timeline/maps/civics tabs.
-- No redesigns; cards reuse existing visual language.
-- No edits to exam/quiz/planner/analytics flows.
-- No deletion of legacy Firestore math routes/services.
+Prop callback typed as `(score, total: number) => void` is being passed `(score, results: QuestionResult[]) => void`.
 
-## Verification
+---
 
-- Clicking a Formula chapter card opens `/subjects/mathematics/formulas/<id>` and renders only that chapter's formulas; nothing renders below the chapter list on the subject page.
-- Clicking a Topic chapter card opens `/subjects/mathematics/topics/<id>` with summary, learning points, key terms, exercises.
-- Direct URL / refresh works (JSON load + skeleton + retry).
-- "Math data not seeded yet" no longer surfaces from normal chapter navigation.
-- Mobile viewport (current 428px) unchanged: no horizontal scroll, cards readable.
-- No console errors; build passes.
+## Fix plan (surgical, restore the build)
+
+**Step 1 — Restore the legacy `useAnalytics` snapshot shape.**
+
+Rewrite `src/hooks/use-analytics.ts` to additionally expose all fields the rest of the codebase depends on, while keeping the new `data` / `recordAttempt` / `getChapterStats` / `getSubjectStats` / `getWeakChapters` / `clearData` API so the new analytics-tracking call sites also keep compiling.
+
+Concretely, the returned object becomes a superset:
+
+- Keep: `data, recordAttempt, getChapterStats, getSubjectStats, getWeakChapters, clearData`
+- Add back (derived from sessions in `aura_sessions_v1` localStorage + the new `data.attempts`):
+  - `userId` (from `useCurrentUserId`)
+  - `loading: boolean`
+  - `streak: { current: number; longest: number }`
+  - `recentSessions: SessionDoc[]`
+  - `weekly: Array<{ day: string; minutes: number }>` (last 7 days)
+  - `bySubject: Array<{ subjectId: string; minutes: number; sessions: number }>`
+  - `todayMinutes: number`
+  - `overallProgress: number` (0–100)
+  - `completedChapters: number`, `totalChapters: number`
+  - `totalStudyHours: number`, `totalStudyMinutes: number`
+  - `focusSessions: number`
+  - `consistency: number` (0–100)
+  - `logSession(session)` — append to session store + refresh
+  - `refresh()` — bump internal tick
+
+Source the legacy fields from the existing `src/integrations/firebase/services/analytics.ts` helpers (`toDayKey`, session aggregation) and `src/lib/mock-data.ts` (subjects/total chapters), matching how `use-recommendations.ts` and `use-planner.ts` already consume them. This avoids touching the 11 consumer files.
+
+**Step 2 — Fix `src/lib/mockExamGenerator.ts` imports.**
+
+Inspect `src/lib/question-bank.ts` to find the actual export names and types, then update the imports + parameter type annotations in `mockExamGenerator.ts` accordingly (no behavior change). Add explicit types on the implicit-`any` lambdas.
+
+**Step 3 — Fix `src/components/practice/PracticePage.tsx:124`.**
+
+Either widen the prop type on the receiving component to accept `(score: number, results: QuestionResult[]) => void`, or adapt the handler at the call site to match the current prop signature — whichever requires the smaller diff once the file is read.
+
+**Step 4 — Verify.**
+
+Re-run `bunx tsc --noEmit` until clean, then the Worker build will succeed and the preview SHA will resolve instead of returning 404.
+
+---
+
+## Out of scope
+
+- No redesigns, no route changes, no analytics-feature changes beyond restoring the hook surface.
+- No edits to `routeTree.gen.ts` or Supabase clients.
+- No publish/visibility changes — once the build is green, republish will hydrate the preview bundle.

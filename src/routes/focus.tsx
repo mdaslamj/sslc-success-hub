@@ -149,7 +149,7 @@ function FocusPage() {
         </div>
         <div className="flex items-center gap-2">
           <Badge variant="outline" className="rounded-full">
-            In rhythm · {consistency.daysActiveLast7}/7 days
+            In rhythm · {consistency.daysActiveLast14}/14 days
           </Badge>
           <Badge variant="outline" className="rounded-full">
             {todayMinutes}m today

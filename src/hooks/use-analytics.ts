@@ -1,13 +1,31 @@
 /**
- * useAnalytics — Task 5
+ * useAnalytics — unified analytics snapshot.
  *
- * Tracks and persists student performance across sessions.
- * Stores data in localStorage. Provides per-chapter and per-subject stats.
- * Used by AnalyticsDashboard and AdaptiveDifficulty engine.
+ * Combines two prior shapes:
+ *  1. Practice-page quiz attempt tracking (recordAttempt / getChapterStats / ...).
+ *  2. Dashboard study-session snapshot (sessions, streak, weekly, bySubject,
+ *     consistency, todayMinutes, focusSessions, completion stats, logSession,
+ *     refresh) consumed by routes/analytics, routes/log, routes/focus,
+ *     routes/planner, routes/profile, routes/achievements, use-achievements,
+ *     use-gamification, use-planner, use-recommendations, revision-planner-card.
+ *
+ * Storage stays local-first via @/lib/analytics-store; swap for the Firestore
+ * `study-sessions` service once Auth lands without changing this surface.
  */
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import type { Question } from "./use-exam-engine";
+import type { StudySessionDoc } from "@/integrations/firebase/types";
+import { useCurrentUserId } from "./use-current-user";
+import { subjects as allSubjects } from "@/lib/mock-data";
+import {
+  toDayKey,
+  computeStreak,
+  buildWeeklyActivity,
+  countFocusSessions,
+  sumStudyMinutes,
+} from "@/integrations/firebase/services/analytics";
+import { appendSession, readSessions } from "@/lib/analytics-store";
 
 // ---------------------------------------------------------------------------
 // Types
@@ -98,10 +116,87 @@ export type AnalyticsEngine = {
   getSubjectStats: (subjectId: string) => SubjectStats | null;
   getWeakChapters: (subjectId?: string) => ChapterStats[];
   clearData: () => void;
+  // ---- Dashboard snapshot ----
+  userId: string;
+  loading: boolean;
+  sessions: StudySessionDoc[];
+  recentSessions: StudySessionDoc[];
+  weekly: { dayKey: string; label: string; minutes: number }[];
+  consistency: { daysActiveLast14: number; label: string; message: string };
+  streak: { current: number; longest: number };
+  todayMinutes: number;
+  totalStudyMinutes: number;
+  totalStudyHours: number;
+  focusSessions: number;
+  bySubject: Array<{
+    id: string;
+    name: string;
+    color: string;
+    emoji: string;
+    completion: number;
+    chaptersDone: number;
+    chaptersTotal: number;
+    minutes: number;
+    sessions: number;
+  }>;
+  completedChapters: number;
+  totalChapters: number;
+  overallProgress: number;
+  logSession: (
+    input: Omit<StudySessionDoc, "id" | "userId" | "dayKey">,
+  ) => StudySessionDoc | undefined;
+  refresh: () => void;
 };
+
+function computeConsistency(
+  last14: { minutes: number }[],
+): { daysActiveLast14: number; label: string; message: string } {
+  const daysActiveLast14 = last14.filter((d) => d.minutes > 0).length;
+  let label = "Building";
+  let message = "Try a short focus session today.";
+  if (daysActiveLast14 >= 12) {
+    label = "On fire";
+    message = "Incredible consistency — keep the streak alive.";
+  } else if (daysActiveLast14 >= 8) {
+    label = "Steady";
+    message = "Solid rhythm — keep showing up.";
+  } else if (daysActiveLast14 >= 4) {
+    label = "Warming up";
+    message = "Aim for a daily check-in.";
+  }
+  return { daysActiveLast14, label, message };
+}
+
+function buildLast14Days(
+  sessions: Pick<StudySessionDoc, "dayKey" | "durationMinutes">[],
+  today: Date = new Date(),
+): { dayKey: string; minutes: number }[] {
+  const byDay = new Map<string, number>();
+  for (const s of sessions) {
+    byDay.set(s.dayKey, (byDay.get(s.dayKey) ?? 0) + (s.durationMinutes ?? 0));
+  }
+  const out: { dayKey: string; minutes: number }[] = [];
+  for (let i = 13; i >= 0; i--) {
+    const d = new Date(today);
+    d.setDate(d.getDate() - i);
+    const key = toDayKey(d);
+    out.push({ dayKey: key, minutes: byDay.get(key) ?? 0 });
+  }
+  return out;
+}
 
 export function useAnalytics(): AnalyticsEngine {
   const [data, setData] = useState<AnalyticsData>(loadData);
+  const userId = useCurrentUserId();
+  const [sessions, setSessions] = useState<StudySessionDoc[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [tick, setTick] = useState(0);
+
+  useEffect(() => {
+    if (!userId) return;
+    setSessions(readSessions(userId));
+    setLoading(false);
+  }, [userId, tick]);
 
   // Persist to localStorage whenever data changes
   useEffect(() => {
@@ -210,5 +305,94 @@ export function useAnalytics(): AnalyticsEngine {
     saveData(empty);
   }, []);
 
-  return { data, recordAttempt, getChapterStats, getSubjectStats, getWeakChapters, clearData };
+  // ---- Dashboard derivations ----
+  const recentSessions = useMemo(
+    () => sessions.slice().sort((a, b) => b.startedAt - a.startedAt).slice(0, 20),
+    [sessions],
+  );
+  const weekly = useMemo(() => buildWeeklyActivity(sessions), [sessions]);
+  const last14 = useMemo(() => buildLast14Days(sessions), [sessions]);
+  const consistency = useMemo(() => computeConsistency(last14), [last14]);
+  const streak = useMemo(() => computeStreak(sessions), [sessions]);
+  const todayMinutes = useMemo(() => {
+    const key = toDayKey(new Date());
+    return sumStudyMinutes(sessions.filter((s) => s.dayKey === key));
+  }, [sessions]);
+  const totalStudyMinutes = useMemo(
+    () => sumStudyMinutes(sessions),
+    [sessions],
+  );
+  const totalStudyHours = Math.round((totalStudyMinutes / 60) * 10) / 10;
+  const focusSessions = useMemo(() => countFocusSessions(sessions), [sessions]);
+
+  const bySubject = useMemo(() => {
+    return allSubjects.map((s) => {
+      const subSessions = sessions.filter((x) => x.subjectId === s.id);
+      const minutes = sumStudyMinutes(subSessions);
+      return {
+        id: s.id,
+        name: s.name,
+        color: s.color,
+        emoji: s.emoji,
+        completion: s.completion,
+        chaptersDone: s.chaptersDone,
+        chaptersTotal: s.chapters,
+        minutes,
+        sessions: subSessions.length,
+      };
+    });
+  }, [sessions]);
+
+  const completedChapters = useMemo(
+    () => allSubjects.reduce((a, s) => a + s.chaptersDone, 0),
+    [],
+  );
+  const totalChapters = useMemo(
+    () => allSubjects.reduce((a, s) => a + s.chapters, 0),
+    [],
+  );
+  const overallProgress = totalChapters
+    ? Math.round((completedChapters / totalChapters) * 100)
+    : 0;
+
+  const logSession = useCallback(
+    (input: Omit<StudySessionDoc, "id" | "userId" | "dayKey">) => {
+      if (!userId) return undefined;
+      const dayKey = toDayKey(input.startedAt);
+      const saved = appendSession({ ...input, userId, dayKey });
+      setSessions((prev) => [...prev, saved]);
+      return saved;
+    },
+    [userId],
+  );
+
+  const refresh = useCallback(() => setTick((n) => n + 1), []);
+
+  return {
+    // Quiz-attempt API (kept for any future practice tracking call sites)
+    data,
+    recordAttempt,
+    getChapterStats,
+    getSubjectStats,
+    getWeakChapters,
+    clearData,
+    // Dashboard snapshot
+    userId,
+    loading,
+    sessions,
+    recentSessions,
+    weekly,
+    consistency,
+    streak,
+    todayMinutes,
+    totalStudyMinutes,
+    totalStudyHours,
+    focusSessions,
+    bySubject,
+    completedChapters,
+    totalChapters,
+    overallProgress,
+    logSession,
+    refresh,
+  };
 }
