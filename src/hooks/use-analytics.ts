@@ -1,13 +1,31 @@
 /**
- * useAnalytics — Task 5
+ * useAnalytics — unified analytics snapshot.
  *
- * Tracks and persists student performance across sessions.
- * Stores data in localStorage. Provides per-chapter and per-subject stats.
- * Used by AnalyticsDashboard and AdaptiveDifficulty engine.
+ * Combines two prior shapes:
+ *  1. Practice-page quiz attempt tracking (recordAttempt / getChapterStats / ...).
+ *  2. Dashboard study-session snapshot (sessions, streak, weekly, bySubject,
+ *     consistency, todayMinutes, focusSessions, completion stats, logSession,
+ *     refresh) consumed by routes/analytics, routes/log, routes/focus,
+ *     routes/planner, routes/profile, routes/achievements, use-achievements,
+ *     use-gamification, use-planner, use-recommendations, revision-planner-card.
+ *
+ * Storage stays local-first via @/lib/analytics-store; swap for the Firestore
+ * `study-sessions` service once Auth lands without changing this surface.
  */
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import type { Question } from "./use-exam-engine";
+import type { StudySessionDoc } from "@/integrations/firebase/types";
+import { useCurrentUserId } from "./use-current-user";
+import { subjects as allSubjects } from "@/lib/mock-data";
+import {
+  toDayKey,
+  computeStreak,
+  buildWeeklyActivity,
+  countFocusSessions,
+  sumStudyMinutes,
+} from "@/integrations/firebase/services/analytics";
+import { appendSession, readSessions } from "@/lib/analytics-store";
 
 // ---------------------------------------------------------------------------
 // Types
