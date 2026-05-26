@@ -53,7 +53,7 @@ export function FeedbackButton() {
         <Button
           variant="outline"
           size="sm"
-          className="fixed bottom-20 right-4 z-40 shadow-md md:bottom-6"
+          className="fixed right-4 z-40 shadow-md bottom-[calc(env(safe-area-inset-bottom,0px)+5rem)] md:bottom-6"
         >
           <MessageCircle className="mr-2 h-4 w-4" />
           Feedback

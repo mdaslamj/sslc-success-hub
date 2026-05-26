@@ -154,7 +154,7 @@ function OnboardingFlow() {
       className="min-h-[100dvh] w-full gradient-sage"
       style={{ paddingTop: "max(env(safe-area-inset-top), 1rem)" }}
     >
-      <div className="mx-auto flex min-h-[100dvh] w-full max-w-md flex-col px-5 pb-8">
+      <div className="mx-auto flex min-h-[100dvh] w-full max-w-md flex-col overflow-x-hidden px-5 pb-8 kb-safe">
         {/* Progress dots */}
         <div className="flex items-center justify-between py-4">
           <button
@@ -452,7 +452,10 @@ function OnboardingFlow() {
           )}
         </div>
 
-        <div className="sticky bottom-0 pt-4 pb-2">
+        <div
+          className="sticky bottom-0 z-10 -mx-5 mt-2 px-5 pt-4 bg-gradient-to-t from-background via-background/95 to-background/0"
+          style={{ paddingBottom: "max(env(safe-area-inset-bottom), 0.5rem)" }}
+        >
           {step < total - 1 ? (
             <Button
               size="lg"

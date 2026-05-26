@@ -141,7 +141,7 @@ function FocusPage() {
   const weekTotal = weekly.reduce((a, d) => a + d.minutes, 0);
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <div className="min-h-[100dvh] w-full overflow-x-hidden bg-background text-foreground">
       {/* Minimal top bar — only essentials. No sidebar, no search. */}
       <header className="sticky top-0 z-20 flex items-center justify-between border-b border-border/60 bg-background/80 px-4 py-3 backdrop-blur-xl md:px-6">
         <div className="flex items-center gap-2 text-xs uppercase tracking-widest text-muted-foreground">
@@ -149,7 +149,7 @@ function FocusPage() {
         </div>
         <div className="flex items-center gap-2">
           <Badge variant="outline" className="rounded-full">
-            In rhythm · {consistency.daysActiveLast7}/7 days
+            In rhythm · {consistency.daysActiveLast14}/14 days
           </Badge>
           <Badge variant="outline" className="rounded-full">
             {todayMinutes}m today

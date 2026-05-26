@@ -1,0 +1,315 @@
+/**
+ * Social Science Question Bank — Karnataka SSLC 10th Grade
+ * Source: Official Karnataka Board Question Papers & Question Banks (2022–2026)
+ * Subjects: History, Geography, Political Science, Economics, Business Studies, Sociology
+ */
+
+import type { Question } from "@/hooks/use-exam-engine";
+
+// ---------------------------------------------------------------------------
+// Business Studies — Banking Transactions
+// ---------------------------------------------------------------------------
+export const bankingTransactions: Question[] = [
+  {
+    id: "bs-bank-001",
+    subject: "Social Science",
+    chapter: "Banking Transactions",
+    concept: "Origin of Banking",
+    difficulty: "easy",
+    questionType: "mcq",
+    marks: 1,
+    question: "The word 'Bank' is derived from which Italian word?",
+    options: ["Banker", "Banque", "Banco", "Bench"],
+    correctAnswer: "Banco",
+    explanation: "The word 'Bank' is derived from the Italian word 'Banco' meaning a bench or table, as early bankers conducted their business on benches in the marketplace.",
+    cognitiveLevel: "remember",
+  },
+  {
+    id: "bs-bank-002",
+    subject: "Social Science",
+    chapter: "Banking Transactions",
+    concept: "Central Bank",
+    difficulty: "easy",
+    questionType: "mcq",
+    marks: 1,
+    question: "This is called the central bank of India:",
+    options: ["Reserve Bank of India", "Syndicate Bank", "State Bank of India", "Commercial Bank"],
+    correctAnswer: "Reserve Bank of India",
+    explanation: "The Reserve Bank of India (RBI) is the central bank of India. It is also called the 'Bank of Banks' or 'Bankers' Bank' as it controls all banking activities in India.",
+    cognitiveLevel: "remember",
+  },
+  {
+    id: "bs-bank-003",
+    subject: "Social Science",
+    chapter: "Banking Transactions",
+    concept: "Types of Bank Accounts",
+    difficulty: "easy",
+    questionType: "mcq",
+    marks: 1,
+    question: "Senior citizens and pensioners with a fixed income usually open this account:",
+    options: ["Savings account", "Current account", "Recurring deposit account", "Fixed deposit account"],
+    correctAnswer: "Savings account",
+    explanation: "Savings accounts are generally opened by salaried persons, pensioners, and students. They earn interest and have no restriction on number/amount of deposits.",
+    cognitiveLevel: "understand",
+  },
+  {
+    id: "bs-bank-004",
+    subject: "Social Science",
+    chapter: "Banking Transactions",
+    concept: "Types of Bank Accounts",
+    difficulty: "easy",
+    questionType: "mcq",
+    marks: 1,
+    question: "An account that can be opened for future needs such as children's marriage, purchase of valuables, land, car, etc.:",
+    options: ["Fixed deposit account", "Recurring deposit account", "Current account", "Savings account"],
+    correctAnswer: "Recurring deposit account",
+    explanation: "A Recurring Deposit (RD) account is opened to save a fixed amount each month for a future specific purpose. It earns higher interest than a savings account.",
+    cognitiveLevel: "understand",
+    commonMistakes: ["Confusing with Fixed Deposit which is a lump sum, not monthly deposits"],
+  },
+  {
+    id: "bs-bank-005",
+    subject: "Social Science",
+    chapter: "Banking Transactions",
+    concept: "Types of Bank Accounts",
+    difficulty: "easy",
+    questionType: "mcq",
+    marks: 1,
+    question: "The bank account that allows depositing and withdrawing money as many times as necessary in a day:",
+    options: ["Current account", "Savings account", "Recurring deposit account", "Fixed deposit account"],
+    correctAnswer: "Current account",
+    explanation: "Current accounts are opened by businessmen who need to make multiple transactions daily. There is no limit on the number of deposits or withdrawals. No interest is paid.",
+    cognitiveLevel: "remember",
+  },
+  {
+    id: "bs-bank-006",
+    subject: "Social Science",
+    chapter: "Banking Transactions",
+    concept: "Types of Bank Accounts",
+    difficulty: "medium",
+    questionType: "mcq",
+    marks: 1,
+    question: "The bank does NOT pay interest on this type of account and charges a service fee:",
+    options: ["Current account", "Fixed deposit account", "Recurring deposit account", "Savings account"],
+    correctAnswer: "Current account",
+    explanation: "Current accounts are used by businesses for frequent transactions. Banks do not pay interest and instead charge a service fee for maintaining this account.",
+    cognitiveLevel: "understand",
+  },
+  {
+    id: "bs-bank-007",
+    subject: "Social Science",
+    chapter: "Banking Transactions",
+    concept: "Postal Banking",
+    difficulty: "easy",
+    questionType: "mcq",
+    marks: 1,
+    question: "This department issues National Savings Certificates:",
+    options: ["Postal Department", "Agriculture Department", "Financial Department", "Education Department"],
+    correctAnswer: "Postal Department",
+    explanation: "The Indian Postal Department issues National Savings Certificates (NSC) along with other financial services like Kisan Vikas Patra, Monthly Recurring Deposits, and Postal Life Insurance.",
+    cognitiveLevel: "remember",
+  },
+];
+
+// ---------------------------------------------------------------------------
+// Business Studies — Entrepreneurship
+// ---------------------------------------------------------------------------
+export const entrepreneurship: Question[] = [
+  {
+    id: "bs-entre-001",
+    subject: "Social Science",
+    chapter: "Entrepreneurship",
+    concept: "Basic Concepts",
+    difficulty: "easy",
+    questionType: "mcq",
+    marks: 1,
+    question: "The word 'entrepreneur' has originated from which French word?",
+    options: ["Entrepris", "Entreprendre", "Enterprise", "Entrepreneurial"],
+    correctAnswer: "Entreprendre",
+    explanation: "The word 'entrepreneur' comes from the French word 'Entreprendre' meaning 'to undertake'. An entrepreneur is a person who undertakes a business venture.",
+    cognitiveLevel: "remember",
+  },
+  {
+    id: "bs-entre-002",
+    subject: "Social Science",
+    chapter: "Entrepreneurship",
+    concept: "District Industrial Centre",
+    difficulty: "medium",
+    questionType: "mcq",
+    marks: 1,
+    question: "In which year was the District Industrial Centre established?",
+    options: ["1977", "1978", "1980", "1985"],
+    correctAnswer: "1978",
+    explanation: "District Industrial Centres (DIC) were established in 1978 to provide support to small-scale industries and entrepreneurs at the district level.",
+    cognitiveLevel: "remember",
+  },
+];
+
+// ---------------------------------------------------------------------------
+// Geography — Transport and Communication
+// ---------------------------------------------------------------------------
+export const transportCommunication: Question[] = [
+  {
+    id: "geo-trans-001",
+    subject: "Social Science",
+    chapter: "India – Transport and Communication",
+    concept: "Ports",
+    difficulty: "easy",
+    questionType: "mcq",
+    marks: 1,
+    question: "The port which is known as the 'Gateway of India':",
+    options: ["Kolkata", "New Mangalore", "Goa", "Mumbai"],
+    correctAnswer: "Mumbai",
+    explanation: "Mumbai port is known as the 'Gateway of India'. It is the largest port on the west coast and handles a significant portion of India's trade.",
+    cognitiveLevel: "remember",
+  },
+  {
+    id: "geo-trans-002",
+    subject: "Social Science",
+    chapter: "India – Transport and Communication",
+    concept: "Ports",
+    difficulty: "easy",
+    questionType: "mcq",
+    marks: 1,
+    question: "The 'Tea Port of India' is:",
+    options: ["Mumbai", "New Mangalore", "Marmagoa", "Kolkata"],
+    correctAnswer: "Kolkata",
+    explanation: "Kolkata port is known as the 'Tea Port of India' as most of India's tea from Assam and Darjeeling is exported through this port.",
+    cognitiveLevel: "remember",
+  },
+  {
+    id: "geo-trans-003",
+    subject: "Social Science",
+    chapter: "India – Transport and Communication",
+    concept: "Road Transport",
+    difficulty: "easy",
+    questionType: "mcq",
+    marks: 1,
+    question: "The longest national highway in India is:",
+    options: ["National Highway 44", "National Highway 37", "National Highway 47", "National Highway 54"],
+    correctAnswer: "National Highway 44",
+    explanation: "NH-44 is the longest national highway in India, stretching from Srinagar (J&K) to Kanyakumari (Tamil Nadu), covering a distance of about 3,745 km.",
+    cognitiveLevel: "remember",
+  },
+  {
+    id: "geo-trans-004",
+    subject: "Social Science",
+    chapter: "India – Transport and Communication",
+    concept: "Navigation Technology",
+    difficulty: "medium",
+    questionType: "mcq",
+    marks: 1,
+    question: "The regional and independent GPS system of India is called:",
+    options: ["Map info", "Swadeshi", "NavIC", "Arc info"],
+    correctAnswer: "NavIC",
+    explanation: "NavIC (Navigation with Indian Constellation) is India's own regional satellite navigation system developed by ISRO. It provides accurate position information over India and surrounding regions.",
+    cognitiveLevel: "remember",
+  },
+];
+
+// ---------------------------------------------------------------------------
+// Geography — Mineral and Power Resources
+// ---------------------------------------------------------------------------
+export const mineralResources: Question[] = [
+  {
+    id: "geo-min-001",
+    subject: "Social Science",
+    chapter: "India – Mineral and Power Resources",
+    concept: "Petroleum",
+    difficulty: "easy",
+    questionType: "mcq",
+    marks: 1,
+    question: "The energy resource called 'liquid gold' is:",
+    options: ["Coal", "Mica", "Petroleum", "Nuclear power"],
+    correctAnswer: "Petroleum",
+    explanation: "Petroleum is called 'liquid gold' because it is extremely valuable and has multiple uses — fuel, plastics, pharmaceuticals, fertilizers, and more. It can also be exported for high value.",
+    cognitiveLevel: "remember",
+  },
+  {
+    id: "geo-min-002",
+    subject: "Social Science",
+    chapter: "India – Mineral and Power Resources",
+    concept: "Petroleum Deposits",
+    difficulty: "easy",
+    questionType: "mcq",
+    marks: 1,
+    question: "India's largest oil deposit is located at:",
+    options: ["Digbai", "Ankleshwar", "Bombay High", "Nahar Katia"],
+    correctAnswer: "Bombay High",
+    explanation: "Bombay High (now Mumbai High) is India's largest offshore oil deposit. It is located in the Arabian Sea, off the coast of Mumbai, and has been producing oil since 1974.",
+    cognitiveLevel: "remember",
+  },
+  {
+    id: "geo-min-003",
+    subject: "Social Science",
+    chapter: "India – Mineral and Power Resources",
+    concept: "Solar Energy",
+    difficulty: "medium",
+    questionType: "mcq",
+    marks: 1,
+    question: "The important solar plant established in Tumkur district of Karnataka state is at:",
+    options: ["Koratagere", "Madhugiri", "Pavagada", "Kunigal"],
+    correctAnswer: "Pavagada",
+    explanation: "The Pavagada Solar Park in Tumkur district, Karnataka is one of the world's largest solar parks. It has a capacity of 2000 MW and is spread over 13,000 acres.",
+    cognitiveLevel: "remember",
+  },
+];
+
+// ---------------------------------------------------------------------------
+// Sociology — Collective Behaviour and Protests
+// ---------------------------------------------------------------------------
+export const collectiveBehaviour: Question[] = [
+  {
+    id: "soc-col-001",
+    subject: "Social Science",
+    chapter: "Collective Behaviour and Protests",
+    concept: "Environmental Movements",
+    difficulty: "easy",
+    questionType: "mcq",
+    marks: 1,
+    question: "The Silent Valley Movement was launched in:",
+    options: ["Tamil Nadu", "Karnataka", "Kerala", "Maharashtra"],
+    correctAnswer: "Kerala",
+    explanation: "The Silent Valley Movement was a conservation movement in Kerala (1973–1985) to protect the Silent Valley National Park's tropical rainforest from a proposed hydroelectric project.",
+    cognitiveLevel: "remember",
+  },
+  {
+    id: "soc-col-002",
+    subject: "Social Science",
+    chapter: "Collective Behaviour and Protests",
+    concept: "Environmental Movements",
+    difficulty: "easy",
+    questionType: "mcq",
+    marks: 1,
+    question: "The Narmada Bachao Movement was led by:",
+    options: ["Medha Patkar", "Dr. Shivaram Karanth", "Sunder Lal Bahuguna", "Dr. B R Ambedkar"],
+    correctAnswer: "Medha Patkar",
+    explanation: "Medha Patkar led the Narmada Bachao Andolan (Save Narmada Movement), a protest against the construction of large dams on the Narmada river that displaced thousands of tribal communities.",
+    cognitiveLevel: "remember",
+  },
+  {
+    id: "soc-col-003",
+    subject: "Social Science",
+    chapter: "Collective Behaviour and Protests",
+    concept: "Environmental Movements",
+    difficulty: "medium",
+    questionType: "mcq",
+    marks: 1,
+    question: "The Appiko environmental movement was held in which district of Karnataka?",
+    options: ["Kodagu", "Dakshina Kannada", "Uttara Kannada", "Shimoga"],
+    correctAnswer: "Uttara Kannada",
+    explanation: "The Appiko movement started in Salkani village of Uttara Kannada district in 1983. 'Appiko' means 'to hug' in Kannada — inspired by the Chipko movement of Uttarakhand.",
+    cognitiveLevel: "remember",
+  },
+];
+
+// ---------------------------------------------------------------------------
+// All Social Science chapters index
+// ---------------------------------------------------------------------------
+export const socialScienceChapters = [
+  { id: "banking-transactions", name: "Banking Transactions", questions: bankingTransactions },
+  { id: "entrepreneurship", name: "Entrepreneurship", questions: entrepreneurship },
+  { id: "transport-communication", name: "India – Transport and Communication", questions: transportCommunication },
+  { id: "mineral-resources", name: "India – Mineral and Power Resources", questions: mineralResources },
+  { id: "collective-behaviour", name: "Collective Behaviour and Protests", questions: collectiveBehaviour },
+];

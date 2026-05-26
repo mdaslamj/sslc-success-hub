@@ -1,6 +1,6 @@
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
-import { Brain, Clock, Loader2, Sparkles, Target, Trophy } from "lucide-react";
+import { Brain, Clock, Loader2, Play, Sparkles, Target, Trophy } from "lucide-react";
 import { DashboardLayout } from "@/components/dashboard-layout";
 import { StatCard } from "@/components/widgets/stat-card";
 import { Button } from "@/components/ui/button";
@@ -14,6 +14,7 @@ import {
   chapterTestQuizId,
   type ChapterTestLevel,
 } from "@/lib/content-exam-builder";
+import type { IndexedChapter } from "@/lib/content-question-index";
 
 export const Route = createFileRoute("/quizzes")({
   head: () => ({
@@ -50,21 +51,6 @@ function QuizzesPage() {
     () => activeContent?.chapters ?? [],
     [activeContent],
   );
-
-  /**
-   * Build (or rebuild) the quiz for this chapter+level, cache it under a
-   * deterministic id, and return that id so the <Link> can route to it.
-   * Empty chapters return null so we render a disabled card instead of a
-   * dead-end Start button (prevents empty exams).
-   */
-  function ensureChapterQuizId(
-    chapter: (typeof chapters)[number],
-  ): string | null {
-    const quiz = buildChapterTestQuiz({ chapter, level });
-    if (!quiz) return null;
-    cacheQuiz(quiz);
-    return quiz.id;
-  }
 
   // Pre-compute ids so we don't rebuild during render.
   const chapterRows = useMemo(
@@ -182,7 +168,9 @@ function QuizzesPage() {
                 </Button>
               ) : (
                 <StartChapterTestButton
-                  ensureId={() => ensureChapterQuizId(chapter)}
+                  chapter={chapter}
+                  level={level}
+                  disabled={catalog.isLoading}
                 />
               )}
             </div>
@@ -198,18 +186,56 @@ function QuizzesPage() {
  * the catalog render cheap and avoids writing 30+ quizzes to localStorage
  * just because the user opened the Quizzes page.
  */
-function StartChapterTestButton({ ensureId }: { ensureId: () => string | null }) {
+function StartChapterTestButton({
+  chapter,
+  level,
+  disabled,
+}: {
+  chapter: IndexedChapter;
+  level: ChapterTestLevel;
+  disabled?: boolean;
+}) {
   const navigate = useNavigate();
+  const [isLaunching, setIsLaunching] = useState(false);
   return (
     <Button
+      type="button"
       size="sm"
-      className="rounded-full"
+      className="rounded-full gap-1.5"
+      disabled={disabled || isLaunching}
       onClick={() => {
-        const id = ensureId();
-        if (id) navigate({ to: "/quiz/$quizId", params: { quizId: id } });
+        if (isLaunching) return;
+        setIsLaunching(true);
+        const quiz = buildChapterTestQuiz({ chapter, level });
+        if (!quiz) {
+          setIsLaunching(false);
+          return;
+        }
+        cacheQuiz(quiz);
+        console.debug("[quizzes] launch", {
+          quizId: quiz.id,
+          chapterId: chapter.chapterId,
+          level,
+        });
+        navigate({ to: "/quiz/$quizId", params: { quizId: quiz.id } });
       }}
     >
-      Start
+      {isLaunching ? (
+        <>
+          <Loader2 className="h-3 w-3 animate-spin" />
+          Starting…
+        </>
+      ) : disabled ? (
+        <>
+          <Loader2 className="h-3 w-3 animate-spin" />
+          Loading…
+        </>
+      ) : (
+        <>
+          <Play className="h-3 w-3" />
+          Start
+        </>
+      )}
     </Button>
   );
 }

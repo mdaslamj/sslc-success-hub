@@ -38,6 +38,7 @@ function QuizPlayerPage() {
   const [quiz, setQuiz] = useState<QuizDoc | null>(null);
   const [missing, setMissing] = useState(false);
   const [rebuilding, setRebuilding] = useState(false);
+  const [retryToken, setRetryToken] = useState(0);
   const content = useContentCatalog();
 
   useEffect(() => {
@@ -49,6 +50,7 @@ function QuizPlayerPage() {
   useEffect(() => {
     const cached = readCachedQuiz(quizId);
     if (cached) {
+      console.debug("[quiz] cache-hit", { quizId });
       setMissing(false);
       setRebuilding(false);
       setQuiz(cached);
@@ -61,6 +63,7 @@ function QuizPlayerPage() {
       })),
     });
     if (built) {
+      console.debug("[quiz] rebuild-hit", { quizId });
       cacheQuiz(built);
       setMissing(false);
       setRebuilding(false);
@@ -70,21 +73,33 @@ function QuizPlayerPage() {
     // Wait for the content catalogue before declaring the quiz missing —
     // chapter-test ids are derived from that data.
     if (content.isLoading) {
+      console.debug("[quiz] waiting-catalog", { quizId });
       setRebuilding(true);
       return;
     }
+    console.debug("[quiz] missing", { quizId });
     setRebuilding(false);
     setMissing(true);
-  }, [quizId, content.isLoading]);
+  }, [quizId, content.subjects, content.isLoading, retryToken]);
 
   if (missing) {
     return (
       <DashboardLayout title="Quiz">
         <div className="mx-auto max-w-md rounded-3xl border border-border/60 bg-card p-8 text-center text-sm text-muted-foreground">
-          <p>This quiz is no longer in your local cache.</p>
-          <Link to="/quizzes">
-            <Button className="mt-4 rounded-full">Back to Quizzes</Button>
-          </Link>
+          <p>Unable to load quiz. Retry.</p>
+          <div className="mt-4 flex justify-center gap-2">
+            <Button
+              className="rounded-full"
+              onClick={() => setRetryToken((t) => t + 1)}
+            >
+              Retry
+            </Button>
+            <Link to="/quizzes">
+              <Button variant="outline" className="rounded-full">
+                Back to Quizzes
+              </Button>
+            </Link>
+          </div>
         </div>
       </DashboardLayout>
     );
@@ -102,7 +117,9 @@ function QuizPlayerPage() {
             <div className="h-10 animate-pulse rounded-xl bg-muted/70" />
           </div>
           <p className="pt-1 text-center text-xs text-muted-foreground">
-            {rebuilding ? "Restoring your quiz from chapter content…" : "Preparing your quiz…"}
+            {rebuilding || content.isLoading
+              ? "Restoring quiz…"
+              : "Preparing your quiz…"}
           </p>
         </div>
       </DashboardLayout>

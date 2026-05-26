@@ -16,22 +16,27 @@ import { Route as TargetsRouteImport } from './routes/targets'
 import { Route as SessionRouteImport } from './routes/session'
 import { Route as SeedRouteImport } from './routes/seed'
 import { Route as ScanRouteImport } from './routes/scan'
+import { Route as RevisionRouteImport } from './routes/revision'
 import { Route as ResourcesRouteImport } from './routes/resources'
 import { Route as QuizzesRouteImport } from './routes/quizzes'
 import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as PredictionsRouteImport } from './routes/predictions'
+import { Route as PracticeRouteImport } from './routes/practice'
 import { Route as PlannerRouteImport } from './routes/planner'
 import { Route as ParentRouteImport } from './routes/parent'
 import { Route as OnboardingRouteImport } from './routes/onboarding'
 import { Route as MockTestRouteImport } from './routes/mock-test'
+import { Route as MockExamRouteImport } from './routes/mock-exam'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as LogRouteImport } from './routes/log'
 import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
 import { Route as FocusRouteImport } from './routes/focus'
 import { Route as ExamsRouteImport } from './routes/exams'
 import { Route as ExamHallRouteImport } from './routes/exam-hall'
+import { Route as DailyPracticeRouteImport } from './routes/daily-practice'
 import { Route as ChapterTestRouteImport } from './routes/chapter-test'
+import { Route as BadgesRouteImport } from './routes/badges'
 import { Route as AnswerUploadsRouteImport } from './routes/answer-uploads'
 import { Route as AnalyticsRouteImport } from './routes/analytics'
 import { Route as AchievementsRouteImport } from './routes/achievements'
@@ -49,6 +54,8 @@ import { Route as AdminOpsRouteImport } from './routes/admin.ops'
 import { Route as AdminImportRouteImport } from './routes/admin.import'
 import { Route as AccountDeleteRouteImport } from './routes/account.delete'
 import { Route as SubjectsMathChapterIdRouteImport } from './routes/subjects.math.$chapterId'
+import { Route as SubjectsSubjectIdTopicsChapterIdRouteImport } from './routes/subjects.$subjectId.topics.$chapterId'
+import { Route as SubjectsSubjectIdFormulasChapterIdRouteImport } from './routes/subjects.$subjectId.formulas.$chapterId'
 
 const VoiceRoute = VoiceRouteImport.update({
   id: '/voice',
@@ -85,6 +92,11 @@ const ScanRoute = ScanRouteImport.update({
   path: '/scan',
   getParentRoute: () => rootRouteImport,
 } as any)
+const RevisionRoute = RevisionRouteImport.update({
+  id: '/revision',
+  path: '/revision',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ResourcesRoute = ResourcesRouteImport.update({
   id: '/resources',
   path: '/resources',
@@ -110,6 +122,11 @@ const PredictionsRoute = PredictionsRouteImport.update({
   path: '/predictions',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PracticeRoute = PracticeRouteImport.update({
+  id: '/practice',
+  path: '/practice',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PlannerRoute = PlannerRouteImport.update({
   id: '/planner',
   path: '/planner',
@@ -128,6 +145,11 @@ const OnboardingRoute = OnboardingRouteImport.update({
 const MockTestRoute = MockTestRouteImport.update({
   id: '/mock-test',
   path: '/mock-test',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MockExamRoute = MockExamRouteImport.update({
+  id: '/mock-exam',
+  path: '/mock-exam',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LoginRoute = LoginRouteImport.update({
@@ -160,9 +182,19 @@ const ExamHallRoute = ExamHallRouteImport.update({
   path: '/exam-hall',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DailyPracticeRoute = DailyPracticeRouteImport.update({
+  id: '/daily-practice',
+  path: '/daily-practice',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ChapterTestRoute = ChapterTestRouteImport.update({
   id: '/chapter-test',
   path: '/chapter-test',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BadgesRoute = BadgesRouteImport.update({
+  id: '/badges',
+  path: '/badges',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AnswerUploadsRoute = AnswerUploadsRouteImport.update({
@@ -250,28 +282,45 @@ const SubjectsMathChapterIdRoute = SubjectsMathChapterIdRouteImport.update({
   path: '/subjects/math/$chapterId',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SubjectsSubjectIdTopicsChapterIdRoute =
+  SubjectsSubjectIdTopicsChapterIdRouteImport.update({
+    id: '/topics/$chapterId',
+    path: '/topics/$chapterId',
+    getParentRoute: () => SubjectsSubjectIdRoute,
+  } as any)
+const SubjectsSubjectIdFormulasChapterIdRoute =
+  SubjectsSubjectIdFormulasChapterIdRouteImport.update({
+    id: '/formulas/$chapterId',
+    path: '/formulas/$chapterId',
+    getParentRoute: () => SubjectsSubjectIdRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/achievements': typeof AchievementsRoute
   '/analytics': typeof AnalyticsRoute
   '/answer-uploads': typeof AnswerUploadsRouteWithChildren
+  '/badges': typeof BadgesRoute
   '/chapter-test': typeof ChapterTestRoute
+  '/daily-practice': typeof DailyPracticeRoute
   '/exam-hall': typeof ExamHallRouteWithChildren
   '/exams': typeof ExamsRouteWithChildren
   '/focus': typeof FocusRoute
   '/forgot-password': typeof ForgotPasswordRoute
   '/log': typeof LogRoute
   '/login': typeof LoginRoute
+  '/mock-exam': typeof MockExamRoute
   '/mock-test': typeof MockTestRouteWithChildren
   '/onboarding': typeof OnboardingRoute
   '/parent': typeof ParentRoute
   '/planner': typeof PlannerRoute
+  '/practice': typeof PracticeRoute
   '/predictions': typeof PredictionsRoute
   '/privacy': typeof PrivacyRoute
   '/profile': typeof ProfileRoute
   '/quizzes': typeof QuizzesRoute
   '/resources': typeof ResourcesRoute
+  '/revision': typeof RevisionRoute
   '/scan': typeof ScanRouteWithChildren
   '/seed': typeof SeedRoute
   '/session': typeof SessionRoute
@@ -289,31 +338,38 @@ export interface FileRoutesByFullPath {
   '/mock-test/$testId': typeof MockTestTestIdRoute
   '/quiz/$quizId': typeof QuizQuizIdRoute
   '/scan/$scanId': typeof ScanScanIdRoute
-  '/subjects/$subjectId': typeof SubjectsSubjectIdRoute
+  '/subjects/$subjectId': typeof SubjectsSubjectIdRouteWithChildren
   '/subjects/': typeof SubjectsIndexRoute
   '/subjects/math/$chapterId': typeof SubjectsMathChapterIdRoute
+  '/subjects/$subjectId/formulas/$chapterId': typeof SubjectsSubjectIdFormulasChapterIdRoute
+  '/subjects/$subjectId/topics/$chapterId': typeof SubjectsSubjectIdTopicsChapterIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/achievements': typeof AchievementsRoute
   '/analytics': typeof AnalyticsRoute
   '/answer-uploads': typeof AnswerUploadsRouteWithChildren
+  '/badges': typeof BadgesRoute
   '/chapter-test': typeof ChapterTestRoute
+  '/daily-practice': typeof DailyPracticeRoute
   '/exam-hall': typeof ExamHallRouteWithChildren
   '/exams': typeof ExamsRouteWithChildren
   '/focus': typeof FocusRoute
   '/forgot-password': typeof ForgotPasswordRoute
   '/log': typeof LogRoute
   '/login': typeof LoginRoute
+  '/mock-exam': typeof MockExamRoute
   '/mock-test': typeof MockTestRouteWithChildren
   '/onboarding': typeof OnboardingRoute
   '/parent': typeof ParentRoute
   '/planner': typeof PlannerRoute
+  '/practice': typeof PracticeRoute
   '/predictions': typeof PredictionsRoute
   '/privacy': typeof PrivacyRoute
   '/profile': typeof ProfileRoute
   '/quizzes': typeof QuizzesRoute
   '/resources': typeof ResourcesRoute
+  '/revision': typeof RevisionRoute
   '/scan': typeof ScanRouteWithChildren
   '/seed': typeof SeedRoute
   '/session': typeof SessionRoute
@@ -331,9 +387,11 @@ export interface FileRoutesByTo {
   '/mock-test/$testId': typeof MockTestTestIdRoute
   '/quiz/$quizId': typeof QuizQuizIdRoute
   '/scan/$scanId': typeof ScanScanIdRoute
-  '/subjects/$subjectId': typeof SubjectsSubjectIdRoute
+  '/subjects/$subjectId': typeof SubjectsSubjectIdRouteWithChildren
   '/subjects': typeof SubjectsIndexRoute
   '/subjects/math/$chapterId': typeof SubjectsMathChapterIdRoute
+  '/subjects/$subjectId/formulas/$chapterId': typeof SubjectsSubjectIdFormulasChapterIdRoute
+  '/subjects/$subjectId/topics/$chapterId': typeof SubjectsSubjectIdTopicsChapterIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -341,22 +399,27 @@ export interface FileRoutesById {
   '/achievements': typeof AchievementsRoute
   '/analytics': typeof AnalyticsRoute
   '/answer-uploads': typeof AnswerUploadsRouteWithChildren
+  '/badges': typeof BadgesRoute
   '/chapter-test': typeof ChapterTestRoute
+  '/daily-practice': typeof DailyPracticeRoute
   '/exam-hall': typeof ExamHallRouteWithChildren
   '/exams': typeof ExamsRouteWithChildren
   '/focus': typeof FocusRoute
   '/forgot-password': typeof ForgotPasswordRoute
   '/log': typeof LogRoute
   '/login': typeof LoginRoute
+  '/mock-exam': typeof MockExamRoute
   '/mock-test': typeof MockTestRouteWithChildren
   '/onboarding': typeof OnboardingRoute
   '/parent': typeof ParentRoute
   '/planner': typeof PlannerRoute
+  '/practice': typeof PracticeRoute
   '/predictions': typeof PredictionsRoute
   '/privacy': typeof PrivacyRoute
   '/profile': typeof ProfileRoute
   '/quizzes': typeof QuizzesRoute
   '/resources': typeof ResourcesRoute
+  '/revision': typeof RevisionRoute
   '/scan': typeof ScanRouteWithChildren
   '/seed': typeof SeedRoute
   '/session': typeof SessionRoute
@@ -374,9 +437,11 @@ export interface FileRoutesById {
   '/mock-test/$testId': typeof MockTestTestIdRoute
   '/quiz/$quizId': typeof QuizQuizIdRoute
   '/scan/$scanId': typeof ScanScanIdRoute
-  '/subjects/$subjectId': typeof SubjectsSubjectIdRoute
+  '/subjects/$subjectId': typeof SubjectsSubjectIdRouteWithChildren
   '/subjects/': typeof SubjectsIndexRoute
   '/subjects/math/$chapterId': typeof SubjectsMathChapterIdRoute
+  '/subjects/$subjectId/formulas/$chapterId': typeof SubjectsSubjectIdFormulasChapterIdRoute
+  '/subjects/$subjectId/topics/$chapterId': typeof SubjectsSubjectIdTopicsChapterIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -385,22 +450,27 @@ export interface FileRouteTypes {
     | '/achievements'
     | '/analytics'
     | '/answer-uploads'
+    | '/badges'
     | '/chapter-test'
+    | '/daily-practice'
     | '/exam-hall'
     | '/exams'
     | '/focus'
     | '/forgot-password'
     | '/log'
     | '/login'
+    | '/mock-exam'
     | '/mock-test'
     | '/onboarding'
     | '/parent'
     | '/planner'
+    | '/practice'
     | '/predictions'
     | '/privacy'
     | '/profile'
     | '/quizzes'
     | '/resources'
+    | '/revision'
     | '/scan'
     | '/seed'
     | '/session'
@@ -421,28 +491,35 @@ export interface FileRouteTypes {
     | '/subjects/$subjectId'
     | '/subjects/'
     | '/subjects/math/$chapterId'
+    | '/subjects/$subjectId/formulas/$chapterId'
+    | '/subjects/$subjectId/topics/$chapterId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/achievements'
     | '/analytics'
     | '/answer-uploads'
+    | '/badges'
     | '/chapter-test'
+    | '/daily-practice'
     | '/exam-hall'
     | '/exams'
     | '/focus'
     | '/forgot-password'
     | '/log'
     | '/login'
+    | '/mock-exam'
     | '/mock-test'
     | '/onboarding'
     | '/parent'
     | '/planner'
+    | '/practice'
     | '/predictions'
     | '/privacy'
     | '/profile'
     | '/quizzes'
     | '/resources'
+    | '/revision'
     | '/scan'
     | '/seed'
     | '/session'
@@ -463,28 +540,35 @@ export interface FileRouteTypes {
     | '/subjects/$subjectId'
     | '/subjects'
     | '/subjects/math/$chapterId'
+    | '/subjects/$subjectId/formulas/$chapterId'
+    | '/subjects/$subjectId/topics/$chapterId'
   id:
     | '__root__'
     | '/'
     | '/achievements'
     | '/analytics'
     | '/answer-uploads'
+    | '/badges'
     | '/chapter-test'
+    | '/daily-practice'
     | '/exam-hall'
     | '/exams'
     | '/focus'
     | '/forgot-password'
     | '/log'
     | '/login'
+    | '/mock-exam'
     | '/mock-test'
     | '/onboarding'
     | '/parent'
     | '/planner'
+    | '/practice'
     | '/predictions'
     | '/privacy'
     | '/profile'
     | '/quizzes'
     | '/resources'
+    | '/revision'
     | '/scan'
     | '/seed'
     | '/session'
@@ -505,6 +589,8 @@ export interface FileRouteTypes {
     | '/subjects/$subjectId'
     | '/subjects/'
     | '/subjects/math/$chapterId'
+    | '/subjects/$subjectId/formulas/$chapterId'
+    | '/subjects/$subjectId/topics/$chapterId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -512,22 +598,27 @@ export interface RootRouteChildren {
   AchievementsRoute: typeof AchievementsRoute
   AnalyticsRoute: typeof AnalyticsRoute
   AnswerUploadsRoute: typeof AnswerUploadsRouteWithChildren
+  BadgesRoute: typeof BadgesRoute
   ChapterTestRoute: typeof ChapterTestRoute
+  DailyPracticeRoute: typeof DailyPracticeRoute
   ExamHallRoute: typeof ExamHallRouteWithChildren
   ExamsRoute: typeof ExamsRouteWithChildren
   FocusRoute: typeof FocusRoute
   ForgotPasswordRoute: typeof ForgotPasswordRoute
   LogRoute: typeof LogRoute
   LoginRoute: typeof LoginRoute
+  MockExamRoute: typeof MockExamRoute
   MockTestRoute: typeof MockTestRouteWithChildren
   OnboardingRoute: typeof OnboardingRoute
   ParentRoute: typeof ParentRoute
   PlannerRoute: typeof PlannerRoute
+  PracticeRoute: typeof PracticeRoute
   PredictionsRoute: typeof PredictionsRoute
   PrivacyRoute: typeof PrivacyRoute
   ProfileRoute: typeof ProfileRoute
   QuizzesRoute: typeof QuizzesRoute
   ResourcesRoute: typeof ResourcesRoute
+  RevisionRoute: typeof RevisionRoute
   ScanRoute: typeof ScanRouteWithChildren
   SeedRoute: typeof SeedRoute
   SessionRoute: typeof SessionRoute
@@ -540,7 +631,7 @@ export interface RootRouteChildren {
   AdminOpsRoute: typeof AdminOpsRoute
   ExamResultsAttemptIdRoute: typeof ExamResultsAttemptIdRoute
   QuizQuizIdRoute: typeof QuizQuizIdRoute
-  SubjectsSubjectIdRoute: typeof SubjectsSubjectIdRoute
+  SubjectsSubjectIdRoute: typeof SubjectsSubjectIdRouteWithChildren
   SubjectsIndexRoute: typeof SubjectsIndexRoute
   SubjectsMathChapterIdRoute: typeof SubjectsMathChapterIdRoute
 }
@@ -596,6 +687,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ScanRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/revision': {
+      id: '/revision'
+      path: '/revision'
+      fullPath: '/revision'
+      preLoaderRoute: typeof RevisionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/resources': {
       id: '/resources'
       path: '/resources'
@@ -631,6 +729,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PredictionsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/practice': {
+      id: '/practice'
+      path: '/practice'
+      fullPath: '/practice'
+      preLoaderRoute: typeof PracticeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/planner': {
       id: '/planner'
       path: '/planner'
@@ -657,6 +762,13 @@ declare module '@tanstack/react-router' {
       path: '/mock-test'
       fullPath: '/mock-test'
       preLoaderRoute: typeof MockTestRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/mock-exam': {
+      id: '/mock-exam'
+      path: '/mock-exam'
+      fullPath: '/mock-exam'
+      preLoaderRoute: typeof MockExamRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/login': {
@@ -701,11 +813,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ExamHallRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/daily-practice': {
+      id: '/daily-practice'
+      path: '/daily-practice'
+      fullPath: '/daily-practice'
+      preLoaderRoute: typeof DailyPracticeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/chapter-test': {
       id: '/chapter-test'
       path: '/chapter-test'
       fullPath: '/chapter-test'
       preLoaderRoute: typeof ChapterTestRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/badges': {
+      id: '/badges'
+      path: '/badges'
+      fullPath: '/badges'
+      preLoaderRoute: typeof BadgesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/answer-uploads': {
@@ -827,6 +953,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SubjectsMathChapterIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/subjects/$subjectId/topics/$chapterId': {
+      id: '/subjects/$subjectId/topics/$chapterId'
+      path: '/topics/$chapterId'
+      fullPath: '/subjects/$subjectId/topics/$chapterId'
+      preLoaderRoute: typeof SubjectsSubjectIdTopicsChapterIdRouteImport
+      parentRoute: typeof SubjectsSubjectIdRoute
+    }
+    '/subjects/$subjectId/formulas/$chapterId': {
+      id: '/subjects/$subjectId/formulas/$chapterId'
+      path: '/formulas/$chapterId'
+      fullPath: '/subjects/$subjectId/formulas/$chapterId'
+      preLoaderRoute: typeof SubjectsSubjectIdFormulasChapterIdRouteImport
+      parentRoute: typeof SubjectsSubjectIdRoute
+    }
   }
 }
 
@@ -886,27 +1026,46 @@ const ScanRouteChildren: ScanRouteChildren = {
 
 const ScanRouteWithChildren = ScanRoute._addFileChildren(ScanRouteChildren)
 
+interface SubjectsSubjectIdRouteChildren {
+  SubjectsSubjectIdFormulasChapterIdRoute: typeof SubjectsSubjectIdFormulasChapterIdRoute
+  SubjectsSubjectIdTopicsChapterIdRoute: typeof SubjectsSubjectIdTopicsChapterIdRoute
+}
+
+const SubjectsSubjectIdRouteChildren: SubjectsSubjectIdRouteChildren = {
+  SubjectsSubjectIdFormulasChapterIdRoute:
+    SubjectsSubjectIdFormulasChapterIdRoute,
+  SubjectsSubjectIdTopicsChapterIdRoute: SubjectsSubjectIdTopicsChapterIdRoute,
+}
+
+const SubjectsSubjectIdRouteWithChildren =
+  SubjectsSubjectIdRoute._addFileChildren(SubjectsSubjectIdRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AchievementsRoute: AchievementsRoute,
   AnalyticsRoute: AnalyticsRoute,
   AnswerUploadsRoute: AnswerUploadsRouteWithChildren,
+  BadgesRoute: BadgesRoute,
   ChapterTestRoute: ChapterTestRoute,
+  DailyPracticeRoute: DailyPracticeRoute,
   ExamHallRoute: ExamHallRouteWithChildren,
   ExamsRoute: ExamsRouteWithChildren,
   FocusRoute: FocusRoute,
   ForgotPasswordRoute: ForgotPasswordRoute,
   LogRoute: LogRoute,
   LoginRoute: LoginRoute,
+  MockExamRoute: MockExamRoute,
   MockTestRoute: MockTestRouteWithChildren,
   OnboardingRoute: OnboardingRoute,
   ParentRoute: ParentRoute,
   PlannerRoute: PlannerRoute,
+  PracticeRoute: PracticeRoute,
   PredictionsRoute: PredictionsRoute,
   PrivacyRoute: PrivacyRoute,
   ProfileRoute: ProfileRoute,
   QuizzesRoute: QuizzesRoute,
   ResourcesRoute: ResourcesRoute,
+  RevisionRoute: RevisionRoute,
   ScanRoute: ScanRouteWithChildren,
   SeedRoute: SeedRoute,
   SessionRoute: SessionRoute,
@@ -919,7 +1078,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminOpsRoute: AdminOpsRoute,
   ExamResultsAttemptIdRoute: ExamResultsAttemptIdRoute,
   QuizQuizIdRoute: QuizQuizIdRoute,
-  SubjectsSubjectIdRoute: SubjectsSubjectIdRoute,
+  SubjectsSubjectIdRoute: SubjectsSubjectIdRouteWithChildren,
   SubjectsIndexRoute: SubjectsIndexRoute,
   SubjectsMathChapterIdRoute: SubjectsMathChapterIdRoute,
 }
