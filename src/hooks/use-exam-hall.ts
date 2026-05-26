@@ -39,9 +39,31 @@ import type {
 } from "@/integrations/firebase/types";
 
 const HEARTBEAT_MS = 5000;
+const REMOTE_PERSIST_MS = 8000;
 
 function newId() {
   return `local-${Math.random().toString(36).slice(2, 10)}-${Date.now()}`;
+}
+
+async function withTimeout<T>(
+  promise: Promise<T>,
+  ms: number,
+  label: string,
+): Promise<T> {
+  let timer: ReturnType<typeof setTimeout> | undefined;
+  try {
+    return await Promise.race([
+      promise,
+      new Promise<T>((_, reject) => {
+        timer = setTimeout(
+          () => reject(new Error(`${label} timed out after ${ms}ms`)),
+          ms,
+        );
+      }),
+    ]);
+  } finally {
+    if (timer) clearTimeout(timer);
+  }
 }
 
 function emptyAnswer(qid: string): ExamHallAnswer {
@@ -178,7 +200,14 @@ if (!s && !isGuest) {
       });
       let created: ExamHallSessionDoc = draft;
       if (!isGuest) {
-        const persisted = await createHallSession(draft).catch(() => null);
+        const persisted = await withTimeout(
+          createHallSession(draft),
+          REMOTE_PERSIST_MS,
+          "createHallSession",
+        ).catch((err) => {
+          console.debug("[exam-hall] remote session persist skipped", err);
+          return null;
+        });
         if (persisted) created = persisted;
       }
       localUpsertSession(created);

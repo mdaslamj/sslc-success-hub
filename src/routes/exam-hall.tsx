@@ -1,4 +1,4 @@
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Link, Outlet, useNavigate, useRouterState } from "@tanstack/react-router";
 import { useState } from "react";
 import { Clock, GraduationCap, Loader2, Play, ShieldCheck, Sparkles, Timer } from "lucide-react";
 import { DashboardLayout } from "@/components/dashboard-layout";
@@ -32,6 +32,9 @@ function ExamHallIndex() {
   const list = useExamHallList();
   const [isStarting, setIsStarting] = useState(false);
   const [startError, setStartError] = useState<string | null>(null);
+  const isChildRoute = useRouterState({
+    select: (s) => s.location.pathname !== "/exam-hall",
+  });
 
   const handleStart = async () => {
     if (isStarting) return;
@@ -40,13 +43,16 @@ function ExamHallIndex() {
     try {
       const s = await startSession();
       console.debug("[exam-hall] launch", { sessionId: s.id });
-      navigate({ to: "/exam-hall/$sessionId", params: { sessionId: s.id } });
+      await navigate({ to: "/exam-hall/$sessionId", params: { sessionId: s.id } });
     } catch (e) {
       console.debug("[exam-hall] launch-failed", e);
       setStartError("Unable to start the session. Retry.");
+    } finally {
       setIsStarting(false);
     }
   };
+
+  if (isChildRoute) return <Outlet />;
 
   return (
     <DashboardLayout title="Exam Hall">

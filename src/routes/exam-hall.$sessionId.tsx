@@ -49,9 +49,7 @@ function formatTime(sec: number) {
 }
 
 function ExamHallSession() {
-  console.log("ExamHallSession mounted");
   const { sessionId } = Route.useParams();
-  console.log("sessionId", sessionId);
   const {
     loading,
     session,
@@ -64,10 +62,6 @@ function ExamHallSession() {
     bumpAntiCheat,
     submit,
   } = useExamHall(sessionId);
-  console.log("session", session);
-console.log("loading", loading);
-console.log("events", events);
-console.log("result", result);
 
   const [showSubmit, setShowSubmit] = useState(false);
 
@@ -97,10 +91,21 @@ console.log("result", result);
     }
   }, [session?.status, result, submit]);
 
-  if (loading || !session) {
+  if (loading) {
     return (
       <div className="flex min-h-[100dvh] items-center justify-center bg-background text-sm text-muted-foreground">
         Loading exam hall…
+      </div>
+    );
+  }
+
+  if (!session) {
+    return (
+      <div className="flex min-h-[100dvh] flex-col items-center justify-center gap-3 bg-background px-6 text-center text-sm text-muted-foreground">
+        <p>Exam session not found.</p>
+        <Link to="/exam-hall" className="text-primary underline">
+          Back to Exam Hall
+        </Link>
       </div>
     );
   }
