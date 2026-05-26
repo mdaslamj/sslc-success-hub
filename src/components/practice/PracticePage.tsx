@@ -57,9 +57,9 @@ export default function PracticePage() {
 
   // ── Session completed → go to results ────────────────────────────────────
   const handleSessionComplete = useCallback(
-    (score: number, results: QuestionResult[]) => {
+    (score: number, _total: number) => {
       if (!session) return;
-      setSession((prev) => prev ? { ...prev, score, results } : prev);
+      setSession((prev) => (prev ? { ...prev, score } : prev));
       setPhase("results");
     },
     [session],
