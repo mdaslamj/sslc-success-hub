@@ -1,37 +1,57 @@
 /**
- * PracticeSession — wires useExamEngine with all practice UI components.
+ * PracticeSession — Updated with Analytics (T5) + Adaptive Difficulty (T8)
  *
- * BUG FIX 4: key={`${selectedChapter}-${currentQuestion?.id}`} on QuestionCard
- *            forces a full remount on every question change, preventing stale
- *            internal state from leaking between questions.
- *
- * Drop this into your pages/Practice.tsx or use it as a reference for
- * plugging the engine into your existing page layout.
+ * onSessionComplete now emits (score, results) so PracticePage
+ * can pass per-question data to SessionResultsScreen.
  */
 
+import { useEffect, useRef } from "react";
 import { useExamEngine } from "@/hooks/use-exam-engine";
+import { useAnalytics } from "@/hooks/use-analytics";
+import { useAdaptiveEngine, getSessionLabel } from "@/hooks/use-adaptive-engine";
 import type { Question } from "@/hooks/use-exam-engine";
+import type { QuestionResult } from "@/components/practice/SessionResultsScreen";
 import { QuestionCard } from "@/components/practice/QuestionCard";
 import { ExplanationPanel } from "@/components/practice/ExplanationPanel";
 import { QuestionNavigator } from "@/components/practice/QuestionNavigator";
 
 // ---------------------------------------------------------------------------
-// Props
+// Types
 // ---------------------------------------------------------------------------
 
 type Props = {
   questions: Question[];
-  chapterId: string; // used in the remount key
-  onSessionComplete?: (score: number, total: number) => void;
+  chapterId: string;
+  chapterName: string;
+  subjectId: string;
+  onSessionComplete?: (score: number, results: QuestionResult[]) => void;
 };
 
 // ---------------------------------------------------------------------------
 // Component
 // ---------------------------------------------------------------------------
 
-export function PracticeSession({ questions, chapterId, onSessionComplete }: Props) {
-  const engine = useExamEngine(questions);
+export function PracticeSession({
+  questions,
+  chapterId,
+  chapterName,
+  subjectId,
+  onSessionComplete,
+}: Props) {
+  // Analytics
+  const analytics = useAnalytics();
+  const chapterStats = analytics.getChapterStats(chapterId);
 
+  // Adaptive ordering
+  const adaptedQuestions = useAdaptiveEngine(questions, {
+    chapterStats,
+    wrongQuestionIds: [],
+  });
+
+  const sessionLabel = getSessionLabel(chapterStats?.accuracy ?? null);
+
+  // Exam engine
+  const engine = useExamEngine(adaptedQuestions);
   const {
     currentQuestion,
     currentQuestionIndex,
@@ -45,6 +65,7 @@ export function PracticeSession({ questions, chapterId, onSessionComplete }: Pro
     isFirstQuestion,
     isLastQuestion,
     score,
+    timeTakenMs,
     selectOption,
     checkAnswer,
     nextQuestion,
@@ -53,21 +74,63 @@ export function PracticeSession({ questions, chapterId, onSessionComplete }: Pro
     setMistakeTag,
   } = engine;
 
+  // Collect results per question
+  const resultsRef = useRef<QuestionResult[]>([]);
+
+  // Record into analytics + collect result when answer is checked
+  useEffect(() => {
+    if (isChecked && currentQuestion && isCorrect !== null) {
+      // Analytics
+      analytics.recordAttempt({
+        question: currentQuestion,
+        chapterId,
+        subjectId,
+        chapterName,
+        isCorrect,
+        timeTakenMs,
+      });
+
+      // Collect result (avoid duplicates)
+      const alreadyRecorded = resultsRef.current.some(
+        (r) => r.question.id === currentQuestion.id
+      );
+      if (!alreadyRecorded) {
+        resultsRef.current = [
+          ...resultsRef.current,
+          {
+            question: currentQuestion,
+            selectedOption,
+            isCorrect,
+            timeTakenMs,
+          },
+        ];
+      }
+    }
+  }, [isChecked]);
+
+  const handleSubmit = () => {
+    onSessionComplete?.(score, resultsRef.current);
+  };
+
   if (!currentQuestion) {
     return (
       <div className="flex items-center justify-center py-16 text-muted-foreground">
-        No questions available for this chapter.
+        No questions available.
       </div>
     );
   }
 
-  const handleSubmit = () => {
-    onSessionComplete?.(score, totalQuestions);
-  };
-
   return (
     <div className="mx-auto flex max-w-2xl flex-col gap-6 px-4 py-6">
-      {/* Navigator (counter + progress + buttons) */}
+      {/* Adaptive mode badge */}
+      <div className="flex items-center gap-2 text-sm text-muted-foreground">
+        <span>{sessionLabel.emoji}</span>
+        <span className="font-medium text-foreground">{sessionLabel.label}</span>
+        <span>·</span>
+        <span>{sessionLabel.description}</span>
+      </div>
+
+      {/* Navigator */}
       <QuestionNavigator
         currentIndex={currentQuestionIndex}
         totalQuestions={totalQuestions}
@@ -81,10 +144,7 @@ export function PracticeSession({ questions, chapterId, onSessionComplete }: Pro
         onSubmit={handleSubmit}
       />
 
-      {/*
-       * BUG FIX 4: key forces full remount when question changes.
-       * This guarantees no internal state leaks between questions.
-       */}
+      {/* Question card */}
       <QuestionCard
         key={`${chapterId}-${currentQuestion.id}`}
         question={currentQuestion}
@@ -94,7 +154,7 @@ export function PracticeSession({ questions, chapterId, onSessionComplete }: Pro
         onSelectOption={selectOption}
       />
 
-      {/* Explanation + confidence + mistake tagger — only after Check Answer */}
+      {/* Explanation + confidence + mistake tagger */}
       {showExplanation && isCorrect !== null && (
         <ExplanationPanel
           explanation={currentQuestion.explanation}
