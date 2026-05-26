@@ -6,6 +6,11 @@ import type {
   Question,
   QuestionAttempt,
 } from "@/types/question";
+import { saveAttempt } from "@/engines/analytics/attemptLogger";
+import {
+  finaliseSession,
+  updateAfterAttempt,
+} from "@/engines/analytics/profileUpdater";
 
 export interface ExamEngineState {
   currentQuestion: Question | null;
@@ -79,7 +84,6 @@ export function useExamEngine(
     currentQuestion: questions[0] ?? null,
     totalQuestions: questions.length,
   });
-
   const [questionStatuses, setQuestionStatuses] = useState<AttemptStatus[]>(() =>
     Array(questions.length).fill("unattempted"),
   );
@@ -146,16 +150,25 @@ export function useExamEngine(
           timestamp: Date.now(),
         };
 
-        persistAttempt(attempt);
+        saveAttempt(attempt);
+        updateAfterAttempt(
+          attempt.chapterId,
+          attempt.concept,
+          attempt.isCorrect,
+          level,
+          attempt.mistakeTag,
+          attempt.timeTakenMs,
+        );
 
-        const newWrongIds =
-          !prev.isCorrect && prev.currentQuestion
-            ? [...new Set([...prev.wrongQuestionIds, prev.currentQuestion.id])]
-            : prev.wrongQuestionIds;
+        setQuestionStatuses((statuses) => {
+          const next = [...statuses];
+          next[prev.currentIndex] = attempt.isCorrect ? "correct" : "wrong";
+          return next;
+        });
 
-        const newStatuses = [...questionStatuses];
-        newStatuses[prev.currentIndex] = prev.isCorrect ? "correct" : "wrong";
-        setQuestionStatuses(newStatuses);
+        const newWrongIds = !attempt.isCorrect
+          ? [...new Set([...prev.wrongQuestionIds, prev.currentQuestion.id])]
+          : prev.wrongQuestionIds;
 
         return {
           ...prev,
@@ -165,72 +178,54 @@ export function useExamEngine(
         };
       });
     },
-    [mode, questionStatuses],
+    [mode],
   );
 
   const setMistakeTag = useCallback((tag: MistakeTag | null) => {
     setState((prev) => ({ ...prev, mistakeTag: tag }));
   }, []);
 
+  const resetQuestionState = useCallback(
+    (index: number): Partial<ExamEngineState> => ({
+      currentIndex: index,
+      currentQuestion: activeQuestions[index],
+      selectedOption: null,
+      isChecked: false,
+      isCorrect: null,
+      showExplanation: false,
+      confidenceSelection: null,
+      mistakeTag: null,
+      timeTakenMs: 0,
+    }),
+    [activeQuestions],
+  );
+
   const goToQuestion = useCallback(
     (index: number) => {
       if (index < 0 || index >= activeQuestions.length) return;
-      setState((prev) => ({
-        ...prev,
-        currentIndex: index,
-        currentQuestion: activeQuestions[index],
-        selectedOption: null,
-        isChecked: false,
-        isCorrect: null,
-        showExplanation: false,
-        confidenceSelection: null,
-        mistakeTag: null,
-        timeTakenMs: 0,
-      }));
       questionStartTime.current = Date.now();
+      setState((prev) => ({ ...prev, ...resetQuestionState(index) }));
     },
-    [activeQuestions],
+    [activeQuestions, resetQuestionState],
   );
 
   const nextQuestion = useCallback(() => {
     setState((prev) => {
-      const nextIndex = prev.currentIndex + 1;
-      if (nextIndex >= activeQuestions.length) return prev;
-      return {
-        ...prev,
-        currentIndex: nextIndex,
-        currentQuestion: activeQuestions[nextIndex],
-        selectedOption: null,
-        isChecked: false,
-        isCorrect: null,
-        showExplanation: false,
-        confidenceSelection: null,
-        mistakeTag: null,
-        timeTakenMs: 0,
-      };
+      const next = prev.currentIndex + 1;
+      if (next >= activeQuestions.length) return prev;
+      questionStartTime.current = Date.now();
+      return { ...prev, ...resetQuestionState(next) };
     });
-    questionStartTime.current = Date.now();
-  }, [activeQuestions]);
+  }, [activeQuestions, resetQuestionState]);
 
   const previousQuestion = useCallback(() => {
     setState((prev) => {
-      const prevIndex = prev.currentIndex - 1;
-      if (prevIndex < 0) return prev;
-      return {
-        ...prev,
-        currentIndex: prevIndex,
-        currentQuestion: activeQuestions[prevIndex],
-        selectedOption: null,
-        isChecked: false,
-        isCorrect: null,
-        showExplanation: false,
-        confidenceSelection: null,
-        mistakeTag: null,
-        timeTakenMs: 0,
-      };
+      const prevIdx = prev.currentIndex - 1;
+      if (prevIdx < 0) return prev;
+      questionStartTime.current = Date.now();
+      return { ...prev, ...resetQuestionState(prevIdx) };
     });
-    questionStartTime.current = Date.now();
-  }, [activeQuestions]);
+  }, [resetQuestionState]);
 
   const retryWrongQuestions = useCallback(() => {
     const wrongOnes = questions.filter((q) =>
@@ -259,12 +254,20 @@ export function useExamEngine(
     });
   }, [questions]);
 
-  const canGoNext = state.currentIndex < activeQuestions.length - 1;
-  const canGoPrev = state.currentIndex > 0;
-  const isLastQuestion = state.currentIndex === activeQuestions.length - 1;
   const isComplete =
     state.attemptedCount === activeQuestions.length &&
     activeQuestions.length > 0;
+
+  useEffect(() => {
+    if (isComplete && state.sessionAttempts.length > 0) {
+      finaliseSession(
+        state.sessionAttempts.map((a) => ({
+          isCorrect: a.isCorrect,
+          confidenceLevel: a.confidenceLevel,
+        })),
+      );
+    }
+  }, [isComplete, state.sessionAttempts]);
 
   return {
     state,
@@ -280,20 +283,9 @@ export function useExamEngine(
       goToQuestion,
     },
     questionStatuses,
-    canGoNext,
-    canGoPrev,
-    isLastQuestion,
+    canGoNext: state.currentIndex < activeQuestions.length - 1,
+    canGoPrev: state.currentIndex > 0,
+    isLastQuestion: state.currentIndex === activeQuestions.length - 1,
     isComplete,
   };
-}
-
-function persistAttempt(attempt: QuestionAttempt): void {
-  try {
-    const raw = localStorage.getItem("aura_attempts");
-    const existing: QuestionAttempt[] = raw ? JSON.parse(raw) : [];
-    const updated = [...existing, attempt].slice(-500);
-    localStorage.setItem("aura_attempts", JSON.stringify(updated));
-  } catch {
-    // silent — never crash the exam
-  }
 }
