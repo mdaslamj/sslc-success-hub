@@ -47,6 +47,7 @@ export const Route = createFileRoute("/exams/$examId")({
         name: "description",
         content: `Timed mock exam ${params.examId} with auto-grading and weak-area analytics.`,
       },
+ 
     ],
   }),
   component: ExamPlayerPage,
@@ -59,12 +60,14 @@ function ExamPlayerPage() {
   const content = useContentCatalog();
 
   useEffect(() => {
-    // Reset failure flag on every re-evaluation so a successful rebuild
-    // (once the content catalogue finishes loading) doesn't get stuck on
-    // the "couldn't load" screen.
     setMissing(false);
+    setExam(null);
+  }, [examId]);
+
+  useEffect(() => {
     const cached = readCachedExam(examId);
     if (cached) {
+      setMissing(false);
       setExam(cached);
       return;
     }
@@ -77,21 +80,38 @@ function ExamPlayerPage() {
       })),
     });
     if (built) {
+      setMissing(false);
       setExam(built);
       return;
     }
     const seed = SEED_MOCK_EXAMS.find((e) => e.id === examId);
     if (seed) {
+      setMissing(false);
       setExam(seed);
       return;
     }
     // Wait until the content catalogue has finished loading before
     // giving up — chapter / subject mock ids are built from that data.
     if (content.isLoading) return;
+
+    let cancelled = false;
     fetchMockExam(examId)
-      .then((e) => (e ? setExam(e) : setMissing(true)))
-      .catch(() => setMissing(true));
-  }, [examId, content.subjects, content.isLoading]);
+      .then((e) => {
+        if (cancelled) return;
+        if (e) {
+          setMissing(false);
+          setExam(e);
+        } else {
+          setMissing(true);
+        }
+      })
+      .catch(() => {
+        if (!cancelled) setMissing(true);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [examId, content.isLoading]);
 
   if (missing) {
     return (

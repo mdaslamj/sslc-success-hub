@@ -57,7 +57,7 @@ export function buildExamQuestions(
 // ---------------------------------------------------------------------------
 
 export function blankAnswers(exam: MockExamDoc): MockExamAnswer[] {
-  return exam.questions.map((q) => ({
+  return (exam.questions ?? []).map((q) => ({
     mcqId: q.mcqId,
     selectedIndex: null,
     marked: false,

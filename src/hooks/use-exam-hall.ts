@@ -112,14 +112,20 @@ export function useExamHall(sessionId?: string) {
     (async () => {
       setLoading(true);
       let s: ExamHallSessionDoc | null = null;
-      if (isGuest) {
-        s = localGetSession(sessionId) ?? null;
-      } else {
-        s = await fetchHallSession(uid, sessionId).catch(() => null);
-        if (!s) s = localGetSession(sessionId) ?? null;
-      }
+      s = localGetSession(sessionId) ?? null;
+
+if (!s && !isGuest) {
+  s = await fetchHallSession(uid, sessionId).catch(() => null);
+}
       if (cancelled) return;
+
       setSession(s);
+
+      if (!s) {
+        setLoading(false);
+        return;
+      }
+
       const evs = isGuest
         ? localListEvents(sessionId)
         : await listInvigilatorEvents(uid, sessionId).catch(() => []);

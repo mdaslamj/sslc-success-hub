@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
+
 import {
   AlertTriangle,
   ChevronLeft,
@@ -8,12 +9,15 @@ import {
   Send,
   Timer,
 } from "lucide-react";
+
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
+
 import { useExamHall } from "@/hooks/use-exam-hall";
 import { cn } from "@/lib/utils";
+
 import type {
   ExamHallQuestion,
   ExamHallSection,
@@ -45,7 +49,9 @@ function formatTime(sec: number) {
 }
 
 function ExamHallSession() {
+  console.log("ExamHallSession mounted");
   const { sessionId } = Route.useParams();
+  console.log("sessionId", sessionId);
   const {
     loading,
     session,
@@ -58,6 +64,10 @@ function ExamHallSession() {
     bumpAntiCheat,
     submit,
   } = useExamHall(sessionId);
+  console.log("session", session);
+console.log("loading", loading);
+console.log("events", events);
+console.log("result", result);
 
   const [showSubmit, setShowSubmit] = useState(false);
 
@@ -99,9 +109,39 @@ function ExamHallSession() {
     return <ResultView />;
   }
 
-  const section: ExamHallSection = session.sections[session.cursor.sectionIndex];
-  const question: ExamHallQuestion =
-    section.questions[session.cursor.questionIndex];
+  if (
+    !session.sections ||
+    session.sections.length === 0 ||
+    !session.cursor
+  ) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-background text-sm text-muted-foreground">
+        Invalid exam session data
+      </div>
+    );
+  }
+  
+  const section: ExamHallSection | undefined =
+    session.sections?.[session.cursor.sectionIndex];
+  
+  if (!section || !section.questions?.length) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-background text-sm text-muted-foreground">
+        Exam section failed to load
+      </div>
+    );
+  }
+  
+  const question: ExamHallQuestion | undefined =
+    section.questions?.[session.cursor.questionIndex];
+  
+  if (!question) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-background text-sm text-muted-foreground">
+        Question failed to load
+      </div>
+    );
+  }
   const answer = session.answers[question.id];
   const latestEvent = events[events.length - 1];
   const isLast =

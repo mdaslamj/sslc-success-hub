@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, Outlet, useRouterState } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import {
@@ -107,6 +107,11 @@ function ExamsPage() {
 
   const recent = useMemo(() => listLocalResults().slice(0, 4), []);
   const bestScore = recent.reduce((m, r) => Math.max(m, r.percentage), 0);
+  const isChildRoute = useRouterState({
+    select: (s) => s.location.pathname !== "/exams",
+  });
+
+  if (isChildRoute) return <Outlet />;
 
   return (
     <DashboardLayout title="Mock Exams">

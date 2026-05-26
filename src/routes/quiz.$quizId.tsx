@@ -42,8 +42,14 @@ function QuizPlayerPage() {
 
   useEffect(() => {
     setMissing(false);
+    setRebuilding(false);
+    setQuiz(null);
+  }, [quizId]);
+
+  useEffect(() => {
     const cached = readCachedQuiz(quizId);
     if (cached) {
+      setMissing(false);
       setRebuilding(false);
       setQuiz(cached);
       return;
@@ -56,6 +62,7 @@ function QuizPlayerPage() {
     });
     if (built) {
       cacheQuiz(built);
+      setMissing(false);
       setRebuilding(false);
       setQuiz(built);
       return;
@@ -68,7 +75,7 @@ function QuizPlayerPage() {
     }
     setRebuilding(false);
     setMissing(true);
-  }, [quizId, content.subjects, content.isLoading]);
+  }, [quizId, content.isLoading]);
 
   if (missing) {
     return (
