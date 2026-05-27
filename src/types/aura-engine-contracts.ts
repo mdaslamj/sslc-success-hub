@@ -287,7 +287,7 @@ export interface NextActionOutput {
   urgency:            UrgencyLevel;
   confidence:         number;     // 0–1, how certain Aura is this is the best move
   rationale:          string;     // explanation (for debugging / transparency mode)
-  followUp:           Omit<NextActionOutput, "followUp"> | null;
+  followUp:           Partial<Omit<NextActionOutput, "followUp">> | null;
   computedAt:         string;
 }
 
