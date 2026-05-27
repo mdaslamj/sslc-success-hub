@@ -74,8 +74,8 @@ export interface StudentLearningProfile {
   sessionHistory:  SessionRecord[];
   nextAction:      NextActionOutput;
   recoveryPlans:   RecoveryPlan[];
-  targetConfig:    TargetConfiguration;
-  adaptiveMsg:     AdaptiveMessaging;
+  targetConfig?:   TargetConfiguration;
+  adaptiveMsg?:    AdaptiveMessaging;
   blueprint:       Record<Subject, Record<string, BlueprintEntry>>;
 }
 
