@@ -14,7 +14,7 @@ import { SubjectChapterSelector } from "@/components/practice/SubjectChapterSele
 import { PracticeSession } from "@/components/practice/PracticeSession";
 import { SessionResultsScreen } from "@/components/practice/SessionResultsScreen";
 import { getQuestionsByChapter, getSubjectByChapterId } from "@/lib/question-bank";
-import type { Question } from "@/hooks/use-exam-engine";
+import type { BankQuestion } from "@/lib/question-bank";
 import type { QuestionResult } from "@/components/practice/SessionResultsScreen";
 
 // ---------------------------------------------------------------------------
@@ -26,7 +26,7 @@ type Phase = "selecting" | "practicing" | "results";
 type SessionState = {
   chapterId: string;
   subjectId: string;
-  questions: Question[];
+  questions: BankQuestion[];
   score: number;
   totalMarks: number;
   results: QuestionResult[];

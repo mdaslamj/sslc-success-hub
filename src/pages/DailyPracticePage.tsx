@@ -14,7 +14,7 @@ import { SessionResultsScreen } from "@/components/practice/SessionResultsScreen
 import type { QuestionResult } from "@/components/practice/SessionResultsScreen";
 import { useAnalytics } from "@/hooks/use-analytics";
 import { SUBJECTS, getQuestionsByChapter, getSubjectByChapterId } from "@/lib/question-bank";
-import type { Question } from "@/hooks/use-exam-engine";
+import type { BankQuestion } from "@/lib/question-bank";
 import { Flame, CheckCircle2, BookOpen } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -98,7 +98,7 @@ export default function DailyPracticePage() {
   const [score, setScore] = useState(0);
 
   // Build today's 10 questions from weakest chapters
-  const dailyQuestions = useMemo((): Question[] => {
+  const dailyQuestions = useMemo((): BankQuestion[] => {
     const weakChapters = analytics.getWeakChapters();
 
     let pool: Question[] = [];
@@ -125,8 +125,9 @@ export default function DailyPracticePage() {
       .slice(0, DAILY_QUESTION_COUNT);
   }, []);
 
-  const chapterId = dailyQuestions[0]?.chapter ?? "daily";
-  const subjectId = getSubjectByChapterId(dailyQuestions[0]?.chapter ?? "")?.id ?? "science";
+  const chapterId = dailyQuestions[0]?.chapterId ?? "daily";
+  const subjectId =
+    getSubjectByChapterId(dailyQuestions[0]?.chapterId ?? "")?.id ?? "science";
 
   const handleComplete = (score: number, results: QuestionResult[]) => {
     markTodayComplete(score, DAILY_QUESTION_COUNT);

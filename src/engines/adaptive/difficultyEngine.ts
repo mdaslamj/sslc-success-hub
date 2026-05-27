@@ -63,7 +63,9 @@ export function getNextQuestion(
 
   // Prefer questions matching weak concepts
   const conceptMatch = candidates.filter((q) =>
-    weakConcepts.some((c) => q.concept.toLowerCase().includes(c.toLowerCase()))
+    weakConcepts.some((c) =>
+      (q.concept ?? "").toLowerCase().includes(c.toLowerCase()),
+    ),
   )
 
   const finalPool = conceptMatch.length > 0 ? conceptMatch : candidates

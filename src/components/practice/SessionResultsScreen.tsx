@@ -8,14 +8,14 @@
 
 import { cn } from "@/lib/utils";
 import { Clock, Target, Trophy, XCircle, CheckCircle, RefreshCw, BookOpen } from "lucide-react";
-import type { Question } from "@/hooks/use-exam-engine";
+import type { BankQuestion } from "@/lib/question-bank";
 
 // ---------------------------------------------------------------------------
 // Types
 // ---------------------------------------------------------------------------
 
 export type QuestionResult = {
-  question: Question;
+  question: BankQuestion;
   selectedOption: string | null;
   isCorrect: boolean;
   timeTakenMs: number;

@@ -21,6 +21,7 @@ interface QuestionCardProps {
   onMistakeTagSelect: (tag: MistakeTag | null) => void;
   recentAttempts?: QuestionAttempt[];
   daysSinceLastAttempt?: number;
+  misconceptionHint?: string | null;
 }
 
 function getQuestionTag(
@@ -70,6 +71,7 @@ export function QuestionCard({
   onMistakeTagSelect,
   recentAttempts = [],
   daysSinceLastAttempt,
+  misconceptionHint,
 }: QuestionCardProps) {
   const whyTag = getQuestionTag(
     question,
@@ -104,9 +106,9 @@ export function QuestionCard({
         )}
       </div>
 
-      {whyTag && (
+      {(whyTag || misconceptionHint) && (
         <p className="text-xs text-gray-400 dark:text-gray-500 mb-3 italic">
-          {whyTag}
+          {misconceptionHint ?? whyTag}
         </p>
       )}
 
