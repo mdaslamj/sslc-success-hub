@@ -4,6 +4,8 @@ import { HeroCommandCenter } from "@/components/dashboard/HeroCommandCenter";
 import { RecoverySection } from "@/components/dashboard/RecoverySection";
 import { SubjectHeatmap } from "@/components/dashboard/SubjectHeatmap";
 import { TargetSection } from "@/components/dashboard/TargetSection";
+import { BurnoutIndicator } from "@/components/shared/BurnoutIndicator";
+import { RevisionSchedule } from "@/components/shared/RevisionSchedule";
 
 const SUBJECT_LABEL: Record<string, string> = {
   math: "Math",
@@ -18,10 +20,18 @@ export type AuraDashboardProps = {
   theme: AdaptiveTheme;
   layoutDensity: LayoutDensity;
   profile: StudentLearningProfile;
+  showRevisionSchedule: boolean;
 };
 
-export function AuraDashboard({ engines, theme, layoutDensity, profile }: AuraDashboardProps) {
-  const { projection, archetype, recovery, target, momentum, nextAction, analytics } = engines;
+export function AuraDashboard({
+  engines,
+  theme,
+  layoutDensity,
+  profile,
+  showRevisionSchedule,
+}: AuraDashboardProps) {
+  const { projection, archetype, recovery, target, momentum, nextAction, analytics, burnout, rank, revision } =
+    engines;
 
   const planTasks = recovery.top3.slice(0, 3).map((item, index) => ({
     id: item.chapter,
@@ -70,6 +80,8 @@ export function AuraDashboard({ engines, theme, layoutDensity, profile }: AuraDa
         </div>
       </header>
 
+      <BurnoutIndicator burnout={burnout} />
+
       <HeroCommandCenter
         projection={projection}
         nextAction={nextAction}
@@ -77,6 +89,8 @@ export function AuraDashboard({ engines, theme, layoutDensity, profile }: AuraDa
         theme={theme}
         layoutDensity={layoutDensity}
         momentum={momentum}
+        rank={rank}
+        archetype={archetype.archetype}
       />
 
       <section
@@ -103,24 +117,28 @@ export function AuraDashboard({ engines, theme, layoutDensity, profile }: AuraDa
         <div className="mb-2 text-[10px] font-semibold uppercase tracking-wider text-slate-500">
           Today&apos;s Plan
         </div>
-        <div className="grid grid-cols-1 gap-2 md:grid-cols-3">
-          {planTasks.map((task) => (
-            <div
-              key={task.id}
-              className="flex items-center gap-3 rounded-lg border border-[#1a2744] bg-[#080f1e] px-3 py-2"
-            >
-              <input type="checkbox" className="h-4 w-4 rounded border-[#1a2744]" readOnly />
-              <div className="min-w-0 flex-1">
-                <div className="truncate text-sm font-medium text-slate-100">{task.name}</div>
-                <div className="text-[10px] text-slate-500">
-                  {SUBJECT_LABEL[task.subject] ?? task.subject} · {task.minutes} min ·{" "}
-                  {task.urgency}
+        {showRevisionSchedule ? (
+          <RevisionSchedule revision={revision} theme={theme} />
+        ) : (
+          <div className="grid grid-cols-1 gap-2 md:grid-cols-3">
+            {planTasks.map((task) => (
+              <div
+                key={task.id}
+                className="flex items-center gap-3 rounded-lg border border-[#1a2744] bg-[#080f1e] px-3 py-2"
+              >
+                <input type="checkbox" className="h-4 w-4 rounded border-[#1a2744]" readOnly />
+                <div className="min-w-0 flex-1">
+                  <div className="truncate text-sm font-medium text-slate-100">{task.name}</div>
+                  <div className="text-[10px] text-slate-500">
+                    {SUBJECT_LABEL[task.subject] ?? task.subject} · {task.minutes} min ·{" "}
+                    {task.urgency}
+                  </div>
+                  <div className="truncate text-[11px] text-slate-400">{task.reason}</div>
                 </div>
-                <div className="truncate text-[11px] text-slate-400">{task.reason}</div>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
       </section>
     </div>
   );
