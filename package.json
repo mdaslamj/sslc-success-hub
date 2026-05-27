@@ -10,7 +10,8 @@
     "preview": "vite preview",
     "lint": "eslint .",
     "format": "prettier --write .",
-    "test:scoreProjection": "npx vite-node src/engines/__tests__/scoreProjection.test.ts"
+    "test:scoreProjection": "npx vite-node src/engines/__tests__/scoreProjection.test.ts",
+    "test:analytics": "npx vite-node src/engines/__tests__/analytics.test.ts"
   },
   "dependencies": {
     "@cloudflare/vite-plugin": "^1.25.5",
