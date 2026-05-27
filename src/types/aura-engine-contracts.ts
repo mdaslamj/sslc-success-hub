@@ -72,7 +72,9 @@ export interface StudentLearningProfile {
   wellbeing:       WellbeingState;
   chapterMastery:  Record<Subject, Record<string, ChapterMasteryEntry>>;
   sessionHistory:  SessionRecord[];
-  nextAction:      NextActionOutput;
+  nextAction:      Partial<Omit<NextActionOutput, "followUp">> & {
+    followUp?: unknown;
+  };
   recoveryPlans:   RecoveryPlan[];
   targetConfig?:   TargetConfiguration;
   adaptiveMsg?:    AdaptiveMessaging;
