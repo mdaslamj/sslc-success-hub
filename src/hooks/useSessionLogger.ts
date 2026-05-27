@@ -1,71 +1,49 @@
-import { useCallback, useMemo, useState } from "react";
-import type { SessionRecord, StudentLearningProfile } from "@/types/aura-engine-contracts";
-import { computeAnalyticsFromSessions } from "@/engines/analytics";
+import { useCallback } from "react";
 import {
-  appendSessionToProfile,
-  type NewSessionInput,
-} from "@/engines/sessionLogger";
+  logSessionOnStorage,
+  useStudentProfile,
+  type LogSessionParams,
+} from "@/hooks/useStudentProfile";
 
-import seedProfile from "@/data/StudentLearningProfile.json";
+export type { LogSessionParams };
+export { logSessionOnStorage };
 
-const PROFILE_STORAGE_KEY = "aura_student_learning_profile";
+export function useSessionLogger() {
+  const { profile, appendSession, updateMastery } = useStudentProfile();
 
-function readStoredProfile(): StudentLearningProfile | null {
-  if (typeof window === "undefined") return null;
-  try {
-    const raw = localStorage.getItem(PROFILE_STORAGE_KEY);
-    return raw ? (JSON.parse(raw) as StudentLearningProfile) : null;
-  } catch {
-    return null;
-  }
-}
+  const logSession = useCallback(
+    (params: LogSessionParams): void => {
+      const score =
+        params.questionsAttempted > 0
+          ? Math.round((params.questionsCorrect / params.questionsAttempted) * 100)
+          : 0;
 
-function writeStoredProfile(profile: StudentLearningProfile): void {
-  if (typeof window === "undefined") return;
-  try {
-    localStorage.setItem(PROFILE_STORAGE_KEY, JSON.stringify(profile));
-  } catch {
-    // Never crash practice flow on storage failure.
-  }
-}
+      const current = profile.chapterMastery[params.subject]?.[params.chapter]?.mastery ?? 50;
+      const newMastery = Math.min(100, Math.round(current * 0.7 + score * 0.3));
 
-export function loadInitialProfile(): StudentLearningProfile {
-  return readStoredProfile() ?? (seedProfile as StudentLearningProfile);
-}
+      appendSession({
+        id: Date.now().toString(),
+        date: new Date().toISOString().slice(0, 10),
+        subject: params.subject,
+        chapter: params.chapter,
+        durationMinutes: params.durationMinutes,
+        questionsAttempted: params.questionsAttempted,
+        questionsCorrect: params.questionsCorrect,
+        score,
+        hintsUsed: params.hintsUsed,
+        retriesOnWrong: params.retriesOnWrong,
+        completedPlan: params.completedPlan,
+        panicSignal: params.panicSignal,
+        engineType: params.engineType,
+      });
 
-export function useSessionLogger(initialProfile?: StudentLearningProfile) {
-  const [profile, setProfile] = useState<StudentLearningProfile>(
-    () => initialProfile ?? loadInitialProfile(),
+      updateMastery(params.subject, params.chapter, newMastery);
+    },
+    [appendSession, profile.chapterMastery, updateMastery],
   );
-
-  const analytics = useMemo(
-    () => computeAnalyticsFromSessions(profile.sessionHistory),
-    [profile.sessionHistory],
-  );
-
-  const logSession = useCallback((input: NewSessionInput): StudentLearningProfile => {
-    let nextProfile: StudentLearningProfile | null = null;
-
-    setProfile((current) => {
-      nextProfile = appendSessionToProfile(current, input);
-      writeStoredProfile(nextProfile);
-      return nextProfile;
-    });
-
-    return nextProfile!;
-  }, []);
-
-  const resetProfile = useCallback((nextProfile?: StudentLearningProfile) => {
-    const value = nextProfile ?? (seedProfile as StudentLearningProfile);
-    setProfile(value);
-    writeStoredProfile(value);
-  }, []);
 
   return {
     profile,
-    analytics,
-    sessionHistory: profile.sessionHistory as SessionRecord[],
     logSession,
-    resetProfile,
   };
 }

@@ -38,6 +38,18 @@ export function getRecentAttempts(count: number): QuestionAttempt[] {
   return readAllAttempts().slice(-count);
 }
 
+const PANIC_TIMING_THRESHOLD_MS = 8_000;
+
+export function detectPanicSignalFromTiming(): boolean {
+  const recent = getRecentAttempts(5);
+  if (recent.length < 5) return false;
+
+  const averageTimeMs =
+    recent.reduce((sum, attempt) => sum + attempt.timeTakenMs, 0) / recent.length;
+
+  return averageTimeMs < PANIC_TIMING_THRESHOLD_MS;
+}
+
 export function getAttemptsSince(timestampMs: number): QuestionAttempt[] {
   return readAllAttempts().filter((a) => a.timestamp >= timestampMs);
 }

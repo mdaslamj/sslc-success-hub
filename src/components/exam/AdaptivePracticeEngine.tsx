@@ -1,11 +1,16 @@
-import { useEffect, useMemo, useState } from "react";
-import type { Question, QuestionAttempt, Subject } from "@/types/question";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import type { Question, QuestionAttempt, Subject as QuestionSubject } from "@/types/question";
+import type { StudentLearningProfile, Subject } from "@/types/aura-engine-contracts";
 import { useExamEngine } from "@/hooks/useExamEngine";
+import { useSessionLogger } from "@/hooks/useSessionLogger";
 import { QuestionCard } from "@/components/exam/QuestionCard";
 import { QuestionNavigator } from "@/components/exam/QuestionNavigator";
 import { MidSessionCheckIn } from "@/components/analytics/MidSessionCheckIn";
 import { getSessionInsights } from "@/engines/analytics/sessionAnalytics";
-import { readAllAttempts } from "@/engines/analytics/attemptLogger";
+import {
+  detectPanicSignalFromTiming,
+  readAllAttempts,
+} from "@/engines/analytics/attemptLogger";
 import { readProfile } from "@/engines/analytics/profileUpdater";
 import {
   buildAdaptiveSession,
@@ -19,9 +24,34 @@ import {
 interface AdaptivePracticeEngineProps {
   questions: Question[];
   chapterId: string;
-  subject: Subject;
+  subject: QuestionSubject;
   sessionLength?: number;
   onSessionComplete?: (attempts: QuestionAttempt[], score: number) => void;
+}
+
+function toAuraSubject(subject: QuestionSubject): Subject {
+  if (subject === "mathematics" || subject === "math") return "math";
+  if (subject === "social_science" || subject === "social") return "social";
+  return "science";
+}
+
+function previousThreeSessionAverage(
+  profile: StudentLearningProfile,
+  auraSubject: Subject,
+  chapter: string,
+): number {
+  const recent = profile.sessionHistory
+    .filter(
+      (session) =>
+        session.subject === auraSubject &&
+        session.chapter === chapter &&
+        session.score !== null,
+    )
+    .slice(-3);
+
+  if (recent.length === 0) return 50;
+
+  return recent.reduce((sum, session) => sum + (session.score ?? 0), 0) / recent.length;
 }
 
 export function AdaptivePracticeEngine({
@@ -32,6 +62,8 @@ export function AdaptivePracticeEngine({
   onSessionComplete,
 }: AdaptivePracticeEngineProps) {
   const profile = useMemo(() => readProfile(), []);
+  const { profile: auraProfile, logSession } = useSessionLogger();
+  const sessionLoggedRef = useRef(false);
 
   const adaptiveQuestions = useMemo(() => {
     const singleChapter =
@@ -77,6 +109,61 @@ export function AdaptivePracticeEngine({
     return Math.floor((Date.now() - last) / (1000 * 60 * 60 * 24));
   }, [recentAttempts, state.currentQuestion]);
 
+  const recordSession = useCallback(() => {
+    if (sessionLoggedRef.current || state.sessionAttempts.length === 0) {
+      return;
+    }
+
+    sessionLoggedRef.current = true;
+
+    const auraSubject = toAuraSubject(subject);
+    const questionsAttempted = state.sessionAttempts.length;
+    const questionsCorrect = state.sessionAttempts.filter((attempt) => attempt.isCorrect).length;
+    const score =
+      questionsAttempted > 0
+        ? Math.round((questionsCorrect / questionsAttempted) * 100)
+        : 0;
+    const durationMs = state.sessionAttempts.reduce(
+      (sum, attempt) => sum + attempt.timeTakenMs,
+      0,
+    );
+    const durationMinutes = Math.max(1, Math.round(durationMs / 60_000));
+    const hintsUsed = state.sessionAttempts.filter(
+      (attempt) => attempt.confidenceLevel === "guess" || attempt.confidenceLevel === "unsure",
+    ).length;
+    const retriesOnWrong = state.wrongQuestionIds.length;
+    const finishedAllRecommendedQuestions =
+      questionsAttempted >= adaptiveQuestions.length && adaptiveQuestions.length > 0;
+    const priorAverage = previousThreeSessionAverage(auraProfile, auraSubject, chapterId);
+    const scoreDropPanic = score < priorAverage - 15;
+    const timingPanic = detectPanicSignalFromTiming();
+
+    logSession({
+      subject: auraSubject,
+      chapter: chapterId,
+      durationMinutes,
+      questionsAttempted,
+      questionsCorrect,
+      hintsUsed,
+      retriesOnWrong,
+      completedPlan: finishedAllRecommendedQuestions,
+      panicSignal: scoreDropPanic || timingPanic,
+      engineType: "adaptive",
+    });
+
+    onSessionComplete?.(state.sessionAttempts, state.score);
+  }, [
+    adaptiveQuestions.length,
+    auraProfile,
+    chapterId,
+    logSession,
+    onSessionComplete,
+    state.score,
+    state.sessionAttempts,
+    state.wrongQuestionIds.length,
+    subject,
+  ]);
+
   useEffect(() => {
     const answered = state.attemptedCount;
     if (
@@ -120,10 +207,10 @@ export function AdaptivePracticeEngine({
   );
 
   useEffect(() => {
-    if (isComplete && onSessionComplete) {
-      onSessionComplete(state.sessionAttempts, state.score);
+    if (isComplete) {
+      recordSession();
     }
-  }, [isComplete, onSessionComplete, state.score, state.sessionAttempts]);
+  }, [isComplete, recordSession]);
 
   if (adaptiveQuestions.length === 0) {
     return (
@@ -265,9 +352,7 @@ export function AdaptivePracticeEngine({
         onNext={actions.nextQuestion}
         onGoTo={actions.goToQuestion}
         onRetry={actions.retryWrongQuestions}
-        onComplete={() =>
-          onSessionComplete?.(state.sessionAttempts, state.score)
-        }
+        onComplete={recordSession}
       />
     </div>
   );

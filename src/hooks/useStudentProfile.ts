@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import type {
+  SessionType,
   StudentLearningProfile,
   Subject,
   Trend,
@@ -164,6 +165,51 @@ export function applyAppendSession(
   }
 
   return toProfileStorage(nextProfile, nextReadings);
+}
+
+export type LogSessionParams = {
+  subject: Subject;
+  chapter: string;
+  durationMinutes: number;
+  questionsAttempted: number;
+  questionsCorrect: number;
+  hintsUsed: number;
+  retriesOnWrong: number;
+  completedPlan: boolean;
+  panicSignal: boolean;
+  engineType: SessionType;
+};
+
+export function logSessionOnStorage(
+  stored: AuraProfileStorage,
+  params: LogSessionParams,
+): AuraProfileStorage {
+  const { profile } = stripProfileStorage(stored);
+  const score =
+    params.questionsAttempted > 0
+      ? Math.round((params.questionsCorrect / params.questionsAttempted) * 100)
+      : 0;
+
+  const current = profile.chapterMastery[params.subject]?.[params.chapter]?.mastery ?? 50;
+  const newMastery = Math.min(100, Math.round(current * 0.7 + score * 0.3));
+
+  const withSession = applyAppendSession(stored, {
+    id: Date.now().toString(),
+    date: new Date().toISOString().slice(0, 10),
+    subject: params.subject,
+    chapter: params.chapter,
+    durationMinutes: params.durationMinutes,
+    questionsAttempted: params.questionsAttempted,
+    questionsCorrect: params.questionsCorrect,
+    score,
+    hintsUsed: params.hintsUsed,
+    retriesOnWrong: params.retriesOnWrong,
+    completedPlan: params.completedPlan,
+    panicSignal: params.panicSignal,
+    engineType: params.engineType,
+  });
+
+  return applyUpdateMastery(withSession, params.subject, params.chapter, newMastery);
 }
 
 export function useStudentProfile() {
