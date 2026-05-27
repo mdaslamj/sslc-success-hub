@@ -4,6 +4,37 @@ import type {
   TargetGapOutput,
 } from "@/types/aura-engine-contracts";
 import type { AdaptiveTheme } from "@/hooks/useAdaptiveTheme";
+import { useEffect, useRef, useState } from "react";
+
+function useCountUp(target: number, duration = 1000) {
+  const [value, setValue] = useState(0);
+  const startedRef = useRef(false);
+  useEffect(() => {
+    if (startedRef.current) {
+      setValue(target);
+      return;
+    }
+    startedRef.current = true;
+    const start = performance.now();
+    let raf = 0;
+    const tick = (now: number) => {
+      const t = Math.min(1, (now - start) / duration);
+      const eased = 1 - Math.pow(1 - t, 3);
+      setValue(target * eased);
+      if (t < 1) raf = requestAnimationFrame(tick);
+      else setValue(target);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  return value;
+}
+
+function CountNumber({ value, suffix = "" }: { value: number; suffix?: string }) {
+  const v = useCountUp(value, 1000);
+  return <>{Math.round(v)}{suffix}</>;
+}
 
 type LayoutDensity = AdaptiveTheme["layoutDensity"];
 
@@ -36,13 +67,13 @@ export function TargetSection({
             className="text-2xl font-black text-slate-100"
             style={{ fontFamily: "Syne, sans-serif" }}
           >
-            {Math.round(projection?.percentage ?? 0)}%
+            <CountNumber value={projection?.percentage ?? 0} suffix="%" />
           </div>
           <div className="text-xs text-slate-400">current prediction</div>
         </div>
         <div className="text-right">
-          <div className="text-lg font-bold" style={{ color: theme.accent }}>
-            {target?.targetScore ?? 0}%
+          <div className="aura-archetype-transition text-lg font-bold" style={{ color: theme.accent }}>
+            <CountNumber value={target?.targetScore ?? 0} suffix="%" />
           </div>
           <div className="text-xs text-slate-400">target</div>
         </div>
@@ -67,7 +98,7 @@ export function TargetSection({
       ) : (
         <button
           type="button"
-          className="mt-1 w-full rounded-lg px-3 py-2 text-xs font-semibold text-white"
+          className="aura-archetype-transition mt-1 w-full rounded-lg px-3 py-2 text-xs font-semibold text-white"
           style={{ backgroundColor: theme.primary }}
         >
           Start: {nextAction?.recommendedAction ?? "Review your next chapter"}
