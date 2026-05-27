@@ -1,0 +1,220 @@
+{
+  "meta": {
+    "schema": "AuraSubjectBlueprint",
+    "version": "1.0",
+    "subjectId": "social",
+    "subjectKey": "social",
+    "label": "Social Science",
+    "subjectCode": "85",
+    "board": "Karnataka SSLC",
+    "examYear": "2025-26",
+    "totalPaperMarks": 97,
+    "auraEngineSubjects": ["scoreProjection", "recovery", "targetGap"],
+    "note": "Source of truth for ScoreProjectionEngine and RecoveryEngine. Chapter ids match StudentLearningProfile.blueprint.social.",
+    "generatedAt": "2026-05-27T12:00:00Z"
+  },
+  "chapters": [
+    {
+      "id": "nationalism_europe",
+      "name": "Nationalism in Europe",
+      "marks": 5,
+      "marksWeightage": 0.0515,
+      "examRelevance": "high",
+      "recoveryEligible": false,
+      "section": "History"
+    },
+    {
+      "id": "nationalism_india",
+      "name": "Nationalism in India",
+      "marks": 7,
+      "marksWeightage": 0.0722,
+      "examRelevance": "critical",
+      "recoveryEligible": true,
+      "section": "History"
+    },
+    {
+      "id": "global_world",
+      "name": "Making of Global World",
+      "marks": 5,
+      "marksWeightage": 0.0515,
+      "examRelevance": "high",
+      "recoveryEligible": false,
+      "section": "History"
+    },
+    {
+      "id": "industrialisation",
+      "name": "Age of Industrialisation",
+      "marks": 4,
+      "marksWeightage": 0.0412,
+      "examRelevance": "standard",
+      "recoveryEligible": false,
+      "section": "History"
+    },
+    {
+      "id": "print_culture",
+      "name": "Print Culture & Modern World",
+      "marks": 4,
+      "marksWeightage": 0.0412,
+      "examRelevance": "standard",
+      "recoveryEligible": false,
+      "section": "History"
+    },
+    {
+      "id": "resources_development",
+      "name": "Resources & Development",
+      "marks": 5,
+      "marksWeightage": 0.0515,
+      "examRelevance": "high",
+      "recoveryEligible": false,
+      "section": "Geography"
+    },
+    {
+      "id": "forest_wildlife",
+      "name": "Forest & Wildlife",
+      "marks": 4,
+      "marksWeightage": 0.0412,
+      "examRelevance": "standard",
+      "recoveryEligible": false,
+      "section": "Geography"
+    },
+    {
+      "id": "water_resources",
+      "name": "Water Resources",
+      "marks": 4,
+      "marksWeightage": 0.0412,
+      "examRelevance": "standard",
+      "recoveryEligible": false,
+      "section": "Geography"
+    },
+    {
+      "id": "agriculture",
+      "name": "Agriculture",
+      "marks": 5,
+      "marksWeightage": 0.0515,
+      "examRelevance": "high",
+      "recoveryEligible": false,
+      "section": "Geography"
+    },
+    {
+      "id": "minerals_energy",
+      "name": "Minerals & Energy Resources",
+      "marks": 4,
+      "marksWeightage": 0.0412,
+      "examRelevance": "standard",
+      "recoveryEligible": false,
+      "section": "Geography"
+    },
+    {
+      "id": "manufacturing",
+      "name": "Manufacturing Industries",
+      "marks": 4,
+      "marksWeightage": 0.0412,
+      "examRelevance": "standard",
+      "recoveryEligible": false,
+      "section": "Geography"
+    },
+    {
+      "id": "lifelines",
+      "name": "Lifelines of National Economy",
+      "marks": 5,
+      "marksWeightage": 0.0515,
+      "examRelevance": "high",
+      "recoveryEligible": false,
+      "section": "Geography"
+    },
+    {
+      "id": "power_sharing",
+      "name": "Power Sharing",
+      "marks": 5,
+      "marksWeightage": 0.0515,
+      "examRelevance": "high",
+      "recoveryEligible": false,
+      "section": "Political Science"
+    },
+    {
+      "id": "federalism",
+      "name": "Federalism",
+      "marks": 5,
+      "marksWeightage": 0.0515,
+      "examRelevance": "high",
+      "recoveryEligible": false,
+      "section": "Political Science"
+    },
+    {
+      "id": "democracy_diversity",
+      "name": "Democracy & Diversity",
+      "marks": 4,
+      "marksWeightage": 0.0412,
+      "examRelevance": "standard",
+      "recoveryEligible": false,
+      "section": "Political Science"
+    },
+    {
+      "id": "gender_religion",
+      "name": "Gender, Religion & Caste",
+      "marks": 4,
+      "marksWeightage": 0.0412,
+      "examRelevance": "standard",
+      "recoveryEligible": false,
+      "section": "Political Science"
+    },
+    {
+      "id": "money_credit",
+      "name": "Money & Credit",
+      "marks": 5,
+      "marksWeightage": 0.0515,
+      "examRelevance": "high",
+      "recoveryEligible": false,
+      "section": "Economics"
+    },
+    {
+      "id": "globalisation",
+      "name": "Globalisation & Indian Economy",
+      "marks": 4,
+      "marksWeightage": 0.0412,
+      "examRelevance": "standard",
+      "recoveryEligible": false,
+      "section": "Economics"
+    },
+    {
+      "id": "consumer_rights",
+      "name": "Consumer Rights",
+      "marks": 3,
+      "marksWeightage": 0.0309,
+      "examRelevance": "supplemental",
+      "recoveryEligible": false,
+      "section": "Economics"
+    },
+    {
+      "id": "development",
+      "name": "Development",
+      "marks": 4,
+      "marksWeightage": 0.0412,
+      "examRelevance": "standard",
+      "recoveryEligible": false,
+      "section": "Economics"
+    },
+    {
+      "id": "sectors_economy",
+      "name": "Sectors of Indian Economy",
+      "marks": 4,
+      "marksWeightage": 0.0412,
+      "examRelevance": "standard",
+      "recoveryEligible": false,
+      "section": "Economics"
+    },
+    {
+      "id": "money_financial",
+      "name": "Money & Financial System",
+      "marks": 3,
+      "marksWeightage": 0.0309,
+      "examRelevance": "supplemental",
+      "recoveryEligible": false,
+      "section": "Economics"
+    }
+  ],
+  "totals": {
+    "chapters": 22,
+    "marks": 97
+  }
+}

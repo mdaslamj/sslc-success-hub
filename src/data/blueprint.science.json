@@ -1,0 +1,172 @@
+{
+  "meta": {
+    "schema": "AuraSubjectBlueprint",
+    "version": "1.0",
+    "subjectId": "science",
+    "subjectKey": "science",
+    "label": "Science",
+    "subjectCode": "82",
+    "board": "Karnataka SSLC",
+    "examYear": "2025-26",
+    "totalPaperMarks": 81,
+    "auraEngineSubjects": ["scoreProjection", "recovery", "targetGap"],
+    "note": "Source of truth for ScoreProjectionEngine and RecoveryEngine. Chapter ids match StudentLearningProfile.blueprint.science.",
+    "generatedAt": "2026-05-27T12:00:00Z"
+  },
+  "chapters": [
+    {
+      "id": "chemical_reactions",
+      "name": "Chemical Reactions",
+      "marks": 5,
+      "marksWeightage": 0.0617,
+      "examRelevance": "high",
+      "recoveryEligible": false,
+      "section": "Chemistry",
+      "contentChapterSlug": "chemical-reactions-and-equations"
+    },
+    {
+      "id": "acids_bases_salts",
+      "name": "Acids, Bases & Salts",
+      "marks": 5,
+      "marksWeightage": 0.0617,
+      "examRelevance": "high",
+      "recoveryEligible": false,
+      "section": "Chemistry",
+      "contentChapterSlug": "acids-bases-and-salts"
+    },
+    {
+      "id": "metals_nonmetals",
+      "name": "Metals & Non-metals",
+      "marks": 6,
+      "marksWeightage": 0.0741,
+      "examRelevance": "high",
+      "recoveryEligible": true,
+      "section": "Chemistry",
+      "contentChapterSlug": "metals-and-nonmetals"
+    },
+    {
+      "id": "carbon_compounds",
+      "name": "Carbon Compounds",
+      "marks": 6,
+      "marksWeightage": 0.0741,
+      "examRelevance": "high",
+      "recoveryEligible": true,
+      "section": "Chemistry",
+      "contentChapterSlug": "carbon-and-its-compounds"
+    },
+    {
+      "id": "periodic_classification",
+      "name": "Periodic Classification",
+      "marks": 3,
+      "marksWeightage": 0.037,
+      "examRelevance": "standard",
+      "recoveryEligible": false,
+      "section": "Chemistry",
+      "contentChapterSlug": null
+    },
+    {
+      "id": "life_processes",
+      "name": "Life Processes",
+      "marks": 8,
+      "marksWeightage": 0.0988,
+      "examRelevance": "critical",
+      "recoveryEligible": true,
+      "section": "Biology",
+      "contentChapterSlug": "life-processes"
+    },
+    {
+      "id": "control_coordination",
+      "name": "Control & Coordination",
+      "marks": 5,
+      "marksWeightage": 0.0617,
+      "examRelevance": "high",
+      "recoveryEligible": false,
+      "section": "Biology",
+      "contentChapterSlug": "control-and-coordination"
+    },
+    {
+      "id": "reproduction",
+      "name": "Reproduction",
+      "marks": 5,
+      "marksWeightage": 0.0617,
+      "examRelevance": "high",
+      "recoveryEligible": false,
+      "section": "Biology",
+      "contentChapterSlug": "how-do-organisms-reproduce"
+    },
+    {
+      "id": "heredity_evolution",
+      "name": "Heredity & Evolution",
+      "marks": 5,
+      "marksWeightage": 0.0617,
+      "examRelevance": "high",
+      "recoveryEligible": false,
+      "section": "Biology",
+      "contentChapterSlug": "heredity"
+    },
+    {
+      "id": "light_reflection",
+      "name": "Light: Reflection & Refraction",
+      "marks": 7,
+      "marksWeightage": 0.0864,
+      "examRelevance": "critical",
+      "recoveryEligible": true,
+      "section": "Physics",
+      "contentChapterSlug": "light-reflection-and-refraction"
+    },
+    {
+      "id": "human_eye",
+      "name": "Human Eye & Colourful World",
+      "marks": 4,
+      "marksWeightage": 0.0494,
+      "examRelevance": "standard",
+      "recoveryEligible": false,
+      "section": "Physics",
+      "contentChapterSlug": "human-eye-and-colourful-world"
+    },
+    {
+      "id": "electricity",
+      "name": "Electricity",
+      "marks": 8,
+      "marksWeightage": 0.0988,
+      "examRelevance": "critical",
+      "recoveryEligible": true,
+      "section": "Physics",
+      "contentChapterSlug": "electricity"
+    },
+    {
+      "id": "magnetic_effects",
+      "name": "Magnetic Effects of Current",
+      "marks": 6,
+      "marksWeightage": 0.0741,
+      "examRelevance": "high",
+      "recoveryEligible": true,
+      "section": "Physics",
+      "contentChapterSlug": "magnetic-effects-of-electric-current"
+    },
+    {
+      "id": "sources_energy",
+      "name": "Sources of Energy",
+      "marks": 4,
+      "marksWeightage": 0.0494,
+      "examRelevance": "standard",
+      "recoveryEligible": false,
+      "section": "Physics",
+      "contentChapterSlug": null
+    },
+    {
+      "id": "our_environment",
+      "name": "Our Environment",
+      "marks": 4,
+      "marksWeightage": 0.0494,
+      "examRelevance": "standard",
+      "recoveryEligible": false,
+      "section": "Biology",
+      "contentChapterSlug": "our-environment"
+    }
+  ],
+  "totals": {
+    "chapters": 15,
+    "marks": 81
+  }
+}

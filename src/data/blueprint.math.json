@@ -1,0 +1,172 @@
+{
+  "meta": {
+    "schema": "AuraSubjectBlueprint",
+    "version": "1.0",
+    "subjectId": "math",
+    "subjectKey": "math",
+    "label": "Mathematics",
+    "subjectCode": "81",
+    "board": "Karnataka SSLC",
+    "examYear": "2025-26",
+    "totalPaperMarks": 80,
+    "auraEngineSubjects": ["scoreProjection", "recovery", "targetGap"],
+    "note": "Source of truth for ScoreProjectionEngine and RecoveryEngine. Chapter ids match StudentLearningProfile.blueprint.math.",
+    "generatedAt": "2026-05-27T12:00:00Z"
+  },
+  "chapters": [
+    {
+      "id": "number_systems",
+      "name": "Number Systems",
+      "marks": 5,
+      "marksWeightage": 0.0625,
+      "examRelevance": "high",
+      "recoveryEligible": false,
+      "section": "Number Systems",
+      "contentChapterSlug": "real-numbers"
+    },
+    {
+      "id": "polynomials",
+      "name": "Polynomials",
+      "marks": 5,
+      "marksWeightage": 0.0625,
+      "examRelevance": "high",
+      "recoveryEligible": false,
+      "section": "Algebra",
+      "contentChapterSlug": "polynomials"
+    },
+    {
+      "id": "linear_equations",
+      "name": "Linear Equations",
+      "marks": 5,
+      "marksWeightage": 0.0625,
+      "examRelevance": "high",
+      "recoveryEligible": false,
+      "section": "Algebra",
+      "contentChapterSlug": "pair-of-linear-equations"
+    },
+    {
+      "id": "quadratic_equations",
+      "name": "Quadratic Equations",
+      "marks": 8,
+      "marksWeightage": 0.1,
+      "examRelevance": "critical",
+      "recoveryEligible": true,
+      "section": "Algebra",
+      "contentChapterSlug": "quadratic-equations"
+    },
+    {
+      "id": "arithmetic_progressions",
+      "name": "Arithmetic Progressions",
+      "marks": 5,
+      "marksWeightage": 0.0625,
+      "examRelevance": "high",
+      "recoveryEligible": false,
+      "section": "Algebra",
+      "contentChapterSlug": "arithmetic-progressions"
+    },
+    {
+      "id": "triangles",
+      "name": "Triangles",
+      "marks": 7,
+      "marksWeightage": 0.0875,
+      "examRelevance": "critical",
+      "recoveryEligible": true,
+      "section": "Geometry",
+      "contentChapterSlug": "triangles"
+    },
+    {
+      "id": "coordinate_geometry",
+      "name": "Coordinate Geometry",
+      "marks": 5,
+      "marksWeightage": 0.0625,
+      "examRelevance": "high",
+      "recoveryEligible": false,
+      "section": "Coordinate Geometry",
+      "contentChapterSlug": "coordinate-geometry"
+    },
+    {
+      "id": "trigonometry",
+      "name": "Intro to Trigonometry",
+      "marks": 7,
+      "marksWeightage": 0.0875,
+      "examRelevance": "critical",
+      "recoveryEligible": true,
+      "section": "Trigonometry",
+      "contentChapterSlug": "introduction-to-trigonometry"
+    },
+    {
+      "id": "trig_applications",
+      "name": "Applications of Trigonometry",
+      "marks": 5,
+      "marksWeightage": 0.0625,
+      "examRelevance": "high",
+      "recoveryEligible": false,
+      "section": "Trigonometry",
+      "contentChapterSlug": "some-applications-of-trigonometry"
+    },
+    {
+      "id": "circles",
+      "name": "Circles",
+      "marks": 5,
+      "marksWeightage": 0.0625,
+      "examRelevance": "high",
+      "recoveryEligible": false,
+      "section": "Geometry",
+      "contentChapterSlug": "circles"
+    },
+    {
+      "id": "constructions",
+      "name": "Constructions",
+      "marks": 4,
+      "marksWeightage": 0.05,
+      "examRelevance": "standard",
+      "recoveryEligible": false,
+      "section": "Geometry",
+      "contentChapterSlug": "constructions"
+    },
+    {
+      "id": "areas_circles",
+      "name": "Areas Related to Circles",
+      "marks": 5,
+      "marksWeightage": 0.0625,
+      "examRelevance": "high",
+      "recoveryEligible": false,
+      "section": "Mensuration",
+      "contentChapterSlug": "areas-related-to-circles"
+    },
+    {
+      "id": "surface_volumes",
+      "name": "Surface Areas & Volumes",
+      "marks": 7,
+      "marksWeightage": 0.0875,
+      "examRelevance": "critical",
+      "recoveryEligible": true,
+      "section": "Mensuration",
+      "contentChapterSlug": "surface-areas-and-volumes"
+    },
+    {
+      "id": "statistics",
+      "name": "Statistics",
+      "marks": 5,
+      "marksWeightage": 0.0625,
+      "examRelevance": "high",
+      "recoveryEligible": false,
+      "section": "Statistics",
+      "contentChapterSlug": "statistics"
+    },
+    {
+      "id": "probability",
+      "name": "Probability",
+      "marks": 2,
+      "marksWeightage": 0.025,
+      "examRelevance": "supplemental",
+      "recoveryEligible": false,
+      "section": "Statistics",
+      "contentChapterSlug": "probability"
+    }
+  ],
+  "totals": {
+    "chapters": 15,
+    "marks": 80
+  }
+}
