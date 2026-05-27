@@ -40,5 +40,6 @@ export function runAllEngines(profile: StudentLearningProfile): AuraEngineOutput
     momentum,
     nextAction,
     analytics,
+    profile,
   };
 }
