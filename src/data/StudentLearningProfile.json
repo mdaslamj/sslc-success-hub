@@ -1,3 +1,403 @@
 {
-  "_note": "Replace this file with your full StudentLearningProfile.json content (delete _note when done)."
+  "_meta": {
+    "schema": "AuraStudentLearningProfile",
+    "version": "2.0",
+    "board": "Karnataka SSLC",
+    "year": "2025-26",
+    "generatedAt": "2025-05-27T10:00:00Z",
+    "note": "All archetype inference is behavioral — no self-report used"
+  },
+
+  "student": {
+    "id": "s_arjun_001",
+    "name": "Arjun Kumar",
+    "grade": "Class X",
+    "school": "Govt. High School, Bengaluru",
+    "enrolledOn": "2025-03-01",
+    "targetScore": 90,
+    "daysToExam": 42
+  },
+
+  "archetype": {
+    "current": "average",
+    "inferredAt": "2025-05-27",
+    "inferenceMethod": "behavioral",
+    "note": "Never use self-report. Infer from behavioral signals only.",
+
+    "behavioralSignals": {
+      "overallMastery": 74,
+      "sessionCompletionRate": 78,
+      "accuracyTrend": "improving",
+      "recoverySpeed": "moderate",
+      "streakDiscipline": 62,
+      "panicIndex": 34,
+      "helpSeekingFrequency": 22,
+      "retryBehavior": 68,
+      "examPerformanceVsPractice": -6,
+      "timeOnHardProblems": 52
+    },
+
+    "archetypeScore": 61,
+    "archetypeBand": "average",
+
+    "archetypeHistory": [
+      { "date": "2025-04-01", "band": "struggling", "score": 45 },
+      { "date": "2025-05-01", "band": "average",    "score": 58 },
+      { "date": "2025-05-27", "band": "average",    "score": 61 }
+    ]
+  },
+
+  "analytics": {
+    "overallHealthScore": 66,
+    "lastUpdated": "2025-05-27",
+
+    "dimensions": {
+      "consistency": {
+        "score": 68,
+        "label": "Consistency",
+        "description": "How regularly student practices across days and subjects",
+        "trend": "improving",
+        "signals": ["streakLength", "sessionFrequency", "subjectBalance"]
+      },
+      "accuracy": {
+        "score": 71,
+        "label": "Accuracy",
+        "description": "Average correctness across practice sessions",
+        "trend": "stable",
+        "signals": ["avgSessionScore", "firstAttemptAccuracy", "errorRepeatRate"]
+      },
+      "recovery": {
+        "score": 58,
+        "label": "Recovery",
+        "description": "How effectively student addresses weak chapters after identification",
+        "trend": "improving",
+        "signals": ["weakChapterRevisitRate", "masteryGainAfterRecovery", "sessionFollowThrough"]
+      },
+      "momentum": {
+        "score": 64,
+        "label": "Momentum",
+        "description": "Study energy and directional progress",
+        "trend": "improving",
+        "signals": ["streakCurrent", "recentScoreTrend", "sessionDurationTrend"]
+      },
+      "discipline": {
+        "score": 60,
+        "label": "Discipline",
+        "description": "Whether student follows recommended plans vs freestyle studying",
+        "trend": "stable",
+        "signals": ["planFollowRate", "sessionCompletionRate", "skipRate"]
+      },
+      "confidenceStability": {
+        "score": 63,
+        "label": "Confidence Stability",
+        "description": "Whether performance is consistent or panic-driven. Two students at 85% can differ here.",
+        "trend": "stable",
+        "signals": ["scoreVariance", "panicIndex", "examVsPracticeGap", "timeOnHardProblems"],
+        "note": "Critical metric for burnout prediction. Low = panic-driven performance."
+      }
+    }
+  },
+
+  "wellbeing": {
+    "burnoutRisk": "low",
+    "burnoutSignals": {
+      "sessionDurationDecline": false,
+      "avoidancePattern": false,
+      "accuracyPlateauDays": 8,
+      "streakBreaks": 1,
+      "negativeScoreSurges": 0
+    },
+    "emotionalTone": "motivated",
+    "recommendedTone": "optimization",
+    "note": "Adapt UI messaging to emotional state. Never show alarming language to low-confidence students."
+  },
+
+  "chapterMastery": {
+    "math": {
+      "number_systems":          { "mastery": 85, "trend": "stable",   "lastPracticed": "2025-05-20", "attemptCount": 12 },
+      "polynomials":             { "mastery": 78, "trend": "stable",   "lastPracticed": "2025-05-18", "attemptCount": 9  },
+      "linear_equations":        { "mastery": 72, "trend": "improving","lastPracticed": "2025-05-22", "attemptCount": 11 },
+      "quadratic_equations":     { "mastery": 54, "trend": "declining","lastPracticed": "2025-05-23", "attemptCount": 8  },
+      "arithmetic_progressions": { "mastery": 68, "trend": "stable",   "lastPracticed": "2025-05-15", "attemptCount": 7  },
+      "triangles":               { "mastery": 76, "trend": "improving","lastPracticed": "2025-05-25", "attemptCount": 14 },
+      "coordinate_geometry":     { "mastery": 71, "trend": "stable",   "lastPracticed": "2025-05-19", "attemptCount": 8  },
+      "trigonometry":            { "mastery": 62, "trend": "declining","lastPracticed": "2025-05-21", "attemptCount": 6  },
+      "trig_applications":       { "mastery": 58, "trend": "declining","lastPracticed": "2025-05-14", "attemptCount": 5  },
+      "circles":                 { "mastery": 80, "trend": "stable",   "lastPracticed": "2025-05-17", "attemptCount": 10 },
+      "constructions":           { "mastery": 88, "trend": "stable",   "lastPracticed": "2025-05-16", "attemptCount": 13 },
+      "areas_circles":           { "mastery": 73, "trend": "improving","lastPracticed": "2025-05-20", "attemptCount": 7  },
+      "surface_volumes":         { "mastery": 65, "trend": "stable",   "lastPracticed": "2025-05-18", "attemptCount": 9  },
+      "statistics":              { "mastery": 79, "trend": "improving","lastPracticed": "2025-05-25", "attemptCount": 11 },
+      "probability":             { "mastery": 82, "trend": "stable",   "lastPracticed": "2025-05-22", "attemptCount": 8  }
+    },
+    "science": {
+      "chemical_reactions":      { "mastery": 77, "trend": "stable",   "lastPracticed": "2025-05-20", "attemptCount": 11 },
+      "acids_bases_salts":       { "mastery": 72, "trend": "stable",   "lastPracticed": "2025-05-18", "attemptCount": 9  },
+      "metals_nonmetals":        { "mastery": 68, "trend": "stable",   "lastPracticed": "2025-05-17", "attemptCount": 8  },
+      "carbon_compounds":        { "mastery": 65, "trend": "declining","lastPracticed": "2025-05-15", "attemptCount": 7  },
+      "periodic_classification": { "mastery": 74, "trend": "stable",   "lastPracticed": "2025-05-19", "attemptCount": 8  },
+      "life_processes":          { "mastery": 70, "trend": "improving","lastPracticed": "2025-05-24", "attemptCount": 12 },
+      "control_coordination":    { "mastery": 63, "trend": "stable",   "lastPracticed": "2025-05-16", "attemptCount": 6  },
+      "reproduction":            { "mastery": 75, "trend": "stable",   "lastPracticed": "2025-05-20", "attemptCount": 9  },
+      "heredity_evolution":      { "mastery": 71, "trend": "stable",   "lastPracticed": "2025-05-18", "attemptCount": 8  },
+      "light_reflection":        { "mastery": 80, "trend": "stable",   "lastPracticed": "2025-05-22", "attemptCount": 13 },
+      "human_eye":               { "mastery": 76, "trend": "stable",   "lastPracticed": "2025-05-21", "attemptCount": 10 },
+      "electricity":             { "mastery": 44, "trend": "declining","lastPracticed": "2025-05-27", "attemptCount": 5  },
+      "magnetic_effects":        { "mastery": 58, "trend": "stable",   "lastPracticed": "2025-05-20", "attemptCount": 6  },
+      "sources_energy":          { "mastery": 72, "trend": "stable",   "lastPracticed": "2025-05-17", "attemptCount": 7  },
+      "our_environment":         { "mastery": 82, "trend": "stable",   "lastPracticed": "2025-05-19", "attemptCount": 9  }
+    },
+    "social": {
+      "nationalism_europe":      { "mastery": 78, "trend": "stable",   "lastPracticed": "2025-05-20", "attemptCount": 9  },
+      "nationalism_india":       { "mastery": 82, "trend": "stable",   "lastPracticed": "2025-05-22", "attemptCount": 12 },
+      "global_world":            { "mastery": 75, "trend": "stable",   "lastPracticed": "2025-05-18", "attemptCount": 8  },
+      "industrialisation":       { "mastery": 70, "trend": "stable",   "lastPracticed": "2025-05-17", "attemptCount": 7  },
+      "print_culture":           { "mastery": 80, "trend": "stable",   "lastPracticed": "2025-05-21", "attemptCount": 9  },
+      "resources_development":   { "mastery": 85, "trend": "stable",   "lastPracticed": "2025-05-20", "attemptCount": 11 },
+      "forest_wildlife":         { "mastery": 88, "trend": "stable",   "lastPracticed": "2025-05-19", "attemptCount": 10 },
+      "water_resources":         { "mastery": 79, "trend": "stable",   "lastPracticed": "2025-05-18", "attemptCount": 9  },
+      "agriculture":             { "mastery": 83, "trend": "stable",   "lastPracticed": "2025-05-22", "attemptCount": 11 },
+      "minerals_energy":         { "mastery": 74, "trend": "stable",   "lastPracticed": "2025-05-20", "attemptCount": 8  },
+      "manufacturing":           { "mastery": 77, "trend": "stable",   "lastPracticed": "2025-05-17", "attemptCount": 9  },
+      "lifelines":               { "mastery": 81, "trend": "stable",   "lastPracticed": "2025-05-21", "attemptCount": 10 },
+      "power_sharing":           { "mastery": 86, "trend": "stable",   "lastPracticed": "2025-05-22", "attemptCount": 11 },
+      "federalism":              { "mastery": 84, "trend": "stable",   "lastPracticed": "2025-05-20", "attemptCount": 10 },
+      "democracy_diversity":     { "mastery": 79, "trend": "stable",   "lastPracticed": "2025-05-19", "attemptCount": 8  },
+      "gender_religion":         { "mastery": 76, "trend": "stable",   "lastPracticed": "2025-05-18", "attemptCount": 7  },
+      "money_credit":            { "mastery": 68, "trend": "declining","lastPracticed": "2025-05-16", "attemptCount": 6  },
+      "globalisation":           { "mastery": 72, "trend": "stable",   "lastPracticed": "2025-05-20", "attemptCount": 8  },
+      "consumer_rights":         { "mastery": 85, "trend": "stable",   "lastPracticed": "2025-05-22", "attemptCount": 9  },
+      "development":             { "mastery": 80, "trend": "stable",   "lastPracticed": "2025-05-21", "attemptCount": 8  },
+      "sectors_economy":         { "mastery": 74, "trend": "stable",   "lastPracticed": "2025-05-19", "attemptCount": 7  },
+      "money_financial":         { "mastery": 71, "trend": "stable",   "lastPracticed": "2025-05-18", "attemptCount": 6  }
+    }
+  },
+
+  "sessionHistory": [
+    {
+      "id": "sess_001", "date": "2025-05-20",
+      "subject": "math", "chapter": "triangles",
+      "durationMinutes": 45, "questionsAttempted": 18, "questionsCorrect": 13,
+      "score": 72, "hintsUsed": 2, "retriesOnWrong": 3,
+      "completedPlan": true, "panicSignal": false, "engineType": "adaptive"
+    },
+    {
+      "id": "sess_002", "date": "2025-05-21",
+      "subject": "science", "chapter": "electricity",
+      "durationMinutes": 30, "questionsAttempted": 14, "questionsCorrect": 8,
+      "score": 58, "hintsUsed": 5, "retriesOnWrong": 6,
+      "completedPlan": true, "panicSignal": true, "engineType": "adaptive"
+    },
+    {
+      "id": "sess_003", "date": "2025-05-22",
+      "subject": "social", "chapter": "nationalism_india",
+      "durationMinutes": 60, "questionsAttempted": 22, "questionsCorrect": 18,
+      "score": 81, "hintsUsed": 1, "retriesOnWrong": 1,
+      "completedPlan": true, "panicSignal": false, "engineType": "adaptive"
+    },
+    {
+      "id": "sess_004", "date": "2025-05-23",
+      "subject": "math", "chapter": "quadratic_equations",
+      "durationMinutes": 45, "questionsAttempted": 16, "questionsCorrect": 10,
+      "score": 65, "hintsUsed": 4, "retriesOnWrong": 5,
+      "completedPlan": true, "panicSignal": false, "engineType": "adaptive"
+    },
+    {
+      "id": "sess_005", "date": "2025-05-24",
+      "subject": "science", "chapter": "life_processes",
+      "durationMinutes": 30, "questionsAttempted": 14, "questionsCorrect": 10,
+      "score": 70, "hintsUsed": 2, "retriesOnWrong": 2,
+      "completedPlan": true, "panicSignal": false, "engineType": "adaptive"
+    },
+    {
+      "id": "sess_006", "date": "2025-05-25",
+      "subject": "math", "chapter": "statistics",
+      "durationMinutes": 45, "questionsAttempted": 18, "questionsCorrect": 14,
+      "score": 78, "hintsUsed": 1, "retriesOnWrong": 2,
+      "completedPlan": true, "panicSignal": false, "engineType": "adaptive"
+    },
+    {
+      "id": "sess_007", "date": "2025-05-26",
+      "subject": null, "chapter": null,
+      "durationMinutes": 0, "questionsAttempted": 0, "questionsCorrect": 0,
+      "score": null, "hintsUsed": 0, "retriesOnWrong": 0,
+      "completedPlan": false, "panicSignal": false, "engineType": null,
+      "skipReason": "no_activity"
+    },
+    {
+      "id": "sess_008", "date": "2025-05-27",
+      "subject": "science", "chapter": "electricity",
+      "durationMinutes": 50, "questionsAttempted": 20, "questionsCorrect": 13,
+      "score": 63, "hintsUsed": 4, "retriesOnWrong": 5,
+      "completedPlan": true, "panicSignal": true, "engineType": "recovery"
+    }
+  ],
+
+  "nextAction": {
+    "computedAt": "2025-05-27T09:00:00Z",
+    "recommendedAction": "Practice Electricity Numericals",
+    "subject": "science",
+    "chapter": "electricity",
+    "sessionType": "recovery",
+    "estimatedGain": "+4.2 marks",
+    "timeRequired": 40,
+    "urgency": "high",
+    "confidence": 0.84,
+    "rationale": "Electricity has 8 blueprint marks with only 44% mastery. Two panic signals detected. Numericals sub-type identified as weakest area. Focused 40min session has 84% probability of +15% mastery gain.",
+    "followUp": {
+      "action": "Quadratic Equations timed drill",
+      "estimatedGain": "+3.1 marks",
+      "timeRequired": 30,
+      "confidence": 0.76
+    }
+  },
+
+  "recoveryPlans": [
+    {
+      "chapter": "electricity",
+      "subject": "science",
+      "blueprintMarks": 8,
+      "currentMastery": 44,
+      "marksAtRisk": 4.5,
+      "recoverableMarks": 3.5,
+      "sessionsNeeded": 3,
+      "urgency": "critical",
+      "status": "active",
+      "startedAt": "2025-05-27",
+      "estimatedCompletionDate": "2025-06-02",
+      "actionPlan": [
+        { "session": 1, "type": "concept_review", "duration": 40, "focus": "Ohm's Law + Numericals" },
+        { "session": 2, "type": "pyq_practice",   "duration": 35, "focus": "15 PYQ numericals" },
+        { "session": 3, "type": "timed_test",     "duration": 30, "focus": "Full chapter timed mock" }
+      ]
+    },
+    {
+      "chapter": "quadratic_equations",
+      "subject": "math",
+      "blueprintMarks": 8,
+      "currentMastery": 54,
+      "marksAtRisk": 3.7,
+      "recoverableMarks": 2.9,
+      "sessionsNeeded": 2,
+      "urgency": "high",
+      "status": "pending",
+      "startedAt": null,
+      "actionPlan": [
+        { "session": 1, "type": "formula_drill",  "duration": 35, "focus": "Discriminant + factoring" },
+        { "session": 2, "type": "pyq_practice",   "duration": 30, "focus": "12 PYQ problems" }
+      ]
+    },
+    {
+      "chapter": "trig_applications",
+      "subject": "math",
+      "blueprintMarks": 5,
+      "currentMastery": 58,
+      "marksAtRisk": 2.1,
+      "recoverableMarks": 1.6,
+      "sessionsNeeded": 2,
+      "urgency": "medium",
+      "status": "pending",
+      "startedAt": null,
+      "actionPlan": [
+        { "session": 1, "type": "concept_review", "duration": 30, "focus": "Height & distance problems" },
+        { "session": 2, "type": "pyq_practice",   "duration": 25, "focus": "10 PYQ problems" }
+      ]
+    }
+  ],
+
+  "targetConfiguration": {
+    "targetScore": 90,
+    "currentPrediction": 74,
+    "gapToClose": 16,
+    "gapUnit": "percent",
+    "roiPath": [
+      { "chapter": "electricity",        "subject": "science", "gainPossible": 4.5, "hoursEstimate": 2.0, "roi": 2.25 },
+      { "chapter": "quadratic_equations","subject": "math",    "gainPossible": 3.7, "hoursEstimate": 1.5, "roi": 2.47 },
+      { "chapter": "trig_applications",  "subject": "math",    "gainPossible": 2.4, "hoursEstimate": 1.0, "roi": 2.40 },
+      { "chapter": "control_coordination","subject": "science", "gainPossible": 2.2, "hoursEstimate": 1.0, "roi": 2.20 },
+      { "chapter": "money_credit",       "subject": "social",  "gainPossible": 1.6, "hoursEstimate": 0.5, "roi": 3.20 }
+    ],
+    "fastestPathHours": 6.0,
+    "fastestPathGain": 14.4,
+    "lastComputedAt": "2025-05-27T09:00:00Z"
+  },
+
+  "adaptiveMessaging": {
+    "archetype": "average",
+    "tone": "optimization",
+    "primaryMessage": "You are capable of 85+.",
+    "contextMessages": {
+      "onLogin":         "Good to see you. Let's keep the momentum going.",
+      "onStreak":        "Day {streak} — consistency is compounding.",
+      "onRecovery":      "Electricity is holding back {n} marks. 3 sessions can fix that.",
+      "onTargetGap":     "You are {gap}% away from your target. The ROI path is clear.",
+      "onMissedDay":     "Yesterday was skipped. Today matters more.",
+      "onImprovement":   "Your {subject} score improved {n}% this week.",
+      "onPanicDetected": "Take a breath. Start with the easier questions first.",
+      "onTopper":        "You are within {n} marks of state-level performance.",
+      "onStruggling":    "Each correct answer is building your foundation."
+    }
+  },
+
+  "blueprint": {
+    "_note": "Karnataka SSLC 2025-26 approximate marks distribution",
+    "math": {
+      "number_systems":          { "marks": 5,  "name": "Number Systems" },
+      "polynomials":             { "marks": 5,  "name": "Polynomials" },
+      "linear_equations":        { "marks": 5,  "name": "Linear Equations" },
+      "quadratic_equations":     { "marks": 8,  "name": "Quadratic Equations" },
+      "arithmetic_progressions": { "marks": 5,  "name": "Arithmetic Progressions" },
+      "triangles":               { "marks": 7,  "name": "Triangles" },
+      "coordinate_geometry":     { "marks": 5,  "name": "Coordinate Geometry" },
+      "trigonometry":            { "marks": 7,  "name": "Intro to Trigonometry" },
+      "trig_applications":       { "marks": 5,  "name": "Applications of Trigonometry" },
+      "circles":                 { "marks": 5,  "name": "Circles" },
+      "constructions":           { "marks": 4,  "name": "Constructions" },
+      "areas_circles":           { "marks": 5,  "name": "Areas Related to Circles" },
+      "surface_volumes":         { "marks": 7,  "name": "Surface Areas & Volumes" },
+      "statistics":              { "marks": 5,  "name": "Statistics" },
+      "probability":             { "marks": 2,  "name": "Probability" }
+    },
+    "science": {
+      "chemical_reactions":      { "marks": 5,  "name": "Chemical Reactions" },
+      "acids_bases_salts":       { "marks": 5,  "name": "Acids, Bases & Salts" },
+      "metals_nonmetals":        { "marks": 6,  "name": "Metals & Non-metals" },
+      "carbon_compounds":        { "marks": 6,  "name": "Carbon Compounds" },
+      "periodic_classification": { "marks": 3,  "name": "Periodic Classification" },
+      "life_processes":          { "marks": 8,  "name": "Life Processes" },
+      "control_coordination":    { "marks": 5,  "name": "Control & Coordination" },
+      "reproduction":            { "marks": 5,  "name": "Reproduction" },
+      "heredity_evolution":      { "marks": 5,  "name": "Heredity & Evolution" },
+      "light_reflection":        { "marks": 7,  "name": "Light: Reflection & Refraction" },
+      "human_eye":               { "marks": 4,  "name": "Human Eye & Colourful World" },
+      "electricity":             { "marks": 8,  "name": "Electricity" },
+      "magnetic_effects":        { "marks": 6,  "name": "Magnetic Effects of Current" },
+      "sources_energy":          { "marks": 4,  "name": "Sources of Energy" },
+      "our_environment":         { "marks": 4,  "name": "Our Environment" }
+    },
+    "social": {
+      "nationalism_europe":      { "marks": 5,  "name": "Nationalism in Europe" },
+      "nationalism_india":       { "marks": 7,  "name": "Nationalism in India" },
+      "global_world":            { "marks": 5,  "name": "Making of Global World" },
+      "industrialisation":       { "marks": 4,  "name": "Age of Industrialisation" },
+      "print_culture":           { "marks": 4,  "name": "Print Culture & Modern World" },
+      "resources_development":   { "marks": 5,  "name": "Resources & Development" },
+      "forest_wildlife":         { "marks": 4,  "name": "Forest & Wildlife" },
+      "water_resources":         { "marks": 4,  "name": "Water Resources" },
+      "agriculture":             { "marks": 5,  "name": "Agriculture" },
+      "minerals_energy":         { "marks": 4,  "name": "Minerals & Energy Resources" },
+      "manufacturing":           { "marks": 4,  "name": "Manufacturing Industries" },
+      "lifelines":               { "marks": 5,  "name": "Lifelines of National Economy" },
+      "power_sharing":           { "marks": 5,  "name": "Power Sharing" },
+      "federalism":              { "marks": 5,  "name": "Federalism" },
+      "democracy_diversity":     { "marks": 4,  "name": "Democracy & Diversity" },
+      "gender_religion":         { "marks": 4,  "name": "Gender, Religion & Caste" },
+      "money_credit":            { "marks": 5,  "name": "Money & Credit" },
+      "globalisation":           { "marks": 4,  "name": "Globalisation & Indian Economy" },
+      "consumer_rights":         { "marks": 3,  "name": "Consumer Rights" },
+      "development":             { "marks": 4,  "name": "Development" },
+      "sectors_economy":         { "marks": 4,  "name": "Sectors of Indian Economy" },
+      "money_financial":         { "marks": 3,  "name": "Money & Financial System" }
+    }
+  }
 }
