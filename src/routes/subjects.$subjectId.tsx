@@ -1,4 +1,4 @@
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Link, Outlet, useNavigate, useRouterState } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { useQueries, useQuery } from "@tanstack/react-query";
 import { DashboardLayout } from "@/components/dashboard-layout";
@@ -59,6 +59,11 @@ import {
   type ContentKeyTerm,
   type ContentMap,
 } from "@/lib/normalizeChapterData";
+import {
+  canonicalSubjectRouteId,
+  chapterRouteSlug,
+  isSubjectNestedChapterRoute,
+} from "@/lib/chapter-routes";
 
 type ManifestChapter = {
   id: string;
@@ -135,11 +140,24 @@ export const Route = createFileRoute("/subjects/$subjectId")({
       </DashboardLayout>
     );
   },
-  component: SubjectDetailPage,
+  component: SubjectRouteShell,
 });
 
+function SubjectRouteShell() {
+  const isNestedChapterRoute = useRouterState({
+    select: (s) => isSubjectNestedChapterRoute(s.location.pathname),
+  });
+
+  if (isNestedChapterRoute) {
+    return <Outlet />;
+  }
+
+  return <SubjectDetailPage />;
+}
+
 function SubjectDetailPage() {
-  const { subjectId } = Route.useParams();
+  const { subjectId: rawSubjectId } = Route.useParams();
+  const subjectId = canonicalSubjectRouteId(rawSubjectId);
   const navigate = useNavigate();
   const contentFolder = contentFolderFor(subjectId);
   const isContentDriven = contentFolder != null;
@@ -441,7 +459,10 @@ function SubjectDetailPage() {
                     } else {
                       navigate({
                         to: "/subjects/$subjectId/topics/$chapterId",
-                        params: { subjectId, chapterId: id },
+                        params: {
+                          subjectId,
+                          chapterId: chapterRouteSlug(id),
+                        },
                       });
                     }
                   }}
@@ -484,11 +505,8 @@ function SubjectDetailPage() {
                 chapters={normalizedChapters}
                 loading={anyChapterLoading}
                 emptyMessage="No formulas available yet."
-                buildTo={(id) => ({
-                  to: "/subjects/$subjectId/formulas/$chapterId" as const,
-                  params: { subjectId, chapterId: id },
-                })}
-                icon="formulas"
+                routeSubjectId={subjectId}
+                kind="formulas"
                 color={subject.color}
               />
             </TabsContent>
@@ -503,11 +521,8 @@ function SubjectDetailPage() {
                   chapters={normalizedChapters}
                   loading={anyChapterLoading}
                   emptyMessage="No topics available yet."
-                  buildTo={(id) => ({
-                    to: "/subjects/$subjectId/topics/$chapterId" as const,
-                    params: { subjectId, chapterId: id },
-                  })}
-                  icon="topics"
+                  routeSubjectId={subjectId}
+                  kind="topics"
                   color={subject.color}
                 />
                 <TopicsSection
@@ -675,22 +690,23 @@ function ChapterLinkGrid({
   chapters,
   loading,
   emptyMessage,
-  buildTo,
-  icon,
+  routeSubjectId,
+  kind,
   color,
 }: {
   chapters: NormalizedChapter[];
   loading: boolean;
   emptyMessage: string;
-  buildTo: (id: string) => {
-    to:
-      | "/subjects/$subjectId/formulas/$chapterId"
-      | "/subjects/$subjectId/topics/$chapterId";
-    params: { subjectId: string; chapterId: string };
-  };
-  icon: "formulas" | "topics";
+  routeSubjectId: string;
+  kind: "formulas" | "topics";
   color: string;
 }) {
+  const subjectId = canonicalSubjectRouteId(routeSubjectId);
+  const routeTo =
+    kind === "formulas"
+      ? ("/subjects/$subjectId/formulas/$chapterId" as const)
+      : ("/subjects/$subjectId/topics/$chapterId" as const);
+
   if (loading && chapters.length === 0) {
     return <Skeleton className="h-48 w-full rounded-2xl" />;
   }
@@ -701,42 +717,46 @@ function ChapterLinkGrid({
       </div>
     );
   }
-  const Icon = icon === "formulas" ? Sigma : Sparkles;
+  const Icon = kind === "formulas" ? Sigma : Sparkles;
   return (
     <div className="grid gap-3 md:grid-cols-2">
-      {chapters.map((c, i) => (
-        <Link
-          key={c.id}
-          {...buildTo(c.id)}
-          className="group rounded-2xl border border-border/60 bg-card p-4 transition hover:border-brand/40 focus:outline-none focus:ring-2 focus:ring-brand/40"
-        >
-          <div className="flex items-start gap-3">
-            <div
-              className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-brand/10 text-brand"
-              style={{ color }}
-            >
-              <Icon className="h-4 w-4" />
-            </div>
-            <div className="min-w-0 flex-1">
-              <div className="text-[11px] text-muted-foreground">
-                Chapter {c.chapterNumber || i + 1}
+      {chapters.map((c, i) => {
+        const chapterId = chapterRouteSlug(c.id, c.title);
+        return (
+          <Link
+            key={chapterId}
+            to={routeTo}
+            params={{ subjectId, chapterId }}
+            className="group rounded-2xl border border-border/60 bg-card p-4 transition hover:border-brand/40 focus:outline-none focus:ring-2 focus:ring-brand/40"
+          >
+            <div className="flex items-start gap-3">
+              <div
+                className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-brand/10 text-brand"
+                style={{ color }}
+              >
+                <Icon className="h-4 w-4" />
               </div>
-              <div className="font-display font-semibold">{c.title}</div>
-              {icon === "formulas" ? (
-                <div className="mt-1 text-xs text-muted-foreground">
-                  {(c.formulas?.length ?? 0)} formulas
+              <div className="min-w-0 flex-1">
+                <div className="text-[11px] text-muted-foreground">
+                  Chapter {c.chapterNumber || i + 1}
                 </div>
-              ) : (
-                <div className="mt-1 text-xs text-muted-foreground">
-                  {(c.learningPoints?.length ?? 0)} learning points ·{" "}
-                  {(c.exercises?.length ?? 0)} exercises
-                </div>
-              )}
+                <div className="font-display font-semibold">{c.title}</div>
+                {kind === "formulas" ? (
+                  <div className="mt-1 text-xs text-muted-foreground">
+                    {(c.formulas?.length ?? 0)} formulas
+                  </div>
+                ) : (
+                  <div className="mt-1 text-xs text-muted-foreground">
+                    {(c.learningPoints?.length ?? 0)} learning points ·{" "}
+                    {(c.exercises?.length ?? 0)} exercises
+                  </div>
+                )}
+              </div>
+              <ArrowRight className="h-4 w-4 text-muted-foreground transition group-hover:translate-x-0.5" />
             </div>
-            <ArrowRight className="h-4 w-4 text-muted-foreground transition group-hover:translate-x-0.5" />
-          </div>
-        </Link>
-      ))}
+          </Link>
+        );
+      })}
     </div>
   );
 }

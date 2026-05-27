@@ -10,6 +10,54 @@ files (`math_question_bank_v3.json`, `science_question_bank_v3.json`,
 and chapter mappings work unchanged. Single loader / cache — no duplicate
 fetches. No UI changes.
 
+## Formula / Topic nested routes — ✅ fixed (2026-05-27)
+
+### Root cause
+`/subjects/$subjectId/formulas/$chapterId` and `/subjects/$subjectId/topics/$chapterId`
+are **child routes** of `/subjects/$subjectId` (see `routeTree.gen.ts`). The parent
+route rendered the full subject page **without** `<Outlet />`, so client navigation
+updated the URL but the child page never mounted (blank / “nothing happens”).
+
+Secondary issues:
+- `ChapterLinkGrid` used `{...buildTo(id)}` spread on `<Link>` instead of explicit
+  `to` + `params` (fragile with TanStack Router).
+- Mathematics manifest lives at `/content/manifest.json`, not
+  `/content/chapters/mathematics/manifest.json` — slug fallback for migrated
+  `math-chN` ids must use `loadManifest()`, not a hard-coded chapters path.
+- Migrated question-bank chapter ids (`math-ch1`) ≠ content JSON slugs
+  (`real-numbers`); helpers in `src/lib/chapter-routes.ts` normalize both.
+
+### Minimal fix (no UI redesign)
+- `src/routes/subjects.$subjectId.tsx` — `SubjectRouteShell` renders `<Outlet />`
+  on nested formula/topic paths; `ChapterLinkGrid` uses explicit `Link` params +
+  `chapterRouteSlug()`.
+- `src/lib/chapter-routes.ts` — canonical subject ids, slug helpers, manifest
+  resolution via `loadManifest()`.
+- `src/routes/subjects.$subjectId.formulas.$chapterId.tsx` and
+  `subjects.$subjectId.topics.$chapterId.tsx` — resolve content slug before
+  `loadChapter()`.
+
+### Verification checklist
+- [ ] `/subjects/mathematics/formulas/real-numbers` opens Real Numbers formulas
+- [ ] `/subjects/mathematics/topics/polynomials` opens Polynomials topics
+- [ ] `/subjects/mathematics/topics/triangles` deep link works
+- [ ] Subject → Formulas tab → chapter card navigates and renders
+- [ ] Subject → Topics tab → chapter card navigates and renders
+- [ ] Chapters tab → non–social-science chapter opens topics route
+- [ ] Back link returns to `/subjects/mathematics`
+- [ ] Mobile + desktop layouts unchanged
+
+### Prevention
+Any time a route file is nested under a parent (TanStack file-based routing),
+the parent **must** render `<Outlet />` when child paths are active — mirror
+`src/routes/exam-hall.tsx` / `src/routes/exams.tsx`. After adding nested routes,
+run `npm run dev` and deep-link test one child URL before shipping.
+
+**Three-level hierarchy (2026-05-27):** Formulas/Topics use chapter list → item
+cards → detail routes. Parent chapter routes (`formulas.$chapterId`,
+`topics.$chapterId`) must also render `<Outlet />` for `$formulaSlug` /
+`$topicSlug` child routes.
+
 ## Mobile Production Fix Pass (focused) — ✅ shipped
 
 Targeted, surgical fixes to real rendered mobile breakage — no redesigns,
