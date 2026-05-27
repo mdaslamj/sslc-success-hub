@@ -75,7 +75,7 @@ export interface StudentLearningProfile {
   nextAction:      Partial<Omit<NextActionOutput, "followUp">> & {
     followUp?: unknown;
   };
-  recoveryPlans:   Array<Partial<RecoveryPlan> & Pick<RecoveryPlan, "chapter" | "subject">>;
+  recoveryPlans:   Array<Partial<Omit<RecoveryPlan, "subject">> & { subject?: string }>;
   targetConfig?:   TargetConfiguration;
   adaptiveMsg?:    AdaptiveMessaging;
   blueprint:       Record<Subject, Record<string, BlueprintEntry>>;
