@@ -7,6 +7,7 @@ import { TargetSection } from "@/components/dashboard/TargetSection";
 import { AuraErrorBoundary } from "@/components/shared/AuraErrorBoundary";
 import { BurnoutIndicator } from "@/components/shared/BurnoutIndicator";
 import { RevisionSchedule } from "@/components/shared/RevisionSchedule";
+import { useState } from "react";
 
 const SUBJECT_LABEL: Record<string, string> = {
   math: "Math",
@@ -44,6 +45,9 @@ export function AuraDashboard({
     revision,
   } = engines;
 
+  const [doneTasks, setDoneTasks] = useState<Record<string, boolean>>({});
+  const [bouncing, setBouncing] = useState<Record<string, boolean>>({});
+
   const planTasks = (recovery?.top3 ?? []).slice(0, 3).map((item, index) => ({
     id: item.chapter,
     subject: item.subject,
@@ -69,13 +73,13 @@ export function AuraDashboard({
       <header className="flex h-[50px] shrink-0 items-center justify-between border-b border-[#1a2744] px-4">
         <div className="flex items-center gap-3">
           <span
-            className="text-sm font-black tracking-tight text-slate-100"
+            className="aura-archetype-transition text-sm font-black tracking-tight text-slate-100"
             style={{ fontFamily: "Syne, sans-serif" }}
           >
             Aura
           </span>
           <span
-            className="rounded-full px-2 py-0.5 text-[10px] font-bold tracking-wide"
+            className="aura-archetype-transition rounded-full px-2 py-0.5 text-[10px] font-bold tracking-wide"
             style={{
               color: theme.primary,
               backgroundColor: theme.dim,
@@ -144,17 +148,42 @@ export function AuraDashboard({
               {planTasks.map((task) => (
                 <div
                   key={task.id}
-                  className="flex items-center gap-3 rounded-lg border border-[#1a2744] bg-[#080f1e] px-3 py-2"
+                  className="aura-task flex items-center gap-3 rounded-lg border border-[#1a2744] bg-[#080f1e] px-3 py-2"
+                  data-done={doneTasks[task.id] ? "true" : "false"}
                 >
-                  <input type="checkbox" className="h-4 w-4 rounded border-[#1a2744]" readOnly />
+                  <input
+                    type="checkbox"
+                    className="h-4 w-4 rounded border-[#1a2744]"
+                    checked={!!doneTasks[task.id]}
+                    onChange={(e) => {
+                      const checked = e.target.checked;
+                      setDoneTasks((d) => ({ ...d, [task.id]: checked }));
+                      if (checked) {
+                        setBouncing((b) => ({ ...b, [task.id]: true }));
+                        setTimeout(
+                          () => setBouncing((b) => ({ ...b, [task.id]: false })),
+                          450,
+                        );
+                      }
+                    }}
+                  />
                   <div className="min-w-0 flex-1">
-                    <div className="truncate text-sm font-medium text-slate-100">{task.name}</div>
+                    <div className="aura-task-label inline-block max-w-full truncate text-sm font-medium text-slate-100">
+                      {task.name}
+                    </div>
                     <div className="text-[10px] text-slate-500">
                       {SUBJECT_LABEL[task.subject] ?? task.subject} · {task.minutes} min ·{" "}
                       {task.urgency}
                     </div>
                     <div className="truncate text-[11px] text-slate-400">{task.reason}</div>
                   </div>
+                  <span
+                    className={`shrink-0 rounded-full bg-emerald-500/15 px-2 py-0.5 text-[10px] font-bold text-emerald-300 ${
+                      bouncing[task.id] ? "aura-bounce-once" : ""
+                    }`}
+                  >
+                    +{task.minutes} XP
+                  </span>
                 </div>
               ))}
             </div>
