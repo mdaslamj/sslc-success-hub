@@ -101,7 +101,7 @@ export default function DailyPracticePage() {
   const dailyQuestions = useMemo((): BankQuestion[] => {
     const weakChapters = analytics.getWeakChapters();
 
-    let pool: Question[] = [];
+    let pool: BankQuestion[] = [];
 
     if (weakChapters.length > 0) {
       // Pull from weak chapters first

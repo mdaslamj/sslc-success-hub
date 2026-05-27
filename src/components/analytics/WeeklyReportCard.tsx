@@ -105,7 +105,7 @@ export function WeeklyReportCard({ subject }: WeeklyReportCardProps) {
     )
   }
 
-  const subjectLabel = bp?.label ?? subject
+  const subjectLabel = subject
 
   return (
     <div className="space-y-5 max-w-lg mx-auto px-4 pb-10">
