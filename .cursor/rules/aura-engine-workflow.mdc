@@ -1,0 +1,38 @@
+---
+description: Aura engine iteration loop — build, test, validate, commit safely
+globs: src/engines/**/*
+alwaysApply: false
+---
+
+# Aura Engine Development Workflow
+
+## Iteration loop (every engine)
+
+1. Implement pure TypeScript in `src/engines/<engine>.ts` (no UI changes unless requested).
+2. Add tests in `src/engines/__tests__/<engine>.test.ts`.
+3. Run validation in order:
+   - `npm run typecheck`
+   - `npm test` (or targeted `npm run test:<engine>`)
+   - `npm run build`
+4. Commit one engine at a time with `feat:` / `fix:` prefix.
+
+## Safe commands (auto-run allowed)
+
+- `npm run build`, `npm test`, `npm run typecheck`, `npm run test:*`
+- `npx vite-node src/engines/__tests__/*`
+- `git status`, `git diff`, `git log`, `git add`, `git commit`
+
+## Always ask before running
+
+- `rm`, `del`, `Remove-Item`, file deletes
+- `git reset --hard`, `git push --force`, `git clean -fd`
+- `git push` (confirm with user unless explicitly requested)
+- `npm uninstall`, dependency removals, large cross-module refactors
+- System-level or out-of-repo destructive commands
+
+## Engine conventions
+
+- Read contracts from `@/types/aura-engine-contracts.ts`.
+- Seed data: `src/data/StudentLearningProfile.json` + `src/data/blueprint.*.json`.
+- Keep engines pure; React hooks live in `src/hooks/` only when needed.
+- Do not redesign UI while building engines.

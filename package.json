@@ -10,10 +10,14 @@
     "preview": "vite preview",
     "lint": "eslint .",
     "format": "prettier --write .",
+    "typecheck": "tsc --noEmit",
+    "test": "npm run test:scoreProjection && npm run test:analytics && npm run test:recovery && npm run test:targetGap && npm run test:nextAction && npm run test:useStudentProfile",
     "test:scoreProjection": "npx vite-node src/engines/__tests__/scoreProjection.test.ts",
     "test:analytics": "npx vite-node src/engines/__tests__/analytics.test.ts",
     "test:recovery": "npx vite-node src/engines/__tests__/recovery.test.ts",
-    "test:targetGap": "npx vite-node src/engines/__tests__/targetGap.test.ts"
+    "test:targetGap": "npx vite-node src/engines/__tests__/targetGap.test.ts",
+    "test:nextAction": "npx vite-node src/engines/__tests__/nextAction.test.ts",
+    "test:useStudentProfile": "npx vite-node src/hooks/__tests__/useStudentProfile.test.ts"
   },
   "dependencies": {
     "@cloudflare/vite-plugin": "^1.25.5",

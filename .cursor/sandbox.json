@@ -1,0 +1,12 @@
+{
+  "type": "workspace_readwrite",
+  "networkPolicy": {
+    "default": "deny",
+    "allow": [
+      "registry.npmjs.org",
+      "*.npmjs.org",
+      "localhost",
+      "127.0.0.1"
+    ]
+  }
+}
