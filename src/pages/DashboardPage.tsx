@@ -16,6 +16,7 @@ export default function DashboardPage() {
       momentum: engines.momentum,
       nextAction: engines.nextAction,
       analytics: engines.analytics,
+      profile: engines.profile,
     }),
     [
       engines.projection,
@@ -25,6 +26,7 @@ export default function DashboardPage() {
       engines.momentum,
       engines.nextAction,
       engines.analytics,
+      engines.profile,
     ],
   );
 
