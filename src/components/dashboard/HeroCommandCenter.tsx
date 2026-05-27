@@ -125,6 +125,11 @@ function ScoreOrb({
   );
 }
 
+function MomentumScore({ value }: { value: number }) {
+  const v = useCountUp(value, 1000);
+  return <>{Math.round(v)}</>;
+}
+
 function MissionCard({
   title,
   action,
