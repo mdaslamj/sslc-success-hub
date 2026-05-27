@@ -1,20 +1,46 @@
-Create `src/styles/theme.ts` as a standalone, type-safe theme contract file. Export four values derived from the Aura engine contracts and existing StudentLearningProfile schema:
+## Goal
+Restore a working preview and confirm whether the issue is environment-related or caused by recent app changes.
 
-1. `ARCHETYPE_THEMES` — a record keyed by Archetype (`struggling`|`average`|`topper`). Each value is a full theme config containing:
-   - `primary`, `accent`, `dim`, `badge`, `tone` (semantic color tokens mapped to Tailwind / oklch-compatible hex values)
-   - `layoutDensity`: `simple` | `standard` | `advanced`
-   - `showMetrics`: string[] (engine metrics the archetype should surface)
-   Color choices follow the existing Cloud White / Deep Slate palette in `src/styles.css` and align with the archetype emotional tone from the profile JSON (reassurance for struggling, optimization for average, precision for topper).
+## Findings
+- The sandbox Vite server is currently starting normally and reports ready on port 8080.
+- The published site is serving the app correctly.
+- The preview URL is serving the Lovable placeholder shell instead of the app, which points more to a preview/deployment state problem than a current route crash.
+- Core TanStack bootstrap files are present and structurally valid:
+  - `src/start.ts`
+  - `src/routes/__root.tsx`
+  - `src/routes/index.tsx`
+  - `vite.config.ts`
+- I did not find a current runtime stack trace from the preview snapshot.
 
-2. `getUrgencyStyle(pct: number)` — a pure function that returns an object `{ color: string; label: string; background: string }` for four bands:
-   - `0–24`: critical / destructive red tones
-   - `25–49`: high / warning amber tones  
-   - `50–74`: medium / info blue tones
-   - `75–100`: low / success green tones
-   Colors use the existing oklch semantic values from `styles.css` (success, warning, info, destructive) so dashboard cards can import them instead of hard-coding hexes.
+## Plan
+1. Validate preview infrastructure state
+   - Check the current preview/deployment status and confirm whether the preview environment is actually attached to the latest project state.
+   - Confirm the active preview URL and whether it is serving the current build artifact.
 
-3. `SUBJECT_COLORS` — a record mapping `math` → `#6366f1`, `science` → `#06b6d4`, `social` → `#f59e0b`. These match the engine contract colors already used in AuraFoundationViewer and the profile schema.
+2. Reproduce the preview boot path
+   - Open the sandbox preview directly and verify whether the app renders there.
+   - Compare sandbox rendering with the hosted preview URL to separate app-code issues from preview hosting issues.
 
-4. `SUBJECT_NAMES` — a record mapping `math` → `'Mathematics'`, `science` → `'Science'`, `social` → `'Social Science'`.
+3. Check for build or hydration blockers from recent changes
+   - Inspect the latest dev/build output for route-tree mismatches, SSR/hydration errors, or import resolution failures.
+   - Pay special attention to recent generated-file drift such as `src/routeTree.gen.ts` and any Aura-related type or SSR regressions.
 
-No engine, hook, or JSON files will be modified. The file will only be consumed by future dashboard components (not built in this task).
+4. Apply the smallest fix only if code is actually responsible
+   - If the issue is a route/bootstrap mismatch, fix the affected route or startup wiring.
+   - If the issue is preview environment drift, avoid unrelated code edits and instead refresh/restart the preview path.
+
+5. Restore preview availability
+   - Restart the preview/dev environment if needed.
+   - Re-sync the latest repository state into the preview environment.
+   - Re-deploy so the hosted preview points at the corrected/latest build.
+
+6. Verify end to end
+   - Confirm Vite/server startup is clean.
+   - Confirm routing loads `/` without a blank screen.
+   - Confirm the preview URL serves the app, not the placeholder shell.
+   - Confirm the published deployment remains healthy.
+
+## Technical notes
+- Current evidence suggests the app code is not in a hard-failed startup state right now.
+- The most likely first branch is preview environment/deployment desync.
+- I will avoid touching engine or hook files unless a proven blocker requires it, and I’ll keep any code changes limited to routing/bootstrap if necessary.
