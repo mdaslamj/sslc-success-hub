@@ -7,6 +7,11 @@ export default function DashboardPage() {
   const engines = useAuraEngines();
   const theme = useAdaptiveTheme(engines.archetype.archetype);
 
+  const showRevisionSchedule = useMemo(
+    () => engines.revision.schedule.filter((item) => item.priority === "urgent").length >= 2,
+    [engines.revision.schedule],
+  );
+
   const engineOutputs = useMemo(
     () => ({
       projection: engines.projection,
@@ -40,6 +45,7 @@ export default function DashboardPage() {
       theme={theme}
       layoutDensity={theme.layoutDensity}
       profile={engines.profile}
+      showRevisionSchedule={showRevisionSchedule}
     />
   );
 }

@@ -1,11 +1,13 @@
 import type {
   MomentumOutput,
   NextActionOutput,
+  RankPredictionOutput,
   ScoreProjectionOutput,
   Subject,
 } from "@/types/aura-engine-contracts";
 import type { AdaptiveTheme } from "@/hooks/useAdaptiveTheme";
 import { MomentumMeter } from "@/components/shared/MomentumMeter";
+import { RankBadge } from "@/components/shared/RankBadge";
 
 const SUBJECT_LABEL: Record<string, string> = {
   math: "Math",
@@ -117,6 +119,8 @@ type HeroCommandCenterProps = {
   theme: AdaptiveTheme;
   layoutDensity: LayoutDensity;
   momentum: MomentumOutput;
+  rank: RankPredictionOutput;
+  archetype: string;
 };
 
 export function HeroCommandCenter({
@@ -126,6 +130,8 @@ export function HeroCommandCenter({
   theme,
   layoutDensity,
   momentum,
+  rank,
+  archetype,
 }: HeroCommandCenterProps) {
   const missions = [nextAction, nextAction.followUp].filter(
     (mission): mission is NextActionOutput => Boolean(mission),
@@ -193,12 +199,37 @@ export function HeroCommandCenter({
         </div>
       </div>
 
-      <MomentumMeter
-        momentum={momentum}
-        dashboardTone={dashboardTone}
-        theme={theme}
-        layoutDensity={layoutDensity}
-      />
+      {archetype === "topper" ? (
+        <div className="rounded-xl border border-[#1a2744] bg-[#080f1e] p-3">
+          <div className="mb-2 text-[10px] font-semibold uppercase tracking-wider text-slate-500">
+            Momentum
+          </div>
+          <div className="flex items-end justify-between">
+            <div>
+              <div
+                className="text-3xl font-black"
+                style={{ color: theme.primary, fontFamily: "Syne, sans-serif" }}
+              >
+                {momentum.score}
+              </div>
+              <div className="text-xs text-slate-400">{momentum.badge}</div>
+            </div>
+            <div className="text-right">
+              <div className="text-xl font-bold text-orange-400">{momentum.streak}d</div>
+              <div className="text-[10px] uppercase tracking-wide text-slate-500">streak</div>
+              <div className="mt-1 text-xs capitalize text-slate-300">{momentum.trend}</div>
+            </div>
+          </div>
+          <RankBadge rank={rank} archetype={archetype} />
+        </div>
+      ) : (
+        <MomentumMeter
+          momentum={momentum}
+          dashboardTone={dashboardTone}
+          theme={theme}
+          layoutDensity={layoutDensity}
+        />
+      )}
     </section>
   );
 }
