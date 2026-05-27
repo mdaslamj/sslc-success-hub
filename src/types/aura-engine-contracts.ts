@@ -74,8 +74,8 @@ export interface StudentLearningProfile {
   sessionHistory:  SessionRecord[];
   nextAction:      NextActionOutput;
   recoveryPlans:   RecoveryPlan[];
-  targetConfig:    TargetConfiguration;
-  adaptiveMsg:     AdaptiveMessaging;
+  targetConfig?:   TargetConfiguration;
+  adaptiveMsg?:    AdaptiveMessaging;
   blueprint:       Record<Subject, Record<string, BlueprintEntry>>;
 }
 
@@ -161,7 +161,7 @@ export function studentArchetypeEngine(
 export interface RecoveryItem {
   chapter:        string;
   subject:        Subject;
-  name:           string;
+  name?:          string;
   currentMastery: number;
   blueprintMarks: number;
   marksAtRisk:    number;      // marks being lost due to low mastery
@@ -169,9 +169,9 @@ export interface RecoveryItem {
   sessionsNeeded: number;
   urgency:        UrgencyLevel;
   status:         "pending" | "active" | "completed";
-  fromPct:        number;
-  toPct:          number;      // projected mastery after recovery
-  recoveryProbability: number; // 0–1, how likely recovery is given student behavior
+  fromPct?:       number;
+  toPct?:         number;      // projected mastery after recovery
+  recoveryProbability?: number;
   actionPlan:     Array<{
     session:  number;
     type:     SessionType;
@@ -182,8 +182,8 @@ export interface RecoveryItem {
 
 export interface RecoveryPlan extends RecoveryItem {
   startedAt:               string | null;
-  estimatedCompletionDate: string | null;
-  progressPercent:         number;
+  estimatedCompletionDate?: string | null;
+  progressPercent?:        number;
 }
 
 export interface RecoveryEngineOutput {
@@ -287,7 +287,7 @@ export interface NextActionOutput {
   urgency:            UrgencyLevel;
   confidence:         number;     // 0–1, how certain Aura is this is the best move
   rationale:          string;     // explanation (for debugging / transparency mode)
-  followUp:           Omit<NextActionOutput, "followUp"> | null;
+  followUp:           Partial<Omit<NextActionOutput, "followUp">> | null;
   computedAt:         string;
 }
 

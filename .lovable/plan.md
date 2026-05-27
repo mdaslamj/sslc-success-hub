@@ -1,92 +1,20 @@
-## Build failure — root cause
+Create `src/styles/theme.ts` as a standalone, type-safe theme contract file. Export four values derived from the Aura engine contracts and existing StudentLearningProfile schema:
 
-The preview 404 (`Worker bundle not found: dwl:pre:…:12601537:_worker_bundle.json`) is downstream of a failed Worker build. `bunx tsc --noEmit` reports ~120 compile errors all stemming from three breakages:
+1. `ARCHETYPE_THEMES` — a record keyed by Archetype (`struggling`|`average`|`topper`). Each value is a full theme config containing:
+   - `primary`, `accent`, `dim`, `badge`, `tone` (semantic color tokens mapped to Tailwind / oklch-compatible hex values)
+   - `layoutDensity`: `simple` | `standard` | `advanced`
+   - `showMetrics`: string[] (engine metrics the archetype should surface)
+   Color choices follow the existing Cloud White / Deep Slate palette in `src/styles.css` and align with the archetype emotional tone from the profile JSON (reassurance for struggling, optimization for average, precision for topper).
 
-### 1. `src/hooks/use-analytics.ts` was rewritten (PRIMARY CAUSE)
+2. `getUrgencyStyle(pct: number)` — a pure function that returns an object `{ color: string; label: string; background: string }` for four bands:
+   - `0–24`: critical / destructive red tones
+   - `25–49`: high / warning amber tones  
+   - `50–74`: medium / info blue tones
+   - `75–100`: low / success green tones
+   Colors use the existing oklch semantic values from `styles.css` (success, warning, info, destructive) so dashboard cards can import them instead of hard-coding hexes.
 
-The file now exports a new `AnalyticsEngine` shape:
+3. `SUBJECT_COLORS` — a record mapping `math` → `#6366f1`, `science` → `#06b6d4`, `social` → `#f59e0b`. These match the engine contract colors already used in AuraFoundationViewer and the profile schema.
 
-```
-{ data, recordAttempt, getChapterStats, getSubjectStats, getWeakChapters, clearData }
-```
+4. `SUBJECT_NAMES` — a record mapping `math` → `'Mathematics'`, `science` → `'Science'`, `social` → `'Social Science'`.
 
-But ~10 consumers still import `useAnalytics()` expecting the previous snapshot shape with these fields/methods:
-
-`userId`, `loading`, `streak`, `recentSessions`, `weekly`, `bySubject`, `todayMinutes`, `overallProgress`, `completedChapters`, `totalChapters`, `totalStudyHours`, `totalStudyMinutes`, `focusSessions`, `consistency`, `logSession()`, `refresh()`.
-
-Affected files (all failing typecheck):
-
-- `src/components/revision-planner-card.tsx`
-- `src/hooks/use-achievements.ts`
-- `src/hooks/use-gamification.ts`
-- `src/hooks/use-planner.ts`
-- `src/hooks/use-recommendations.ts`
-- `src/routes/achievements.tsx`
-- `src/routes/analytics.tsx`
-- `src/routes/focus.tsx`
-- `src/routes/log.tsx`
-- `src/routes/planner.tsx`
-- `src/routes/profile.tsx`
-
-### 2. `src/lib/mockExamGenerator.ts` — missing exports
-
-Imports that don't exist on `./question-bank`:
-
-```
-getQuestionBank, normalizeSubject, BankQuestion, SubjectKey
-```
-
-Plus several implicit-`any` parameters inside the file.
-
-### 3. `src/components/practice/PracticePage.tsx:124`
-
-Prop callback typed as `(score, total: number) => void` is being passed `(score, results: QuestionResult[]) => void`.
-
----
-
-## Fix plan (surgical, restore the build)
-
-**Step 1 — Restore the legacy `useAnalytics` snapshot shape.**
-
-Rewrite `src/hooks/use-analytics.ts` to additionally expose all fields the rest of the codebase depends on, while keeping the new `data` / `recordAttempt` / `getChapterStats` / `getSubjectStats` / `getWeakChapters` / `clearData` API so the new analytics-tracking call sites also keep compiling.
-
-Concretely, the returned object becomes a superset:
-
-- Keep: `data, recordAttempt, getChapterStats, getSubjectStats, getWeakChapters, clearData`
-- Add back (derived from sessions in `aura_sessions_v1` localStorage + the new `data.attempts`):
-  - `userId` (from `useCurrentUserId`)
-  - `loading: boolean`
-  - `streak: { current: number; longest: number }`
-  - `recentSessions: SessionDoc[]`
-  - `weekly: Array<{ day: string; minutes: number }>` (last 7 days)
-  - `bySubject: Array<{ subjectId: string; minutes: number; sessions: number }>`
-  - `todayMinutes: number`
-  - `overallProgress: number` (0–100)
-  - `completedChapters: number`, `totalChapters: number`
-  - `totalStudyHours: number`, `totalStudyMinutes: number`
-  - `focusSessions: number`
-  - `consistency: number` (0–100)
-  - `logSession(session)` — append to session store + refresh
-  - `refresh()` — bump internal tick
-
-Source the legacy fields from the existing `src/integrations/firebase/services/analytics.ts` helpers (`toDayKey`, session aggregation) and `src/lib/mock-data.ts` (subjects/total chapters), matching how `use-recommendations.ts` and `use-planner.ts` already consume them. This avoids touching the 11 consumer files.
-
-**Step 2 — Fix `src/lib/mockExamGenerator.ts` imports.**
-
-Inspect `src/lib/question-bank.ts` to find the actual export names and types, then update the imports + parameter type annotations in `mockExamGenerator.ts` accordingly (no behavior change). Add explicit types on the implicit-`any` lambdas.
-
-**Step 3 — Fix `src/components/practice/PracticePage.tsx:124`.**
-
-Either widen the prop type on the receiving component to accept `(score: number, results: QuestionResult[]) => void`, or adapt the handler at the call site to match the current prop signature — whichever requires the smaller diff once the file is read.
-
-**Step 4 — Verify.**
-
-Re-run `bunx tsc --noEmit` until clean, then the Worker build will succeed and the preview SHA will resolve instead of returning 404.
-
----
-
-## Out of scope
-
-- No redesigns, no route changes, no analytics-feature changes beyond restoring the hook surface.
-- No edits to `routeTree.gen.ts` or Supabase clients.
-- No publish/visibility changes — once the build is green, republish will hydrate the preview bundle.
+No engine, hook, or JSON files will be modified. The file will only be consumed by future dashboard components (not built in this task).
