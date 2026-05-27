@@ -3,7 +3,7 @@ import type { AdaptiveTheme } from "@/hooks/useAdaptiveTheme";
 import { getUrgencyStyle, SUBJECT_COLORS } from "@/styles/theme";
 
 type RevisionScheduleProps = {
-  revision: RevisionOutput;
+  revision?: RevisionOutput | null;
   theme: AdaptiveTheme;
 };
 

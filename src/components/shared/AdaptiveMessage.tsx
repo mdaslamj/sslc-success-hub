@@ -60,7 +60,7 @@ function replaceTokens(
   return template
     .replace(/\{streak\}/g, String(momentum?.streak ?? 0))
     .replace(/\{gap\}/g, String(gapPct))
-    .replace(/\{subject\}/g, topRecovery?.subject ?? "")
+    .replace(/\{subject\}/g, topRecovery?.subject ?? "math")
     .replace(/\{n\}/g, String(topRecovery?.recoverableMarks ?? ""));
 }
 

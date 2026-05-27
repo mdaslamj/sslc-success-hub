@@ -24,6 +24,7 @@ type RecoverySectionProps = {
 
 export function RecoverySection({ recovery, theme, layoutDensity }: RecoverySectionProps) {
   const itemLimit = layoutDensity === "simple" ? 2 : 4;
+  const topItems = recovery?.top3 ?? [];
 
   return (
     <div className="overflow-y-auto rounded-xl border border-[#1a2744] bg-[#080f1e] p-3">
@@ -31,17 +32,17 @@ export function RecoverySection({ recovery, theme, layoutDensity }: RecoverySect
         <span className="text-[10px] font-semibold uppercase tracking-wider text-slate-500">
           Mark Rescue
         </span>
-        <span className="text-xs text-red-400">{recovery.totalAtRisk.toFixed(1)} at risk</span>
+        <span className="text-xs text-red-400">{(recovery?.totalAtRisk ?? 0).toFixed(1)} at risk</span>
       </div>
       <div className="space-y-2">
-        {recovery.top3.slice(0, itemLimit).map((item) => (
+        {topItems.slice(0, itemLimit).map((item) => (
           <div
             key={item.chapter}
             className="rounded-lg border border-[#1a2744] bg-[#050c1c] p-2.5"
           >
             <div className="flex items-start justify-between gap-2">
               <div>
-                <div className="text-sm font-semibold text-slate-100">{item.name}</div>
+                <div className="text-sm font-semibold text-slate-100">{item.name ?? item.chapter}</div>
                 <div className="text-[10px] uppercase text-slate-500">
                   {SUBJECT_LABEL[item.subject] ?? item.subject}
                 </div>
@@ -54,8 +55,8 @@ export function RecoverySection({ recovery, theme, layoutDensity }: RecoverySect
               </span>
             </div>
             <div className="mt-2 flex justify-between text-[11px] text-slate-400">
-              <span>{item.currentMastery}% mastery</span>
-              <span>+{item.recoverableMarks.toFixed(1)} recoverable</span>
+              <span>{item.currentMastery ?? 0}% mastery</span>
+              <span>+{(item.recoverableMarks ?? 0).toFixed(1)} recoverable</span>
             </div>
           </div>
         ))}

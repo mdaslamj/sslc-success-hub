@@ -2,15 +2,16 @@ import type { BurnoutOutput } from "@/types/aura-engine-contracts";
 import { getUrgencyStyle } from "@/styles/theme";
 
 type BurnoutIndicatorProps = {
-  burnout: BurnoutOutput;
+  burnout?: BurnoutOutput | null;
 };
 
 export function BurnoutIndicator({ burnout }: BurnoutIndicatorProps) {
-  if (!burnout?.risk || burnout.risk === "low") {
+  const risk = burnout?.risk ?? "low";
+  if (risk === "low") {
     return null;
   }
 
-  const urgencyStyle = getUrgencyStyle(burnout.risk === "high" ? 25 : 45);
+  const urgencyStyle = getUrgencyStyle(risk === "high" ? 25 : 45);
 
   return (
     <div
@@ -24,7 +25,7 @@ export function BurnoutIndicator({ burnout }: BurnoutIndicatorProps) {
         <span className="shrink-0 text-sm" style={{ color: urgencyStyle.color }} aria-hidden>
           ⚠
         </span>
-        <p className="truncate text-xs text-slate-300">{burnout.recommendation ?? ""}</p>
+        <p className="truncate text-xs text-slate-300">{burnout?.recommendation ?? ""}</p>
       </div>
       <button
         type="button"
@@ -36,7 +37,7 @@ export function BurnoutIndicator({ burnout }: BurnoutIndicatorProps) {
         }}
         onClick={() => console.log("burnout_action_taken")}
       >
-        {burnout.recoveryAction ?? "Take a break"}
+        {burnout?.recoveryAction ?? "Take a break"}
       </button>
     </div>
   );

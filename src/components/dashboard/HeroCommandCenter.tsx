@@ -133,7 +133,7 @@ export function HeroCommandCenter({
   rank,
   archetype,
 }: HeroCommandCenterProps) {
-  const missions = [nextAction, nextAction.followUp].filter(
+  const missions = [nextAction, nextAction?.followUp].filter(
     (mission): mission is NextActionOutput => Boolean(mission),
   );
 
@@ -141,7 +141,7 @@ export function HeroCommandCenter({
     subject,
     label: SUBJECT_LABEL[subject] ?? subject,
     color: SUBJECT_COLOR[subject] ?? theme.primary,
-    percentage: projection.bySubject[subject]?.percentage ?? 0,
+    percentage: projection?.bySubject?.[subject]?.percentage ?? 0,
   }));
 
   const densityGap =
@@ -153,7 +153,11 @@ export function HeroCommandCenter({
       style={{ minHeight: 160 }}
     >
       <div className="flex items-center gap-4 rounded-xl border border-[#1a2744] bg-[#080f1e] p-3">
-        <ScoreOrb value={projection.percentage} label="Predicted" color={theme.primary} />
+        <ScoreOrb
+          value={projection?.percentage ?? 0}
+          label="Predicted"
+          color={theme.primary}
+        />
         <div className="flex-1 space-y-2">
           {subjectRows.map((row) => (
             <div key={row.subject}>
@@ -179,20 +183,20 @@ export function HeroCommandCenter({
           </span>
           {layoutDensity === "advanced" ? (
             <span className="text-[10px] text-slate-400">
-              {Math.round(nextAction.confidence * 100)}% confidence
+              {Math.round((nextAction?.confidence ?? 0) * 100)}% confidence
             </span>
           ) : null}
         </div>
         <div className="space-y-2">
           {missions.map((mission, index) => (
             <MissionCard
-              key={`${mission.chapter}-${index}`}
+              key={`${mission.chapter ?? "mission"}-${index}`}
               title={index === 0 ? "Primary" : "Follow-up"}
-              action={mission.recommendedAction}
-              gain={mission.estimatedGain}
-              minutes={mission.timeRequired}
-              urgency={mission.urgency}
-              rationale={mission.rationale}
+              action={mission.recommendedAction ?? "Review your next chapter"}
+              gain={mission.estimatedGain ?? "+0 marks"}
+              minutes={mission.timeRequired ?? 0}
+              urgency={mission.urgency ?? "medium"}
+              rationale={mission.rationale ?? ""}
               accent={theme.accent}
             />
           ))}
@@ -210,14 +214,14 @@ export function HeroCommandCenter({
                 className="text-3xl font-black"
                 style={{ color: theme.primary, fontFamily: "Syne, sans-serif" }}
               >
-                {momentum.score}
+                {momentum?.score ?? 0}
               </div>
-              <div className="text-xs text-slate-400">{momentum.badge}</div>
+              <div className="text-xs text-slate-400">{momentum?.badge ?? ""}</div>
             </div>
             <div className="text-right">
-              <div className="text-xl font-bold text-orange-400">{momentum.streak}d</div>
+              <div className="text-xl font-bold text-orange-400">{momentum?.streak ?? 0}d</div>
               <div className="text-[10px] uppercase tracking-wide text-slate-500">streak</div>
-              <div className="mt-1 text-xs capitalize text-slate-300">{momentum.trend}</div>
+              <div className="mt-1 text-xs capitalize text-slate-300">{momentum?.trend ?? "stable"}</div>
             </div>
           </div>
           <RankBadge rank={rank} archetype={archetype} />
@@ -225,7 +229,7 @@ export function HeroCommandCenter({
       ) : (
         <MomentumMeter
           momentum={momentum}
-          dashboardTone={dashboardTone}
+          dashboardTone={dashboardTone ?? ""}
           theme={theme}
           layoutDensity={layoutDensity}
         />

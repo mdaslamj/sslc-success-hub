@@ -43,9 +43,9 @@ export function SubjectHeatmap({
     subject,
     label: SUBJECT_LABEL[subject] ?? subject,
     color: SUBJECT_COLOR[subject] ?? theme.primary,
-    percentage: projection.bySubject[subject]?.percentage ?? 0,
-    predicted: projection.bySubject[subject]?.predicted ?? 0,
-    max: projection.bySubject[subject]?.max ?? 0,
+    percentage: projection?.bySubject?.[subject]?.percentage ?? 0,
+    predicted: projection?.bySubject?.[subject]?.predicted ?? 0,
+    max: projection?.bySubject?.[subject]?.max ?? 0,
   }));
 
   return (
@@ -56,7 +56,7 @@ export function SubjectHeatmap({
       <div className="space-y-3">
         {subjectRows.map((row) => {
           const isExpanded = drillDownEnabled && expandedSubject === row.subject;
-          const chapters = Object.entries(profile.chapterMastery[row.subject] ?? {}).sort(
+          const chapters = Object.entries(profile?.chapterMastery?.[row.subject] ?? {}).sort(
             (a, b) => a[1].mastery - b[1].mastery,
           );
 
@@ -110,7 +110,7 @@ export function SubjectHeatmap({
         })}
       </div>
       <div className="mt-4 text-xs text-slate-400">
-        Analytics health: {analytics.overallHealthScore}/100 · {theme.tone}
+        Analytics health: {analytics?.overallHealthScore ?? 0}/100 · {theme.tone ?? ""}
       </div>
     </div>
   );

@@ -5,8 +5,8 @@ import { AdaptiveMessage } from "@/components/shared/AdaptiveMessage";
 type LayoutDensity = AdaptiveTheme["layoutDensity"];
 
 type MomentumMeterProps = {
-  momentum: MomentumOutput;
-  dashboardTone: string;
+  momentum?: MomentumOutput | null;
+  dashboardTone?: string;
   theme: AdaptiveTheme;
   layoutDensity: LayoutDensity;
 };

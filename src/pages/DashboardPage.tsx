@@ -1,24 +1,24 @@
 import { useMemo } from "react";
 import { AuraDashboard } from "@/components/dashboard/AuraDashboard";
-import { AuraErrorBoundary } from "@/components/shared/AuraErrorBoundary";
-import { Skeleton } from "@/components/ui/skeleton";
 import { useAdaptiveTheme } from "@/hooks/useAdaptiveTheme";
 import { useAuraEngines } from "@/hooks/useAuraEngines";
+
+const placeholderStyle = {
+  height: "160px",
+  width: "100%",
+  background: "var(--color-background-secondary)",
+  borderRadius: "var(--border-radius-lg)",
+} as const;
 
 function AuraDashboardSkeleton() {
   return (
     <div
-      className="flex h-[calc(100vh-4rem)] flex-col overflow-hidden bg-[#020817] text-slate-200"
+      className="flex h-[calc(100vh-4rem)] flex-col gap-3 overflow-hidden bg-[#020817] p-4"
       style={{ fontFamily: "DM Sans, sans-serif" }}
     >
-      <Skeleton className="mx-4 mt-3 h-[50px] shrink-0 rounded-lg bg-[#1a2744]" />
-      <Skeleton className="mx-4 mt-3 h-40 shrink-0 rounded-xl bg-[#1a2744]" />
-      <div className="grid min-h-0 flex-1 grid-cols-1 gap-3 px-4 py-3 md:grid-cols-3">
-        <Skeleton className="min-h-32 rounded-xl bg-[#1a2744]" />
-        <Skeleton className="min-h-32 rounded-xl bg-[#1a2744]" />
-        <Skeleton className="min-h-32 rounded-xl bg-[#1a2744]" />
-      </div>
-      <Skeleton className="mx-4 mb-3 h-28 shrink-0 rounded-xl bg-[#1a2744]" />
+      <div style={placeholderStyle} />
+      <div style={placeholderStyle} />
+      <div style={placeholderStyle} />
     </div>
   );
 }
@@ -65,14 +65,12 @@ export default function DashboardPage() {
   }
 
   return (
-    <AuraErrorBoundary>
-      <AuraDashboard
-        engines={engineOutputs}
-        theme={theme}
-        layoutDensity={theme.layoutDensity}
-        profile={engines.profile}
-        showRevisionSchedule={showRevisionSchedule}
-      />
-    </AuraErrorBoundary>
+    <AuraDashboard
+      engines={engineOutputs}
+      theme={theme}
+      layoutDensity={theme.layoutDensity}
+      profile={engines.profile}
+      showRevisionSchedule={showRevisionSchedule}
+    />
   );
 }

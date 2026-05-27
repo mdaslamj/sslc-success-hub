@@ -3,6 +3,8 @@ import assert from "node:assert/strict";
 import seedProfile from "@/data/StudentLearningProfile.json";
 import {
   PROFILE_STORAGE_KEY,
+  PROFILE_SCHEMA_VERSION,
+  PROFILE_VERSION_KEY,
   applyAppendSession,
   applyUpdateMastery,
   deriveTrendFromReadings,
@@ -67,7 +69,8 @@ function testLoadFallsBackToSeedWhenEmpty(): void {
     const seed = loadSeedProfile();
 
     assert.equal(loaded.student.id, seed.student.id);
-    assert.equal(storage.getItem(PROFILE_STORAGE_KEY), null);
+    assert.ok(storage.getItem(PROFILE_STORAGE_KEY));
+    assert.equal(storage.getItem(PROFILE_VERSION_KEY), PROFILE_SCHEMA_VERSION);
   });
 }
 

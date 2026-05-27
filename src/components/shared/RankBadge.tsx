@@ -1,7 +1,7 @@
 import type { RankPredictionOutput } from "@/types/aura-engine-contracts";
 
 type RankBadgeProps = {
-  rank: RankPredictionOutput;
+  rank?: RankPredictionOutput | null;
   archetype: string;
 };
 
@@ -26,7 +26,7 @@ export function RankBadge({ rank, archetype }: RankBadgeProps) {
         className="text-2xl font-black leading-none"
         style={{ color: rankColor, fontFamily: "Syne, sans-serif" }}
       >
-        {rank.estimatedRank ?? "—"}
+        {rank?.estimatedRank ?? "Calculating..."}
       </div>
       <div className="mt-1 text-[10px] text-slate-500">State rank estimate</div>
       <div

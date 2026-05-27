@@ -2,7 +2,7 @@ import { Component, type ErrorInfo, type ReactNode } from "react";
 
 type AuraErrorBoundaryProps = {
   children: ReactNode;
-  fallback?: ReactNode;
+  sectionName: string;
 };
 
 type AuraErrorBoundaryState = {
@@ -17,21 +17,16 @@ export class AuraErrorBoundary extends Component<AuraErrorBoundaryProps, AuraErr
   }
 
   componentDidCatch(error: Error, info: ErrorInfo): void {
-    console.error("aura_dashboard_error", error, info.componentStack);
+    console.error(`aura_section_error:${this.props.sectionName}`, error, info.componentStack);
   }
 
   render(): ReactNode {
     if (this.state.hasError) {
       return (
-        this.props.fallback ?? (
-          <div
-            className="flex h-[calc(100vh-4rem)] flex-col items-center justify-center gap-2 bg-[#020817] px-4 text-center text-slate-400"
-            style={{ fontFamily: "DM Sans, sans-serif" }}
-          >
-            <p className="text-sm font-medium text-slate-200">Aura dashboard unavailable</p>
-            <p className="text-xs">Refresh the page to try again.</p>
-          </div>
-        )
+        <div className="rounded-xl border border-[#1a2744] bg-[#080f1e] p-4 text-slate-400">
+          <p className="text-sm font-medium text-slate-200">{this.props.sectionName}</p>
+          <p className="mt-1 text-xs">Unable to load. Refresh to retry.</p>
+        </div>
       );
     }
 

@@ -36,31 +36,31 @@ export function TargetSection({
             className="text-2xl font-black text-slate-100"
             style={{ fontFamily: "Syne, sans-serif" }}
           >
-            {Math.round(projection.percentage)}%
+            {Math.round(projection?.percentage ?? 0)}%
           </div>
           <div className="text-xs text-slate-400">current prediction</div>
         </div>
         <div className="text-right">
           <div className="text-lg font-bold" style={{ color: theme.accent }}>
-            {target.targetScore}%
+            {target?.targetScore ?? 0}%
           </div>
           <div className="text-xs text-slate-400">target</div>
         </div>
       </div>
       <div className="mb-3 text-xs text-slate-400">
-        Gap {target.gapPercentage.toFixed(1)}% · {target.estimatedHours.toFixed(1)}h path
-        {target.reachableBy ? ` · by ${target.reachableBy}` : ""}
+        Gap {(target?.gapPercentage ?? 0).toFixed(1)}% · {(target?.estimatedHours ?? 0).toFixed(1)}h path
+        {target?.reachableBy ? ` · by ${target.reachableBy}` : ""}
       </div>
 
       {showRoiList ? (
         <div className="space-y-2">
-          {target.rankedChapters.slice(0, roiCount).map((chapter) => (
+          {(target?.rankedChapters ?? []).slice(0, roiCount).map((chapter) => (
             <div
               key={chapter.chapter}
               className="flex items-center justify-between rounded-lg bg-[#050c1c] px-2 py-1.5 text-[11px]"
             >
-              <span className="truncate text-slate-200">{chapter.name}</span>
-              <span className="shrink-0 text-slate-400">ROI {chapter.roi.toFixed(2)}</span>
+              <span className="truncate text-slate-200">{chapter.name ?? chapter.chapter}</span>
+              <span className="shrink-0 text-slate-400">ROI {(chapter.roi ?? 0).toFixed(2)}</span>
             </div>
           ))}
         </div>
@@ -70,7 +70,7 @@ export function TargetSection({
           className="mt-1 w-full rounded-lg px-3 py-2 text-xs font-semibold text-white"
           style={{ backgroundColor: theme.primary }}
         >
-          Start: {nextAction.recommendedAction}
+          Start: {nextAction?.recommendedAction ?? "Review your next chapter"}
         </button>
       )}
     </div>
