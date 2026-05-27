@@ -1,0 +1,24 @@
+{
+  "subject": "mathematics",
+  "subjectCode": "81",
+  "label": "Mathematics",
+  "totalMarks": 80,
+  "totalQuestions": 38,
+  "examYear": "2025-26",
+  "chapters": [
+    { "id":"math-ch1",  "sno":1,  "name":"Real Numbers",                             "marks1":2,"marks2":1,"marks3":0,"marks4":0,"marks5":0, "totalQuestions":3, "totalMarks":5,  "priority":"high"     },
+    { "id":"math-ch2",  "sno":2,  "name":"Polynomials",                              "marks1":2,"marks2":0,"marks3":2,"marks4":0,"marks5":0, "totalQuestions":4, "totalMarks":8,  "priority":"critical" },
+    { "id":"math-ch3",  "sno":3,  "name":"Pair of Linear Equations in Two Variables","marks1":2,"marks2":1,"marks3":0,"marks4":2,"marks5":0, "totalQuestions":5, "totalMarks":11, "priority":"critical" },
+    { "id":"math-ch4",  "sno":4,  "name":"Quadratic Equations",                      "marks1":1,"marks2":2,"marks3":2,"marks4":0,"marks5":0, "totalQuestions":5, "totalMarks":9,  "priority":"critical" },
+    { "id":"math-ch5",  "sno":5,  "name":"Arithmetic Progressions",                  "marks1":2,"marks2":1,"marks3":0,"marks4":2,"marks5":0, "totalQuestions":5, "totalMarks":12, "priority":"critical" },
+    { "id":"math-ch6",  "sno":6,  "name":"Triangles",                                "marks1":2,"marks2":1,"marks3":0,"marks4":2,"marks5":0, "totalQuestions":5, "totalMarks":12, "priority":"critical" },
+    { "id":"math-ch7",  "sno":7,  "name":"Circles",                                  "marks1":1,"marks2":1,"marks3":2,"marks4":0,"marks5":0, "totalQuestions":4, "totalMarks":9,  "priority":"critical" },
+    { "id":"math-ch8",  "sno":8,  "name":"Coordinate Geometry",                      "marks1":1,"marks2":1,"marks3":2,"marks4":0,"marks5":0, "totalQuestions":4, "totalMarks":9,  "priority":"critical" },
+    { "id":"math-ch9",  "sno":9,  "name":"Introduction to Trigonometry",             "marks1":1,"marks2":1,"marks3":2,"marks4":0,"marks5":0, "totalQuestions":4, "totalMarks":9,  "priority":"critical" },
+    { "id":"math-ch10", "sno":10, "name":"Some Applications of Trigonometry",        "marks1":0,"marks2":0,"marks3":0,"marks4":1,"marks5":1, "totalQuestions":2, "totalMarks":9,  "priority":"critical" },
+    { "id":"math-ch11", "sno":11, "name":"Surface Areas and Volumes",                "marks1":1,"marks2":1,"marks3":0,"marks4":1,"marks5":1, "totalQuestions":4, "totalMarks":12, "priority":"critical" },
+    { "id":"math-ch12", "sno":12, "name":"Areas Related to Circles",                 "marks1":0,"marks2":0,"marks3":1,"marks4":0,"marks5":0, "totalQuestions":1, "totalMarks":3,  "priority":"standard" },
+    { "id":"math-ch13", "sno":13, "name":"Statistics",                               "marks1":1,"marks2":0,"marks3":2,"marks4":0,"marks5":0, "totalQuestions":3, "totalMarks":7,  "priority":"critical" },
+    { "id":"math-ch14", "sno":14, "name":"Probability",                              "marks1":1,"marks2":1,"marks3":1,"marks4":0,"marks5":0, "totalQuestions":3, "totalMarks":5,  "priority":"high"     }
+  ]
+}
