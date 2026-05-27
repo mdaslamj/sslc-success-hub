@@ -54,7 +54,7 @@ export function SubjectHeatmap({
         Subject Balance
       </div>
       <div className="space-y-3">
-        {subjectRows.map((row) => {
+        {subjectRows.map((row, idx) => {
           const isExpanded = drillDownEnabled && expandedSubject === row.subject;
           const chapters = Object.entries(profile?.chapterMastery?.[row.subject] ?? {}).sort(
             (a, b) => a[1].mastery - b[1].mastery,
@@ -84,8 +84,12 @@ export function SubjectHeatmap({
                 </div>
                 <div className="h-2 overflow-hidden rounded-full bg-[#050c1c]">
                   <div
-                    className="h-full rounded-full transition-all"
-                    style={{ width: `${row.percentage}%`, backgroundColor: row.color }}
+                    className="aura-bar h-full rounded-full"
+                    style={{
+                      ["--bar-target" as never]: `${row.percentage}%`,
+                      animationDelay: `${idx * 100}ms`,
+                      backgroundColor: row.color,
+                    }}
                   />
                 </div>
               </button>

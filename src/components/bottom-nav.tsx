@@ -56,9 +56,7 @@ export function BottomNav() {
                       active && "stroke-[2.4] scale-110",
                     )}
                   />
-                  {active && (
-                    <span className="absolute -top-1 h-1 w-1 rounded-full bg-primary animate-pill" />
-                  )}
+                  <span className="aura-tab-indicator" data-active={active ? "true" : "false"} />
                 </span>
                 <span className="tracking-tight transition-opacity duration-200">{t.label}</span>
               </Link>

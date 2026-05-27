@@ -38,7 +38,14 @@ export function RecoverySection({ recovery, theme, layoutDensity }: RecoverySect
         {topItems.slice(0, itemLimit).map((item) => (
           <div
             key={item.chapter}
-            className="rounded-lg border border-[#1a2744] bg-[#050c1c] p-2.5"
+            className={`aura-archetype-transition rounded-lg border border-[#1a2744] bg-[#050c1c] p-2.5 ${
+              item.urgency === "critical" ? "aura-recovery-critical" : ""
+            }`}
+            style={
+              item.urgency === "critical"
+                ? { borderLeft: "2px solid #ef4444" }
+                : undefined
+            }
           >
             <div className="flex items-start justify-between gap-2">
               <div>

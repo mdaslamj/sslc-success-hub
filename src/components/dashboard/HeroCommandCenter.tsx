@@ -8,6 +8,32 @@ import type {
 import type { AdaptiveTheme } from "@/hooks/useAdaptiveTheme";
 import { MomentumMeter } from "@/components/shared/MomentumMeter";
 import { RankBadge } from "@/components/shared/RankBadge";
+import { useEffect, useRef, useState } from "react";
+
+function useCountUp(target: number, duration = 1000) {
+  const [value, setValue] = useState(0);
+  const startedRef = useRef(false);
+  useEffect(() => {
+    if (startedRef.current) {
+      setValue(target);
+      return;
+    }
+    startedRef.current = true;
+    const start = performance.now();
+    let raf = 0;
+    const tick = (now: number) => {
+      const t = Math.min(1, (now - start) / duration);
+      const eased = 1 - Math.pow(1 - t, 3);
+      setValue(target * eased);
+      if (t < 1) raf = requestAnimationFrame(tick);
+      else setValue(target);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  return value;
+}
 
 const SUBJECT_LABEL: Record<string, string> = {
   math: "Math",
@@ -42,9 +68,30 @@ function ScoreOrb({
   const radius = 42;
   const circumference = 2 * Math.PI * radius;
   const offset = circumference - (value / 100) * circumference;
+  const [animatedOffset, setAnimatedOffset] = useState(circumference);
+  const animatedValue = useCountUp(value, 1200);
+  useEffect(() => {
+    const start = performance.now();
+    const from = circumference;
+    const to = offset;
+    let raf = 0;
+    const tick = (now: number) => {
+      const t = Math.min(1, (now - start) / 1200);
+      const eased = 1 - Math.pow(1 - t, 3);
+      setAnimatedOffset(from + (to - from) * eased);
+      if (t < 1) raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [offset]);
 
   return (
     <div className="flex flex-col items-center gap-1">
+      <div
+        className="aura-orb-pulse"
+        style={{ ["--aura-primary" as never]: color, width: 96, height: 96 }}
+      >
       <svg width="96" height="96" viewBox="0 0 96 96" aria-hidden>
         <circle cx="48" cy="48" r={radius} fill="none" stroke="#1a2744" strokeWidth="8" />
         <circle
@@ -56,8 +103,9 @@ function ScoreOrb({
           strokeWidth="8"
           strokeLinecap="round"
           strokeDasharray={circumference}
-          strokeDashoffset={offset}
+          strokeDashoffset={animatedOffset}
           transform="rotate(-90 48 48)"
+          style={{ transition: "stroke 0.3s ease" }}
         />
         <text
           x="48"
@@ -68,12 +116,18 @@ function ScoreOrb({
           fontWeight="700"
           fontFamily="Syne, sans-serif"
         >
-          {Math.round(value)}%
+          {Math.round(animatedValue)}%
         </text>
       </svg>
+      </div>
       <span className="text-[10px] uppercase tracking-wider text-slate-500">{label}</span>
     </div>
   );
+}
+
+function MomentumScore({ value }: { value: number }) {
+  const v = useCountUp(value, 1000);
+  return <>{Math.round(v)}</>;
 }
 
 function MissionCard({
@@ -159,7 +213,7 @@ export function HeroCommandCenter({
           color={theme.primary}
         />
         <div className="flex-1 space-y-2">
-          {subjectRows.map((row) => (
+          {subjectRows.map((row, idx) => (
             <div key={row.subject}>
               <div className="mb-0.5 flex justify-between text-[10px] text-slate-400">
                 <span>{row.label}</span>
@@ -167,8 +221,12 @@ export function HeroCommandCenter({
               </div>
               <div className="h-1.5 overflow-hidden rounded-full bg-[#050c1c]">
                 <div
-                  className="h-full rounded-full"
-                  style={{ width: `${row.percentage}%`, backgroundColor: row.color }}
+                  className="aura-bar h-full rounded-full"
+                  style={{
+                    ["--bar-target" as never]: `${row.percentage}%`,
+                    animationDelay: `${idx * 100}ms`,
+                    backgroundColor: row.color,
+                  }}
                 />
               </div>
             </div>
@@ -204,17 +262,17 @@ export function HeroCommandCenter({
       </div>
 
       {archetype === "topper" ? (
-        <div className="rounded-xl border border-[#1a2744] bg-[#080f1e] p-3">
+        <div className="aura-archetype-transition rounded-xl border border-[#1a2744] bg-[#080f1e] p-3">
           <div className="mb-2 text-[10px] font-semibold uppercase tracking-wider text-slate-500">
             Momentum
           </div>
           <div className="flex items-end justify-between">
             <div>
               <div
-                className="text-3xl font-black"
+                className="aura-archetype-transition text-3xl font-black"
                 style={{ color: theme.primary, fontFamily: "Syne, sans-serif" }}
               >
-                {momentum?.score ?? 0}
+                <MomentumScore value={momentum?.score ?? 0} />
               </div>
               <div className="text-xs text-slate-400">{momentum?.badge ?? ""}</div>
             </div>
