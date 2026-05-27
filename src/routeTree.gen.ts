@@ -37,6 +37,7 @@ import { Route as ExamHallRouteImport } from './routes/exam-hall'
 import { Route as DailyPracticeRouteImport } from './routes/daily-practice'
 import { Route as ChapterTestRouteImport } from './routes/chapter-test'
 import { Route as BadgesRouteImport } from './routes/badges'
+import { Route as AuraRouteImport } from './routes/aura'
 import { Route as AnswerUploadsRouteImport } from './routes/answer-uploads'
 import { Route as AnalyticsRouteImport } from './routes/analytics'
 import { Route as AchievementsRouteImport } from './routes/achievements'
@@ -199,6 +200,11 @@ const BadgesRoute = BadgesRouteImport.update({
   path: '/badges',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuraRoute = AuraRouteImport.update({
+  id: '/aura',
+  path: '/aura',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AnswerUploadsRoute = AnswerUploadsRouteImport.update({
   id: '/answer-uploads',
   path: '/answer-uploads',
@@ -314,6 +320,7 @@ export interface FileRoutesByFullPath {
   '/achievements': typeof AchievementsRoute
   '/analytics': typeof AnalyticsRoute
   '/answer-uploads': typeof AnswerUploadsRouteWithChildren
+  '/aura': typeof AuraRoute
   '/badges': typeof BadgesRoute
   '/chapter-test': typeof ChapterTestRoute
   '/daily-practice': typeof DailyPracticeRoute
@@ -365,6 +372,7 @@ export interface FileRoutesByTo {
   '/achievements': typeof AchievementsRoute
   '/analytics': typeof AnalyticsRoute
   '/answer-uploads': typeof AnswerUploadsRouteWithChildren
+  '/aura': typeof AuraRoute
   '/badges': typeof BadgesRoute
   '/chapter-test': typeof ChapterTestRoute
   '/daily-practice': typeof DailyPracticeRoute
@@ -417,6 +425,7 @@ export interface FileRoutesById {
   '/achievements': typeof AchievementsRoute
   '/analytics': typeof AnalyticsRoute
   '/answer-uploads': typeof AnswerUploadsRouteWithChildren
+  '/aura': typeof AuraRoute
   '/badges': typeof BadgesRoute
   '/chapter-test': typeof ChapterTestRoute
   '/daily-practice': typeof DailyPracticeRoute
@@ -470,6 +479,7 @@ export interface FileRouteTypes {
     | '/achievements'
     | '/analytics'
     | '/answer-uploads'
+    | '/aura'
     | '/badges'
     | '/chapter-test'
     | '/daily-practice'
@@ -521,6 +531,7 @@ export interface FileRouteTypes {
     | '/achievements'
     | '/analytics'
     | '/answer-uploads'
+    | '/aura'
     | '/badges'
     | '/chapter-test'
     | '/daily-practice'
@@ -572,6 +583,7 @@ export interface FileRouteTypes {
     | '/achievements'
     | '/analytics'
     | '/answer-uploads'
+    | '/aura'
     | '/badges'
     | '/chapter-test'
     | '/daily-practice'
@@ -624,6 +636,7 @@ export interface RootRouteChildren {
   AchievementsRoute: typeof AchievementsRoute
   AnalyticsRoute: typeof AnalyticsRoute
   AnswerUploadsRoute: typeof AnswerUploadsRouteWithChildren
+  AuraRoute: typeof AuraRoute
   BadgesRoute: typeof BadgesRoute
   ChapterTestRoute: typeof ChapterTestRoute
   DailyPracticeRoute: typeof DailyPracticeRoute
@@ -858,6 +871,13 @@ declare module '@tanstack/react-router' {
       path: '/badges'
       fullPath: '/badges'
       preLoaderRoute: typeof BadgesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/aura': {
+      id: '/aura'
+      path: '/aura'
+      fullPath: '/aura'
+      preLoaderRoute: typeof AuraRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/answer-uploads': {
@@ -1116,6 +1136,7 @@ const rootRouteChildren: RootRouteChildren = {
   AchievementsRoute: AchievementsRoute,
   AnalyticsRoute: AnalyticsRoute,
   AnswerUploadsRoute: AnswerUploadsRouteWithChildren,
+  AuraRoute: AuraRoute,
   BadgesRoute: BadgesRoute,
   ChapterTestRoute: ChapterTestRoute,
   DailyPracticeRoute: DailyPracticeRoute,
