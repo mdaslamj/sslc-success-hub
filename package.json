@@ -11,7 +11,9 @@
     "lint": "eslint .",
     "format": "prettier --write .",
     "test:scoreProjection": "npx vite-node src/engines/__tests__/scoreProjection.test.ts",
-    "test:analytics": "npx vite-node src/engines/__tests__/analytics.test.ts"
+    "test:analytics": "npx vite-node src/engines/__tests__/analytics.test.ts",
+    "test:recovery": "npx vite-node src/engines/__tests__/recovery.test.ts",
+    "test:targetGap": "npx vite-node src/engines/__tests__/targetGap.test.ts"
   },
   "dependencies": {
     "@cloudflare/vite-plugin": "^1.25.5",
