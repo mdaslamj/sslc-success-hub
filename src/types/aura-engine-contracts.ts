@@ -161,7 +161,7 @@ export function studentArchetypeEngine(
 export interface RecoveryItem {
   chapter:        string;
   subject:        Subject;
-  name?:          string;
+  name:           string;
   currentMastery: number;
   blueprintMarks: number;
   marksAtRisk:    number;      // marks being lost due to low mastery
@@ -287,7 +287,7 @@ export interface NextActionOutput {
   urgency:            UrgencyLevel;
   confidence:         number;     // 0–1, how certain Aura is this is the best move
   rationale:          string;     // explanation (for debugging / transparency mode)
-  followUp:           Partial<Omit<NextActionOutput, "followUp">> | null;
+  followUp:           Omit<NextActionOutput, "followUp"> | null;
   computedAt:         string;
 }
 
@@ -419,6 +419,7 @@ export interface AuraEngineOutputs {
   momentum:   MomentumOutput;
   nextAction: NextActionOutput;
   analytics:  AnalyticsState;
+  profile:    StudentLearningProfile;
 }
 
 export function runAllEngines(
