@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   Collapsible,
-  CollapsibleContent,
+  CollapsiblePanel,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import { Link } from "@tanstack/react-router";
@@ -39,7 +39,8 @@ import { todayTasks, subjects } from "@/lib/mock-data";
 import { toast } from "sonner";
 import { RevisionPlannerCard, type RevisionPick } from "@/components/revision-planner-card";
 import { useAnalytics } from "@/hooks/use-analytics";
-import { getPrepModes } from "@/lib/prep-modes";
+import { getPrepModes, type PrepMode } from "@/lib/prep-modes";
+import { canonicalSubjectRouteId } from "@/lib/chapter-routes";
 import { PlannerCalendar } from "@/components/planner/planner-calendar";
 import { AdaptiveGuidanceCard } from "@/components/planner/adaptive-guidance-card";
 import type { AdaptivePlanItem } from "@/lib/adaptivePlannerBridge";
@@ -88,6 +89,40 @@ const seedTasks: Task[] = todayTasks.map((t) => ({
   durationMin: estimateMinutes(t.time),
 }));
 
+function subjectRouteIdFromTaskName(subjectName: string): string {
+  const subj =
+    subjects.find(
+      (s) =>
+        s.name.toLowerCase().startsWith(subjectName.toLowerCase()) ||
+        subjectName.toLowerCase().startsWith(s.name.toLowerCase().slice(0, 4)),
+    ) ?? subjects[0];
+  return canonicalSubjectRouteId(subj.id);
+}
+
+function prepModeHref(subjectName: string, mode: PrepMode): string {
+  if (mode.to) return mode.to;
+  const subjectRoute = `/subjects/${subjectRouteIdFromTaskName(subjectName)}`;
+  switch (mode.id) {
+    case "formula":
+    case "concept":
+    case "diagram":
+    case "label":
+    case "experiment":
+    case "map":
+    case "timeline":
+    case "grammar":
+    case "reading":
+    case "vocab":
+      return subjectRoute;
+    case "timed":
+      return "/focus";
+    case "pyq":
+      return "/exams";
+    default:
+      return "/practice";
+  }
+}
+
 function PlannerPage() {
   const { logSession } = useAnalytics();
   const [tasks, setTasks] = useState<Task[]>(seedTasks);
@@ -97,6 +132,7 @@ function PlannerPage() {
   const [focusMinutes, setFocusMinutes] = useState(0); // total minutes focused today
   const [hydrated, setHydrated] = useState(false);
   const [highlightId, setHighlightId] = useState<number | null>(null);
+  const [expandedTaskId, setExpandedTaskId] = useState<number | null>(null);
 
   // Clear the "just added" highlight after a short beat.
   useEffect(() => {
@@ -444,6 +480,8 @@ function PlannerPage() {
                 return (
                   <Collapsible
                     key={t.id}
+                    open={expandedTaskId === t.id}
+                    onOpenChange={(open) => setExpandedTaskId(open ? t.id : null)}
                     className={`group rounded-2xl border transition ${
                       highlightId === t.id ? "ring-2 ring-brand/50 animate-pulse" : ""
                     } ${
@@ -459,11 +497,23 @@ function PlannerPage() {
                       className="h-5 w-5"
                     />
                     <div
-                      className="flex h-9 w-9 items-center justify-center rounded-lg text-base font-bold shrink-0"
+                      role="button"
+                      tabIndex={0}
+                      onClick={() =>
+                        setExpandedTaskId((current) => (current === t.id ? null : t.id))
+                      }
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter" || e.key === " ") {
+                          e.preventDefault();
+                          setExpandedTaskId((current) => (current === t.id ? null : t.id));
+                        }
+                      }}
+                      className="flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-lg text-base font-bold"
                       style={{
                         background: `color-mix(in oklab, ${subj.color} 18%, transparent)`,
                         color: subj.color,
                       }}
+                      aria-label={`Toggle preparation modes for ${t.task}`}
                     >
                       {subj.emoji}
                     </div>
@@ -518,7 +568,7 @@ function PlannerPage() {
                       <Trash2 className="h-3.5 w-3.5" />
                     </Button>
                     </div>
-                    <CollapsibleContent>
+                    <CollapsiblePanel>
                       <div className="border-t border-border/60 px-3 py-3">
                         <div className="mb-2 text-[10px] uppercase tracking-widest text-muted-foreground">
                           Preparation modes
@@ -540,24 +590,21 @@ function PlannerPage() {
                             );
                             const cls =
                               "flex items-center gap-2 rounded-xl border border-border/60 bg-background/60 p-2 text-left transition hover:border-brand/40 hover:bg-brand/5";
-                            return m.to ? (
-                              <Link key={m.id} to={m.to} className={cls}>
-                                {inner}
-                              </Link>
-                            ) : (
-                              <button
+                            const href = prepModeHref(t.subject, m);
+                            return (
+                              <Link
                                 key={m.id}
-                                type="button"
+                                to={href}
                                 className={cls}
-                                onClick={() => addPrepModeSession(t, m)}
+                                onClick={() => setExpandedTaskId(null)}
                               >
                                 {inner}
-                              </button>
+                              </Link>
                             );
                           })}
                         </div>
                       </div>
-                    </CollapsibleContent>
+                    </CollapsiblePanel>
                   </Collapsible>
                 );
               })}
@@ -726,11 +773,6 @@ function FocusTimer({ onSessionComplete }: { onSessionComplete: (min: number) =>
   const mm = String(Math.floor(secondsLeft / 60)).padStart(2, "0");
   const ss = String(secondsLeft % 60).padStart(2, "0");
 
-  // SVG ring
-  const R = 78;
-  const C = 2 * Math.PI * R;
-  const offset = C - (progress / 100) * C;
-
   return (
     <div className="relative overflow-hidden rounded-3xl gradient-ocean p-4 text-white shadow-glow sm:p-6">
       <div className="absolute -right-10 -top-10 h-44 w-44 rounded-full bg-brand-glow/30 blur-3xl animate-float" />
@@ -756,54 +798,118 @@ function FocusTimer({ onSessionComplete }: { onSessionComplete: (min: number) =>
               <Coffee className="h-3 w-3" /> Long
             </TabsTrigger>
           </TabsList>
-          <TabsContent value={mode} className="mt-4">
-            <div className="flex flex-col items-center">
-              <div className="relative h-40 w-40 sm:h-48 sm:w-48">
-                <svg className="absolute inset-0 -rotate-90" viewBox="0 0 180 180">
-                  <circle cx="90" cy="90" r={R} stroke="rgba(255,255,255,0.15)" strokeWidth="10" fill="none" />
-                  <circle
-                    cx="90"
-                    cy="90"
-                    r={R}
-                    stroke="var(--brand-glow)"
-                    strokeWidth="10"
-                    fill="none"
-                    strokeLinecap="round"
-                    strokeDasharray={C}
-                    strokeDashoffset={offset}
-                    style={{ transition: "stroke-dashoffset 1s linear" }}
-                  />
-                </svg>
-                <div className="absolute inset-0 flex flex-col items-center justify-center">
-                  <div className="font-display text-4xl font-bold tabular-nums sm:text-5xl">{mm}:{ss}</div>
-                  <div className="text-[11px] uppercase tracking-widest text-white/70">
-                    {mode === "focus" ? "Deep work" : mode === "short" ? "Short break" : "Long break"}
-                  </div>
-                </div>
-              </div>
-
-              <div className="mt-5 flex w-full flex-col gap-2 sm:w-auto sm:flex-row">
-                <Button
-                  onClick={() => setRunning((r) => !r)}
-                  className="w-full rounded-full bg-white text-foreground hover:bg-white/90 sm:w-auto"
-                >
-                  {running ? <Pause className="mr-1 h-4 w-4" /> : <Play className="mr-1 h-4 w-4" />}
-                  {running ? "Pause" : "Start"}
-                </Button>
-                <Button
-                  variant="outline"
-                  onClick={() => {
-                    setRunning(false);
-                    setSecondsLeft(MODE_MINUTES[mode] * 60);
-                  }}
-                  className="w-full rounded-full border-white/30 bg-white/10 text-white hover:bg-white/20 hover:text-white sm:w-auto"
-                >
-                  <RotateCcw className="mr-1 h-4 w-4" /> Reset
-                </Button>
-              </div>
-            </div>
+          <TabsContent value="focus" className="mt-4">
+            <FocusTimerPanel
+              mode="focus"
+              running={running}
+              progress={progress}
+              mm={mm}
+              ss={ss}
+              onToggle={() => setRunning((r) => !r)}
+              onReset={() => {
+                setRunning(false);
+                setSecondsLeft(MODE_MINUTES.focus * 60);
+              }}
+            />
+          </TabsContent>
+          <TabsContent value="short" className="mt-4">
+            <FocusTimerPanel
+              mode="short"
+              running={running}
+              progress={progress}
+              mm={mm}
+              ss={ss}
+              onToggle={() => setRunning((r) => !r)}
+              onReset={() => {
+                setRunning(false);
+                setSecondsLeft(MODE_MINUTES.short * 60);
+              }}
+            />
+          </TabsContent>
+          <TabsContent value="long" className="mt-4">
+            <FocusTimerPanel
+              mode="long"
+              running={running}
+              progress={progress}
+              mm={mm}
+              ss={ss}
+              onToggle={() => setRunning((r) => !r)}
+              onReset={() => {
+                setRunning(false);
+                setSecondsLeft(MODE_MINUTES.long * 60);
+              }}
+            />
           </TabsContent>
         </Tabs>
+      </div>
+    </div>
+  );
+}
+
+function FocusTimerPanel({
+  mode,
+  running,
+  progress,
+  mm,
+  ss,
+  onToggle,
+  onReset,
+}: {
+  mode: Mode;
+  running: boolean;
+  progress: number;
+  mm: string;
+  ss: string;
+  onToggle: () => void;
+  onReset: () => void;
+}) {
+  const R = 78;
+  const C = 2 * Math.PI * R;
+  const offset = C - (progress / 100) * C;
+
+  return (
+    <div className="flex flex-col items-center">
+      <div className="relative h-40 w-40 sm:h-48 sm:w-48">
+        <svg className="absolute inset-0 -rotate-90" viewBox="0 0 180 180">
+          <circle cx="90" cy="90" r={R} stroke="rgba(255,255,255,0.15)" strokeWidth="10" fill="none" />
+          <circle
+            cx="90"
+            cy="90"
+            r={R}
+            stroke="var(--brand-glow)"
+            strokeWidth="10"
+            fill="none"
+            strokeLinecap="round"
+            strokeDasharray={C}
+            strokeDashoffset={offset}
+            style={{ transition: "stroke-dashoffset 1s linear" }}
+          />
+        </svg>
+        <div className="absolute inset-0 flex flex-col items-center justify-center">
+          <div className="font-display text-4xl font-bold tabular-nums sm:text-5xl">
+            {mm}:{ss}
+          </div>
+          <div className="text-[11px] uppercase tracking-widest text-white/70">
+            {mode === "focus" ? "Deep work" : mode === "short" ? "Short break" : "Long break"}
+          </div>
+        </div>
+      </div>
+
+      <div className="mt-5 flex w-full flex-col gap-2 sm:w-auto sm:flex-row">
+        <Button
+          onClick={onToggle}
+          className="w-full rounded-full bg-white text-foreground hover:bg-white/90 sm:w-auto"
+        >
+          {running ? <Pause className="mr-1 h-4 w-4" /> : <Play className="mr-1 h-4 w-4" />}
+          {running ? "Pause" : "Start"}
+        </Button>
+        <Button
+          variant="outline"
+          onClick={onReset}
+          className="w-full rounded-full border-white/30 bg-white/10 text-white hover:bg-white/20 hover:text-white sm:w-auto"
+        >
+          <RotateCcw className="mr-1 h-4 w-4" /> Reset
+        </Button>
       </div>
     </div>
   );

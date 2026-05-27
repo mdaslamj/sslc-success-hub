@@ -6,7 +6,8 @@
  * Weak Topic Alerts, Daily Balance, Busy Days, Recommended Windows).
  */
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { Link } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
@@ -39,6 +40,7 @@ import {
   type PlannerEventCategory,
 } from "@/lib/planner-events-store";
 import { subjects } from "@/lib/mock-data";
+import { canonicalSubjectRouteId } from "@/lib/chapter-routes";
 
 const TONE_CLASS: Record<string, string> = {
   brand: "bg-brand/10 text-brand border-brand/30",
@@ -135,6 +137,7 @@ export function PlannerCalendar() {
   const [date, setDate] = useState(toDateKey(new Date()));
   const [time, setTime] = useState("");
   const [subject, setSubject] = useState("");
+  const quickAddRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setEvents(listEvents());
@@ -299,11 +302,16 @@ export function PlannerCalendar() {
           empty={upcomingExams.length === 0 ? "No mock exams scheduled" : undefined}
         >
           {upcomingExams.map((e) => (
-            <li key={e.id} className="flex items-center justify-between gap-2">
-              <span className="truncate">{e.title}</span>
-              <span className="shrink-0 text-[10px] text-muted-foreground">
-                {friendlyDate(e.date)}
-              </span>
+            <li key={e.id}>
+              <Link
+                to="/exams"
+                className="flex items-center justify-between gap-2 rounded-lg px-1 py-0.5 transition hover:bg-background/40"
+              >
+                <span className="truncate">{e.title}</span>
+                <span className="shrink-0 text-[10px] text-muted-foreground">
+                  {friendlyDate(e.date)}
+                </span>
+              </Link>
             </li>
           ))}
         </InsightCard>
@@ -333,15 +341,25 @@ export function PlannerCalendar() {
           tone="destructive"
           empty={weakAlerts.length === 0 ? "No weak topics flagged" : undefined}
         >
-          {weakAlerts.map((w, i) => (
-            <li key={i} className="flex items-center gap-2">
-              <span>{w.emoji}</span>
-              <span className="truncate">
-                <span className="font-medium">{w.subject}:</span>{" "}
-                <span className="text-muted-foreground">{w.topic}</span>
-              </span>
-            </li>
-          ))}
+          {weakAlerts.map((w, i) => {
+            const subj = subjects.find((s) => s.name === w.subject);
+            const subjectId = canonicalSubjectRouteId(subj?.id ?? "math");
+            return (
+              <li key={i}>
+                <Link
+                  to="/subjects/$subjectId"
+                  params={{ subjectId }}
+                  className="flex items-center gap-2 rounded-lg px-1 py-0.5 transition hover:bg-background/40"
+                >
+                  <span>{w.emoji}</span>
+                  <span className="truncate">
+                    <span className="font-medium">{w.subject}:</span>{" "}
+                    <span className="text-muted-foreground">{w.topic}</span>
+                  </span>
+                </Link>
+              </li>
+            );
+          })}
         </InsightCard>
 
         <InsightCard
@@ -373,9 +391,20 @@ export function PlannerCalendar() {
           empty={busyDays.length === 0 ? "Your week looks manageable" : undefined}
         >
           {busyDays.map((b) => (
-            <li key={b.date} className="flex items-center justify-between gap-2">
-              <span>{friendlyDate(b.date)}</span>
-              <span className="text-[10px] text-muted-foreground">{b.count} events</span>
+            <li key={b.date}>
+              <button
+                type="button"
+                onClick={() => {
+                  setDate(b.date);
+                  setTab("day");
+                  quickAddRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+                  toast("Showing events for " + friendlyDate(b.date));
+                }}
+                className="flex w-full items-center justify-between gap-2 rounded-lg px-1 py-0.5 text-left transition hover:bg-background/40"
+              >
+                <span>{friendlyDate(b.date)}</span>
+                <span className="text-[10px] text-muted-foreground">{b.count} events</span>
+              </button>
             </li>
           ))}
         </InsightCard>
@@ -389,9 +418,12 @@ export function PlannerCalendar() {
             <li key={w.date} className="flex items-center justify-between gap-2">
               <span>{friendlyDate(w.date)}</span>
               <button
+                type="button"
                 onClick={() => {
                   setDate(w.date);
                   setCategory("study");
+                  setTab("day");
+                  quickAddRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" });
                   toast("Ready to schedule — fill in the title below");
                 }}
                 className="shrink-0 rounded-full bg-brand/10 px-2 py-0.5 text-[10px] font-medium text-brand hover:bg-brand/20"
@@ -404,7 +436,7 @@ export function PlannerCalendar() {
       </div>
 
       {/* Quick add */}
-      <div className="mb-4 min-w-0 rounded-2xl border border-border/60 bg-background/40 p-3">
+      <div ref={quickAddRef} className="mb-4 min-w-0 rounded-2xl border border-border/60 bg-background/40 p-3">
         <div className="grid gap-2 sm:grid-cols-[1fr_140px_140px_120px_auto]">
           <Input
             placeholder="Event — e.g. Mock Exam, Sports practice"

@@ -13,14 +13,16 @@
  */
 
 import { useMemo } from "react";
+import { Link } from "@tanstack/react-router";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Brain, Plus, Sparkles, LifeBuoy, Target, Heart } from "lucide-react";
+import { Brain, Plus, Sparkles, LifeBuoy, Target, Heart, ArrowRight } from "lucide-react";
 import {
   buildAdaptiveDailyPlan,
   type AdaptivePlanItem,
 } from "@/lib/adaptivePlannerBridge";
 import { getEmotionalSummary } from "@/lib/emotionalProgress";
+import { canonicalSubjectRouteId } from "@/lib/chapter-routes";
 
 export type AdaptiveGuidanceCardProps = {
   subjectId?: string;
@@ -37,6 +39,11 @@ const KIND_META: Record<
   recovery: { label: "Recovery", icon: LifeBuoy, tone: "bg-info/10 text-info border-info/30" },
   practice: { label: "Practice", icon: Brain, tone: "bg-success/10 text-success border-success/30" },
 };
+
+function adaptiveItemHref(item: AdaptivePlanItem): string {
+  if (item.kind === "practice") return "/practice";
+  return `/subjects/${canonicalSubjectRouteId(item.subjectId)}`;
+}
 
 export function AdaptiveGuidanceCard({ subjectId, onAdd }: AdaptiveGuidanceCardProps) {
   // Build once per render; pure & deterministic for the current snapshot.
@@ -123,16 +130,29 @@ export function AdaptiveGuidanceCard({ subjectId, onAdd }: AdaptiveGuidanceCardP
                       </div>
                     )}
                   </div>
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    className="h-8 shrink-0 rounded-full px-2.5 text-[11px]"
-                    onClick={() => onAdd(item)}
-                    aria-label={`Add ${item.title} to today's plan`}
-                  >
-                    <Plus className="mr-1 h-3 w-3" />
-                    Add
-                  </Button>
+                  <div className="flex shrink-0 flex-col gap-1.5">
+                    <Button
+                      asChild
+                      size="sm"
+                      variant="ghost"
+                      className="h-8 rounded-full px-2.5 text-[11px]"
+                    >
+                      <Link to={adaptiveItemHref(item)} aria-label={`Open ${item.title}`}>
+                        Open
+                        <ArrowRight className="ml-1 h-3 w-3" />
+                      </Link>
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      className="h-8 rounded-full px-2.5 text-[11px]"
+                      onClick={() => onAdd(item)}
+                      aria-label={`Add ${item.title} to today's plan`}
+                    >
+                      <Plus className="mr-1 h-3 w-3" />
+                      Add
+                    </Button>
+                  </div>
                 </div>
               </li>
             );
