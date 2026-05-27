@@ -341,8 +341,8 @@ body {
  * ============================================================ */
 
 @keyframes aura-orb-pulse {
-  0%, 100% { box-shadow: 0 0 0 0 var(--aura-primary, #3b82f6)33; }
-  50%      { box-shadow: 0 0 0 8px transparent; }
+  0%, 100% { box-shadow: 0 0 0 0 color-mix(in oklab, var(--aura-primary, #3b82f6) 35%, transparent); }
+  50%      { box-shadow: 0 0 0 10px color-mix(in oklab, var(--aura-primary, #3b82f6) 0%, transparent); }
 }
 .aura-orb-pulse {
   border-radius: 9999px;
