@@ -167,7 +167,7 @@ export function loadSeedBlueprint(): Record<Subject, Record<string, BlueprintEnt
 }
 
 export function loadSeedProfile(): StudentLearningProfile {
-  return seedProfile as StudentLearningProfile;
+  return seedProfile as unknown as StudentLearningProfile;
 }
 
 /** Run projection using seed profile + canonical blueprint JSON files. */
