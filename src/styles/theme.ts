@@ -100,31 +100,31 @@ export interface UrgencyStyle {
 export function getUrgencyStyle(pct: number): UrgencyStyle {
   const p = Math.max(0, Math.min(100, Number.isFinite(pct) ? pct : 0));
 
-  if (p < 25) {
-    return {
-      color: "#ef4444",            // destructive red
-      label: "Critical",
-      background: "#fee2e2",
-    };
-  }
   if (p < 50) {
     return {
-      color: "#f59e0b",            // warning amber
-      label: "High",
-      background: "#fef3c7",
+      color: "#ef4444",
+      label: "CRITICAL",
+      background: "#ef444414",
     };
   }
-  if (p < 75) {
+  if (p < 70) {
     return {
-      color: "#3b82f6",            // info blue
-      label: "Medium",
-      background: "#dbeafe",
+      color: "#f59e0b",
+      label: "AT RISK",
+      background: "#f59e0b14",
+    };
+  }
+  if (p < 85) {
+    return {
+      color: "#22c55e",
+      label: "GOOD",
+      background: "#22c55e12",
     };
   }
   return {
-    color: "#10b981",              // success green
-    label: "Low",
-    background: "#d1fae5",
+    color: "#34d399",
+    label: "STRONG",
+    background: "#34d39912",
   };
 }
 

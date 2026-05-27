@@ -4,9 +4,12 @@ import type {
 } from "@/types/aura-engine-contracts";
 
 import { computeAnalyticsFromSessions } from "@/engines/analytics";
+import { burnoutDetectionEngine } from "@/engines/burnoutDetection";
 import { momentumEngine } from "@/engines/momentum";
 import { nextActionEngine } from "@/engines/nextAction";
+import { rankPredictionEngine } from "@/engines/rankPrediction";
 import { recoveryEngine } from "@/engines/recovery";
+import { revisionOptimizerEngine } from "@/engines/revisionOptimizer";
 import {
   loadSeedBlueprint,
   scoreProjectionEngine,
@@ -31,6 +34,9 @@ export function runAllEngines(profile: StudentLearningProfile): AuraEngineOutput
   const momentum = momentumEngine(sessions);
   const nextAction = nextActionEngine(recovery, target, momentum, archetype, sessions);
   const analytics = computeAnalyticsFromSessions(sessions);
+  const burnout = burnoutDetectionEngine(analytics, sessions, momentum);
+  const rank = rankPredictionEngine(projection);
+  const revision = revisionOptimizerEngine(profile.chapterMastery, blueprint, sessions);
 
   return {
     projection,
@@ -40,6 +46,8 @@ export function runAllEngines(profile: StudentLearningProfile): AuraEngineOutput
     momentum,
     nextAction,
     analytics,
-    profile,
+    burnout,
+    rank,
+    revision,
   };
 }

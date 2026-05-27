@@ -16,7 +16,9 @@ export default function DashboardPage() {
       momentum: engines.momentum,
       nextAction: engines.nextAction,
       analytics: engines.analytics,
-      profile: engines.profile,
+      burnout: engines.burnout,
+      rank: engines.rank,
+      revision: engines.revision,
     }),
     [
       engines.projection,
@@ -26,9 +28,18 @@ export default function DashboardPage() {
       engines.momentum,
       engines.nextAction,
       engines.analytics,
-      engines.profile,
+      engines.burnout,
+      engines.rank,
+      engines.revision,
     ],
   );
 
-  return <AuraDashboard engines={engineOutputs} theme={theme} />;
+  return (
+    <AuraDashboard
+      engines={engineOutputs}
+      theme={theme}
+      layoutDensity={theme.layoutDensity}
+      profile={engines.profile}
+    />
+  );
 }

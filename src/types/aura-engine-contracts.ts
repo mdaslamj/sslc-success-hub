@@ -384,6 +384,72 @@ export interface AdaptiveMessaging {
 }
 
 
+// ENGINE 7 — BurnoutDetectionEngine
+// Predicts burnout risk from analytics, session patterns, and momentum.
+// ─────────────────────────────────────────────────────────────────────────────
+
+export interface BurnoutOutput {
+  risk:            "low" | "medium" | "high";
+  score:           number;
+  activeSignals:   string[];
+  recommendation:  string;
+  recoveryAction:  string;
+}
+
+export function burnoutDetectionEngine(
+  analytics: AnalyticsState,
+  sessions:  SessionRecord[],
+  momentum:  MomentumOutput,
+): BurnoutOutput { throw 0; }
+
+
+// ─────────────────────────────────────────────────────────────────────────────
+// ENGINE 8 — RankPredictionEngine
+// Maps projected score to Karnataka SSLC percentile bands.
+// ─────────────────────────────────────────────────────────────────────────────
+
+export interface RankPredictionOutput {
+  predictedPercentile: number;
+  estimatedRank:       "Top 1%" | "Top 5%" | "Top 10%" | "Top 25%" | "Average";
+  stateAvgScore:       number;
+  gapToTopTen:         number;
+  gapToTopOne:         number;
+  confidence:          number;
+}
+
+export function rankPredictionEngine(
+  projection: ScoreProjectionOutput,
+): RankPredictionOutput { throw 0; }
+
+
+// ─────────────────────────────────────────────────────────────────────────────
+// ENGINE 9 — RevisionOptimizerEngine
+// Spaced-repetition revision schedule from chapter mastery.
+// ─────────────────────────────────────────────────────────────────────────────
+
+export interface RevisionItem {
+  chapter:          string;
+  subject:          Subject;
+  name:             string;
+  nextRevisionDate: string;
+  intervalDays:     number;
+  priority:         "urgent" | "scheduled" | "comfortable";
+  reason:           string;
+}
+
+export interface RevisionOutput {
+  schedule:     RevisionItem[];
+  totalDays:    number;
+  dailyMinutes: number;
+}
+
+export function revisionOptimizerEngine(
+  chapterMastery: StudentLearningProfile["chapterMastery"],
+  blueprint:      StudentLearningProfile["blueprint"],
+  sessions:       SessionRecord[],
+): RevisionOutput { throw 0; }
+
+
 // ─────────────────────────────────────────────────────────────────────────────
 // ENGINE EXECUTION ORDER (enforced at runtime)
 // Never run out of order. Each engine depends on previous outputs.
@@ -421,7 +487,9 @@ export interface AuraEngineOutputs {
   momentum:   MomentumOutput;
   nextAction: NextActionOutput;
   analytics:  AnalyticsState;
-  profile:    StudentLearningProfile;
+  burnout:    BurnoutOutput;
+  rank:       RankPredictionOutput;
+  revision:   RevisionOutput;
 }
 
 export function runAllEngines(
