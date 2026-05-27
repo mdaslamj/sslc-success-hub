@@ -6,7 +6,7 @@ type BurnoutIndicatorProps = {
 };
 
 export function BurnoutIndicator({ burnout }: BurnoutIndicatorProps) {
-  if (burnout.risk === "low") {
+  if (!burnout?.risk || burnout.risk === "low") {
     return null;
   }
 
@@ -24,7 +24,7 @@ export function BurnoutIndicator({ burnout }: BurnoutIndicatorProps) {
         <span className="shrink-0 text-sm" style={{ color: urgencyStyle.color }} aria-hidden>
           ⚠
         </span>
-        <p className="truncate text-xs text-slate-300">{burnout.recommendation}</p>
+        <p className="truncate text-xs text-slate-300">{burnout.recommendation ?? ""}</p>
       </div>
       <button
         type="button"
@@ -36,7 +36,7 @@ export function BurnoutIndicator({ burnout }: BurnoutIndicatorProps) {
         }}
         onClick={() => console.log("burnout_action_taken")}
       >
-        {burnout.recoveryAction}
+        {burnout.recoveryAction ?? "Take a break"}
       </button>
     </div>
   );

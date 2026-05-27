@@ -25,7 +25,8 @@ function priorityStyle(priority: RevisionOutput["schedule"][number]["priority"])
 }
 
 export function RevisionSchedule({ revision, theme: _theme }: RevisionScheduleProps) {
-  const rows = revision.schedule.slice(0, 3);
+  const schedule = revision?.schedule ?? [];
+  const rows = schedule.slice(0, 3);
 
   if (rows.length === 0) {
     return null;
@@ -48,7 +49,9 @@ export function RevisionSchedule({ revision, theme: _theme }: RevisionSchedulePr
                 style={{ backgroundColor: subjectColor }}
                 aria-hidden
               />
-              <span className="truncate text-sm font-medium text-slate-100">{item.name}</span>
+              <span className="truncate text-sm font-medium text-slate-100">
+                {item.name ?? item.chapter}
+              </span>
               <span
                 className="shrink-0 rounded px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wide"
                 style={{

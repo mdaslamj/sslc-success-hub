@@ -1,14 +1,26 @@
-import { useMemo } from "react";
-import type { AuraEngineOutputs } from "@/types/aura-engine-contracts";
+import { useMemo, useRef } from "react";
+import type { AuraEngineOutputs, StudentLearningProfile } from "@/types/aura-engine-contracts";
 import { runAllEngines } from "@/engines/pipeline";
 import { useStudentProfile } from "@/hooks/useStudentProfile";
 
 export type { AuraEngineOutputs };
 
-export function useAuraEngines() {
-  const { profile, updateMastery, appendSession } = useStudentProfile();
+function useStableProfile(profile: StudentLearningProfile): StudentLearningProfile {
+  const cacheRef = useRef({ key: "", value: profile });
+  const key = JSON.stringify(profile);
 
-  const engines = useMemo(() => runAllEngines(profile), [profile]);
+  if (cacheRef.current.key !== key) {
+    cacheRef.current = { key, value: profile };
+  }
+
+  return cacheRef.current.value;
+}
+
+export function useAuraEngines() {
+  const { profile, isLoading, updateMastery, appendSession } = useStudentProfile();
+  const stableProfile = useStableProfile(profile);
+
+  const engines = useMemo(() => runAllEngines(stableProfile), [stableProfile]);
 
   return {
     projection: engines.projection,
@@ -21,7 +33,8 @@ export function useAuraEngines() {
     burnout: engines.burnout,
     rank: engines.rank,
     revision: engines.revision,
-    profile,
+    profile: stableProfile,
+    isLoading,
     updateMastery,
     appendSession,
   };

@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import type {
   StudentLearningProfile,
   Subject,
@@ -9,11 +9,13 @@ import { appendSessionToProfile, type NewSessionInput } from "@/engines/sessionL
 import seedProfile from "@/data/StudentLearningProfile.json";
 
 export const PROFILE_STORAGE_KEY = "aura_profile";
+export const PROFILE_SCHEMA_VERSION = 1;
 
 type MasteryReadingsMap = Record<string, number[]>;
 
 export type AuraProfileStorage = StudentLearningProfile & {
   _masteryReadings?: MasteryReadingsMap;
+  _schemaVersion?: number;
 };
 
 function masteryKey(subject: Subject, chapter: string): string {
@@ -37,7 +39,7 @@ export function deriveTrendFromReadings(previous: number[], next: number): Trend
 export function stripProfileStorage(
   stored: AuraProfileStorage,
 ): { profile: StudentLearningProfile; masteryReadings: MasteryReadingsMap } {
-  const { _masteryReadings, ...profile } = stored;
+  const { _masteryReadings, _schemaVersion, ...profile } = stored;
   return {
     profile: profile as StudentLearningProfile,
     masteryReadings: _masteryReadings ?? {},
@@ -72,7 +74,14 @@ export function readStoredProfile(): AuraProfileStorage | null {
 
   try {
     const raw = storage.getItem(PROFILE_STORAGE_KEY);
-    return raw ? (JSON.parse(raw) as AuraProfileStorage) : null;
+    if (!raw) return null;
+
+    const parsed = JSON.parse(raw) as AuraProfileStorage;
+    if (parsed._schemaVersion !== PROFILE_SCHEMA_VERSION) {
+      return null;
+    }
+
+    return parsed;
   } catch {
     return null;
   }
@@ -83,7 +92,10 @@ export function writeStoredProfile(stored: AuraProfileStorage): void {
   if (!storage) return;
 
   try {
-    storage.setItem(PROFILE_STORAGE_KEY, JSON.stringify(stored));
+    storage.setItem(
+      PROFILE_STORAGE_KEY,
+      JSON.stringify({ ...stored, _schemaVersion: PROFILE_SCHEMA_VERSION }),
+    );
   } catch {
     // Never crash UI flows on storage failure.
   }
@@ -150,9 +162,18 @@ export function applyAppendSession(
 }
 
 export function useStudentProfile() {
-  const [stored, setStored] = useState<AuraProfileStorage>(() => loadInitialProfileStorage());
+  const [stored, setStored] = useState<AuraProfileStorage | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const profile = useMemo(() => stripProfileStorage(stored).profile, [stored]);
+  useEffect(() => {
+    setStored(loadInitialProfileStorage());
+    setIsLoading(false);
+  }, []);
+
+  const profile = useMemo(
+    () => (stored ? stripProfileStorage(stored).profile : loadSeedProfile()),
+    [stored],
+  );
 
   const persist = useCallback((next: AuraProfileStorage) => {
     setStored(next);
@@ -161,6 +182,7 @@ export function useStudentProfile() {
 
   const updateMastery = useCallback(
     (subject: Subject, chapter: string, newMastery: number) => {
+      if (!stored) return;
       persist(applyUpdateMastery(stored, subject, chapter, newMastery));
     },
     [persist, stored],
@@ -168,6 +190,7 @@ export function useStudentProfile() {
 
   const appendSession = useCallback(
     (session: NewSessionInput) => {
+      if (!stored) return;
       persist(applyAppendSession(stored, session));
     },
     [persist, stored],
@@ -175,6 +198,7 @@ export function useStudentProfile() {
 
   return {
     profile,
+    isLoading,
     updateMastery,
     appendSession,
   };

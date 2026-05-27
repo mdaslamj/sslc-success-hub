@@ -25,19 +25,25 @@ function shouldRender(
   context: AdaptiveMessageContext,
   engines: ReturnType<typeof useAuraEngines>,
 ): boolean {
-  const lastSession = engines.profile.sessionHistory.at(-1);
+  const sessions = engines.profile?.sessionHistory ?? [];
+  const lastSession = sessions.at(-1);
+  const momentum = engines.momentum;
+
+  if (!momentum) {
+    return false;
+  }
 
   switch (context) {
     case "onPanicDetected":
       return (
-        engines.momentum.trend === "declining" ||
-        (engines.momentum.trend as string) === "down" ||
+        momentum.trend === "declining" ||
+        (momentum.trend as string) === "down" ||
         lastSession?.panicSignal === true
       );
     case "onMissedDay":
       return lastSession?.durationMinutes === 0;
     case "onStreak":
-      return engines.momentum.streak >= 3;
+      return (momentum.streak ?? 0) >= 3;
     default:
       return true;
   }
@@ -47,12 +53,12 @@ function replaceTokens(
   template: string,
   engines: ReturnType<typeof useAuraEngines>,
 ): string {
-  const gapPct =
-    (engines.target as { gapPct?: number }).gapPct ?? engines.target.gapPercentage;
-  const topRecovery = engines.recovery.top3[0];
+  const gapPct = engines.target?.gapPercentage ?? 0;
+  const topRecovery = engines.recovery?.top3?.[0];
+  const momentum = engines.momentum;
 
   return template
-    .replace(/\{streak\}/g, String(engines.momentum.streak))
+    .replace(/\{streak\}/g, String(momentum?.streak ?? 0))
     .replace(/\{gap\}/g, String(gapPct))
     .replace(/\{subject\}/g, topRecovery?.subject ?? "")
     .replace(/\{n\}/g, String(topRecovery?.recoverableMarks ?? ""));
@@ -60,6 +66,10 @@ function replaceTokens(
 
 export function AdaptiveMessage({ context }: AdaptiveMessageProps) {
   const engines = useAuraEngines();
+
+  if (!engines.profile) {
+    return null;
+  }
 
   if (!shouldRender(context, engines)) {
     return null;

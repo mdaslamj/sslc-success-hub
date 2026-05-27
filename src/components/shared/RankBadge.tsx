@@ -14,7 +14,7 @@ const RANK_COLORS: Record<RankPredictionOutput["estimatedRank"], string> = {
 };
 
 export function RankBadge({ rank, archetype }: RankBadgeProps) {
-  if (archetype !== "topper") {
+  if (!rank || archetype !== "topper") {
     return null;
   }
 
@@ -26,14 +26,14 @@ export function RankBadge({ rank, archetype }: RankBadgeProps) {
         className="text-2xl font-black leading-none"
         style={{ color: rankColor, fontFamily: "Syne, sans-serif" }}
       >
-        {rank.estimatedRank}
+        {rank.estimatedRank ?? "—"}
       </div>
       <div className="mt-1 text-[10px] text-slate-500">State rank estimate</div>
       <div
         className="mt-2 text-xs font-medium"
-        style={{ color: rank.gapToTopTen === 0 ? "#22c55e" : "#94a3b8" }}
+        style={{ color: (rank.gapToTopTen ?? 0) === 0 ? "#22c55e" : "#94a3b8" }}
       >
-        {rank.gapToTopTen === 0
+        {(rank.gapToTopTen ?? 0) === 0
           ? "You are in the top 10%"
           : `${rank.gapToTopTen} marks to top 10%`}
       </div>

@@ -50,6 +50,16 @@ export function MomentumMeter({
   theme,
   layoutDensity,
 }: MomentumMeterProps) {
+  if (!momentum) {
+    return null;
+  }
+
+  const score = momentum.score ?? 0;
+  const badge = momentum.badge ?? "";
+  const streak = momentum.streak ?? 0;
+  const trend = momentum.trend ?? "stable";
+  const weeklyPattern = momentum.weeklyPattern ?? [];
+
   return (
     <div className="rounded-xl border border-[#1a2744] bg-[#080f1e] p-3">
       <div className="mb-2 text-[10px] font-semibold uppercase tracking-wider text-slate-500">
@@ -61,20 +71,20 @@ export function MomentumMeter({
             className="text-3xl font-black"
             style={{ color: theme.primary, fontFamily: "Syne, sans-serif" }}
           >
-            {momentum.score}
+            {score}
           </div>
-          <div className="text-xs text-slate-400">{momentum.badge}</div>
+          <div className="text-xs text-slate-400">{badge}</div>
         </div>
         <div className="text-right">
-          <div className="text-xl font-bold text-orange-400">{momentum.streak}d</div>
+          <div className="text-xl font-bold text-orange-400">{streak}d</div>
           <div className="text-[10px] uppercase tracking-wide text-slate-500">streak</div>
-          <div className="mt-1 text-xs capitalize text-slate-300">{momentum.trend}</div>
+          <div className="mt-1 text-xs capitalize text-slate-300">{trend}</div>
         </div>
       </div>
       {layoutDensity === "advanced" ? (
-        <WeeklySparkline pattern={momentum.weeklyPattern} color={theme.accent} />
+        <WeeklySparkline pattern={weeklyPattern} color={theme.accent} />
       ) : null}
-      <p className="mt-3 text-xs leading-relaxed text-slate-400">{dashboardTone}</p>
+      <p className="mt-3 text-xs leading-relaxed text-slate-400">{dashboardTone ?? ""}</p>
       <AdaptiveMessage context="onPanicDetected" />
       <AdaptiveMessage context="onMissedDay" />
       <AdaptiveMessage context="onStreak" />

@@ -19,7 +19,7 @@ import { targetGapEngine } from "@/engines/targetGap";
 
 export function runAllEngines(profile: StudentLearningProfile): AuraEngineOutputs {
   const blueprint = profile.blueprint ?? loadSeedBlueprint();
-  const sessions = profile.sessionHistory;
+  const sessions = profile.sessionHistory ?? [];
 
   const projection = scoreProjectionEngine(profile.chapterMastery, blueprint);
   const archetype = studentArchetypeEngine(sessions, projection);
