@@ -54,7 +54,7 @@ export function detectMisconceptions(subject?: Subject): MisconceptionReport[] {
     .filter((r) => r.count >= 2)
     .map((r) => ({
       ...r,
-      severity: r.count >= 4 ? "high" : "warning",
+      severity: (r.count >= 4 ? "high" : "warning") as "high" | "warning",
     }))
     .sort((a, b) => b.count - a.count || b.lastSeen - a.lastSeen)
 }

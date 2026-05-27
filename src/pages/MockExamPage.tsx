@@ -17,7 +17,8 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Clock, ChevronLeft, ChevronRight, AlertTriangle, Trophy } from "lucide-react";
 import { SUBJECTS, getQuestionsBySubject } from "@/lib/question-bank";
-import type { Question } from "@/hooks/use-exam-engine";
+import type { BankQuestion } from "@/lib/question-bank";
+type Question = BankQuestion;
 
 // ---------------------------------------------------------------------------
 // Config
