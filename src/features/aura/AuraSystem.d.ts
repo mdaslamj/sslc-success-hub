@@ -1,2 +1,2 @@
-declare const AuraSystem: React.ComponentType<any>;
+declare const AuraSystem: (props: any) => any;
 export default AuraSystem;
