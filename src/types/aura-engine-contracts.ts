@@ -4,6 +4,7 @@
  *
  * These TypeScript interfaces define the contracts for all 6 engines.
  * Cursor builds these. Lovable consumes their outputs.
+ * Build instructions: docs/aura/AURA_PROMPT.txt
  * Engines NEVER communicate via UI state — only via the StudentLearningProfile.
  */
 

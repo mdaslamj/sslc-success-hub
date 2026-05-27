@@ -1,67 +1,131 @@
-AURA — Karnataka SSLC Intelligence Layer v2
-BUILD PROMPT (Cursor / Lovable)
+================================================================================
+AURA — KARNATAKA SSLC ADAPTIVE STUDY OPERATING SYSTEM
+Complete System Prompt (Intelligence Layer v2)
+================================================================================
+
+ROLE
+You are building Aura for Karnataka SSLC Class 10 board preparation.
+Aura is NOT a chatbot wrapper. It is a deterministic, profile-driven
+intelligence layer that always knows what the student should do next.
+
+Cursor implements engines + profile pipeline.
+Lovable / UI surfaces consume engine outputs only.
 
 ================================================================================
-PURPOSE
+CANONICAL FILES (source of truth)
 ================================================================================
-Implement the Aura intelligence layer for Karnataka SSLC Class 10 board prep.
-Aura is a deterministic, profile-driven engine stack — not chat UI magic.
+1. StudentLearningProfile (runtime seed + persisted state)
+   → src/data/StudentLearningProfile.json
 
-Cursor builds the engines and profile pipeline.
-Lovable consumes engine outputs in dashboard / planner / practice surfaces.
+2. Engine contracts (all types + function signatures)
+   → src/types/aura-engine-contracts.ts
 
-================================================================================
-SOURCE OF TRUTH (never bypass)
-================================================================================
-1. StudentLearningProfile JSON
-   Path: src/data/StudentLearningProfile.json
+3. UI shell (5-screen mobile experience — visual reference)
+   → src/features/aura/AuraSystem.jsx
+   → src/routes/aura.tsx
 
-2. TypeScript contracts (all 6 engines + shared types)
-   Path: src/types/aura-engine-contracts.ts
-
-RULE: Engines NEVER communicate through React UI state.
-      Read/write ONLY via StudentLearningProfile + pure engine functions.
+RULE (non-negotiable):
+Engines NEVER communicate through React UI state.
+All engines read/write ONLY via StudentLearningProfile + pure functions.
 
 ================================================================================
-ENGINE EXECUTION ORDER (strict — do not reorder)
+PRODUCT SURFACES (5 screens)
+================================================================================
+1. TODAY — daily quest cards, streak, rank/XP, momentum, coach strip
+2. COACH — behavioral insights, week-in-review, emotional guidance
+3. MAP   — chapter map by subject, mastery bars, urgency, expandable detail
+4. PLAN  — 7-day mission map, exam countdown, spaced-repetition due list
+5. ME    — profile, rank progression, subject averages
+
+UI is already implemented in AuraSystem.jsx.
+Your job: wire real engine outputs into these surfaces without redesign.
+
+================================================================================
+STUDENT LEARNING PROFILE (schema overview)
+================================================================================
+StudentLearningProfile contains:
+- _meta, student (id, name, targetScore, daysToExam, …)
+- archetype (behavioral inference ONLY — never self-report)
+- analytics (6 dimensions + overallHealthScore)
+- wellbeing (burnoutRisk, recommendedTone)
+- chapterMastery: Record<Subject, Record<chapterId, ChapterMasteryEntry>>
+- sessionHistory: SessionRecord[]
+- nextAction: NextActionOutput
+- recoveryPlans: RecoveryPlan[]
+- targetConfig: TargetConfiguration
+- adaptiveMsg: AdaptiveMessaging
+- blueprint: Record<Subject, Record<chapterId, { marks, name }>>
+
+Subjects: "math" | "science" | "social"
+
+SessionRecord must capture:
+- duration, accuracy, hintsUsed, retriesOnWrong, completedPlan
+- panicSignal (score drops >15% vs practice avg under time pressure)
+- engineType (adaptive | recovery | timed_test | pyq_practice | …)
+
+================================================================================
+ENGINE PIPELINE (strict execution order)
 ================================================================================
 profile (StudentLearningProfile)
   │
   ├─► [1] scoreProjectionEngine(mastery, blueprint)
-  │         └─► ScoreProjectionOutput
+  │         Output: ScoreProjectionOutput
   │         Formula: Σ mastery[ch] × blueprintMarks[ch] / 100 per subject
   │
   ├─► [2] studentArchetypeEngine(sessions, projection)
-  │         └─► ArchetypeOutput
-  │         CRITICAL: behavioral inference ONLY — no self-report
+  │         Output: ArchetypeOutput
+  │         CRITICAL: inferenceMethod = "behavioral" only
+  │         Archetypes: struggling | average | topper
   │
   ├─► [3] recoveryEngine(mastery, blueprint, sessions)
-  │         └─► RecoveryEngineOutput
+  │         Output: RecoveryEngineOutput (marks at risk, action plans)
   │
   ├─► [4] targetGapEngine(targetScore, projection, mastery, blueprint)
-  │         └─► TargetGapOutput
+  │         Output: TargetGapOutput
   │         ROI = marksGain / estimatedHours
   │
   ├─► [5] momentumEngine(sessions)
-  │         └─► MomentumOutput
+  │         Output: MomentumOutput (streak, trend, badge)
   │
   └─► [6] nextActionEngine(recovery, target, momentum, archetype, sessions)
-            └─► NextActionOutput  ← Aura signature: "what to do next"
+            Output: NextActionOutput ← Aura signature experience
 
-Also run: computeAnalytics(sessions, archetype) → AnalyticsState
+Also: computeAnalytics(sessions, archetype) → AnalyticsState
 
 Orchestrator: runAllEngines(profile) → AuraEngineOutputs
 
 ================================================================================
 NEXT ACTION DECISION LOGIC
 ================================================================================
-1. Critical recovery chapter (mastery < 50, blueprintMarks >= 6) → recovery session
+1. Critical recovery (mastery < 50 AND blueprintMarks >= 6) → recovery session
 2. Else streak at risk / skip day → easiest high-ROI chapter
 3. Else target gap > 10% → highest ROI chapter from TargetGapEngine
 4. Else topper mode → precision drill on almost-mastered chapter
 
+NextActionOutput must include:
+- recommendedAction, subject, chapter, sessionType
+- estimatedGain (e.g. "+4.2 marks"), timeRequired, urgency, confidence
+- rationale + optional followUp chain
+
 ================================================================================
-IMPLEMENTATION TARGETS (suggested paths)
+ANALYTICS DIMENSIONS (Phase A4)
+================================================================================
+Score 6 dimensions from session history:
+- consistency, accuracy, recovery, momentum, discipline, confidenceStability
+confidenceStability distinguishes panic-driven vs stable performers at same %.
+
+================================================================================
+ADAPTIVE MESSAGING
+================================================================================
+NOT motivational quotes. Context-aware micro-guidance keyed by:
+onLogin, onStreak, onRecovery, onTargetGap, onMissedDay, onImprovement,
+onPanicDetected, onTopper, onStruggling
+
+Tone follows wellbeing.recommendedTone:
+recovery | optimization | challenge | reassurance
+
+================================================================================
+IMPLEMENTATION TARGETS
 ================================================================================
 src/engines/aura/scoreProjection.ts
 src/engines/aura/studentArchetype.ts
@@ -70,37 +134,47 @@ src/engines/aura/targetGap.ts
 src/engines/aura/momentum.ts
 src/engines/aura/nextAction.ts
 src/engines/aura/runAllEngines.ts
-src/engines/aura/profileStore.ts        — read/write StudentLearningProfile
+src/engines/aura/profileStore.ts
 
 Wire outputs into:
-- /aura route (AuraSystem shell)
-- Study Planner adaptive guidance
+- /aura route (AuraSystem)
+- Study Planner adaptive guidance (src/routes/planner.tsx)
 - Dashboard widgets (projection, next action, recovery)
+
+Existing partial wiring (reuse, do not duplicate):
+- src/engines/analytics/profileUpdater.ts
+- src/lib/adaptivePlannerBridge.ts
 
 ================================================================================
 CONSTRAINTS
 ================================================================================
-- Pure functions where possible; deterministic for same profile input
-- No new dependencies unless absolutely required
-- Do not redesign existing UI — wire engine outputs into current surfaces
-- Archetype: inferenceMethod must stay "behavioral"
-- Adaptive messaging: context-aware micro-guidance, not generic motivational quotes
-- Panic signal: score drops >15% vs practice average under time pressure
-- Wellbeing / burnout signals feed recommendedTone (recovery | optimization | challenge)
+- Pure, deterministic functions where possible
+- No new dependencies unless required
+- Do NOT redesign UI — wire data into existing components
+- Archetype: never read self-reported labels
+- Panic signal: >15% score drop under time pressure vs practice average
+- Profile persists to localStorage; sessionHistory appends after each session
+- Typecheck must pass against aura-engine-contracts.ts
 
 ================================================================================
 ACCEPTANCE CHECKLIST
 ================================================================================
-[ ] runAllEngines(profile) returns all AuraEngineOutputs fields
-[ ] Score projection matches blueprint-weighted mastery formula
-[ ] Archetype never reads self-reported student labels
-[ ] NextAction always returns one clear recommendedAction + followUp chain
-[ ] Profile updates persist after each session (sessionHistory append)
-[ ] Planner / Aura UI reads nextAction without duplicating engine logic
-[ ] Typecheck passes against aura-engine-contracts.ts
+[ ] runAllEngines(profile) returns complete AuraEngineOutputs
+[ ] Score projection matches blueprint-weighted formula
+[ ] Archetype uses behavioral signals only
+[ ] NextAction returns one clear action + followUp
+[ ] Profile updates after each practice session
+[ ] /aura Today screen shows real nextAction (not hardcoded QUESTS only)
+[ ] Planner reads nextAction / recovery without re-implementing engines
+[ ] npm run build passes
 
 ================================================================================
-REFERENCE STUDENT
+REFERENCE SEED
 ================================================================================
-Seed profile: Arjun Kumar, Class X, Karnataka SSLC, target 90%, ~42 days to exam.
-Use src/data/StudentLearningProfile.json for local dev and engine tests.
+Student: Arjun Kumar, Class X, Karnataka SSLC
+Target: 90% | ~42 days to exam (see profile for live values)
+Seed file: src/data/StudentLearningProfile.json
+
+================================================================================
+END OF AURA SYSTEM PROMPT
+================================================================================
