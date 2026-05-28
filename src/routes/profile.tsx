@@ -38,6 +38,8 @@ import { useUserSettings } from "@/hooks/use-user-settings";
 import { useAnalytics } from "@/hooks/use-analytics";
 import { useAchievements } from "@/hooks/use-achievements";
 import { patchUserProfile } from "@/integrations/firebase/services/users";
+import { syncStudentDisplayName } from "@/lib/student-display-name";
+import { useDisplayName } from "@/hooks/use-display-name";
 import type { PreferredLanguage } from "@/integrations/firebase/types";
 import { subjects } from "@/lib/mock-data";
 
@@ -113,6 +115,8 @@ function ProfileHeader({
   profile: NonNullable<ReturnType<typeof useAuth>["profile"]>;
   onSignOut: () => Promise<void>;
 }) {
+  const { displayName } = useDisplayName();
+
   return (
     <div className="rounded-2xl border border-border/60 bg-card p-4 shadow-card flex items-center gap-3">
       <div className="flex h-12 w-12 items-center justify-center rounded-2xl gradient-brand shadow-glow shrink-0 text-xl">
@@ -122,7 +126,7 @@ function ProfileHeader({
       </div>
       <div className="min-w-0 flex-1">
         <h2 className="font-display text-base sm:text-lg font-semibold truncate">
-          {profile.studentName || profile.displayName || "Student"}
+          {displayName}
         </h2>
         <p className="text-xs text-muted-foreground truncate">
           Class {profile.classLevel} · Target {profile.targetScore}%
@@ -164,6 +168,30 @@ function ProfileCard({
   const [examDate, setExamDate] = useState(profile.examTargetDate ?? "");
   const [busy, setBusy] = useState(false);
 
+  useEffect(() => {
+    setStudentName(profile.studentName || profile.displayName || "");
+    setClassLevel(profile.classLevel);
+    setTargetScore(String(profile.targetScore));
+    setLanguage(profile.preferredLanguage);
+    setWeakSubjects(profile.weakSubjects);
+    setGoals(profile.studyGoals.join("\n"));
+    setAvatarEmoji(profile.avatarEmoji ?? "");
+    setDailyGoal(String(profile.dailyStudyGoalMinutes ?? 90));
+    setExamDate(profile.examTargetDate ?? "");
+  }, [
+    profile.studentName,
+    profile.displayName,
+    profile.classLevel,
+    profile.targetScore,
+    profile.preferredLanguage,
+    profile.weakSubjects,
+    profile.studyGoals,
+    profile.avatarEmoji,
+    profile.dailyStudyGoalMinutes,
+    profile.examTargetDate,
+    profile.updatedAt,
+  ]);
+
   const subjectOptions = useMemo(
     () => subjects.map((s) => ({ id: s.id, name: s.name, emoji: s.emoji })),
     [],
@@ -194,6 +222,7 @@ function ProfileCard({
     try {
       await patchUserProfile(profile.uid, {
         studentName: studentName.trim(),
+        displayName: studentName.trim(),
         classLevel: classLevel.trim() || "10",
         targetScore: Math.round(target),
         preferredLanguage: language,
@@ -207,6 +236,7 @@ function ProfileCard({
         dailyStudyGoalMinutes: Math.round(daily),
         examTargetDate: examDate || undefined,
       });
+      syncStudentDisplayName(studentName.trim());
       await onSaved();
       toast.success("Profile updated");
     } catch (err) {

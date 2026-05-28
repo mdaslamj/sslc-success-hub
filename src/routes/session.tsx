@@ -17,7 +17,7 @@ import {
   Trophy,
   Wand2,
 } from "lucide-react";
-import { useAuth } from "@/contexts/auth-context";
+import { useDisplayName } from "@/hooks/use-display-name";
 import { useStudySession } from "@/hooks/use-study-session";
 import { getDaysToExam, studyStreak } from "@/lib/mock-data";
 import { Button } from "@/components/ui/button";
@@ -52,7 +52,7 @@ function fmt(s: number) {
 function SessionPage() {
   const { taskId } = useSearch({ from: "/session" });
   const navigate = useNavigate();
-  const { user, profile } = useAuth();
+  const { displayName } = useDisplayName();
   const daysToExam = getDaysToExam();
 
   const session = useStudySession({
@@ -171,7 +171,7 @@ function SessionPage() {
           subject={session.task.subject ?? "Today"}
           focusedMinutes={Math.max(1, Math.round(session.focusedSeconds / 60))}
           pomodoros={session.pomodoros}
-          firstName={(profile?.studentName || profile?.displayName || user?.displayName || "friend").split(" ")[0]}
+          firstName={displayName.split(" ")[0] || "Student"}
         />
       )}
     </SessionShell>

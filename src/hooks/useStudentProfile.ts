@@ -8,6 +8,13 @@ import type {
 import { appendSessionToProfile, type NewSessionInput } from "@/engines/sessionLogger";
 
 import seedProfile from "@/data/StudentLearningProfile.json";
+import {
+  DISPLAY_NAME_CHANGED_EVENT,
+  migrateDemoProfileName,
+  readGuestOnboardingName,
+  resolveDisplayName,
+  syncStudentDisplayName,
+} from "@/lib/student-display-name";
 
 export const PROFILE_STORAGE_KEY = "aura_profile";
 export const PROFILE_VERSION_KEY = "aura_profile_version";
@@ -104,9 +111,26 @@ export function writeStoredProfile(stored: AuraProfileStorage): void {
 
 export function loadInitialProfileStorage(): AuraProfileStorage {
   const stored = readStoredProfile();
-  if (stored) return stored;
+  if (stored) {
+    const migrated = migrateDemoProfileName(stored);
+    if (JSON.stringify(migrated) !== JSON.stringify(stored)) {
+      writeStoredProfile(migrated);
+    }
+    return migrated;
+  }
 
-  const fresh = toProfileStorage(loadSeedProfile(), {});
+  const seed = loadSeedProfile();
+  const resolvedName = resolveDisplayName({ guestName: readGuestOnboardingName() });
+  const fresh = toProfileStorage(
+    {
+      ...seed,
+      student: {
+        ...seed.student,
+        name: resolvedName,
+      },
+    },
+    {},
+  );
   writeStoredProfile(fresh);
   return fresh;
 }
@@ -226,6 +250,25 @@ export function useStudentProfile() {
       return loaded;
     });
     setIsLoading(false);
+  }, []);
+
+  useEffect(() => {
+    const onNameChange = (event: Event) => {
+      const name =
+        (event as CustomEvent<string>).detail?.trim() ||
+        resolveDisplayName({ guestName: readGuestOnboardingName() });
+      setStored((prev) => {
+        if (!prev) return prev;
+        const next = {
+          ...prev,
+          student: { ...prev.student, name },
+        };
+        writeStoredProfile(next);
+        return next;
+      });
+    };
+    window.addEventListener(DISPLAY_NAME_CHANGED_EVENT, onNameChange);
+    return () => window.removeEventListener(DISPLAY_NAME_CHANGED_EVENT, onNameChange);
   }, []);
 
   const profile = useMemo(

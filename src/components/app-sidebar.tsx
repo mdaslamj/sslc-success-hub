@@ -21,6 +21,7 @@ import {
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/auth-context";
+import { useDisplayName } from "@/hooks/use-display-name";
 import {
   Sidebar,
   SidebarContent,
@@ -124,12 +125,13 @@ export function AppSidebar() {
 function SidebarFooterUser() {
   const navigate = useNavigate();
   const { user, profile, signOut } = useAuth();
+  const { displayName } = useDisplayName();
 
   if (!user) {
     return null;
   }
 
-  const name = profile?.studentName || profile?.displayName || user.displayName || "Student";
+  const name = displayName;
   const sub = profile ? `Class ${profile.classLevel} · Target ${profile.targetScore}%` : user.email;
 
   return (

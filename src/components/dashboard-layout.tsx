@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Link } from "@tanstack/react-router";
 import { useAuth } from "@/contexts/auth-context";
+import { useDisplayName } from "@/hooks/use-display-name";
 import { BottomNav } from "@/components/bottom-nav";
 import { PageTransition } from "@/components/page-transition";
 
@@ -21,8 +22,8 @@ import { installGlobalCrashHandlers } from "@/lib/production/diagnostics";
  */
 export function DashboardLayout({ children, title }: { children: ReactNode; title?: string }) {
   const { user, profile } = useAuth();
-  const name = profile?.studentName || profile?.displayName || user?.displayName || "";
-  const initial = (name || user?.email || "S").trim().charAt(0).toUpperCase();
+  const { displayName } = useDisplayName();
+  const initial = (displayName || user?.email || "S").trim().charAt(0).toUpperCase();
 
   useEffect(() => {
     installGlobalCrashHandlers();

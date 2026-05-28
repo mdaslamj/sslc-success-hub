@@ -17,6 +17,7 @@ import { Input } from "@/components/ui/input";
 import { Slider } from "@/components/ui/slider";
 import { useAuth } from "@/contexts/auth-context";
 import { patchUserProfile } from "@/integrations/firebase/services/users";
+import { syncStudentDisplayName } from "@/lib/student-display-name";
 import { saveMemoryTracking } from "@/integrations/firebase/services/memory-tracking";
 import { saveBoardReadiness } from "@/integrations/firebase/services/board-readiness";
 import { cn } from "@/lib/utils";
@@ -102,6 +103,7 @@ function OnboardingFlow() {
           GUEST_ONBOARDING_KEY,
           JSON.stringify({ ...s, completedAt: Date.now() }),
         );
+        syncStudentDisplayName(s.name || "Student");
         toast.success("Your plan is ready 🌱");
         navigate({ to: "/" });
       } finally {
@@ -126,6 +128,7 @@ function OnboardingFlow() {
     try {
       await patchUserProfile(user.uid, {
         studentName: s.name || profile?.studentName || "Student",
+        displayName: s.name || profile?.studentName || "Student",
         targetScore: s.target,
         weakSubjects: s.weak,
         dailyStudyGoalMinutes: s.capacity,
@@ -139,6 +142,7 @@ function OnboardingFlow() {
         console.warn("baseline seed failed", e),
       );
       await refreshProfile();
+      syncStudentDisplayName(s.name || profile?.studentName || "Student");
       toast.success("Your plan is ready 🌱");
       navigate({ to: "/" });
     } catch (err) {

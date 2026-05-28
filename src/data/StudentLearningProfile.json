@@ -10,7 +10,7 @@
 
   "student": {
     "id": "s_arjun_001",
-    "name": "Arjun Kumar",
+    "name": "Student",
     "grade": "Class X",
     "school": "Govt. High School, Bengaluru",
     "enrolledOn": "2025-03-01",

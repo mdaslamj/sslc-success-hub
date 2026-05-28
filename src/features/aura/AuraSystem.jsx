@@ -7,7 +7,7 @@ import { useState, useMemo } from "react";
    ═══════════════════════════════════════════════════════════ */
 
 // ── STUDENT ──────────────────────────────────────────────────
-const STUDENT = { name:"Arjun", streak:7, xp:2340, momentum:68, daysToExam:42, examDate:"March 21, 2026" };
+const STUDENT = { name:"Student", streak:7, xp:2340, momentum:68, daysToExam:42, examDate:"March 21, 2026" };
 
 const RANKS = [
   {name:"Beginner",icon:"🌱",minXP:0},    {name:"Student",icon:"📖",minXP:500},

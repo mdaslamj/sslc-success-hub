@@ -36,6 +36,7 @@ import {
   ensureUserDocuments,
   fetchUserProfile,
 } from "@/integrations/firebase/services/users";
+import { syncStudentDisplayName } from "@/lib/student-display-name";
 import type { UserProfileDoc } from "@/integrations/firebase/types";
 
 export type AuthContextValue = {
@@ -116,6 +117,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           photoURL: u.photoURL,
         });
         setProfile(p);
+        if (p.studentName?.trim()) {
+          syncStudentDisplayName(p.studentName);
+        }
       } catch (err) {
         console.error("Failed to bootstrap user docs", err);
       } finally {
@@ -128,7 +132,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const refreshProfile = useCallback(async () => {
     if (!user) return;
     const p = await fetchUserProfile(user.uid);
-    if (p) setProfile(p);
+    if (p) {
+      setProfile(p);
+      if (p.studentName?.trim()) {
+        syncStudentDisplayName(p.studentName);
+      }
+    }
   }, [user]);
 
   const signInWithEmail = useCallback(async (email: string, password: string) => {

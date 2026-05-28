@@ -8,6 +8,7 @@ import { AuraErrorBoundary } from "@/components/shared/AuraErrorBoundary";
 import { BurnoutIndicator } from "@/components/shared/BurnoutIndicator";
 import { RevisionSchedule } from "@/components/shared/RevisionSchedule";
 import { useState } from "react";
+import { useDisplayName } from "@/hooks/use-display-name";
 
 const SUBJECT_LABEL: Record<string, string> = {
   math: "Math",
@@ -48,6 +49,7 @@ export function AuraDashboard({
   const [doneTasks, setDoneTasks] = useState<Record<string, boolean>>({});
   const [bouncing, setBouncing] = useState<Record<string, boolean>>({});
   const [activeTab, setActiveTab] = useState<'Recovery' | 'Subjects' | 'Target'>('Recovery')
+  const { displayName } = useDisplayName();
 
   const planTasks = (recovery?.top3 ?? []).slice(0, 3).map((item, index) => ({
     id: item.chapter,
@@ -92,7 +94,7 @@ export function AuraDashboard({
         </div>
         <div className="flex items-center gap-4 text-xs text-slate-400">
           <span>{profile.student?.daysToExam ?? 0} days to exam</span>
-          <span className="font-medium text-slate-200">{profile.student?.name ?? "Student"}</span>
+          <span className="font-medium text-slate-200">{displayName}</span>
         </div>
       </header>
 
