@@ -33,6 +33,10 @@ export {
   type ConstellationView,
   type ConstellationSubjectView,
 } from "@/core/academic-state/constellationView";
+export {
+  buildAcademicAnalyticsView,
+  type AcademicAnalyticsView,
+} from "@/core/academic-state/analyticsView";
 export { computeProbabilitySnapshot } from "@/core/academic-state/probabilityEngine";
 export { computeBurnoutSnapshot } from "@/core/academic-state/burnoutEngine";
 export { computeTrajectoryShift } from "@/core/academic-state/trajectoryEngine";
