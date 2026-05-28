@@ -47,7 +47,7 @@ export function BottomNav() {
                 <span
                   className={cn(
                     "relative flex h-9 w-12 items-center justify-center rounded-2xl transition-all duration-300",
-                    active && "bg-secondary shadow-soft",
+                    active && "animate-pill bg-secondary shadow-soft",
                   )}
                 >
                   <Icon

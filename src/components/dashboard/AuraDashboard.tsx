@@ -111,27 +111,23 @@ export function AuraDashboard({
         />
       </AuraErrorBoundary>
 
-      <div className="flex md:hidden border-b border-border mb-2">
+      <div className="relative flex md:hidden border-b border-border mb-2">
         {(['Recovery', 'Subjects', 'Target'] as const).map((tab) => (
           <button
             key={tab}
             onClick={() => setActiveTab(tab)}
+            className="relative flex-1 py-2.5 text-xs font-semibold transition-colors duration-200"
             style={{
-              flex: 1,
-              padding: '10px 0',
-              fontSize: 12,
-              fontWeight: 600,
-              background: 'transparent',
-              border: 'none',
-              cursor: 'pointer',
-              color: activeTab === tab ? theme.primary : 'var(--muted-foreground)',
-              borderBottom: activeTab === tab
-                ? `3px solid ${theme.primary}`
-                : '3px solid transparent',
-              transition: 'border-color 0.2s ease, color 0.2s ease',
+              color: activeTab === tab ? theme.primary : "var(--muted-foreground)",
             }}
           >
             {tab}
+            {activeTab === tab ? (
+              <span
+                className="animate-pill absolute inset-x-4 -bottom-px h-0.5 rounded-full"
+                style={{ backgroundColor: theme.primary }}
+              />
+            ) : null}
           </button>
         ))}
       </div>

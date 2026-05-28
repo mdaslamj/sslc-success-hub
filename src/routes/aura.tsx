@@ -1,6 +1,8 @@
-import { createFileRoute } from "@tanstack/react-router";
-import AuraSystem from "@/features/aura/AuraSystem";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 
+/** Legacy Lovable prototype — redirect to the engine-backed dashboard at `/`. */
 export const Route = createFileRoute("/aura")({
-  component: AuraSystem,
+  beforeLoad: () => {
+    throw redirect({ to: "/" });
+  },
 });

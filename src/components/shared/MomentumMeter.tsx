@@ -1,8 +1,39 @@
 import type { MomentumOutput } from "@/types/aura-engine-contracts";
 import type { AdaptiveTheme } from "@/hooks/useAdaptiveTheme";
 import { AdaptiveMessage } from "@/components/shared/AdaptiveMessage";
+import { useEffect, useRef, useState } from "react";
 
 type LayoutDensity = AdaptiveTheme["layoutDensity"];
+
+function useCountUp(target: number, duration = 1000) {
+  const [value, setValue] = useState(0);
+  const startedRef = useRef(false);
+  useEffect(() => {
+    if (startedRef.current) {
+      setValue(target);
+      return;
+    }
+    startedRef.current = true;
+    const start = performance.now();
+    let raf = 0;
+    const tick = (now: number) => {
+      const t = Math.min(1, (now - start) / duration);
+      const eased = 1 - Math.pow(1 - t, 3);
+      setValue(target * eased);
+      if (t < 1) raf = requestAnimationFrame(tick);
+      else setValue(target);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  return value;
+}
+
+function AnimatedScore({ value }: { value: number }) {
+  const v = useCountUp(value, 1000);
+  return <>{Math.round(v)}</>;
+}
 
 type MomentumMeterProps = {
   momentum?: MomentumOutput | null;
@@ -71,7 +102,7 @@ export function MomentumMeter({
             className="text-3xl font-black"
             style={{ color: theme.primary, fontFamily: "Syne, sans-serif" }}
           >
-            {score}
+            <AnimatedScore value={score} />
           </div>
           <div className="text-xs text-slate-400">{badge}</div>
         </div>
