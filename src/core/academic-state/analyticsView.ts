@@ -40,12 +40,44 @@ export type AnalyticsTrajectoryPoint = {
   score: number;
 };
 
+export type AnalyticsReadinessPoint = {
+  day: string;
+  readiness: number;
+};
+
+export type AnalyticsGapRow = {
+  subjectId: string;
+  subject: string;
+  gap: number;
+  recovered: number;
+  color: string;
+};
+
+export type AnalyticsHeatmapCell = {
+  week: string;
+  day: string;
+  dayIndex: number;
+  intensity: 0 | 1 | 2 | 3;
+  sessions: number;
+};
+
+export type AnalyticsWeeklySummaryRow = {
+  week: string;
+  sessions: number;
+  marksRecovered: number;
+  probGain: number;
+  bestSubject: string;
+};
+
 export type AcademicAnalyticsView = {
   readiness: number;
   targetScore: number;
   gap: number;
   probability: number;
   overallHealth: number;
+  chaptersDone: number;
+  totalChapters: number;
+  overallProgress: number;
   momentum: {
     score: number;
     streak: number;
@@ -61,6 +93,10 @@ export type AcademicAnalyticsView = {
   dimensions: AnalyticsDimensionRow[];
   sessionActivity: AnalyticsActivityDay[];
   trajectory: AnalyticsTrajectoryPoint[];
+  readinessHistory: AnalyticsReadinessPoint[];
+  gapData: AnalyticsGapRow[];
+  sessionHeatmap: AnalyticsHeatmapCell[];
+  weeklySummary: AnalyticsWeeklySummaryRow[];
 };
 
 const DIMENSION_ORDER = [
@@ -73,6 +109,173 @@ const DIMENSION_ORDER = [
 ] as const;
 
 const DAY_LABELS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+const INITIAL_GAPS_KEY = "aura_analytics_initial_gaps_v1";
+
+function isoWeekKey(dateKey: string): string {
+  const date = new Date(`${dateKey}T12:00:00Z`);
+  const day = date.getUTCDay() || 7;
+  date.setUTCDate(date.getUTCDate() + 4 - day);
+  const yearStart = new Date(Date.UTC(date.getUTCFullYear(), 0, 1));
+  const week = Math.ceil(((date.getTime() - yearStart.getTime()) / 86_400_000 + 1) / 7);
+  return `${date.getUTCFullYear()}-W${String(week).padStart(2, "0")}`;
+}
+
+function resolveInitialGaps(current: Record<string, number>): Record<string, number> {
+  if (typeof window === "undefined") return current;
+  try {
+    const raw = window.sessionStorage.getItem(INITIAL_GAPS_KEY);
+    if (raw) return JSON.parse(raw) as Record<string, number>;
+    window.sessionStorage.setItem(INITIAL_GAPS_KEY, JSON.stringify(current));
+    return current;
+  } catch {
+    return current;
+  }
+}
+
+function buildReadinessHistory(
+  sessions: SessionRecord[],
+  overallProgress: number,
+): AnalyticsReadinessPoint[] {
+  const byDate = new Map<string, SessionRecord[]>();
+  for (const session of sessions) {
+    const list = byDate.get(session.date) ?? [];
+    list.push(session);
+    byDate.set(session.date, list);
+  }
+
+  const dates = [...byDate.keys()].sort((a, b) => parseDate(a) - parseDate(b)).slice(-14);
+
+  if (dates.length === 0) {
+    return [{ day: "Now", readiness: overallProgress }];
+  }
+
+  // TODO: store readinessAfter on each appendSession call for per-session deltas.
+  return dates.map((date) => ({
+    day: formatDayLabel(date),
+    readiness: overallProgress,
+  }));
+}
+
+function buildGapData(
+  constellation: ReturnType<typeof buildConstellationView>,
+  targetBySubject: Record<string, { gap: number }> | undefined,
+): AnalyticsGapRow[] {
+  const currentGaps = Object.fromEntries(
+    Object.entries(constellation.subjects).map(([id, subject]) => [
+      id,
+      targetBySubject?.[id]?.gap ?? Math.max(0, subject.target - subject.predicted),
+    ]),
+  );
+  const initialGaps = resolveInitialGaps(currentGaps);
+
+  return Object.entries(constellation.subjects).map(([id, subject]) => {
+    const gap = currentGaps[id] ?? 0;
+    const initial = initialGaps[id] ?? gap;
+    return {
+      subjectId: id,
+      subject: subject.name,
+      gap,
+      recovered: Math.max(0, initial - gap),
+      color: subject.color,
+    };
+  });
+}
+
+function buildSessionHeatmap(sessions: SessionRecord[]): AnalyticsHeatmapCell[] {
+  const byWeekDay = new Map<string, number>();
+  for (const session of sessions) {
+    const week = isoWeekKey(session.date);
+    const dayIndex = new Date(`${session.date}T12:00:00Z`).getUTCDay();
+    const key = `${week}:${dayIndex}`;
+    byWeekDay.set(key, (byWeekDay.get(key) ?? 0) + 1);
+  }
+
+  const weeks = [...new Set(sessions.map((session) => isoWeekKey(session.date)))]
+    .sort()
+    .slice(-6);
+
+  if (weeks.length === 0) {
+    return DAY_LABELS.map((day, dayIndex) => ({
+      week: "—",
+      day,
+      dayIndex,
+      intensity: 0,
+      sessions: 0,
+    }));
+  }
+
+  const cells: AnalyticsHeatmapCell[] = [];
+  for (const week of weeks) {
+    for (let dayIndex = 0; dayIndex < 7; dayIndex += 1) {
+      const count = byWeekDay.get(`${week}:${dayIndex}`) ?? 0;
+      const intensity = count >= 3 ? 3 : count === 2 ? 2 : count === 1 ? 1 : 0;
+      cells.push({
+        week,
+        day: DAY_LABELS[dayIndex] ?? "Day",
+        dayIndex,
+        intensity,
+        sessions: count,
+      });
+    }
+  }
+  return cells;
+}
+
+function buildWeeklySummary(
+  sessions: SessionRecord[],
+): AnalyticsWeeklySummaryRow[] {
+  const byWeek = new Map<
+    string,
+    { sessions: SessionRecord[]; subjectCounts: Map<string, number> }
+  >();
+
+  for (const session of sessions) {
+    const week = isoWeekKey(session.date);
+    const entry = byWeek.get(week) ?? {
+      sessions: [] as SessionRecord[],
+      subjectCounts: new Map<string, number>(),
+    };
+    entry.sessions.push(session);
+    if (session.subject) {
+      entry.subjectCounts.set(
+        session.subject,
+        (entry.subjectCounts.get(session.subject) ?? 0) + 1,
+      );
+    }
+    byWeek.set(week, entry);
+  }
+
+  return [...byWeek.entries()]
+    .sort(([a], [b]) => a.localeCompare(b))
+    .slice(-8)
+    .map(([week, entry]) => {
+      let bestSubject = "—";
+      let bestCount = 0;
+      for (const [subject, count] of entry.subjectCounts.entries()) {
+        if (count > bestCount) {
+          bestCount = count;
+          bestSubject = subject;
+        }
+      }
+
+      const marksRecovered = entry.sessions.reduce(
+        (sum, session) => sum + Math.round((session.score ?? 0) / 10),
+        0,
+      );
+      const probGain = entry.sessions.reduce(
+        (sum, session) => sum + (session.score ?? 0) / 100,
+        0,
+      );
+
+      return {
+        week,
+        sessions: entry.sessions.length,
+        marksRecovered,
+        probGain: Math.round(probGain * 10) / 10,
+        bestSubject,
+      };
+    });
+}
 
 function parseDate(value: string): number {
   return new Date(`${value}T00:00:00Z`).getTime();
@@ -220,6 +423,9 @@ export function buildAcademicAnalyticsView(
     overallMastery,
   );
   const burnoutSnap = computeBurnoutSnapshot(burnout);
+  const chaptersDone = constellation.chapters.filter((chapter) => chapter.mastery >= 70).length;
+  const totalChapters = constellation.chapters.length;
+  const overallProgress = readiness;
 
   return {
     readiness,
@@ -227,6 +433,9 @@ export function buildAcademicAnalyticsView(
     gap,
     probability,
     overallHealth: analytics.overallHealthScore,
+    chaptersDone,
+    totalChapters,
+    overallProgress,
     momentum: {
       score: Math.round(momentum.score),
       streak: momentum.streak,
@@ -238,5 +447,9 @@ export function buildAcademicAnalyticsView(
     dimensions: buildDimensions(analytics),
     sessionActivity: buildLast14Days(profile.sessionHistory),
     trajectory: buildTrajectorySeries(profile.sessionHistory, readiness),
+    readinessHistory: buildReadinessHistory(profile.sessionHistory, readiness),
+    gapData: buildGapData(constellation, target.bySubject),
+    sessionHeatmap: buildSessionHeatmap(profile.sessionHistory),
+    weeklySummary: buildWeeklySummary(profile.sessionHistory),
   };
 }

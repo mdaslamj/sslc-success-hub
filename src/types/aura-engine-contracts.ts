@@ -1,15 +1,15 @@
-/**
+﻿/**
  * AURA ENGINE CONTRACTS
  * Karnataka SSLC Intelligence Layer v2
  *
  * These TypeScript interfaces define the contracts for all 6 engines.
  * Cursor builds these. Lovable consumes their outputs.
- * Engines NEVER communicate via UI state — only via the StudentLearningProfile.
+ * Engines NEVER communicate via UI state ΓÇö only via the StudentLearningProfile.
  */
 
-// ─────────────────────────────────────────────────────────────────────────────
+// ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
 // SHARED PRIMITIVES
-// ─────────────────────────────────────────────────────────────────────────────
+// ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
 
 export type Subject      = "math" | "science" | "social";
 export type UrgencyLevel = "critical" | "high" | "medium" | "low";
@@ -17,12 +17,12 @@ export type Trend        = "improving" | "declining" | "stable";
 export type Archetype    = "struggling" | "average" | "topper";
 export type SessionType  = "adaptive" | "recovery" | "timed_test" | "pyq_practice" | "concept_review" | "formula_drill";
 
-// ─────────────────────────────────────────────────────────────────────────────
+// ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
 // STUDENT LEARNING PROFILE (source of truth)
-// ─────────────────────────────────────────────────────────────────────────────
+// ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
 
 export interface ChapterMasteryEntry {
-  mastery:       number;        // 0–100
+  mastery:       number;        // 0ΓÇô100
   trend:         Trend;
   lastPracticed: string;        // ISO date
   attemptCount:  number;
@@ -36,7 +36,7 @@ export interface SessionRecord {
   durationMinutes:     number;
   questionsAttempted:  number;
   questionsCorrect:    number;
-  score:               number | null; // 0–100
+  score:               number | null; // 0ΓÇô100
   hintsUsed:           number;
   retriesOnWrong:      number;
   completedPlan:       boolean;
@@ -76,22 +76,24 @@ export interface StudentLearningProfile {
     followUp?: unknown;
   };
   recoveryPlans:   Array<Partial<Omit<RecoveryPlan, "subject">> & { subject?: string }>;
+  /** Per-subject target percentages (all six SSLC subjects). */
+  subjectTargets?: Record<string, number>;
   targetConfig?:   TargetConfiguration;
   adaptiveMsg?:    AdaptiveMessaging;
   blueprint:       Record<Subject, Record<string, BlueprintEntry>>;
 }
 
 
-// ─────────────────────────────────────────────────────────────────────────────
-// ENGINE 1 — ScoreProjectionEngine
+// ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+// ENGINE 1 ΓÇö ScoreProjectionEngine
 // Foundation. Every other engine reads from its output.
-// Formula: Σ mastery[ch] × blueprintMarks[ch] / 100  (per subject, then total)
-// ─────────────────────────────────────────────────────────────────────────────
+// Formula: ╬ú mastery[ch] ├ù blueprintMarks[ch] / 100  (per subject, then total)
+// ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
 
 export interface SubjectProjection {
   predicted:  number;   // marks predicted (e.g. 58.4)
   max:        number;   // total marks available
-  percentage: number;   // 0–100
+  percentage: number;   // 0ΓÇô100
 }
 
 export interface ScoreProjectionOutput {
@@ -109,23 +111,23 @@ export function scoreProjectionEngine(
 ): ScoreProjectionOutput { /* implemented in engines/scoreProjection.ts */ throw 0; }
 
 
-// ─────────────────────────────────────────────────────────────────────────────
-// ENGINE 2 — StudentArchetypeEngine
+// ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+// ENGINE 2 ΓÇö StudentArchetypeEngine
 // CRITICAL: No self-report. Infer from behavioral signals only.
 // Input signals: mastery + session behavior + performance patterns
-// ─────────────────────────────────────────────────────────────────────────────
+// ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
 
 export interface BehavioralSignals {
   overallMastery:            number;   // from ScoreProjectionEngine output
   sessionCompletionRate:     number;   // % of sessions where completedPlan = true
   accuracyTrend:             Trend;    // recent 5 sessions vs previous 5
   recoverySpeed:             "fast" | "moderate" | "slow";
-  streakDiscipline:          number;   // 0–100 based on streak consistency
-  panicIndex:                number;   // 0–100, % of sessions with panicSignal = true
+  streakDiscipline:          number;   // 0ΓÇô100 based on streak consistency
+  panicIndex:                number;   // 0ΓÇô100, % of sessions with panicSignal = true
   helpSeekingFrequency:      number;   // avg hintsUsed per session
   retryBehavior:             number;   // avg retriesOnWrong per session
   examPerformanceVsPractice: number;   // practice avg minus exam avg (negative = underperforms)
-  timeOnHardProblems:        number;   // 0–100 engagement score on hard questions
+  timeOnHardProblems:        number;   // 0ΓÇô100 engagement score on hard questions
 }
 
 export interface ArchetypeState {
@@ -133,7 +135,7 @@ export interface ArchetypeState {
   inferredAt:          string;
   inferenceMethod:     "behavioral";  // never "self_report"
   behavioralSignals:   BehavioralSignals;
-  archetypeScore:      number;        // 0–100 composite
+  archetypeScore:      number;        // 0ΓÇô100 composite
   archetypeBand:       Archetype;
   archetypeHistory:    Array<{ date: string; band: Archetype; score: number }>;
 }
@@ -155,10 +157,10 @@ export function studentArchetypeEngine(
 ): ArchetypeOutput { throw 0; }
 
 
-// ─────────────────────────────────────────────────────────────────────────────
-// ENGINE 3 — RecoveryEngine
+// ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+// ENGINE 3 ΓÇö RecoveryEngine
 // Diagnoses mark loss and builds actionable chapter recovery roadmaps.
-// ─────────────────────────────────────────────────────────────────────────────
+// ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
 
 export interface RecoveryItem {
   chapter:        string;
@@ -203,11 +205,11 @@ export function recoveryEngine(
 ): RecoveryEngineOutput { throw 0; }
 
 
-// ─────────────────────────────────────────────────────────────────────────────
-// ENGINE 4 — TargetGapEngine
+// ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+// ENGINE 4 ΓÇö TargetGapEngine
 // Finds highest ROI path from current score to target.
 // ROI = marksGain / estimatedHours
-// ─────────────────────────────────────────────────────────────────────────────
+// ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
 
 export interface ROIChapter {
   chapter:       string;
@@ -231,11 +233,19 @@ export interface TargetConfiguration {
   lastComputedAt:   string;
 }
 
+export interface SubjectTargetGap {
+  target: number;
+  predicted: number;
+  gap: number;
+}
+
 export interface TargetGapOutput {
   targetScore:     number;
   currentScore:    number;
   gap:             number;
   gapPercentage:   number;
+  /** Per-subject target vs predicted gaps when subjectTargets are configured. */
+  bySubject?:      Record<string, SubjectTargetGap>;
   rankedChapters:  ROIChapter[];       // sorted by roi desc
   fastestPath:     ROIChapter[];       // minimum chapters to close the gap
   estimatedHours:  number;
@@ -252,18 +262,18 @@ export function targetGapEngine(
 ): TargetGapOutput { throw 0; }
 
 
-// ─────────────────────────────────────────────────────────────────────────────
-// ENGINE 5 — MomentumEngine
+// ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+// ENGINE 5 ΓÇö MomentumEngine
 // Tracks study energy, streaks, and directional progress.
-// ─────────────────────────────────────────────────────────────────────────────
+// ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
 
 export interface MomentumOutput {
   streak:           number;
   trend:            Trend;
-  score:            number;      // 0–100 composite momentum score
+  score:            number;      // 0ΓÇô100 composite momentum score
   recentAvgScore:   number;
   totalStudyMinutes: number;
-  badge:            string;      // "🔥 On Fire" | "⚡ Momentum" | "✨ Building" | "🌱 Starting"
+  badge:            string;      // "≡ƒöÑ On Fire" | "ΓÜí Momentum" | "Γ£¿ Building" | "≡ƒî▒ Starting"
   weeklyPattern:    Array<{ date: string; studyMinutes: number; avgScore: number }>;
   computedAt:       string;
 }
@@ -273,11 +283,11 @@ export function momentumEngine(
 ): MomentumOutput { throw 0; }
 
 
-// ─────────────────────────────────────────────────────────────────────────────
-// ENGINE 6 — NextActionEngine  ← NEW. Aura's signature experience.
+// ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+// ENGINE 6 ΓÇö NextActionEngine  ΓåÉ NEW. Aura's signature experience.
 // Unifies Recovery + Target + Momentum into ONE recommended action.
 // This is what creates the "always knows what to do next" feeling.
-// ─────────────────────────────────────────────────────────────────────────────
+// ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
 
 export interface NextActionOutput {
   recommendedAction:  string;     // human-readable: "Practice Electricity Numericals"
@@ -287,7 +297,7 @@ export interface NextActionOutput {
   estimatedGain:      string;     // "+4.2 marks"
   timeRequired:       number;     // minutes
   urgency:            UrgencyLevel;
-  confidence:         number;     // 0–1, how certain Aura is this is the best move
+  confidence:         number;     // 0ΓÇô1, how certain Aura is this is the best move
   rationale:          string;     // explanation (for debugging / transparency mode)
   followUp:           Omit<NextActionOutput, "followUp"> | null;
   computedAt:         string;
@@ -295,10 +305,10 @@ export interface NextActionOutput {
 
 /**
  * Decision logic:
- * 1. If critical recovery chapter exists (mastery < 50, blueprintMarks >= 6) → recommend recovery
- * 2. Else if today is skip day (streak at risk) → recommend easiest high-ROI chapter
- * 3. Else if target gap > 10% → recommend highest ROI chapter from targetGapEngine
- * 4. Else (topper mode) → recommend precision drill on almost-mastered chapter
+ * 1. If critical recovery chapter exists (mastery < 50, blueprintMarks >= 6) ΓåÆ recommend recovery
+ * 2. Else if today is skip day (streak at risk) ΓåÆ recommend easiest high-ROI chapter
+ * 3. Else if target gap > 10% ΓåÆ recommend highest ROI chapter from targetGapEngine
+ * 4. Else (topper mode) ΓåÆ recommend precision drill on almost-mastered chapter
  */
 export function nextActionEngine(
   recovery:   RecoveryEngineOutput,
@@ -309,13 +319,13 @@ export function nextActionEngine(
 ): NextActionOutput { throw 0; }
 
 
-// ─────────────────────────────────────────────────────────────────────────────
+// ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
 // ANALYTICS SCORING SYSTEM (Phase A4)
 // Scores 6 dimensions from raw session history
-// ─────────────────────────────────────────────────────────────────────────────
+// ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
 
 export interface AnalyticsDimension {
-  score:       number;   // 0–100
+  score:       number;   // 0ΓÇô100
   label:       string;
   description: string;
   trend:       Trend;
@@ -343,9 +353,9 @@ export function computeAnalytics(
 ): AnalyticsState { throw 0; }
 
 
-// ─────────────────────────────────────────────────────────────────────────────
+// ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
 // WELLBEING STATE
-// ─────────────────────────────────────────────────────────────────────────────
+// ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
 
 export interface WellbeingState {
   burnoutRisk:    "low" | "medium" | "high";
@@ -361,10 +371,10 @@ export interface WellbeingState {
 }
 
 
-// ─────────────────────────────────────────────────────────────────────────────
+// ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
 // ADAPTIVE MESSAGING LAYER
 // NOT motivational quotes. Context-aware micro-guidance.
-// ─────────────────────────────────────────────────────────────────────────────
+// ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
 
 export interface AdaptiveMessaging {
   archetype:       Archetype;
@@ -384,9 +394,9 @@ export interface AdaptiveMessaging {
 }
 
 
-// ENGINE 7 — BurnoutDetectionEngine
+// ENGINE 7 ΓÇö BurnoutDetectionEngine
 // Predicts burnout risk from analytics, session patterns, and momentum.
-// ─────────────────────────────────────────────────────────────────────────────
+// ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
 
 export interface BurnoutOutput {
   risk:            "low" | "medium" | "high";
@@ -403,10 +413,10 @@ export function burnoutDetectionEngine(
 ): BurnoutOutput { throw 0; }
 
 
-// ─────────────────────────────────────────────────────────────────────────────
-// ENGINE 8 — RankPredictionEngine
+// ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+// ENGINE 8 ΓÇö RankPredictionEngine
 // Maps projected score to Karnataka SSLC percentile bands.
-// ─────────────────────────────────────────────────────────────────────────────
+// ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
 
 export interface RankPredictionOutput {
   predictedPercentile: number;
@@ -422,10 +432,10 @@ export function rankPredictionEngine(
 ): RankPredictionOutput { throw 0; }
 
 
-// ─────────────────────────────────────────────────────────────────────────────
-// ENGINE 9 — RevisionOptimizerEngine
+// ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+// ENGINE 9 ΓÇö RevisionOptimizerEngine
 // Spaced-repetition revision schedule from chapter mastery.
-// ─────────────────────────────────────────────────────────────────────────────
+// ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
 
 export interface RevisionItem {
   chapter:          string;
@@ -450,33 +460,33 @@ export function revisionOptimizerEngine(
 ): RevisionOutput { throw 0; }
 
 
-// ─────────────────────────────────────────────────────────────────────────────
+// ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
 // ENGINE EXECUTION ORDER (enforced at runtime)
 // Never run out of order. Each engine depends on previous outputs.
-// ─────────────────────────────────────────────────────────────────────────────
+// ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
 
 /**
  * EXECUTION PIPELINE:
  *
  * profile (StudentLearningProfile)
- *   │
- *   ├─► [1] scoreProjectionEngine(mastery, blueprint)
- *   │         └─► ScoreProjectionOutput
- *   │
- *   ├─► [2] studentArchetypeEngine(sessions, projection)
- *   │         └─► ArchetypeOutput
- *   │
- *   ├─► [3] recoveryEngine(mastery, blueprint, sessions)
- *   │         └─► RecoveryEngineOutput
- *   │
- *   ├─► [4] targetGapEngine(targetScore, projection, mastery, blueprint)
- *   │         └─► TargetGapOutput
- *   │
- *   ├─► [5] momentumEngine(sessions)
- *   │         └─► MomentumOutput
- *   │
- *   └─► [6] nextActionEngine(recovery, target, momentum, archetype, sessions)
- *             └─► NextActionOutput  ← Aura's signature experience
+ *   Γöé
+ *   Γö£ΓöÇΓû║ [1] scoreProjectionEngine(mastery, blueprint)
+ *   Γöé         ΓööΓöÇΓû║ ScoreProjectionOutput
+ *   Γöé
+ *   Γö£ΓöÇΓû║ [2] studentArchetypeEngine(sessions, projection)
+ *   Γöé         ΓööΓöÇΓû║ ArchetypeOutput
+ *   Γöé
+ *   Γö£ΓöÇΓû║ [3] recoveryEngine(mastery, blueprint, sessions)
+ *   Γöé         ΓööΓöÇΓû║ RecoveryEngineOutput
+ *   Γöé
+ *   Γö£ΓöÇΓû║ [4] targetGapEngine(targetScore, projection, mastery, blueprint)
+ *   Γöé         ΓööΓöÇΓû║ TargetGapOutput
+ *   Γöé
+ *   Γö£ΓöÇΓû║ [5] momentumEngine(sessions)
+ *   Γöé         ΓööΓöÇΓû║ MomentumOutput
+ *   Γöé
+ *   ΓööΓöÇΓû║ [6] nextActionEngine(recovery, target, momentum, archetype, sessions)
+ *             ΓööΓöÇΓû║ NextActionOutput  ΓåÉ Aura's signature experience
  */
 
 export interface AuraEngineOutputs {

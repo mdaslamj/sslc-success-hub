@@ -113,20 +113,55 @@ function buildFastestPath(rankedChapters: ROIChapter[], gapMarks: number): ROICh
   return path;
 }
 
+function buildBySubjectGaps(
+  fallbackTarget: number,
+  projection: ScoreProjectionOutput,
+  subjectTargets?: Record<string, number>,
+): Record<string, { target: number; predicted: number; gap: number }> | undefined {
+  if (!subjectTargets || Object.keys(subjectTargets).length === 0) return undefined;
+
+  const out: Record<string, { target: number; predicted: number; gap: number }> = {};
+
+  for (const [subjectId, target] of Object.entries(subjectTargets)) {
+    const predicted = SUBJECTS.includes(subjectId as Subject)
+      ? projection.bySubject[subjectId as Subject].percentage
+      : fallbackTarget;
+    out[subjectId] = {
+      target,
+      predicted: round1(predicted),
+      gap: round1(Math.max(0, target - predicted)),
+    };
+  }
+
+  return out;
+}
+
+function resolveEffectiveTargetScore(
+  targetScore: number,
+  subjectTargets?: Record<string, number>,
+): number {
+  if (!subjectTargets || Object.keys(subjectTargets).length === 0) return targetScore;
+  const values = Object.values(subjectTargets);
+  return round1(values.reduce((sum, value) => sum + value, 0) / values.length);
+}
+
 export function targetGapEngine(
   targetScore: number,
   projection: ScoreProjectionOutput,
   chapterMastery: StudentLearningProfile["chapterMastery"],
   blueprint: Record<Subject, Record<string, BlueprintEntry>>,
   sessions: SessionRecord[] = [],
+  subjectTargets?: Record<string, number>,
 ): TargetGapResult {
   const rankedChapters = iterateBlueprintChapters(chapterMastery, blueprint)
     .map(buildRoiChapter)
     .sort((a, b) => b.roi - a.roi || a.hoursEstimate - b.hoursEstimate);
 
+  const effectiveTargetScore = resolveEffectiveTargetScore(targetScore, subjectTargets);
   const currentScore = projection.percentage;
-  const gapPercentage = round1(Math.max(0, targetScore - currentScore));
+  const gapPercentage = round1(Math.max(0, effectiveTargetScore - currentScore));
   const gapMarks = round2((gapPercentage / 100) * projection.totalMax);
+  const bySubject = buildBySubjectGaps(effectiveTargetScore, projection, subjectTargets);
   const fastestPath = buildFastestPath(rankedChapters, gapMarks);
   const fastestPathHours = round2(
     fastestPath.reduce((sum, chapter) => sum + chapter.hoursEstimate, 0),
@@ -148,10 +183,11 @@ export function targetGapEngine(
   const targetReachable = fastestPathGain >= gapMarks;
 
   return {
-    targetScore,
+    targetScore: effectiveTargetScore,
     currentScore,
     gap: gapMarks,
     gapPercentage,
+    bySubject,
     rankedChapters,
     fastestPath,
     estimatedHours: fastestPathHours,

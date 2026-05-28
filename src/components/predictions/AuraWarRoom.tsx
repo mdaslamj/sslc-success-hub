@@ -4,13 +4,28 @@ import {
   MATHEMATICS_CHAPTERS,
   SCIENCE_CHAPTERS,
   SOCIAL_SCIENCE_CHAPTERS,
+  SSLC_SUBJECTS,
   type CatalogChapter,
 } from "@/data/sslc-academic-catalog";
-import { subjects as catalogSubjects, getDaysToExam } from "@/lib/mock-data";
-import { getSubjectStatus, SAMPLE_CHAPTERS, SAMPLE_SUBJECTS } from "@/lib/taskPriorityEngine";
-import type { PlannerEngineChapter, PlannerEngineSubject } from "@/lib/taskPriorityEngine";
-import { addToTodayPlan, hasTaskWithTitle } from "@/lib/today-plan-store";
-import { useAnalytics } from "@/hooks/use-analytics";
+import { buildConstellationView } from "@/core/academic-state/constellationView";
+import {
+  buildAdaptiveStateFromProfile,
+  type PlannerSubjectSeed,
+} from "@/core/academic-state/plannerCompletionAdapter";
+import { computeProbabilitySnapshot } from "@/core/academic-state/probabilityEngine";
+import { useAuraEngines } from "@/hooks/useAuraEngines";
+import { buildPlannerChapterPool } from "@/lib/planner-chapter-pool";
+import {
+  getSubjectStatus,
+  rankChaptersForToday,
+  type PlannerEngineChapter,
+  type PlannerEngineSubject,
+  type RankedPlannerTask,
+} from "@/lib/taskPriorityEngine";
+import {
+  addRankedTaskToTodayPlan,
+  hasTaskWithTitle,
+} from "@/lib/today-plan-store";
 import { cn } from "@/lib/utils";
 
 /** War Room subject accent colours (spec). */
@@ -35,21 +50,12 @@ type WarRoomSubject = {
   emoji: string;
 };
 
-type WarRoomChapter = {
-  id: string;
-  subjectId: string;
-  name: string;
+type LadderRow = {
+  task: RankedPlannerTask;
   chapterRef: string;
-  blueprintMarks: number;
-  mastery: number;
-  level: "Easy" | "Medium" | "Hard";
-  duration: number;
   marksAtRisk: number;
-  whyText: string;
-  subjectColor: string;
-  subjectName: string;
   probabilityBump: number;
-  task: string;
+  level: "Easy" | "Medium" | "Hard";
 };
 
 type ProbabilityRow = {
@@ -71,82 +77,8 @@ function hexWithAlpha(hex: string, alpha: number): string {
   return `${hex}${a}`;
 }
 
-function probabilityFor(target: number, predicted: number, mastery: number): number {
-  const gap = target - predicted;
-  const k = 0.18;
-  const shift = 2;
-  const base = 1 / (1 + Math.exp(k * (gap - shift)));
-  const adj = base * 100 + (mastery - 70) * 0.15;
-  return Math.round(Math.max(5, Math.min(98, adj)));
-}
-
 function computeMarksAtRisk(blueprintMarks: number, mastery: number): number {
   return blueprintMarks * (1 - mastery / 100);
-}
-
-function estimateMinutes(level: WarRoomChapter["level"], mastery: number): number {
-  const base = level === "Hard" ? 45 : level === "Easy" ? 25 : 35;
-  if (mastery < 50) return base + 10;
-  if (mastery > 80) return Math.max(20, base - 10);
-  return base;
-}
-
-function taskLabel(name: string, mastery: number): string {
-  if (mastery < 50) return `Recover — ${name}`;
-  if (mastery < 70) return `Practice — ${name}`;
-  if (mastery < 85) return `Revise — ${name}`;
-  return `Quick review — ${name}`;
-}
-
-function buildWhyText(
-  chapter: Pick<WarRoomChapter, "name" | "blueprintMarks" | "mastery">,
-  subject: WarRoomSubject | undefined,
-  score: number,
-): string {
-  const marks = chapter.blueprintMarks;
-  const gap = subject ? Math.max(0, subject.target - subject.predicted) : 0;
-  const mastery = chapter.mastery;
-  if (mastery < 55) {
-    return `${marks} blueprint marks at risk · mastery ${mastery}% · highest ROI today (score ${score.toFixed(1)})`;
-  }
-  if (gap > 8) {
-    return `Closes ${subject?.name ?? "subject"} target gap (+${gap} pts) · ${marks} marks weighted`;
-  }
-  return `${marks} marks on paper · ${mastery}% mastery · priority ${score.toFixed(1)}`;
-}
-
-function urgencyStyle(marksAtRisk: number): { color: string; bg: string } {
-  if (marksAtRisk > 6) return { color: "#F87171", bg: "rgba(248,113,113,0.15)" };
-  if (marksAtRisk >= 4) return { color: "#FBBF24", bg: "rgba(251,191,36,0.15)" };
-  if (marksAtRisk >= 2) return { color: "#38BDF8", bg: "rgba(56,189,248,0.15)" };
-  return { color: "#4ADE80", bg: "rgba(74,222,128,0.15)" };
-}
-
-function catalogToEngineChapters(): PlannerEngineChapter[] {
-  const attach = (subjectId: string, chapters: CatalogChapter[]): PlannerEngineChapter[] =>
-    chapters.map((ch) => ({
-      id: ch.id,
-      title: ch.title,
-      subjectId,
-      mastery: ch.mastery,
-      blueprintMarks: ch.blueprintMarks ?? 4,
-      difficulty: ch.difficulty,
-    }));
-
-  const pool = [
-    ...attach("math", MATHEMATICS_CHAPTERS),
-    ...attach("science", SCIENCE_CHAPTERS),
-    ...attach("social", SOCIAL_SCIENCE_CHAPTERS),
-  ];
-
-  return pool.length > 0 ? pool : SAMPLE_CHAPTERS;
-}
-
-function catalogChapterRef(ch: CatalogChapter, subjectId: string): string {
-  if (ch.section) return `${ch.section} · Ch ${ch.chapterNumber}`;
-  const prefix =
-    subjectId === "math" ? "Math" : subjectId === "science" ? "Sci" : "SSc";
-  return `${prefix} · Ch ${ch.chapterNumber}`;
 }
 
 function buildChapterCatalogMap(): Map<string, CatalogChapter & { subjectId: string }> {
@@ -157,175 +89,229 @@ function buildChapterCatalogMap(): Map<string, CatalogChapter & { subjectId: str
   return map;
 }
 
+function catalogChapterRef(ch: CatalogChapter, subjectId: string): string {
+  if (ch.section) return `${ch.section} · Ch ${ch.chapterNumber}`;
+  const prefix =
+    subjectId === "math" ? "Math" : subjectId === "science" ? "Sci" : "SSc";
+  return `${prefix} · Ch ${ch.chapterNumber}`;
+}
+
+function buildProfileChapterPool(
+  profile: ReturnType<typeof useAuraEngines>["profile"],
+  plannerSubjects: PlannerSubjectSeed[],
+): PlannerEngineChapter[] {
+  const base = buildPlannerChapterPool();
+  const adaptive = buildAdaptiveStateFromProfile(profile, plannerSubjects, base);
+  return adaptive.chapters.map((chapter) => ({
+    id: chapter.id,
+    title: chapter.name,
+    subjectId: chapter.subjectId,
+    mastery: chapter.mastery,
+    blueprintMarks: chapter.blueprintMarks,
+    difficulty: base.find((row) => row.id === chapter.id)?.difficulty,
+  }));
+}
+
 function buildWarRoomSubjects(
-  engineSubjects: PlannerEngineSubject[],
+  constellationSubjects: ReturnType<typeof buildConstellationView>["subjects"],
+  chapterPool: PlannerEngineChapter[],
 ): Record<string, WarRoomSubject> {
-  const chapterPool = catalogToEngineChapters();
   const totalBySubject: Record<string, number> = {};
-  for (const ch of chapterPool) {
-    totalBySubject[ch.subjectId] =
-      (totalBySubject[ch.subjectId] ?? 0) + (ch.blueprintMarks ?? 4);
+  for (const chapter of chapterPool) {
+    totalBySubject[chapter.subjectId] =
+      (totalBySubject[chapter.subjectId] ?? 0) + (chapter.blueprintMarks ?? 4);
   }
 
-  const list = engineSubjects.length > 0 ? engineSubjects : SAMPLE_SUBJECTS;
   const out: Record<string, WarRoomSubject> = {};
-  for (const s of list) {
-    const hex = SUBJECT_HEX[s.id] ?? s.color ?? "#8B5CF6";
-    const match = catalogSubjects.find((c) => c.id === s.id);
-    out[s.id] = {
-      id: s.id,
-      name: s.name,
+  for (const catalogSubject of SSLC_SUBJECTS) {
+    const view = constellationSubjects[catalogSubject.id];
+    const hex = SUBJECT_HEX[catalogSubject.id] ?? view?.color ?? catalogSubject.color;
+    out[catalogSubject.id] = {
+      id: catalogSubject.id,
+      name: catalogSubject.name,
       color: hex,
       colorDim: hexWithAlpha(hex, 0.12),
-      mastery: s.mastery ?? match?.mastery ?? 70,
-      predicted: s.predicted,
-      target: s.target,
-      totalMarks: totalBySubject[s.id] ?? 80,
-      emoji: s.emoji ?? match?.emoji ?? "📘",
+      mastery: view?.mastery ?? catalogSubject.mastery,
+      predicted: view?.predicted ?? catalogSubject.predicted,
+      target: view?.target ?? catalogSubject.target,
+      totalMarks: totalBySubject[catalogSubject.id] ?? 0,
+      emoji: catalogSubject.emoji,
     };
   }
   return out;
 }
 
-function enrichChapters(
-  rawChapters: PlannerEngineChapter[],
+function toLadderRow(
+  task: RankedPlannerTask,
   subjectsById: Record<string, WarRoomSubject>,
-): WarRoomChapter[] {
-  const catalogMap = buildChapterCatalogMap();
+  catalogMap: Map<string, CatalogChapter & { subjectId: string }>,
+): LadderRow {
+  const chapter = task.chapter;
+  const blueprintMarks = chapter.blueprintMarks ?? 4;
+  const mastery = chapter.mastery ?? 50;
+  const marksAtRisk = computeMarksAtRisk(blueprintMarks, mastery);
+  const subject = subjectsById[chapter.subjectId];
+  const totalMarks = subject?.totalMarks ?? 80;
+  const catalog = catalogMap.get(chapter.id);
+  const level = chapter.difficulty ?? catalog?.difficulty ?? "Medium";
 
-  return rawChapters.map((ch) => {
-    const subject = subjectsById[ch.subjectId];
-    const catalog = catalogMap.get(ch.id);
-    const blueprintMarks = ch.blueprintMarks ?? 4;
-    const mastery = ch.mastery ?? 50;
-    const marksAtRisk = computeMarksAtRisk(blueprintMarks, mastery);
-    const level = ch.difficulty ?? catalog?.difficulty ?? "Medium";
-    const gap = subject ? Math.max(0, subject.target - subject.predicted) : 0;
-    const probImpact = 1 + gap / 25;
-    const weight = Math.max(1, blueprintMarks) / 4;
-    const load = level === "Hard" ? 2.2 : level === "Easy" ? 1 : 1.5;
-    const priorityScore = (marksAtRisk * probImpact * weight) / load;
-    const subjectColor = SUBJECT_HEX[ch.subjectId] ?? subject?.color ?? "#8B5CF6";
-    const totalMarks = subject?.totalMarks ?? 80;
-    const probabilityBump = Math.min(
+  return {
+    task,
+    chapterRef: catalog
+      ? catalogChapterRef(catalog, chapter.subjectId)
+      : `${subject?.name ?? chapter.subjectId} · ${chapter.id}`,
+    marksAtRisk,
+    probabilityBump: Math.min(
       12,
-      Math.round((marksAtRisk / totalMarks) * 100 * 0.65),
-    );
+      Math.round((marksAtRisk / Math.max(totalMarks, 1)) * 100 * 0.65),
+    ),
+    level,
+  };
+}
 
-    return {
-      id: ch.id,
-      subjectId: ch.subjectId,
-      name: ch.title,
-      chapterRef: catalog
-        ? catalogChapterRef(catalog, ch.subjectId)
-        : `${subject?.name ?? ch.subjectId} · ${ch.id}`,
-      blueprintMarks,
-      mastery,
-      level,
-      duration: estimateMinutes(level, mastery),
-      marksAtRisk,
-      whyText: buildWhyText(
-        { name: ch.title, blueprintMarks, mastery },
-        subject,
-        priorityScore,
-      ),
-      subjectColor,
-      subjectName: subject?.name ?? ch.subjectId,
-      probabilityBump,
-      task: taskLabel(ch.title, mastery),
-    };
-  });
+function urgencyStyle(marksAtRisk: number): { color: string; bg: string } {
+  if (marksAtRisk > 6) return { color: "#F87171", bg: "rgba(248,113,113,0.15)" };
+  if (marksAtRisk >= 4) return { color: "#FBBF24", bg: "rgba(251,191,36,0.15)" };
+  if (marksAtRisk >= 2) return { color: "#38BDF8", bg: "rgba(56,189,248,0.15)" };
+  return { color: "#4ADE80", bg: "rgba(74,222,128,0.15)" };
+}
+
+function subjectSessionsToday(
+  sessions: ReturnType<typeof useAuraEngines>["profile"]["sessionHistory"],
+  subjectId: string,
+  todayKey: string,
+): number {
+  return sessions.filter(
+    (session) => session.subject === subjectId && session.date === todayKey,
+  ).length;
 }
 
 export function AuraWarRoom() {
-  const { bySubject } = useAnalytics();
+  const { profile, projection, momentum, analytics, isLoading } = useAuraEngines();
   const [tab, setTab] = useState<TabId>("ladder");
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [addedIds, setAddedIds] = useState<Set<string>>(() => new Set());
 
-  // Real catalog-backed data (same pattern as Study Planner). TODO: wire Firebase fetchChapters when unified.
-  const engineSubjects: PlannerEngineSubject[] = useMemo(
+  const constellation = useMemo(
+    () => buildConstellationView(profile, projection),
+    [profile, projection],
+  );
+
+  const plannerSubjects = useMemo<PlannerSubjectSeed[]>(
     () =>
-      catalogSubjects.map((s) => ({
-        id: s.id,
-        name: s.name,
-        color: SUBJECT_HEX[s.id] ?? s.color,
-        target: s.target,
-        predicted: s.predicted,
-        mastery: s.mastery,
-        emoji: s.emoji,
+      SSLC_SUBJECTS.map((subject) => {
+        const view = constellation.subjects[subject.id];
+        return {
+          id: subject.id,
+          name: subject.name,
+          color: SUBJECT_HEX[subject.id] ?? view?.color ?? subject.color,
+          target: view?.target ?? subject.target,
+          predicted: view?.predicted ?? subject.predicted,
+          mastery: view?.mastery ?? subject.mastery,
+        };
+      }),
+    [constellation],
+  );
+
+  const rankSubjects = useMemo<PlannerEngineSubject[]>(
+    () =>
+      plannerSubjects.map((subject) => ({
+        ...subject,
+        emoji: SSLC_SUBJECTS.find((row) => row.id === subject.id)?.emoji,
       })),
-    [],
+    [plannerSubjects],
   );
 
-  const rawChapters = useMemo(() => catalogToEngineChapters(), []);
+  const chapterPool = useMemo(
+    () => buildProfileChapterPool(profile, plannerSubjects),
+    [profile, plannerSubjects],
+  );
+
   const subjectsById = useMemo(
-    () => buildWarRoomSubjects(engineSubjects),
-    [engineSubjects],
+    () => buildWarRoomSubjects(constellation.subjects, chapterPool),
+    [constellation.subjects, chapterPool],
   );
 
-  const enriched = useMemo(
-    () => enrichChapters(rawChapters, subjectsById),
-    [rawChapters, subjectsById],
+  const catalogMap = useMemo(() => buildChapterCatalogMap(), []);
+
+  const rankedTasks = useMemo(
+    () => rankChaptersForToday(chapterPool, rankSubjects, 8),
+    [chapterPool, rankSubjects],
   );
 
   const rankedLadder = useMemo(
     () =>
-      [...enriched]
-        .sort((a, b) => b.marksAtRisk - a.marksAtRisk)
-        .slice(0, 8),
-    [enriched],
+      rankedTasks.map((task) => toLadderRow(task, subjectsById, catalogMap)),
+    [rankedTasks, subjectsById, catalogMap],
   );
 
-  const topFour = useMemo(
-    () =>
-      [...enriched]
-        .sort((a, b) => b.marksAtRisk - a.marksAtRisk)
-        .slice(0, 4),
-    [enriched],
-  );
+  const topFour = useMemo(() => rankedLadder.slice(0, 4), [rankedLadder]);
 
   const totalMarksAtRisk = useMemo(() => {
-    const sum = enriched.reduce((acc, ch) => acc + ch.marksAtRisk, 0);
-    return sum > 0 ? Math.round(sum) : 47;
-  }, [enriched]);
+    const sum = chapterPool.reduce(
+      (acc, chapter) =>
+        acc +
+        computeMarksAtRisk(
+          chapter.blueprintMarks ?? 4,
+          chapter.mastery ?? 50,
+        ),
+      0,
+    );
+    return Math.round(sum);
+  }, [chapterPool]);
 
   const criticalCount = useMemo(
-    () => enriched.filter((ch) => ch.mastery < 50 || ch.marksAtRisk >= 6).length,
-    [enriched],
+    () =>
+      chapterPool.filter(
+        (chapter) =>
+          (chapter.mastery ?? 50) < 50 ||
+          computeMarksAtRisk(chapter.blueprintMarks ?? 4, chapter.mastery ?? 50) >= 6,
+      ).length,
+    [chapterPool],
   );
 
   const recoveryMinutes = useMemo(
-    () => topFour.reduce((acc, ch) => acc + ch.duration, 0),
+    () => topFour.reduce((acc, row) => acc + row.task.durationMin, 0),
     [topFour],
   );
 
-  const subjectCount = Object.keys(subjectsById).length || 6;
-  const daysLeft = getDaysToExam();
+  const subjectCount = Object.keys(subjectsById).length;
+  const daysLeft = profile.student.daysToExam ?? 0;
 
   const probabilityRows: ProbabilityRow[] = useMemo(() => {
+    const todayKey = new Date().toISOString().slice(0, 10);
+
     return Object.values(subjectsById).map((subject) => {
-      const analyticsRow = bySubject.find((b) => b.id === subject.id);
-      const sessionCount = analyticsRow?.sessions ?? 0;
-      const masteryGain = sessionCount > 0 ? Math.min(8, sessionCount * 2) : 0;
+      const sessionsToday = subjectSessionsToday(
+        profile.sessionHistory,
+        subject.id,
+        todayKey,
+      );
+      const masteryGain = sessionsToday > 0 ? Math.min(8, sessionsToday * 2) : 0;
       const previousPredicted = Math.max(40, subject.predicted - masteryGain);
       const previousMastery = Math.max(40, subject.mastery - masteryGain);
-      const currentProbability = probabilityFor(
+
+      const currentProbability = computeProbabilitySnapshot(
         subject.target,
         subject.predicted,
         subject.mastery,
       );
-      const previousProbability = probabilityFor(
+      const previousProbability = computeProbabilitySnapshot(
         subject.target,
         previousPredicted,
         previousMastery,
       );
       const delta = currentProbability - previousProbability;
       const status = getSubjectStatus(subject.predicted, subject.target);
-      const reason =
-        masteryGain > 0
-          ? `Mastery improved ${masteryGain}% from completed sessions`
-          : "No sessions completed";
+
+      let reason = "No sessions completed today";
+      if (masteryGain > 0) {
+        reason = `Mastery improved ${masteryGain}% from completed sessions`;
+      } else if (momentum?.trend === "improving") {
+        reason = `Momentum improving (${Math.round(momentum.score)} score)`;
+      } else if (analytics?.dimensions.recovery.trend === "improving") {
+        reason = analytics.dimensions.recovery.description;
+      }
 
       return {
         subject,
@@ -337,45 +323,39 @@ export function AuraWarRoom() {
         statusColor: status.color,
       };
     });
-  }, [subjectsById, bySubject]);
+  }, [subjectsById, profile.sessionHistory, momentum, analytics]);
 
   function markAdded(id: string) {
     setAddedIds((prev) => new Set(prev).add(id));
   }
 
-  function handleAddToPlan(chapter: WarRoomChapter) {
-    if (hasTaskWithTitle(chapter.task) || addedIds.has(chapter.id)) {
+  function handleAddToPlan(row: LadderRow) {
+    const { task } = row;
+    if (hasTaskWithTitle(task.task) || addedIds.has(task.chapter.id)) {
       toast("Already on today's plan");
-      markAdded(chapter.id);
+      markAdded(task.chapter.id);
       return;
     }
-    const ok = addToTodayPlan({
-      subject: chapter.subjectName,
-      task: chapter.task,
-      durationMin: chapter.duration,
-    });
+
+    const ok = addRankedTaskToTodayPlan(task);
     if (ok) {
-      markAdded(chapter.id);
+      markAdded(task.chapter.id);
       toast.success("Added to today's plan", {
-        description: `${chapter.subjectName} · ${chapter.duration} min`,
+        description: `${task.subject} · ${task.durationMin} min`,
       });
     }
   }
 
   function handleAddAll() {
     let added = 0;
-    for (const ch of topFour) {
-      if (hasTaskWithTitle(ch.task) || addedIds.has(ch.id)) {
-        markAdded(ch.id);
+    for (const row of topFour) {
+      const { task } = row;
+      if (hasTaskWithTitle(task.task) || addedIds.has(task.chapter.id)) {
+        markAdded(task.chapter.id);
         continue;
       }
-      const ok = addToTodayPlan({
-        subject: ch.subjectName,
-        task: ch.task,
-        durationMin: ch.duration,
-      });
-      if (ok) {
-        markAdded(ch.id);
+      if (addRankedTaskToTodayPlan(task)) {
+        markAdded(task.chapter.id);
         added += 1;
       }
     }
@@ -384,6 +364,17 @@ export function AuraWarRoom() {
     } else {
       toast("Top sessions are already on today's plan");
     }
+  }
+
+  if (isLoading) {
+    return (
+      <div
+        className="mx-auto flex min-h-[480px] w-full max-w-7xl items-center justify-center rounded-2xl border border-[rgba(255,255,255,0.06)] bg-[#08080E] text-sm text-[rgba(240,240,248,0.55)]"
+        aria-busy="true"
+      >
+        Loading exam intelligence…
+      </div>
+    );
   }
 
   return (
@@ -502,20 +493,28 @@ export function AuraWarRoom() {
           </button>
 
           <ul className="space-y-2">
-            {rankedLadder.map((ch, index) => {
-              const urgency = urgencyStyle(ch.marksAtRisk);
-              const isExpanded = expandedId === ch.id;
-              const isAdded = addedIds.has(ch.id) || hasTaskWithTitle(ch.task);
+            {rankedLadder.map((row, index) => {
+              const { task } = row;
+              const urgency = urgencyStyle(row.marksAtRisk);
+              const isExpanded = expandedId === task.chapter.id;
+              const isAdded =
+                addedIds.has(task.chapter.id) || hasTaskWithTitle(task.task);
+              const subjectColor =
+                SUBJECT_HEX[task.subjectId] ??
+                subjectsById[task.subjectId]?.color ??
+                task.subjectColor;
 
               return (
                 <li
-                  key={ch.id}
+                  key={task.chapter.id}
                   className="overflow-hidden rounded-xl border border-[rgba(255,255,255,0.06)] bg-[#08080E]"
-                  style={{ borderLeft: `3px solid ${ch.subjectColor}` }}
+                  style={{ borderLeft: `3px solid ${subjectColor}` }}
                 >
                   <button
                     type="button"
-                    onClick={() => setExpandedId(isExpanded ? null : ch.id)}
+                    onClick={() =>
+                      setExpandedId(isExpanded ? null : task.chapter.id)
+                    }
                     className="w-full px-4 py-3 text-left"
                   >
                     <div className="flex items-start justify-between gap-3">
@@ -527,23 +526,25 @@ export function AuraWarRoom() {
                           >
                             #{index + 1}
                           </span>
-                          <span className="truncate text-sm font-bold">{ch.name}</span>
+                          <span className="truncate text-sm font-bold">
+                            {task.title}
+                          </span>
                         </div>
                         <div className="mt-0.5 text-[11px] text-[rgba(240,240,248,0.55)]">
-                          {ch.subjectName} · {ch.chapterRef}
+                          {task.subject} · {row.chapterRef}
                         </div>
                         <div
                           className="mt-1.5 text-[11px] font-medium"
-                          style={{ color: ch.subjectColor }}
+                          style={{ color: subjectColor }}
                         >
-                          +{ch.probabilityBump}% {ch.subjectName} if completed today
+                          +{row.probabilityBump}% {task.subject} if completed today
                         </div>
                       </div>
                       <span
                         className="shrink-0 rounded-full px-2.5 py-1 text-[10px] font-bold"
                         style={{ color: urgency.color, backgroundColor: urgency.bg }}
                       >
-                        {ch.marksAtRisk.toFixed(1)}m at risk
+                        {row.marksAtRisk.toFixed(1)}m at risk
                       </span>
                     </div>
 
@@ -551,11 +552,11 @@ export function AuraWarRoom() {
                       <div
                         className="mt-3 rounded-lg px-3 py-2 text-[11px] leading-relaxed"
                         style={{
-                          color: ch.subjectColor,
-                          backgroundColor: hexWithAlpha(ch.subjectColor, 0.1),
+                          color: subjectColor,
+                          backgroundColor: hexWithAlpha(subjectColor, 0.1),
                         }}
                       >
-                        {ch.whyText}
+                        {task.whyText}
                       </div>
                     )}
                   </button>
@@ -563,7 +564,7 @@ export function AuraWarRoom() {
                   <div className="border-t border-[rgba(255,255,255,0.06)] px-4 py-2">
                     <button
                       type="button"
-                      onClick={() => handleAddToPlan(ch)}
+                      onClick={() => handleAddToPlan(row)}
                       className={cn(
                         "w-full rounded-lg px-3 py-2 text-left text-xs font-semibold transition",
                         isAdded

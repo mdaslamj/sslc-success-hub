@@ -81,4 +81,30 @@ function AuraCausalityChain({ chain, onDismiss, className = "" }) {
   );
 }
 
+export function AuraReplanBanner({ message, onViewChanges, onDismiss, className = "" }) {
+  if (!message) return null;
+
+  return (
+    <div
+      className={`mx-4 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-[#1a2744] bg-[#080f1e] px-4 py-3 text-sm text-slate-200 ${className}`}
+      role="status"
+      aria-live="polite"
+    >
+      <span>{message}</span>
+      <div className="flex gap-2">
+        {onViewChanges ? (
+          <Button type="button" size="sm" variant="secondary" onClick={onViewChanges}>
+            View plan
+          </Button>
+        ) : null}
+        {onDismiss ? (
+          <Button type="button" size="sm" variant="ghost" onClick={onDismiss}>
+            Dismiss
+          </Button>
+        ) : null}
+      </div>
+    </div>
+  );
+}
+
 export default memo(AuraCausalityChain);

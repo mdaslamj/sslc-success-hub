@@ -54,9 +54,14 @@ import { AuraExecutionSystem } from "@/components/AuraExecutionSystem";
 import AuraCausalityChain from "@/components/AuraCausalityChain";
 import { useAcademicExecution } from "@/core/academic-state/useAcademicExecution";
 import { processPlannerTaskCompletion } from "@/core/academic-state/plannerCompletionAdapter";
+import { mapTaskSubjectToEngine } from "@/core/academic-state/executionEngine";
 import type { CausalityChain } from "@/core/academic-state/masteryEngine";
-import { useStudentProfile } from "@/hooks/useStudentProfile";
+import { resolveProfileChapterKey } from "@/lib/chapter-profile-key";
 import { useAuraEngines } from "@/hooks/useAuraEngines";
+import {
+  PLANNER_STORE_UPDATED_EVENT,
+  type PlannerStoreUpdatedDetail,
+} from "@/lib/today-plan-store";
 
 export const Route = createFileRoute("/planner")({
   head: () => ({
@@ -181,8 +186,7 @@ function replanIncompleteTasks(currentTasks: Task[]): Task[] {
 
 function PlannerPage() {
   const { logSession } = useAnalytics();
-  const { profile, updateMastery, appendSession } = useStudentProfile();
-  const { burnout } = useAuraEngines();
+  const { profile, updateMastery, appendSession, burnout } = useAuraEngines();
   const [tasks, setTasks] = useState<Task[]>(seedTasks);
   const [newTask, setNewTask] = useState("");
   const [newSubject, setNewSubject] = useState(subjects[0].name);
@@ -206,13 +210,27 @@ function PlannerPage() {
       const raw = localStorage.getItem(STORAGE);
       if (raw) {
         const parsed = JSON.parse(raw);
-        if (Array.isArray(parsed.tasks)) setTasks(parsed.tasks);
+        if (Array.isArray(parsed.tasks)) {
+          setTasks(parsed.tasks);
+          setTasks((prev) => replanIncompleteTasks(prev));
+        }
         if (typeof parsed.focusMinutes === "number") setFocusMinutes(parsed.focusMinutes);
       }
     } catch {
       /* ignore */
     }
     setHydrated(true);
+  }, []);
+
+  // Live sync when War Room / Textbooks append via today-plan-store
+  useEffect(() => {
+    const handleExternalAdd = (event: Event) => {
+      const incoming = (event as CustomEvent<PlannerStoreUpdatedDetail>).detail?.tasks;
+      if (!Array.isArray(incoming)) return;
+      setTasks(incoming);
+    };
+    window.addEventListener(PLANNER_STORE_UPDATED_EVENT, handleExternalAdd);
+    return () => window.removeEventListener(PLANNER_STORE_UPDATED_EVENT, handleExternalAdd);
   }, []);
 
   // Persist
@@ -784,6 +802,30 @@ function PlannerPage() {
                   startedAt: Date.now() - min * 60 * 1000,
                   endedAt: Date.now(),
                   durationMinutes: min,
+                });
+
+                const currentTask = tasks.find((t) => !t.done);
+                const engineSubject = currentTask
+                  ? mapTaskSubjectToEngine(currentTask.subjectId)
+                  : null;
+                const chapterKey =
+                  currentTask && engineSubject
+                    ? resolveProfileChapterKey(profile, engineSubject, currentTask.chapter)
+                    : "focus-session";
+
+                appendSession({
+                  date: new Date().toISOString().split("T")[0],
+                  subject: engineSubject,
+                  chapter: chapterKey,
+                  durationMinutes: min,
+                  questionsAttempted: 0,
+                  questionsCorrect: 0,
+                  score: null,
+                  hintsUsed: 0,
+                  retriesOnWrong: 0,
+                  completedPlan: true,
+                  panicSignal: false,
+                  engineType: "adaptive",
                 });
               }}
             />

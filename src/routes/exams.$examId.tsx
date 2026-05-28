@@ -1,5 +1,16 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import AuraCausalityChain from "@/components/AuraCausalityChain";
+import { buildConstellationView } from "@/core/academic-state/constellationView";
+import type { PlannerSubjectSeed } from "@/core/academic-state/plannerCompletionAdapter";
+import { useAuraEngines } from "@/hooks/useAuraEngines";
+import { SSLC_SUBJECTS } from "@/data/sslc-academic-catalog";
+import {
+  buildMockExamResultInput,
+  processMockExam,
+  type MockExamProcessResult,
+} from "@/lib/masteryEngine";
+import { buildPlannerChapterPool } from "@/lib/planner-chapter-pool";
 import {
   AlertTriangle,
   ArrowLeft,
@@ -255,12 +266,103 @@ function ExamPlayerPage() {
   return <Player exam={exam} />;
 }
 
+function buildPlannerSubjects(
+  constellationSubjects: ReturnType<typeof buildConstellationView>["subjects"],
+): PlannerSubjectSeed[] {
+  return SSLC_SUBJECTS.map((subject) => {
+    const view = constellationSubjects[subject.id];
+    return {
+      id: subject.id,
+      name: subject.name,
+      color: view?.color ?? subject.color,
+      target: view?.target ?? subject.target,
+      predicted: view?.predicted ?? subject.predicted,
+      mastery: view?.mastery ?? subject.mastery,
+    };
+  });
+}
+
 function Player({ exam }: { exam: MockExamDoc }) {
   const navigate = useNavigate();
   const validated = useMemo(() => sanitizeMockExam(exam), [exam]);
   const safeExam = validated.ok ? validated.exam : null;
   const c = useMockExam(safeExam ?? exam);
   const [confirmSubmit, setConfirmSubmit] = useState(false);
+  const [lastResult, setLastResult] = useState<MockExamProcessResult | null>(null);
+  const [showChain, setShowChain] = useState(false);
+  const processedAttemptRef = useRef<string | null>(null);
+
+  const { profile, projection, updateMastery, appendSession, burnout } = useAuraEngines();
+  const constellation = useMemo(
+    () => buildConstellationView(profile, projection),
+    [profile, projection],
+  );
+  const plannerSubjects = useMemo(
+    () => buildPlannerSubjects(constellation.subjects),
+    [constellation.subjects],
+  );
+  const chapterPool = useMemo(() => buildPlannerChapterPool(), []);
+
+  const goToResults = useCallback(
+    (attemptId: string) => {
+      navigate({
+        to: "/exam-results/$attemptId",
+        params: { attemptId },
+      });
+    },
+    [navigate],
+  );
+
+  useEffect(() => {
+    if (c.phase !== "submitted" || !c.result || !safeExam) return;
+    if (processedAttemptRef.current === c.result.id) return;
+    processedAttemptRef.current = c.result.id;
+
+    const mockExamResult = buildMockExamResultInput(safeExam, c.result, c.answers);
+    const burnoutScore = Math.round(burnout?.score ?? 0);
+    const result = processMockExam(
+      mockExamResult,
+      profile,
+      plannerSubjects,
+      chapterPool,
+      burnoutScore,
+      burnout,
+    );
+
+    if (!result) {
+      goToResults(c.result.id);
+      return;
+    }
+
+    for (const update of result.chapterUpdates) {
+      updateMastery(
+        update.engineSubject,
+        update.profileChapterKey,
+        update.newChapterMastery,
+      );
+    }
+    appendSession(result.sessionInput);
+
+    if (result.causalityChain) {
+      setLastResult(result);
+      setShowChain(true);
+      return;
+    }
+
+    goToResults(c.result.id);
+  }, [
+    appendSession,
+    burnout,
+    c.answers,
+    c.phase,
+    c.result,
+    chapterPool,
+    goToResults,
+    plannerSubjects,
+    profile,
+    safeExam,
+    updateMastery,
+  ]);
 
   if (!safeExam) {
     return (
@@ -305,16 +407,6 @@ function Player({ exam }: { exam: MockExamDoc }) {
       </DashboardLayout>
     );
   }
-
-  // Navigate to results once submitted.
-  useEffect(() => {
-    if (c.phase === "submitted" && c.result) {
-      navigate({
-        to: "/exam-results/$attemptId",
-        params: { attemptId: c.result.id },
-      });
-    }
-  }, [c.phase, c.result, navigate]);
 
   const timerLow = c.secondsLeft <= 60;
 
@@ -525,6 +617,31 @@ function Player({ exam }: { exam: MockExamDoc }) {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      {showChain && lastResult?.causalityChain ? (
+        <div className="fixed inset-x-0 bottom-0 z-50 mx-auto max-w-lg px-4 pb-[max(1rem,env(safe-area-inset-bottom))]">
+          <AuraCausalityChain
+            chain={lastResult.causalityChain}
+            onDismiss={() => {
+              setShowChain(false);
+              const attemptId = c.result?.id;
+              setLastResult(null);
+              if (attemptId) goToResults(attemptId);
+            }}
+          />
+          <Button
+            variant="link"
+            className="mt-2 w-full text-xs text-muted-foreground"
+            onClick={() => {
+              setShowChain(false);
+              setLastResult(null);
+              navigate({ to: "/planner" });
+            }}
+          >
+            View updated plan
+          </Button>
+        </div>
+      ) : null}
     </DashboardLayout>
   );
 }

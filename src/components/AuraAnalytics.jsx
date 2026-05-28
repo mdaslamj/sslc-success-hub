@@ -43,12 +43,17 @@ function AuraAnalytics({ view }) {
 
   return (
     <div className="space-y-6">
-      <section className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+      <section className="grid gap-3 sm:grid-cols-2 xl:grid-cols-5">
         <StatTile
           label="Exam readiness"
           value={`${view.readiness}%`}
           hint={`Target ${view.targetScore}% · gap ${view.gap} pts`}
           accent="gradient-text"
+        />
+        <StatTile
+          label="Chapters done"
+          value={`${view.chaptersDone}/${view.totalChapters}`}
+          hint={`${view.overallProgress}% overall progress`}
         />
         <StatTile
           label="Target probability"
@@ -157,6 +162,91 @@ function AuraAnalytics({ view }) {
               </BarChart>
             </ResponsiveContainer>
           </div>
+        </div>
+      </section>
+
+      <section className="rounded-2xl border border-border/60 bg-card p-4 sm:p-5 shadow-card">
+        <h3 className="font-display text-base font-semibold sm:text-lg">Target gap recovery</h3>
+        <p className="text-xs text-muted-foreground">
+          Per-subject gap from engines.target.bySubject · recovered vs session baseline
+        </p>
+        <div className="mt-4 grid gap-3 md:grid-cols-2 lg:grid-cols-3">
+          {view.gapData.map((row) => (
+            <div
+              key={row.subjectId}
+              className="rounded-xl border border-border/60 bg-background/40 p-3"
+            >
+              <div className="flex items-center justify-between gap-2">
+                <span className="font-medium">{row.subject}</span>
+                <span className="text-xs tabular-nums text-muted-foreground">+{row.gap} gap</span>
+              </div>
+              <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-muted">
+                <div
+                  className="h-full rounded-full"
+                  style={{
+                    width: `${Math.min(100, row.recovered + row.gap > 0 ? (row.recovered / (row.recovered + row.gap)) * 100 : 0)}%`,
+                    background: row.color,
+                  }}
+                />
+              </div>
+              <p className="mt-2 text-[11px] text-muted-foreground">
+                {row.recovered} pts recovered
+              </p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="grid gap-6 lg:grid-cols-2">
+        <div className="rounded-2xl border border-border/60 bg-card p-4 sm:p-5 shadow-card">
+          <h3 className="font-display text-base font-semibold sm:text-lg">Session heatmap</h3>
+          <p className="text-xs text-muted-foreground">
+            Profile session history · 0 = none, 3 = three or more per day
+          </p>
+          <div className="mt-4 overflow-x-auto">
+            <div className="inline-grid grid-cols-7 gap-1">
+              {view.sessionHeatmap.map((cell, index) => (
+                <div
+                  key={`${cell.week}-${cell.dayIndex}-${index}`}
+                  title={`${cell.week} ${cell.day}: ${cell.sessions} session(s)`}
+                  className="h-6 w-6 rounded-sm"
+                  style={{
+                    backgroundColor:
+                      cell.intensity === 0
+                        ? "var(--muted)"
+                        : cell.intensity === 1
+                          ? "color-mix(in oklab, var(--brand) 35%, transparent)"
+                          : cell.intensity === 2
+                            ? "color-mix(in oklab, var(--brand) 65%, transparent)"
+                            : "var(--brand)",
+                  }}
+                />
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <div className="rounded-2xl border border-border/60 bg-card p-4 sm:p-5 shadow-card">
+          <h3 className="font-display text-base font-semibold sm:text-lg">Weekly summary</h3>
+          <p className="text-xs text-muted-foreground">Grouped from profile.sessionHistory</p>
+          <ul className="mt-4 space-y-2">
+            {view.weeklySummary.length === 0 ? (
+              <li className="text-sm text-muted-foreground">No weekly sessions yet.</li>
+            ) : (
+              view.weeklySummary.map((row) => (
+                <li
+                  key={row.week}
+                  className="flex flex-wrap items-center justify-between gap-2 rounded-lg border border-border/60 bg-background/40 px-3 py-2 text-xs"
+                >
+                  <span className="font-medium">{row.week}</span>
+                  <span className="text-muted-foreground">
+                    {row.sessions} sessions · {row.marksRecovered}m est. · +{row.probGain} prob
+                  </span>
+                  <span className="text-muted-foreground">Best: {row.bestSubject}</span>
+                </li>
+              ))
+            )}
+          </ul>
         </div>
       </section>
 

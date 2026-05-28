@@ -18,12 +18,22 @@ const SUBJECT_LABEL: Record<string, string> = {
 
 type LayoutDensity = AdaptiveTheme["layoutDensity"];
 
+export type DashboardPlanTask = {
+  id: string;
+  subject: string;
+  name: string;
+  minutes: number;
+  reason: string;
+  urgency: string;
+};
+
 export type AuraDashboardProps = {
   engines: AuraEngineOutputs;
   theme: AdaptiveTheme;
   layoutDensity: LayoutDensity;
   profile: StudentLearningProfile;
   showRevisionSchedule: boolean;
+  onTaskComplete?: (task: DashboardPlanTask) => void | Promise<void>;
 };
 
 export function AuraDashboard({
@@ -32,6 +42,7 @@ export function AuraDashboard({
   layoutDensity,
   profile,
   showRevisionSchedule,
+  onTaskComplete,
 }: AuraDashboardProps) {
   const {
     projection,
@@ -51,7 +62,7 @@ export function AuraDashboard({
   const [activeTab, setActiveTab] = useState<'Recovery' | 'Subjects' | 'Target'>('Recovery')
   const { displayName } = useDisplayName();
 
-  const planTasks = (recovery?.top3 ?? []).slice(0, 3).map((item, index) => ({
+  const planTasks: DashboardPlanTask[] = (recovery?.top3 ?? []).slice(0, 3).map((item, index) => ({
     id: item.chapter,
     subject: item.subject,
     name: item.name ?? item.chapter,
@@ -194,6 +205,7 @@ export function AuraDashboard({
                           () => setBouncing((b) => ({ ...b, [task.id]: false })),
                           450,
                         );
+                        void onTaskComplete?.(task);
                       }
                     }}
                   />

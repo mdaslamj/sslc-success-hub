@@ -21,6 +21,8 @@ import {
   Sparkles,
 } from "lucide-react";
 import { toast } from "sonner";
+import { mapTaskSubjectToEngine } from "@/core/academic-state/executionEngine";
+import { useAuraEngines } from "@/hooks/useAuraEngines";
 import { subjects } from "@/lib/mock-data";
 import { useAnalytics } from "@/hooks/use-analytics";
 import {
@@ -58,6 +60,7 @@ const PLACEHOLDER_CHAPTERS: Record<string, SubjectChapters[]> = {};
 function FocusPage() {
   const { logSession, consistency, weekly, todayMinutes, focusSessions } =
     useAnalytics();
+  const { appendSession } = useAuraEngines();
   const [subjectId, setSubjectId] = useState<string>(subjects[0]?.id ?? "");
   const [chapterTitle, setChapterTitle] = useState<string>("");
   const [intent, setIntent] = useState<string>("");
@@ -84,6 +87,30 @@ function FocusPage() {
           ? `${chapterTitle}${intent ? ` — ${intent}` : ""}`
           : intent || undefined,
       });
+
+      const today = new Date().toISOString().split("T")[0];
+      const engineSubject = mapTaskSubjectToEngine(subjectId);
+      const chapterKey = chapterTitle.trim() || "focus-session";
+
+      if (!chapterTitle.trim()) {
+        // TODO: add chapter selection to Focus Timer so sessions feed chapter mastery correctly
+      }
+
+      appendSession({
+        date: today,
+        subject: engineSubject,
+        chapter: chapterKey,
+        durationMinutes: minutes,
+        questionsAttempted: 0,
+        questionsCorrect: 0,
+        score: null,
+        hintsUsed: 0,
+        retriesOnWrong: 0,
+        completedPlan: true,
+        panicSignal: false,
+        engineType: "adaptive",
+      });
+
       setMessage(pickRandom(FOCUS_COMPLETE_MESSAGES));
       setCompleted(true);
       toast.success("Focus session saved", {

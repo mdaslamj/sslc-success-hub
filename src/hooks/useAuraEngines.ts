@@ -6,7 +6,8 @@ import { useStudentProfile } from "@/hooks/useStudentProfile";
 export type { AuraEngineOutputs };
 
 export function useAuraEngines() {
-  const { profile, isLoading, updateMastery, appendSession } = useStudentProfile();
+  const { profile, isLoading, updateMastery, appendSession, updateProfile } =
+    useStudentProfile();
 
   const engines = useMemo(() => runAllEngines(profile), [profile]);
 
@@ -25,5 +26,6 @@ export function useAuraEngines() {
     isLoading,
     updateMastery,
     appendSession,
+    updateProfile,
   };
 }

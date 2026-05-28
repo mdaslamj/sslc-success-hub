@@ -6,23 +6,34 @@
  * The shape MUST match the `Task` type in `src/routes/planner.tsx`.
  */
 
-export type LocalPlannerTask = {
-  id: number;
-  subject: string;
-  task: string;
-  time: string;
-  durationMin: number;
-  done: boolean;
+import type { RankedPlannerTask } from "@/lib/taskPriorityEngine";
+
+export type LocalPlannerTask = RankedPlannerTask & {
   /** Optional external link (e.g. KTBS textbook PDF). */
   link?: string;
 };
 
 const STORAGE = "vidyapath.planner.v1";
 
+export const PLANNER_STORE_UPDATED_EVENT = "aura:planner-store-updated";
+
+export type PlannerStoreUpdatedDetail = {
+  tasks: LocalPlannerTask[];
+};
+
 type Saved = {
   tasks?: LocalPlannerTask[];
   focusMinutes?: number;
 };
+
+function notifyPlannerStoreUpdated(tasks: LocalPlannerTask[]): void {
+  if (typeof window === "undefined") return;
+  window.dispatchEvent(
+    new CustomEvent<PlannerStoreUpdatedDetail>(PLANNER_STORE_UPDATED_EVENT, {
+      detail: { tasks },
+    }),
+  );
+}
 
 function read(): Saved {
   if (typeof window === "undefined") return {};
@@ -38,6 +49,9 @@ function write(next: Saved): void {
   if (typeof window === "undefined") return;
   try {
     localStorage.setItem(STORAGE, JSON.stringify(next));
+    if (next.tasks) {
+      notifyPlannerStoreUpdated(next.tasks);
+    }
   } catch {
     /* quota / private mode — silently drop */
   }
@@ -51,8 +65,8 @@ export function hasTaskWithTitle(title: string): boolean {
 }
 
 /**
- * Append a task to today's plan. Returns `false` if a task with the same
- * title already exists (caller can show "already on plan" feedback).
+ * Append a minimal task to today's plan. Returns `false` if a task with the
+ * same title already exists (caller can show "already on plan" feedback).
  */
 export function addToTodayPlan(input: {
   subject: string;
@@ -60,19 +74,49 @@ export function addToTodayPlan(input: {
   durationMin: number;
   link?: string;
 }): boolean {
+  if (hasTaskWithTitle(input.task)) return false;
   const saved = read();
   const tasks = saved.tasks ?? [];
-  if (hasTaskWithTitle(input.task)) return false;
   const id = (tasks.reduce((m, t) => Math.max(m, t.id), 0) || 0) + 1;
   const next: LocalPlannerTask = {
     id,
     subject: input.subject,
+    subjectId: "manual",
     task: input.task,
+    title: input.task,
     time: `${input.durationMin} min`,
     durationMin: input.durationMin,
     done: false,
+    whyText: "",
+    subjectColor: "#6366f1",
+    priorityScore: 0,
+    chapter: {
+      id: `manual-${id}`,
+      title: input.task,
+      subjectId: "manual",
+      mastery: 50,
+      subjectName: input.subject,
+      whyText: "",
+      priorityScore: 0,
+    },
     link: input.link,
   };
-  write({ ...saved, tasks: [...tasks, next] });
+  const updatedTasks = [...tasks, next];
+  write({ ...saved, tasks: updatedTasks });
+  return true;
+}
+
+/**
+ * Append a ranked planner task (with chapter metadata) so completion in the
+ * Study Planner can run `processPlannerTaskCompletion`.
+ */
+export function addRankedTaskToTodayPlan(task: RankedPlannerTask): boolean {
+  if (hasTaskWithTitle(task.task)) return false;
+  const saved = read();
+  const tasks = saved.tasks ?? [];
+  const id = (tasks.reduce((m, t) => Math.max(m, t.id), 0) || 0) + 1;
+  const next: LocalPlannerTask = { ...task, id };
+  const updatedTasks = [...tasks, next];
+  write({ ...saved, tasks: updatedTasks });
   return true;
 }

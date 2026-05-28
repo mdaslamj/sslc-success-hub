@@ -17,7 +17,10 @@ import { useState, useEffect, useCallback, useMemo } from "react";
 import type { Question } from "./use-exam-engine";
 import type { StudySessionDoc } from "@/integrations/firebase/types";
 import { useCurrentUserId } from "./use-current-user";
-import { subjects as allSubjects } from "@/lib/mock-data";
+import { useAuraEngines } from "@/hooks/useAuraEngines";
+import { buildConstellationView } from "@/core/academic-state/constellationView";
+import { buildConstellationChapterPool } from "@/lib/constellation-chapter-pool";
+import { SSLC_SUBJECTS } from "@/data/sslc-academic-catalog";
 import {
   toDayKey,
   computeStreak,
@@ -185,12 +188,33 @@ function buildLast14Days(
   return out;
 }
 
+function countProfileChaptersDone(
+  profile: ReturnType<typeof useAuraEngines>["profile"],
+): number {
+  return buildConstellationChapterPool(profile).filter((chapter) => chapter.mastery >= 70)
+    .length;
+}
+
+function countTotalChapters(profile: ReturnType<typeof useAuraEngines>["profile"]): number {
+  return buildConstellationChapterPool(profile).length;
+}
+
 export function useAnalytics(): AnalyticsEngine {
   const [data, setData] = useState<AnalyticsData>(loadData);
   const userId = useCurrentUserId();
+  const { profile, projection } = useAuraEngines();
   const [sessions, setSessions] = useState<StudySessionDoc[]>([]);
   const [loading, setLoading] = useState(true);
   const [tick, setTick] = useState(0);
+
+  const constellation = useMemo(
+    () => buildConstellationView(profile, projection),
+    [profile, projection],
+  );
+  const chapterPool = useMemo(
+    () => buildConstellationChapterPool(profile),
+    [profile],
+  );
 
   useEffect(() => {
     if (!userId) return;
@@ -326,34 +350,52 @@ export function useAnalytics(): AnalyticsEngine {
   const focusSessions = useMemo(() => countFocusSessions(sessions), [sessions]);
 
   const bySubject = useMemo(() => {
-    return allSubjects.map((s) => {
-      const subSessions = sessions.filter((x) => x.subjectId === s.id);
-      const minutes = sumStudyMinutes(subSessions);
+    return SSLC_SUBJECTS.map((subject) => {
+      const subjectChapters = chapterPool.filter((chapter) => chapter.subjectId === subject.id);
+      const chaptersTotal = subjectChapters.length;
+      const chaptersDone = subjectChapters.filter((chapter) => chapter.mastery >= 70).length;
+      const completion = chaptersTotal
+        ? Math.round(
+            (subjectChapters.filter((chapter) => chapter.mastery >= 60).length /
+              chaptersTotal) *
+              100,
+          )
+        : (constellation.subjects[subject.id]?.predicted ?? subject.predicted);
+
+      const focusSessionsForSubject = sessions.filter((session) => session.subjectId === subject.id);
+      const profileSessionsForSubject = (profile.sessionHistory ?? []).filter(
+        (session) => session.subject === subject.id,
+      );
+      const minutes =
+        sumStudyMinutes(focusSessionsForSubject) +
+        profileSessionsForSubject.reduce(
+          (sum, session) => sum + (session.durationMinutes ?? 0),
+          0,
+        );
+
       return {
-        id: s.id,
-        name: s.name,
-        color: s.color,
-        emoji: s.emoji,
-        completion: s.completion,
-        chaptersDone: s.chaptersDone,
-        chaptersTotal: s.chapters,
+        id: subject.id,
+        name: subject.name,
+        color: constellation.subjects[subject.id]?.color ?? subject.color,
+        emoji: subject.emoji,
+        completion,
+        chaptersDone,
+        chaptersTotal,
         minutes,
-        sessions: subSessions.length,
+        sessions: focusSessionsForSubject.length + profileSessionsForSubject.length,
       };
     });
-  }, [sessions]);
+  }, [chapterPool, constellation.subjects, profile.sessionHistory, sessions]);
 
   const completedChapters = useMemo(
-    () => allSubjects.reduce((a, s) => a + s.chaptersDone, 0),
-    [],
+    () => countProfileChaptersDone(profile),
+    [profile],
   );
-  const totalChapters = useMemo(
-    () => allSubjects.reduce((a, s) => a + s.chapters, 0),
-    [],
+  const totalChapters = useMemo(() => countTotalChapters(profile), [profile]);
+  const overallProgress = useMemo(
+    () => Math.round(projection.percentage),
+    [projection.percentage],
   );
-  const overallProgress = totalChapters
-    ? Math.round((completedChapters / totalChapters) * 100)
-    : 0;
 
   const logSession = useCallback(
     (input: Omit<StudySessionDoc, "id" | "userId" | "dayKey">) => {

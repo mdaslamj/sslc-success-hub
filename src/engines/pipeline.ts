@@ -116,6 +116,7 @@ export function runAllEngines(profile: StudentLearningProfile): AuraEngineOutput
     profile.chapterMastery,
     blueprint,
     sessions,
+    profile.subjectTargets,
   );
 
   if (sessions.length === 0) {

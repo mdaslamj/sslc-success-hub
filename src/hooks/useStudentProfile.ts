@@ -302,10 +302,34 @@ export function useStudentProfile() {
     [persist, stored],
   );
 
+  const updateProfile = useCallback(
+    (patch: {
+      student?: Partial<StudentLearningProfile["student"]>;
+      subjectTargets?: Record<string, number>;
+    }) => {
+      if (!stored) return;
+      const { profile: current, masteryReadings } = stripProfileStorage(stored);
+      persist(
+        toProfileStorage(
+          {
+            ...current,
+            student: patch.student
+              ? { ...current.student, ...patch.student }
+              : current.student,
+            subjectTargets: patch.subjectTargets ?? current.subjectTargets,
+          },
+          masteryReadings,
+        ),
+      );
+    },
+    [persist, stored],
+  );
+
   return {
     profile,
     isLoading,
     updateMastery,
     appendSession,
+    updateProfile,
   };
 }

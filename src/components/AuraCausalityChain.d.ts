@@ -6,4 +6,13 @@ export type AuraCausalityChainProps = {
   className?: string;
 };
 
+export type AuraReplanBannerProps = {
+  message: string;
+  onViewChanges?: () => void;
+  onDismiss?: () => void;
+  className?: string;
+};
+
+export function AuraReplanBanner(props: AuraReplanBannerProps): JSX.Element | null;
+
 export default function AuraCausalityChain(props: AuraCausalityChainProps): JSX.Element | null;

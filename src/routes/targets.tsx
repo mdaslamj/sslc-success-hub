@@ -2,14 +2,17 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { DashboardLayout } from "@/components/dashboard-layout";
 import { ProgressRing } from "@/components/widgets/progress-ring";
-import { subjects as initialSubjects, gradeFor, type Subject } from "@/lib/mock-data";
+import { SSLC_SUBJECTS } from "@/data/sslc-academic-catalog";
+import { buildConstellationView } from "@/core/academic-state/constellationView";
+import { computeProbabilitySnapshot } from "@/core/academic-state/probabilityEngine";
+import { useAuraEngines } from "@/hooks/useAuraEngines";
 import {
   Target,
   TrendingUp,
   Trophy,
   Sparkles,
   RotateCcw,
-  Save,
+  Check,
 } from "lucide-react";
 import { getSubjectStatus } from "@/lib/taskPriorityEngine";
 import { Slider } from "@/components/ui/slider";
@@ -44,96 +47,161 @@ export const Route = createFileRoute("/targets")({
   component: TargetsPage,
 });
 
-const STORAGE_KEY = "vidyapath.targets.v1";
+const DEFAULT_SUBJECT_TARGETS = Object.fromEntries(
+  SSLC_SUBJECTS.map((subject) => [subject.id, subject.target]),
+) as Record<string, number>;
 
-/** Probability a student hits their target given current predicted score.
- *  Logistic curve around the gap. Gap <= 0 → very high; large gap → low. */
-function probabilityFor(target: number, predicted: number, mastery: number) {
-  const gap = target - predicted;
-  // Logistic: 1 / (1 + e^(k*(gap - shift)))
-  const k = 0.18;
-  const shift = 2; // small positive gap still feasible
-  const base = 1 / (1 + Math.exp(k * (gap - shift)));
-  // Mastery nudges confidence ±8 pts
-  const adj = base * 100 + (mastery - 70) * 0.15;
-  return Math.round(Math.max(5, Math.min(98, adj)));
+function gradeFor(pct: number): string {
+  if (pct >= 90) return "A+";
+  if (pct >= 80) return "A";
+  if (pct >= 70) return "B+";
+  if (pct >= 60) return "B";
+  if (pct >= 50) return "C";
+  return "D";
 }
 
-function TargetsPage() {
-  const [subjects, setSubjects] = useState<Subject[]>(initialSubjects);
-  const [overallOverride, setOverallOverride] = useState<number | null>(null);
-  const [hydrated, setHydrated] = useState(false);
+function buildDefaultSubjectTargets(
+  profileTargets?: Record<string, number>,
+): Record<string, number> {
+  return {
+    ...DEFAULT_SUBJECT_TARGETS,
+    ...(profileTargets ?? {}),
+  };
+}
 
-  // Hydrate from localStorage
+type TargetSubjectRow = {
+  id: string;
+  name: string;
+  emoji: string;
+  color: string;
+  predicted: number;
+  mastery: number;
+  weakTopics: string[];
+  target: number;
+};
+
+function TargetsPage() {
+  const { profile, projection, target, isLoading, updateProfile } = useAuraEngines();
+  const [sliderTargets, setSliderTargets] = useState<Record<string, number>>({});
+  const [savedFlash, setSavedFlash] = useState(false);
+
+  const constellation = useMemo(
+    () => buildConstellationView(profile, projection),
+    [profile, projection],
+  );
+
   useEffect(() => {
-    try {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      if (raw) {
-        const parsed = JSON.parse(raw) as {
-          targets?: Record<string, number>;
-          overall?: number | null;
+    if (!profile?.student) return;
+    setSliderTargets(buildDefaultSubjectTargets(profile.subjectTargets));
+  }, [profile?.student, profile.subjectTargets]);
+
+  useEffect(() => {
+    if (!savedFlash) return;
+    const timer = setTimeout(() => setSavedFlash(false), 2000);
+    return () => clearTimeout(timer);
+  }, [savedFlash]);
+
+  const subjects: TargetSubjectRow[] = useMemo(
+    () =>
+      SSLC_SUBJECTS.map((catalogSubject) => {
+        const view = constellation.subjects[catalogSubject.id];
+        return {
+          id: catalogSubject.id,
+          name: catalogSubject.name,
+          emoji: catalogSubject.emoji,
+          color: view?.color ?? catalogSubject.color,
+          predicted: view?.predicted ?? catalogSubject.predicted,
+          mastery: view?.mastery ?? catalogSubject.mastery,
+          weakTopics: catalogSubject.weakTopics,
+          target: sliderTargets[catalogSubject.id] ?? catalogSubject.target,
         };
-        if (parsed.targets) {
-          setSubjects((prev) =>
-            prev.map((s) => ({ ...s, target: parsed.targets?.[s.id] ?? s.target })),
-          );
-        }
-        if (typeof parsed.overall === "number") setOverallOverride(parsed.overall);
-      }
-    } catch {
-      /* ignore */
-    }
-    setHydrated(true);
-  }, []);
+      }),
+    [constellation.subjects, sliderTargets],
+  );
 
   const avgTarget = useMemo(
-    () => Math.round(subjects.reduce((a, s) => a + s.target, 0) / subjects.length),
+    () =>
+      subjects.length
+        ? Math.round(subjects.reduce((sum, subject) => sum + subject.target, 0) / subjects.length)
+        : 0,
     [subjects],
   );
   const avgPredicted = useMemo(
-    () => Math.round(subjects.reduce((a, s) => a + s.predicted, 0) / subjects.length),
+    () =>
+      subjects.length
+        ? Math.round(
+            subjects.reduce((sum, subject) => sum + subject.predicted, 0) / subjects.length,
+          )
+        : 0,
     [subjects],
   );
-  const overallTarget = overallOverride ?? avgTarget;
-  const overallGap = overallTarget - avgPredicted;
+  const overallTarget = avgTarget || profile.student.targetScore || 90;
+  const overallGap = target?.gapPercentage ?? Math.max(0, overallTarget - avgPredicted);
   const overallProbability = useMemo(() => {
-    const probs = subjects.map((s) => probabilityFor(s.target, s.predicted, s.mastery));
-    return Math.round(probs.reduce((a, b) => a + b, 0) / probs.length);
+    const probs = subjects.map((subject) =>
+      computeProbabilitySnapshot(subject.target, subject.predicted, subject.mastery),
+    );
+    return probs.length
+      ? Math.round(probs.reduce((sum, value) => sum + value, 0) / probs.length)
+      : 0;
   }, [subjects]);
 
-  const chartData = subjects.map((s) => ({
-    name: s.name.split(" ")[0],
-    Target: s.target,
-    Predicted: s.predicted,
-    Mastery: s.mastery,
-    color: s.color,
+  const chartData = subjects.map((subject) => ({
+    name: subject.name.split(" ")[0],
+    Target: subject.target,
+    Predicted: subject.predicted,
+    Mastery: subject.mastery,
+    color: subject.color,
   }));
 
-  function updateSubjectTarget(id: string, val: number) {
-    setSubjects((prev) => prev.map((s) => (s.id === id ? { ...s, target: val } : s)));
+  function flashSaved() {
+    setSavedFlash(true);
+  }
+
+  function handleTargetChange(subjectId: string, value: number) {
+    const nextSubjectTargets = {
+      ...buildDefaultSubjectTargets(profile.subjectTargets),
+      ...sliderTargets,
+      [subjectId]: value,
+    };
+    setSliderTargets(nextSubjectTargets);
+    updateProfile({ subjectTargets: nextSubjectTargets });
+    flashSaved();
+  }
+
+  function applyOverallToAll(value: number) {
+    const nextSubjectTargets = Object.fromEntries(
+      SSLC_SUBJECTS.map((subject) => [subject.id, value]),
+    ) as Record<string, number>;
+    setSliderTargets(nextSubjectTargets);
+    updateProfile({
+      student: { ...profile.student, targetScore: value },
+      subjectTargets: nextSubjectTargets,
+    });
+    flashSaved();
   }
 
   function resetTargets() {
-    setSubjects(initialSubjects);
-    setOverallOverride(null);
-    localStorage.removeItem(STORAGE_KEY);
-    toast.success("Targets reset to default");
-  }
-
-  function saveTargets() {
-    const payload = {
-      targets: Object.fromEntries(subjects.map((s) => [s.id, s.target])),
-      overall: overallOverride,
-    };
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
-    toast.success("Targets saved", {
-      description: `Aiming for ${overallTarget}% overall · ${overallProbability}% probability`,
+    setSliderTargets(DEFAULT_SUBJECT_TARGETS);
+    updateProfile({
+      student: { ...profile.student, targetScore: 90 },
+      subjectTargets: DEFAULT_SUBJECT_TARGETS,
     });
+    toast.success("Targets reset to default");
+    flashSaved();
   }
 
-  function applyOverallToAll(val: number) {
-    setOverallOverride(val);
-    setSubjects((prev) => prev.map((s) => ({ ...s, target: val })));
+  if (isLoading) {
+    return (
+      <DashboardLayout title="Targets">
+        <div
+          className="mx-auto flex min-h-[480px] max-w-7xl items-center justify-center rounded-3xl border border-border/60 bg-card text-sm text-muted-foreground"
+          aria-busy="true"
+        >
+          Loading targets…
+        </div>
+      </DashboardLayout>
+    );
   }
 
   return (
@@ -151,12 +219,14 @@ function TargetsPage() {
               Adjust per-subject targets to see live gap analysis and AI probability of success.
             </p>
           </div>
-          <div className="flex gap-2">
+          <div className="flex items-center gap-2">
+            {savedFlash && (
+              <span className="flex items-center gap-1 text-xs font-medium text-success">
+                <Check className="h-3.5 w-3.5" /> Saved
+              </span>
+            )}
             <Button variant="outline" size="sm" onClick={resetTargets} className="rounded-full">
               <RotateCcw className="mr-1.5 h-3.5 w-3.5" /> Reset
-            </Button>
-            <Button size="sm" onClick={saveTargets} className="rounded-full">
-              <Save className="mr-1.5 h-3.5 w-3.5" /> Save Targets
             </Button>
           </div>
         </header>
@@ -180,7 +250,7 @@ function TargetsPage() {
                   min={50}
                   max={100}
                   step={1}
-                  onValueChange={(v) => applyOverallToAll(v[0])}
+                  onValueChange={(value) => applyOverallToAll(value[0])}
                 />
                 <div className="mt-2 flex justify-between text-[11px] text-white/60">
                   <span>50%</span>
@@ -192,11 +262,11 @@ function TargetsPage() {
                 {overallGap > 0 ? (
                   <>
                     You need{" "}
-                    <span className="font-semibold text-brand-glow">+{overallGap} pts</span> on
-                    average to hit this target.
+                    <span className="font-semibold text-brand-glow">+{overallGap.toFixed(1)} pts</span>{" "}
+                    on average to hit this target.
                   </>
                 ) : (
-                  <>You're already projected to exceed this target. 🎉</>
+                  <>You&apos;re already projected to exceed this target. 🎉</>
                 )}
               </p>
             </div>
@@ -308,13 +378,13 @@ function TargetsPage() {
                 />
                 <Bar dataKey="Mastery" fill="hsl(var(--muted))" radius={[6, 6, 0, 0]} />
                 <Bar dataKey="Predicted" radius={[6, 6, 0, 0]}>
-                  {chartData.map((d, i) => (
-                    <Cell key={i} fill={d.color} fillOpacity={0.55} />
+                  {chartData.map((entry, index) => (
+                    <Cell key={index} fill={entry.color} fillOpacity={0.55} />
                   ))}
                 </Bar>
                 <Bar dataKey="Target" radius={[6, 6, 0, 0]}>
-                  {chartData.map((d, i) => (
-                    <Cell key={i} fill={d.color} />
+                  {chartData.map((entry, index) => (
+                    <Cell key={index} fill={entry.color} />
                   ))}
                 </Bar>
               </BarChart>
@@ -329,13 +399,20 @@ function TargetsPage() {
             <h3 className="font-display text-lg font-semibold">Per-subject Targets</h3>
           </div>
           <div className="grid gap-4 md:grid-cols-2">
-            {subjects.map((s) => {
-              const sGap = s.target - s.predicted;
-              const prob = probabilityFor(s.target, s.predicted, s.mastery);
-              const status = getSubjectStatus(s.predicted, s.target);
+            {subjects.map((subject) => {
+              const engineGap = target.bySubject?.[subject.id];
+              const subjectGap =
+                engineGap?.gap ?? Math.max(0, subject.target - subject.predicted);
+              const prob = computeProbabilitySnapshot(
+                subject.target,
+                subject.predicted,
+                subject.mastery,
+              );
+              const status = getSubjectStatus(subject.predicted, subject.target);
+
               return (
                 <div
-                  key={s.id}
+                  key={subject.id}
                   className="rounded-2xl border border-border/60 bg-background/40 p-4 transition hover:border-brand/40 hover:shadow-card"
                 >
                   <div className="flex items-start justify-between gap-4">
@@ -343,16 +420,16 @@ function TargetsPage() {
                       <div
                         className="flex h-12 w-12 items-center justify-center rounded-xl text-xl font-bold"
                         style={{
-                          background: `color-mix(in oklab, ${s.color} 18%, transparent)`,
-                          color: s.color,
+                          background: `color-mix(in oklab, ${subject.color} 18%, transparent)`,
+                          color: subject.color,
                         }}
                       >
-                        {s.emoji}
+                        {subject.emoji}
                       </div>
                       <div>
-                        <div className="font-display font-semibold">{s.name}</div>
+                        <div className="font-display font-semibold">{subject.name}</div>
                         <div className="text-xs text-muted-foreground">
-                          Predicted {s.predicted}% · Mastery {s.mastery}%
+                          Predicted {subject.predicted}% · Mastery {subject.mastery}%
                         </div>
                       </div>
                     </div>
@@ -370,8 +447,8 @@ function TargetsPage() {
                       <div className="text-[10px] uppercase tracking-widest text-muted-foreground">
                         Target
                       </div>
-                      <div className="font-display text-lg font-bold" style={{ color: s.color }}>
-                        {s.target}%
+                      <div className="font-display text-lg font-bold" style={{ color: subject.color }}>
+                        {subject.target}%
                       </div>
                     </div>
                     <div className="rounded-xl bg-muted/40 p-2">
@@ -380,10 +457,10 @@ function TargetsPage() {
                       </div>
                       <div
                         className={`font-display text-lg font-bold ${
-                          sGap > 0 ? "text-warning" : "text-success"
+                          subjectGap > 0 ? "text-warning" : "text-success"
                         }`}
                       >
-                        {sGap > 0 ? `+${sGap}` : sGap}
+                        {subjectGap > 0 ? `+${subjectGap}` : subjectGap}
                       </div>
                     </div>
                     <div className="rounded-xl bg-muted/40 p-2">
@@ -396,35 +473,33 @@ function TargetsPage() {
 
                   <div className="mt-4">
                     <Slider
-                      value={[s.target]}
+                      value={[subject.target]}
                       min={50}
                       max={100}
                       step={1}
-                      onValueChange={(v) => updateSubjectTarget(s.id, v[0])}
+                      onValueChange={(value) => handleTargetChange(subject.id, value[0])}
                     />
                     <div className="mt-2 flex justify-between text-[11px] text-muted-foreground">
                       <span>50%</span>
-                      <span>Predicted: {s.predicted}%</span>
+                      <span>Predicted: {subject.predicted}%</span>
                       <span>100%</span>
                     </div>
                   </div>
 
                   <p className="mt-3 text-xs text-muted-foreground">
-                    {sGap <= 0
-                      ? `✨ You're on track. Lock it in by maintaining ${s.predicted}%+ in mocks.`
-                      : sGap <= 5
-                        ? `Small push: focus on ${s.weakTopics[0] ?? "weak areas"} to close the gap.`
-                        : sGap <= 10
-                          ? `Stretch goal: weekly mock + revise ${s.weakTopics.slice(0, 2).join(", ")}.`
-                          : `Aggressive: needs a 6-week intensive plan on ${s.weakTopics.join(", ")}.`}
+                    {subjectGap <= 0
+                      ? `✨ You're on track. Lock it in by maintaining ${subject.predicted}%+ in mocks.`
+                      : subjectGap <= 5
+                        ? `Small push: focus on ${subject.weakTopics[0] ?? "weak areas"} to close the gap.`
+                        : subjectGap <= 10
+                          ? `Stretch goal: weekly mock + revise ${subject.weakTopics.slice(0, 2).join(", ")}.`
+                          : `Aggressive: needs a 6-week intensive plan on ${subject.weakTopics.join(", ")}.`}
                   </p>
                 </div>
               );
             })}
           </div>
         </section>
-
-        {!hydrated && <div className="sr-only">Loading saved targets…</div>}
       </div>
     </DashboardLayout>
   );
