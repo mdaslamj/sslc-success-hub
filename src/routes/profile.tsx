@@ -40,6 +40,7 @@ import { useAchievements } from "@/hooks/use-achievements";
 import { patchUserProfile } from "@/integrations/firebase/services/users";
 import { syncStudentDisplayName } from "@/lib/student-display-name";
 import { useDisplayName } from "@/hooks/use-display-name";
+import { AuraDevResetAction } from "@/components/dev/AuraDevResetAction";
 import type { PreferredLanguage } from "@/integrations/firebase/types";
 import { subjects } from "@/lib/mock-data";
 
@@ -96,6 +97,18 @@ function ProfilePage() {
           </TabsContent>
           <TabsContent value="settings" className="mt-4">
             <SettingsCard />
+            {import.meta.env.DEV ? (
+              <section className="mt-4 rounded-2xl border border-dashed border-amber-500/30 bg-amber-500/5 p-4 space-y-2">
+                <h3 className="text-sm font-semibold text-amber-800 dark:text-amber-200">
+                  Developer tools
+                </h3>
+                <p className="text-xs text-muted-foreground">
+                  Clear stale local caches, exam/chapter data, and planner state. Keeps your
+                  Firebase sign-in.
+                </p>
+                <AuraDevResetAction />
+              </section>
+            ) : null}
           </TabsContent>
           <TabsContent value="progress" className="mt-4">
             <ProgressCard />

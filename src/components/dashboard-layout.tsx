@@ -12,6 +12,7 @@ import { PageTransition } from "@/components/page-transition";
 
 import { SyncStatusBanner } from "@/components/offline/sync-status-banner";
 import { FeedbackButton } from "@/components/feedback/feedback-button";
+import { AuraDevResetAction } from "@/components/dev/AuraDevResetAction";
 import { useEffect } from "react";
 import { installGlobalCrashHandlers } from "@/lib/production/diagnostics";
 
@@ -113,6 +114,11 @@ export function DashboardLayout({ children, title }: { children: ReactNode; titl
 
         <BottomNav />
         <FeedbackButton />
+        {import.meta.env.DEV ? (
+          <div className="fixed bottom-[calc(5.5rem+env(safe-area-inset-bottom))] left-3 z-40 md:bottom-6 md:left-6">
+            <AuraDevResetAction />
+          </div>
+        ) : null}
       </div>
     </SidebarProvider>
   );

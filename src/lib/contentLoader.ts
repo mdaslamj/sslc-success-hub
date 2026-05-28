@@ -20,7 +20,7 @@ export const loadManifest = async (subjectId?: string) => {
   return res.json();
 };
 
-const CHAPTER_CACHE_VERSION = "v2";
+const CHAPTER_CACHE_VERSION = "v3";
 
 function legacyChapterCacheKeys(
   subjectId: string,

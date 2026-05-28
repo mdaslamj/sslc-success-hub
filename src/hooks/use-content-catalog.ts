@@ -22,7 +22,7 @@ export type ContentSubject = {
 export function useContentCatalog() {
   const queries = useQueries({
     queries: CONTENT_SUBJECTS.map((s) => ({
-      queryKey: ["content-index", s.contentId, "v2"],
+      queryKey: ["content-index", s.contentId, "v3"],
       queryFn: () => loadIndexedSubject(s.contentId),
       staleTime: 10 * 60_000,
       gcTime: 30 * 60_000,

@@ -38,6 +38,8 @@ import {
   VOICE_SUBCOLLECTIONS,
 } from "@/integrations/firebase/config";
 import { recordEvent } from "./monitoring";
+import { sweepAuraLocalStorage, clearAuraIndexedDB } from "@/lib/dev/aura-app-reset";
+import { isAuraLocalStorageKey } from "@/lib/dev/aura-cache-registry";
 
 const STORAGE_KEY = "aura:account-deletion-queue:v1";
 
@@ -68,28 +70,10 @@ function save(reqs: DeletionRequest[]) {
   }
 }
 
-const PURGE_PREFIXES = [
-  "aura:",
-  "vidyapath:",
-  "scan:",
-  "planner:",
-  "quiz:",
-  "exam:",
-  "voice:",
-  "memory:",
-  "gamification:",
-];
-
 export function purgeLocalUserData() {
-  if (typeof localStorage === "undefined") return;
-  const toRemove: string[] = [];
-  for (let i = 0; i < localStorage.length; i++) {
-    const k = localStorage.key(i);
-    if (!k) continue;
-    if (PURGE_PREFIXES.some((p) => k.startsWith(p))) toRemove.push(k);
-  }
-  for (const k of toRemove) localStorage.removeItem(k);
-  recordEvent("info", "account_local_purge", toRemove.length);
+  const { localStorageRemoved } = sweepAuraLocalStorage();
+  void clearAuraIndexedDB();
+  recordEvent("info", "account_local_purge", localStorageRemoved);
 }
 
 export function requestAccountDeletion(input: {
@@ -127,7 +111,7 @@ export function exportLocalUserData(): Blob {
     for (let i = 0; i < localStorage.length; i++) {
       const k = localStorage.key(i);
       if (!k) continue;
-      if (PURGE_PREFIXES.some((p) => k.startsWith(p))) {
+      if (isAuraLocalStorageKey(k)) {
         dump[k] = localStorage.getItem(k) ?? "";
       }
     }

@@ -212,7 +212,7 @@ function SubjectDetailPage() {
   // Load every ready chapter in parallel; loadChapter is already cached.
   const chapterQueries = useQueries({
     queries: readyChapters.map((c) => ({
-      queryKey: ["content", "chapter", contentFolder ?? "none", c.id, "v2"],
+      queryKey: ["content", "chapter", contentFolder ?? "none", c.id, "v3"],
       queryFn: () => loadChapter(contentFolder ?? "", c.id),
       enabled: isContentDriven && contentFolder != null,
       staleTime: 60 * 60 * 1000,

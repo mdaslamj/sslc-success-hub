@@ -16,6 +16,10 @@ import { Toaster } from "@/components/ui/sonner";
 import { AuthProvider, useAuth } from "@/contexts/auth-context";
 import { ThemeProvider } from "@/contexts/theme-context";
 import { logQADiagnostic } from "@/lib/qa/diagnostics";
+import {
+  installAuraDevGlobals,
+  runAuraStartupRecovery,
+} from "@/lib/dev/aura-app-reset";
 
 function NotFoundComponent() {
   return (
@@ -134,6 +138,11 @@ function RootShell({ children }: { children: React.ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+
+  useEffect(() => {
+    runAuraStartupRecovery();
+    installAuraDevGlobals();
+  }, []);
 
   return (
     <QueryClientProvider client={queryClient}>
