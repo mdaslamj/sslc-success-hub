@@ -16,7 +16,10 @@ import {
   toMcqDocs,
   type IndexedChapter,
   type IndexedQuestion,
+  loadIndexedChapter,
+  toContentSubjectId,
 } from "./content-question-index";
+import { chapterKeysMatch, normalizeChapterKey } from "./normalizeChapterKey";
 import type { MockExamDoc, QuizDoc } from "@/integrations/firebase/types";
 
 // ---------------------------------------------------------------------------
@@ -280,6 +283,61 @@ export function buildMixedMockExam(args: {
   };
 }
 
+function findIndexedChapter(
+  chapters: IndexedChapter[],
+  slug: string,
+): IndexedChapter | undefined {
+  const normalized = normalizeChapterKey(slug);
+  return chapters.find(
+    (c) =>
+      c.chapterId === slug ||
+      normalizeChapterKey(c.chapterId) === normalized ||
+      normalizeChapterKey(c.title) === normalized ||
+      chapterKeysMatch(c.chapterId, slug),
+  );
+}
+
+/**
+ * Reconstruct a chapter mock exam by loading chapter JSON directly.
+ * Works even when the full subject catalog has not hydrated yet.
+ */
+export async function rebuildChapterMockExamById(
+  examId: string,
+): Promise<MockExamDoc | null> {
+  const match = examId.match(/^mock_(math|science|social)_ch_(.+)$/);
+  if (!match) return null;
+
+  const runtimeId = match[1] as "math" | "science" | "social";
+  const chapterSlug = decodeURIComponent(match[2]);
+  const contentId = toContentSubjectId(runtimeId);
+  if (!contentId) return null;
+
+  const chapter = await loadIndexedChapter(contentId, chapterSlug);
+  if (!chapter) {
+    if (import.meta.env.DEV) {
+      console.warn("[exam] chapter mock rebuild failed — no chapter", {
+        examId,
+        contentId,
+        chapterSlug,
+      });
+    }
+    return null;
+  }
+
+  const mcqCount = chapter.questions.filter((q) => q.questionType === "mcq").length;
+  if (mcqCount === 0) {
+    if (import.meta.env.DEV) {
+      console.warn("[exam] chapter mock rebuild failed — no MCQs indexed", {
+        examId,
+        chapterId: chapter.chapterId,
+      });
+    }
+    return null;
+  }
+
+  return buildChapterMockExam({ subjectId: runtimeId, chapter });
+}
+
 // ---------------------------------------------------------------------------
 // Convenience: rebuild any content-generated exam from its id
 // ---------------------------------------------------------------------------
@@ -324,9 +382,23 @@ function rebuildContentExamByIdUnsafe(
     const chapterPrefix = `mock_${s.runtimeId}_ch_`;
     if (examId.startsWith(chapterPrefix)) {
       const chapterId = examId.slice(chapterPrefix.length);
-      const chapter = s.chapters.find((c) => c.chapterId === chapterId);
+      const chapter = findIndexedChapter(s.chapters, chapterId);
       if (chapter) {
-        return buildChapterMockExam({ subjectId: s.runtimeId, chapter });
+        const built = buildChapterMockExam({ subjectId: s.runtimeId, chapter });
+        if (built) return built;
+        if (import.meta.env.DEV) {
+          console.warn("[exam] chapter mock sync rebuild empty", {
+            examId,
+            chapterId: chapter.chapterId,
+            mcqs: chapter.questions.filter((q) => q.questionType === "mcq").length,
+          });
+        }
+      } else if (import.meta.env.DEV) {
+        console.warn("[exam] chapter slug not in catalog", {
+          examId,
+          chapterId,
+          catalogIds: s.chapters.map((c) => c.chapterId),
+        });
       }
     }
   }

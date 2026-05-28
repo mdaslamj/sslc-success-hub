@@ -18,6 +18,7 @@
  */
 
 import { loadChapter, loadManifest } from "./contentLoader";
+import { chapterKeysMatch, normalizeChapterKey } from "./normalizeChapterKey";
 import type {
   McqDoc,
   MockExamQuestionRef,
@@ -364,6 +365,43 @@ export async function loadIndexedSubject(
     }),
   );
   return loaded.filter((c): c is IndexedChapter => c !== null);
+}
+
+/** Load and index a single chapter — used by deep-linked chapter mock exams. */
+export async function loadIndexedChapter(
+  contentSubjectId: string,
+  chapterId: string,
+): Promise<IndexedChapter | null> {
+  const runtimeSubjectId = toRuntimeSubjectId(contentSubjectId);
+  try {
+    const manifest = (await loadManifest(contentSubjectId).catch(() => null)) as
+      | { chapters?: ManifestChapter[] }
+      | null;
+    const entry =
+      (manifest?.chapters ?? []).find(
+        (c) =>
+          chapterKeysMatch(c.id, chapterId) ||
+          normalizeChapterKey(c.id) === normalizeChapterKey(chapterId),
+      ) ?? ({ id: chapterId } as ManifestChapter);
+
+    const doc = (await loadChapter(contentSubjectId, chapterId)) as Record<
+      string,
+      unknown
+    >;
+    return indexChapter({
+      runtimeSubjectId,
+      chapterDoc: doc,
+      manifestEntry: entry as unknown as Record<string, unknown>,
+    });
+  } catch (err) {
+    if (import.meta.env.DEV) {
+      console.warn(
+        `[content-index] chapter load failed ${contentSubjectId}/${chapterId}`,
+        err,
+      );
+    }
+    return null;
+  }
 }
 
 /** Flatten indexed chapters into a single question pool, MCQs only by default. */

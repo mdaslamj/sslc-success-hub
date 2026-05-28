@@ -31,13 +31,13 @@ import {
 } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
 import { useMockExam } from "@/hooks/use-mock-exam";
-import { readCachedExam } from "@/lib/mock-exam-store";
+import { readCachedExam, cacheExam } from "@/lib/mock-exam-store";
 import { SEED_MOCK_EXAMS } from "@/lib/mock-exam-seed";
 import { fetchMockExam } from "@/integrations/firebase/services/mock-exams";
 import type { MockExamDoc } from "@/integrations/firebase/types";
 import { UploadAnswerButton } from "@/components/answer-upload/upload-answer-button";
 import { useContentCatalog } from "@/hooks/use-content-catalog";
-import { rebuildContentExamById } from "@/lib/content-exam-builder";
+import { rebuildContentExamById, rebuildChapterMockExamById } from "@/lib/content-exam-builder";
 import { sanitizeMockExam } from "@/lib/mock-exam-validation";
 import { Skeleton } from "@/components/ui/skeleton";
 
@@ -94,6 +94,8 @@ function ExamPlayerPage() {
   }, [examId]);
 
   useEffect(() => {
+    let cancelled = false;
+
     const acceptExam = (candidate: MockExamDoc | null, source: string) => {
       if (!candidate) return false;
       const validated = sanitizeMockExam(candidate);
@@ -122,55 +124,60 @@ function ExamPlayerPage() {
       setLoadError(null);
       setMissing(false);
       setExam(validated.exam);
+      cacheExam(validated.exam);
       return true;
     };
 
-    try {
-      const cached = readCachedExam(examId);
-      if (cached && acceptExam(cached, "cache")) return;
+    async function resolveExam() {
+      try {
+        const cached = readCachedExam(examId);
+        if (cached && acceptExam(cached, "cache")) return;
 
-      const built = rebuildContentExamById(examId, {
-        subjects: content.subjects.map((s) => ({
-          runtimeId: s.runtimeId,
-          name: s.name,
-          chapters: s.chapters,
-        })),
-      });
-      if (built && acceptExam(built, "rebuild")) return;
-
-      const seed = SEED_MOCK_EXAMS.find((e) => e.id === examId) ?? null;
-      if (seed && acceptExam(seed, "seed")) return;
-
-      if (content.isLoading) {
-        if (import.meta.env.DEV) console.debug("[exam] waiting-catalog", { examId });
-        return;
-      }
-
-      let cancelled = false;
-      fetchMockExam(examId)
-        .then((e) => {
-          if (cancelled) return;
-          if (e && acceptExam(e, "remote")) return;
-          if (import.meta.env.DEV) console.debug("[exam] missing", { examId });
-          setLoadError(null);
-          setMissing(true);
-        })
-        .catch((err) => {
-          if (!cancelled) {
-            if (import.meta.env.DEV) console.debug("[exam] missing", { examId, err });
-            setLoadError(null);
-            setMissing(true);
-          }
+        const built = rebuildContentExamById(examId, {
+          subjects: content.subjects.map((s) => ({
+            runtimeId: s.runtimeId,
+            name: s.name,
+            chapters: s.chapters,
+          })),
         });
-      return () => {
-        cancelled = true;
-      };
-    } catch (err) {
-      console.error("[exam] loader failed", { examId, err });
-      setLoadError("Unable to assemble this exam from blueprint data.");
-      setExam(null);
-      setMissing(false);
+        if (built && acceptExam(built, "rebuild")) return;
+
+        // Direct chapter JSON load — works before full catalog hydrates.
+        if (examId.includes("_ch_")) {
+          const direct = await rebuildChapterMockExamById(examId);
+          if (cancelled) return;
+          if (direct && acceptExam(direct, "direct")) return;
+        }
+
+        const seed = SEED_MOCK_EXAMS.find((e) => e.id === examId) ?? null;
+        if (seed && acceptExam(seed, "seed")) return;
+
+        if (content.isLoading) {
+          if (import.meta.env.DEV) console.debug("[exam] waiting-catalog", { examId });
+          return;
+        }
+
+        const remote = await fetchMockExam(examId);
+        if (cancelled) return;
+        if (remote && acceptExam(remote, "remote")) return;
+
+        if (import.meta.env.DEV) console.debug("[exam] missing", { examId });
+        setLoadError(null);
+        setMissing(true);
+      } catch (err) {
+        if (cancelled) return;
+        console.error("[exam] loader failed", { examId, err });
+        setLoadError("Unable to assemble this exam from blueprint data.");
+        setExam(null);
+        setMissing(false);
+      }
     }
+
+    void resolveExam();
+
+    return () => {
+      cancelled = true;
+    };
   }, [examId, content.subjects, content.isLoading, retryToken]);
 
   if (loadError) {

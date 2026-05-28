@@ -212,7 +212,7 @@ function SubjectDetailPage() {
   // Load every ready chapter in parallel; loadChapter is already cached.
   const chapterQueries = useQueries({
     queries: readyChapters.map((c) => ({
-      queryKey: ["content", "chapter", contentFolder ?? "none", c.id],
+      queryKey: ["content", "chapter", contentFolder ?? "none", c.id, "v2"],
       queryFn: () => loadChapter(contentFolder ?? "", c.id),
       enabled: isContentDriven && contentFolder != null,
       staleTime: 60 * 60 * 1000,
@@ -222,9 +222,20 @@ function SubjectDetailPage() {
   const normalizedChapters = useMemo<NormalizedChapter[]>(() => {
     if (!isContentDriven) return [];
     return readyChapters.map((entry, i) => {
-      const raw = chapterQueries[i]?.data;
-      // Merge manifest skeleton with full chapter JSON when available.
-      const merged = raw ? { ...entry, ...(raw as object) } : entry;
+      const raw = chapterQueries[i]?.data as Record<string, unknown> | undefined;
+      // Merge manifest skeleton with full chapter JSON; preserve manifest ids/numbers.
+      const merged = raw
+        ? {
+            ...entry,
+            ...raw,
+            id: (typeof raw.id === "string" && raw.id) || entry.id,
+            title: (typeof raw.title === "string" && raw.title) || entry.title,
+            chapterNumber:
+              (typeof raw.chapterNumber === "number" && raw.chapterNumber > 0
+                ? raw.chapterNumber
+                : entry.chapterNumber) ?? entry.chapterNumber,
+          }
+        : entry;
       return normalizeChapterData(merged);
     });
   }, [isContentDriven, readyChapters, chapterQueries]);
@@ -530,18 +541,14 @@ function SubjectDetailPage() {
                 activeChapterLoading={activeChapterLoading}
                 emptyMessage="No resources available for this chapter yet."
               >
-                {(ch) => {
-                  const resolved =
-                    resolveContentChapter(activeContentId) ?? ch;
-                  return (
-                    <ContentResourcesGrid
-                      key={resolved.id}
-                      chapter={resolved}
-                      runtimeSubjectId={runtimeSubjectIdFor(subjectId)}
-                      loading={activeChapterLoading}
-                    />
-                  );
-                }}
+                {(chapter) => (
+                  <ContentResourcesGrid
+                    key={activeContentId ?? chapter.id}
+                    chapter={chapter}
+                    runtimeSubjectId={runtimeSubjectIdFor(subjectId)}
+                    loading={activeChapterLoading}
+                  />
+                )}
               </ContentChapterPane>
             ) : (
               <ResourcesSection chapters={chapters} />
@@ -2026,9 +2033,15 @@ function resolveChapterResources(
 ): ContentResource[] {
   if (chapter.resources?.length) return chapter.resources;
 
-  const pdf = runtimeSubjectId
-    ? ncertPdfForChapter(runtimeSubjectId, chapter.chapterNumber)
-    : null;
+  const chapterNumber =
+    chapter.chapterNumber > 0
+      ? chapter.chapterNumber
+      : undefined;
+
+  const pdf =
+    runtimeSubjectId && chapterNumber
+      ? ncertPdfForChapter(runtimeSubjectId, chapterNumber)
+      : null;
   if (pdf) {
     return [
       {
@@ -2401,17 +2414,17 @@ function ContentChapterPane({
       </div>
     );
   }
-  const selected =
+  const activeChapter =
     (activeId ? findChapterByKey(chapters, activeId) : undefined) ?? chapters[0];
   const panelLoading =
     activeChapterLoading &&
-    chapterKeysMatch(selected.id, activeId ?? "");
+    chapterKeysMatch(activeChapter.id, activeId ?? "");
   return (
     <div className="grid gap-4 md:grid-cols-[220px_1fr]">
       <div className="rounded-2xl border border-border/60 bg-card p-2 md:max-h-[640px] md:overflow-y-auto">
         <ul className="space-y-1">
           {chapters.map((c, i) => {
-            const active = chapterKeysMatch(selected.id, c.id);
+            const active = chapterKeysMatch(activeChapter.id, c.id);
             return (
               <li key={c.id}>
                 <button
@@ -2440,7 +2453,7 @@ function ContentChapterPane({
             <Skeleton className="h-32 w-full rounded-2xl" />
           </div>
         ) : (
-          children(selected)
+          children(activeChapter)
         )}
       </div>
     </div>
