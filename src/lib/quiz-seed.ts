@@ -1,7 +1,8 @@
 /**
  * Seed MCQ pool used by the local-first quiz catalog while Firestore data
- * is still being populated. Swap with `fetchMcqs(subjectId, chapterId)` once
- * the admin import lands content for every chapter.
+ * is still being populated. Chapter ids match `public/content/chapters/` slugs.
+ *
+ * Lovable = visual generation · Cursor = engineering · GitHub = source of truth
  */
 
 import type { McqDoc } from "@/integrations/firebase/types";
@@ -10,7 +11,7 @@ export const SEED_MCQS: McqDoc[] = [
   {
     id: "math_real_q1",
     subjectId: "math",
-    chapterId: "math_ch1",
+    chapterId: "real-numbers",
     question: "Which of these is an irrational number?",
     options: ["0.25", "√2", "3/4", "−5"],
     correctIndex: 1,
@@ -21,7 +22,7 @@ export const SEED_MCQS: McqDoc[] = [
   {
     id: "math_real_q2",
     subjectId: "math",
-    chapterId: "math_ch1",
+    chapterId: "real-numbers",
     question: "HCF(96, 404) = ?",
     options: ["2", "4", "8", "12"],
     correctIndex: 1,
@@ -32,7 +33,7 @@ export const SEED_MCQS: McqDoc[] = [
   {
     id: "math_quad_q1",
     subjectId: "math",
-    chapterId: "math_ch4",
+    chapterId: "quadratic-equations",
     question: "Discriminant of x² − 4x + 4 is:",
     options: ["0", "4", "−4", "16"],
     correctIndex: 0,
@@ -43,7 +44,7 @@ export const SEED_MCQS: McqDoc[] = [
   {
     id: "math_quad_q2",
     subjectId: "math",
-    chapterId: "math_ch4",
+    chapterId: "quadratic-equations",
     question: "Roots of x² − 5x + 6 are:",
     options: ["1, 6", "2, 3", "−2, −3", "−1, −6"],
     correctIndex: 1,
@@ -54,7 +55,7 @@ export const SEED_MCQS: McqDoc[] = [
   {
     id: "sci_light_q1",
     subjectId: "science",
-    chapterId: "sci_ch10",
+    chapterId: "light-reflection-and-refraction",
     question: "A concave mirror always forms a real image when the object is:",
     options: [
       "Between pole and focus",
@@ -64,24 +65,24 @@ export const SEED_MCQS: McqDoc[] = [
     ],
     correctIndex: 2,
     explanation: "Objects beyond F produce real, inverted images.",
-    topic: "Light",
+    topic: "Light - Reflection and Refraction",
     difficulty: "Medium",
   },
   {
     id: "sci_light_q2",
     subjectId: "science",
-    chapterId: "sci_ch10",
+    chapterId: "light-reflection-and-refraction",
     question: "SI unit of power of a lens is:",
     options: ["metre", "dioptre", "watt", "lumen"],
     correctIndex: 1,
     explanation: "Power P = 1/f (in metres); unit is the dioptre (D).",
-    topic: "Light",
+    topic: "Light - Reflection and Refraction",
     difficulty: "Easy",
   },
   {
     id: "sci_elec_q1",
     subjectId: "science",
-    chapterId: "sci_ch12",
+    chapterId: "electricity",
     question: "Ohm's law relates:",
     options: [
       "V, I and R",
@@ -97,7 +98,7 @@ export const SEED_MCQS: McqDoc[] = [
   {
     id: "sci_elec_q2",
     subjectId: "science",
-    chapterId: "sci_ch12",
+    chapterId: "electricity",
     question: "Resistors 2Ω and 3Ω in series carry 1A. Voltage across them:",
     options: ["1V", "3V", "5V", "6V"],
     correctIndex: 2,
@@ -106,8 +107,9 @@ export const SEED_MCQS: McqDoc[] = [
     difficulty: "Medium",
   },
   {
-    id: "soc_money_q1",
+    id: "soc_banking_q1",
     subjectId: "social",
+    chapterId: "chapter_01_banking_transactions",
     question: "Demand deposits are accepted as a means of payment because:",
     options: [
       "They earn interest",
@@ -117,17 +119,18 @@ export const SEED_MCQS: McqDoc[] = [
     ],
     correctIndex: 2,
     explanation: "Cheques allow demand deposits to settle payments.",
-    topic: "Money & Credit",
+    topic: "Banking Transactions",
     difficulty: "Medium",
   },
   {
-    id: "soc_money_q2",
+    id: "soc_banking_q2",
     subjectId: "social",
+    chapterId: "chapter_01_banking_transactions",
     question: "Formal sources of credit in India are supervised by:",
     options: ["SEBI", "RBI", "NITI Aayog", "Finance Commission"],
     correctIndex: 1,
     explanation: "The RBI regulates banks and cooperative societies.",
-    topic: "Money & Credit",
+    topic: "Banking Transactions",
     difficulty: "Easy",
   },
 ];

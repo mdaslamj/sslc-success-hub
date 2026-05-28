@@ -1,7 +1,21 @@
 ---
-description: Aura engine iteration loop — build, test, validate, commit safely
-globs: src/engines/**/*
-alwaysApply: false
+description: Aura project workflow — Lovable vs Cursor vs GitHub; engine iteration loop
+globs: src/**/*
+alwaysApply: true
+---
+
+# Aura Project Workflow
+
+> **Lovable = visual generation · Cursor = engineering + refinement · GitHub = source of truth**
+
+## Lovable vs Cursor
+
+- **Lovable only** for: new screens, major visual components, design pivots — generate once, copy into repo.
+- **Cursor for everything else**: copy, spacing, formulas, layout, animations, state, responsiveness, data, engines, fixes.
+- After Lovable generation: commit to GitHub; Lovable syncs from Git — do not re-generate the same screen repeatedly.
+
+See `docs/dev-workflow.md` for the full new-screen workflow and academic data catalog (`src/data/sslc-academic-catalog.ts`).
+
 ---
 
 # Aura Engine Development Workflow

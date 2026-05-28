@@ -1,14 +1,53 @@
 # Aura — Development Workflow
 
+> **Lovable = visual generation · Cursor = engineering + refinement · GitHub = source of truth**
+
 This project uses a three-layer workflow:
 
 | Layer | Role |
 |-------|------|
-| **Cursor** | Engineering, architecture, engine logic, integration |
+| **Cursor** | Engineering, architecture, engine logic, data integration, copy/spacing/formula tuning |
 | **GitHub** | Source of truth — every stable change lands here |
-| **Lovable** | Deployment + visual iteration on top of GitHub |
+| **Lovable** | One-time visual generation for new screens / major components; deployment preview |
 
 Keep these layers synchronized continuously. Do not let large untracked local work accumulate.
+
+---
+
+## Lovable vs Cursor — strict generation rules
+
+### Use Lovable ONLY when:
+
+- Generating a **completely new screen**
+- Creating a **major new visual component**
+- Exploring a **new design direction / pivot**
+
+### Use Cursor for everything else:
+
+- Wording, copy, and spacing tweaks
+- Formula values and layout refinements
+- Animation timing and state logic
+- Responsiveness and mobile polish
+- Data integration and engine wiring
+- Bug fixes and route behavior
+- Academic content (subjects, chapters, planner tasks, mock exams)
+
+**Do not** send copy tweaks, spacing, or data refactors back through Lovable.
+
+### New-screen workflow (mandatory)
+
+1. Write a concise **visual / product spec** in Cursor or docs.
+2. Generate **once** in Lovable.
+3. **Immediately copy** generated code into the repo.
+4. Continue **all** edits, wiring, fixes, and refinements in Cursor.
+5. Commit and push to GitHub; let Lovable sync from Git.
+
+Avoid repeated Lovable regeneration cycles for the same screen.
+
+### Academic data source
+
+Karnataka SSLC subject/chapter metadata lives in `src/data/sslc-academic-catalog.ts`.  
+Content JSON slugs under `public/content/chapters/` are authoritative for mock exams and resources.
 
 ---
 

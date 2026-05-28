@@ -7,7 +7,7 @@ import { useState, useMemo } from "react";
    ═══════════════════════════════════════════════════════════ */
 
 // ── STUDENT ──────────────────────────────────────────────────
-const STUDENT = { name:"Arjun", streak:7, xp:2340, momentum:68, daysToExam:298, examDate:"March 21, 2027" };
+const STUDENT = { name:"Arjun", streak:7, xp:2340, momentum:68, daysToExam:42, examDate:"March 21, 2026" };
 
 const RANKS = [
   {name:"Beginner",icon:"🌱",minXP:0},    {name:"Student",icon:"📖",minXP:500},
@@ -28,58 +28,59 @@ const URG = {
   good:    {color:"#4ADE80",filled:2,label:"STEADY"},
 };
 
-// ── DATA ─────────────────────────────────────────────────────
+// ── DATA (Karnataka SSLC — chapter slugs match public/content) ─────────────
 const CHAPTERS = [
-  {id:"s1",s:"Science",       name:"Chemical Reactions & Equations",   m:72,lpd:8, mc:false,bm:14},
-  {id:"s2",s:"Science",       name:"Acids, Bases & Salts",             m:45,lpd:15,mc:true, bm:10},
-  {id:"s3",s:"Science",       name:"Metals & Non-metals",              m:38,lpd:22,mc:true, bm:12},
-  {id:"s4",s:"Science",       name:"Carbon Compounds",                 m:28,lpd:35,mc:true, bm:12},
-  {id:"s5",s:"Science",       name:"Life Processes",                   m:65,lpd:5, mc:false,bm:16},
-  {id:"s6",s:"Science",       name:"Control & Coordination",           m:55,lpd:12,mc:false,bm:10},
-  {id:"s7",s:"Science",       name:"Light – Reflection & Refraction",  m:80,lpd:45,mc:false,bm:12},
-  {id:"s8",s:"Science",       name:"Electricity",                      m:42,lpd:18,mc:true, bm:14},
-  {id:"s9",s:"Science",       name:"Magnetic Effects",                 m:60,lpd:9, mc:false,bm:8 },
-  {id:"m1",s:"Mathematics",   name:"Real Numbers",                     m:85,lpd:60,mc:false,bm:8 },
-  {id:"m2",s:"Mathematics",   name:"Polynomials",                      m:70,lpd:30,mc:false,bm:8 },
-  {id:"m3",s:"Mathematics",   name:"Pair of Linear Equations",         m:55,lpd:14,mc:true, bm:10},
-  {id:"m4",s:"Mathematics",   name:"Quadratic Equations",              m:40,lpd:20,mc:true, bm:12},
-  {id:"m5",s:"Mathematics",   name:"Arithmetic Progressions",          m:62,lpd:10,mc:false,bm:10},
-  {id:"m6",s:"Mathematics",   name:"Triangles",                        m:33,lpd:28,mc:true, bm:14},
-  {id:"m7",s:"Mathematics",   name:"Coordinate Geometry",              m:58,lpd:8, mc:false,bm:8 },
-  {id:"m8",s:"Mathematics",   name:"Trigonometry",                     m:48,lpd:16,mc:true, bm:12},
-  {id:"m9",s:"Mathematics",   name:"Statistics",                       m:72,lpd:20,mc:false,bm:10},
-  {id:"e1",s:"Social Science",name:"Nationalism in India",             m:75,lpd:7, mc:false,bm:10},
-  {id:"e2",s:"Social Science",name:"The Nationalist Movement",         m:60,lpd:20,mc:false,bm:8 },
-  {id:"e3",s:"Social Science",name:"Resources & Development",          m:45,lpd:25,mc:true, bm:10},
-  {id:"e4",s:"Social Science",name:"Power Sharing",                    m:68,lpd:12,mc:false,bm:8 },
-  {id:"e5",s:"Social Science",name:"Development (Economics)",          m:52,lpd:18,mc:true, bm:10},
-  {id:"e6",s:"Social Science",name:"Water Resources",                  m:70,lpd:14,mc:false,bm:8 },
-  {id:"e7",s:"Social Science",name:"Federalism",                       m:65,lpd:8, mc:false,bm:8 },
-  {id:"e8",s:"Social Science",name:"Money & Credit",                   m:48,lpd:22,mc:true, bm:8 },
+  {id:"chemical-reactions-and-equations",s:"Science",       name:"Chemical Reactions and Equations",   m:77,lpd:8, mc:false,bm:4},
+  {id:"acids-bases-and-salts",           s:"Science",       name:"Acids, Bases and Salts",             m:72,lpd:15,mc:false,bm:6},
+  {id:"metals-and-nonmetals",            s:"Science",       name:"Metals and Non-metals",              m:68,lpd:22,mc:false,bm:7},
+  {id:"carbon-and-its-compounds",        s:"Science",       name:"Carbon and its Compounds",           m:65,lpd:15,mc:true, bm:8},
+  {id:"life-processes",                  s:"Science",       name:"Life Processes",                     m:70,lpd:5, mc:false,bm:8},
+  {id:"control-and-coordination",        s:"Science",       name:"Control and Coordination",           m:63,lpd:12,mc:false,bm:6},
+  {id:"light-reflection-and-refraction", s:"Science",       name:"Light - Reflection and Refraction",  m:80,lpd:45,mc:false,bm:8},
+  {id:"electricity",                     s:"Science",       name:"Electricity",                        m:44,lpd:7, mc:true, bm:8},
+  {id:"magnetic-effects-of-electric-current",s:"Science",   name:"Magnetic Effects of Electric Current",m:58,lpd:9, mc:false,bm:6},
+  {id:"real-numbers",                    s:"Mathematics",   name:"Real Numbers",                       m:85,lpd:60,mc:false,bm:6},
+  {id:"polynomials",                     s:"Mathematics",   name:"Polynomials",                        m:78,lpd:30,mc:false,bm:4},
+  {id:"pair-of-linear-equations",        s:"Mathematics",   name:"Pair of Linear Equations in Two Variables",m:72,lpd:14,mc:false,bm:6},
+  {id:"quadratic-equations",             s:"Mathematics",   name:"Quadratic Equations",                m:54,lpd:5, mc:true, bm:8},
+  {id:"arithmetic-progressions",         s:"Mathematics",   name:"Arithmetic Progressions",            m:68,lpd:10,mc:false,bm:4},
+  {id:"triangles",                       s:"Mathematics",   name:"Triangles",                          m:76,lpd:2, mc:false,bm:10},
+  {id:"introduction-to-trigonometry",    s:"Mathematics",   name:"Introduction to Trigonometry",       m:62,lpd:16,mc:true, bm:8},
+  {id:"statistics",                      s:"Mathematics",   name:"Statistics",                         m:79,lpd:20,mc:false,bm:6},
+  {id:"chapter_07_freedom_struggle",     s:"Social Science",name:"The Freedom Struggle",               m:82,lpd:7, mc:false,bm:5},
+  {id:"chapter_01_india_forest_resources",s:"Social Science",name:"India Forest Resources",            m:88,lpd:20,mc:false,bm:3},
+  {id:"chapter_01_india_water_resources",s:"Social Science",name:"India – Water Resources",            m:79,lpd:14,mc:false,bm:3},
+  {id:"chapter_01_public_administration",s:"Social Science",name:"Public Administration – An Introduction",m:86,lpd:8, mc:false,bm:3},
+  {id:"chapter_01_banking_transactions", s:"Social Science",name:"Banking Transactions",               m:64,lpd:11,mc:true, bm:3},
+  {id:"chapter_01_india_mineral_power",  s:"Social Science",name:"India – Mineral and Power Resources",m:68,lpd:18,mc:true, bm:4},
 ];
 
 const QUESTS = [
-  {id:"q1",subject:"Mathematics",  name:"Triangles",             mastery:33,xp:180,mins:45,urgency:"critical",mc:true, lpd:28,marks:14,
-   tip:"14 marks sit here. One deep session today can push you from 33% to 50% — that's real points secured for March."},
-  {id:"q2",subject:"Science",      name:"Carbon Compounds",      mastery:28,xp:170,mins:45,urgency:"critical",mc:true, lpd:35,marks:12,
-   tip:"Misconception flagged here. Start with concept review — don't attempt problems first. Clear the confusion, then drill."},
-  {id:"q3",subject:"Social Science",name:"Resources & Development",mastery:45,xp:120,mins:35,urgency:"warning",mc:true,lpd:25,marks:10,
-   tip:"25 days of circling this chapter. Today you go in. Even 20 minutes will unlock the pattern — start small."},
+  {id:"q1",subject:"Mathematics",  name:"Quadratic Equations",           mastery:54,xp:180,mins:45,urgency:"critical",mc:true, lpd:5,marks:8,
+   tip:"8 blueprint marks here. One focused session on factorisation and the quadratic formula can push mastery from 54% to 70%."},
+  {id:"q2",subject:"Science",      name:"Electricity",                   mastery:44,xp:170,mins:45,urgency:"critical",mc:true, lpd:7,marks:8,
+   tip:"Ohm's law numerals flagged as weak. Review series/parallel circuits first, then drill 15 PYQ numericals."},
+  {id:"q3",subject:"Science",      name:"Carbon and its Compounds",      mastery:65,xp:120,mins:35,urgency:"warning",mc:true,lpd:15,marks:8,
+   tip:"Functional groups and nomenclature need a quick concept pass before attempting MCQs — 35 minutes today is enough."},
+  {id:"q4",subject:"Mathematics",  name:"Triangles",                     mastery:76,xp:140,mins:40,urgency:"warning",mc:false,lpd:2,marks:10,
+   tip:"10 marks on congruence proofs. Two proof templates (SAS, RHS) cover most SSLC questions — practice those first."},
+  {id:"q5",subject:"Social Science",name:"Banking Transactions",         mastery:64,xp:100,mins:30,urgency:"warning",mc:true,lpd:11,marks:3,
+   tip:"Cheque clearing and demand deposits — short chapter, high recall. A 30-minute MCQ set locks in easy marks."},
 ];
 
 const INSIGHTS = [
   {id:"i1",icon:"🔍",color:"#FB923C",bg:"#1C1000",border:"#FB923C33",tag:"PATTERN",
-   title:"Avoidance pattern detected",
-   body:"Carbon Compounds has been skipped for 35 days straight. This isn't laziness — it's a confidence block. The chapter feels overwhelming, so you avoid the door entirely. The fix is micro-entry: 10 minutes today, no pressure on results. Just open it."},
+   title:"Electricity numerals need recovery",
+   body:"Electricity sits at 44% mastery with 8 blueprint marks at stake. Your last two sessions showed panic signals on Ohm's law problems. Start with a 10-minute concept recap, then 15 PYQ numericals — no timed pressure today."},
   {id:"i2",icon:"🌙",color:"#C084FC",bg:"#160D24",border:"#C084FC33",tag:"HABIT",
-   title:"You're studying too late",
-   body:"3 of your last 5 sessions happened after 10 PM. Late-night study hurts retention — your brain consolidates memories during sleep, but needs processing time before it. One afternoon session this week would compound your progress more than you think."},
+   title:"Afternoon sessions retain better",
+   body:"3 of your last 5 sessions happened after 10 PM. SSLC revision consolidates better with one focused afternoon block — even 40 minutes on Polynomials or Carbon Compounds will compound more than a late-night cram."},
   {id:"i3",icon:"💪",color:"#4ADE80",bg:"#0A1C0D",border:"#4ADE8033",tag:"STRENGTH",
-   title:"Your discipline is real",
-   body:"6 out of 7 days last week. For a board exam student managing school, pressure, and life — that is elite-level consistency. Don't let one missed day erase that narrative. You are someone who shows up. That matters more than any single session."},
+   title:"Real Numbers and Forest Resources are secure",
+   body:"Real Numbers (85%) and India Forest Resources (88%) are exam-ready. Use these as confidence anchors — a quick PYQ pass keeps them warm without eating revision time."},
   {id:"i4",icon:"📅",color:"#F87171",bg:"#1C0A0A",border:"#F8717133",tag:"URGENT",
-   title:"298 days — don't be deceived",
-   body:"298 days feels comfortable. It isn't. With 26 chapters across 3 subjects, you need 2–3 focused sessions per day to build proper mastery with revision cycles. Starting now gives you buffer. Starting in October gives you regret."},
+   title:"42 days to SSLC — chapter count is real",
+   body:"42 days with 15 Math + 13 Science + 33 Social chapters means 2–3 focused sessions daily. Quadratic Equations and Electricity are the highest-yield recovery targets this week."},
 ];
 
 const ACHIEVEMENTS = [

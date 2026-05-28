@@ -1,3 +1,11 @@
+import {
+  SSLC_SUBJECTS,
+  PLANNER_TODAY_TASKS,
+  buildSubjectChaptersMap,
+} from "@/data/sslc-academic-catalog";
+
+/** Lovable = visual generation · Cursor = engineering · GitHub = source of truth */
+
 export type Subject = {
   id: string;
   name: string;
@@ -14,98 +22,21 @@ export type Subject = {
   strongTopics: string[];
 };
 
-export const subjects: Subject[] = [
-  {
-    id: "math",
-    name: "Mathematics",
-    nameKn: "ಗಣಿತ",
-    emoji: "📐",
-    color: "oklch(0.6 0.18 250)",
-    completion: 72,
-    mastery: 78,
-    target: 95,
-    predicted: 88,
-    chapters: 15,
-    chaptersDone: 11,
-    weakTopics: ["Quadratic Equations", "Surface Areas"],
-    strongTopics: ["Real Numbers", "Triangles", "Statistics"],
-  },
-  {
-    id: "science",
-    name: "Science",
-    nameKn: "ವಿಜ್ಞಾನ",
-    emoji: "🧪",
-    color: "oklch(0.65 0.16 145)",
-    completion: 65,
-    mastery: 70,
-    target: 92,
-    predicted: 84,
-    chapters: 16,
-    chaptersDone: 10,
-    weakTopics: ["Electricity", "Carbon Compounds"],
-    strongTopics: ["Light", "Life Processes"],
-  },
-  {
-    id: "social",
-    name: "Social Science",
-    nameKn: "ಸಮಾಜ ವಿಜ್ಞಾನ",
-    emoji: "🌍",
-    color: "oklch(0.68 0.15 60)",
-    completion: 58,
-    mastery: 62,
-    target: 90,
-    predicted: 79,
-    chapters: 24,
-    chaptersDone: 14,
-    weakTopics: ["Money & Credit", "Forest Society"],
-    strongTopics: ["Nationalism in India"],
-  },
-  {
-    id: "english",
-    name: "English",
-    nameKn: "ಇಂಗ್ಲಿಷ್",
-    emoji: "📘",
-    color: "oklch(0.6 0.17 310)",
-    completion: 80,
-    mastery: 82,
-    target: 90,
-    predicted: 87,
-    chapters: 12,
-    chaptersDone: 10,
-    weakTopics: ["Grammar — Tenses"],
-    strongTopics: ["Prose", "Comprehension"],
-  },
-  {
-    id: "kannada",
-    name: "Kannada",
-    nameKn: "ಕನ್ನಡ",
-    emoji: "ಕ",
-    color: "oklch(0.62 0.18 25)",
-    completion: 68,
-    mastery: 74,
-    target: 95,
-    predicted: 86,
-    chapters: 14,
-    chaptersDone: 9,
-    weakTopics: ["ವ್ಯಾಕರಣ — ಸಂಧಿ", "ಪತ್ರ ಲೇಖನ"],
-    strongTopics: ["ಪದ್ಯ ವಿಮರ್ಶೆ"],
-  },
-  {
-    id: "hindi",
-    name: "Hindi",
-    nameKn: "ಹಿಂದಿ",
-    emoji: "ह",
-    color: "oklch(0.65 0.16 20)",
-    completion: 55,
-    mastery: 60,
-    target: 85,
-    predicted: 75,
-    chapters: 12,
-    chaptersDone: 7,
-    weakTopics: ["व्याकरण", "अनुवाद"],
-    strongTopics: ["गद्य"],
-  },
-];
+export const subjects: Subject[] = SSLC_SUBJECTS.map((s) => ({
+  id: s.id,
+  name: s.name,
+  nameKn: s.nameKn,
+  emoji: s.emoji,
+  color: s.color,
+  completion: s.completion,
+  mastery: s.mastery,
+  target: s.target,
+  predicted: s.predicted,
+  chapters: s.chapters,
+  chaptersDone: s.chaptersDone,
+  weakTopics: s.weakTopics,
+  strongTopics: s.strongTopics,
+}));
 
 export const weeklyStudy = [
   { day: "Mon", hours: 4.5, target: 5 },
@@ -133,21 +64,15 @@ export const motivationalQuotes = [
   { text: "Discipline is the bridge between goals and accomplishment.", author: "Jim Rohn" },
 ];
 
-export const todayTasks = [
-  { id: 1, subject: "Mathematics", task: "Quadratic Equations — Practice Set 4", time: "45 min", done: true },
-  { id: 2, subject: "Science", task: "Revise Electricity chapter notes", time: "30 min", done: true },
-  { id: 3, subject: "Kannada", task: "ಪದ್ಯ ವಿಮರ್ಶೆ — Hosa Hadu", time: "40 min", done: false },
-  { id: 4, subject: "Social", task: "Mock test — Money & Credit", time: "1 hr", done: false },
-  { id: 5, subject: "English", task: "Grammar — Reported Speech", time: "25 min", done: false },
-];
+export const todayTasks = PLANNER_TODAY_TASKS;
 
 export const achievements = [
-  { icon: "🔥", label: "12-day streak", earned: true },
-  { icon: "🏆", label: "Top of class", earned: true },
-  { icon: "🎯", label: "Target hit", earned: true },
-  { icon: "📚", label: "100 chapters", earned: false },
-  { icon: "⚡", label: "Speed solver", earned: true },
-  { icon: "🌟", label: "Mastery", earned: false },
+  { icon: "🔥", label: "7-day SSLC study streak", earned: true },
+  { icon: "📐", label: "Triangles chapter test passed", earned: true },
+  { icon: "⚡", label: "Electricity numerals cleared", earned: true },
+  { icon: "📚", label: "15 chapters at 75%+ mastery", earned: false },
+  { icon: "🎯", label: "90% target on track", earned: false },
+  { icon: "🌟", label: "Full syllabus revision cycle", earned: false },
 ];
 
 // SSLC exam typically ~March; pick a future date dynamically
@@ -183,12 +108,16 @@ export function gradeFor(pct: number): string {
   return "D";
 }
 
-// 7 weeks heatmap
-export const heatmap = Array.from({ length: 7 }).map((_, w) =>
-  Array.from({ length: 7 }).map(() => Math.floor(Math.random() * 5)),
+/** Deterministic study-intensity heatmap derived from weekly hours (no random demo data). */
+export const heatmap = weeklyStudy.map((day, weekIndex) =>
+  Array.from({ length: 7 }, (_, dayIndex) => {
+    const base = Math.min(4, Math.round(day.hours));
+    const spread = (weekIndex + dayIndex) % 3;
+    return Math.min(4, Math.max(0, base - 1 + spread));
+  }),
 );
 
-export const studyStreak = 12;
+export const studyStreak = 7;
 // ---------- Chapter & MCQ data ----------
 export type Chapter = {
   id: string;
@@ -209,89 +138,7 @@ export type MCQ = {
   difficulty: "Easy" | "Medium" | "Hard";
 };
 
-export const subjectChapters: Record<string, Chapter[]> = {
-  math: [
-    { id: "m1", title: "Real Numbers", progress: 100, done: true, difficulty: "Easy" },
-    { id: "m2", title: "Polynomials", progress: 100, done: true, difficulty: "Medium" },
-    { id: "m3", title: "Pair of Linear Equations", progress: 95, done: true, difficulty: "Medium" },
-    { id: "m4", title: "Quadratic Equations", progress: 55, done: false, difficulty: "Hard" },
-    { id: "m5", title: "Arithmetic Progressions", progress: 90, done: true, difficulty: "Medium" },
-    { id: "m6", title: "Triangles", progress: 100, done: true, difficulty: "Medium" },
-    { id: "m7", title: "Coordinate Geometry", progress: 80, done: true, difficulty: "Medium" },
-    { id: "m8", title: "Introduction to Trigonometry", progress: 70, done: false, difficulty: "Medium" },
-    { id: "m9", title: "Applications of Trigonometry", progress: 60, done: false, difficulty: "Hard" },
-    { id: "m10", title: "Circles", progress: 85, done: true, difficulty: "Medium" },
-    { id: "m11", title: "Areas Related to Circles", progress: 75, done: false, difficulty: "Medium" },
-    { id: "m12", title: "Surface Areas & Volumes", progress: 40, done: false, difficulty: "Hard" },
-    { id: "m13", title: "Statistics", progress: 95, done: true, difficulty: "Easy" },
-    { id: "m14", title: "Probability", progress: 80, done: true, difficulty: "Medium" },
-    { id: "m15", title: "Constructions", progress: 65, done: false, difficulty: "Medium" },
-  ],
-  science: [
-    { id: "s1", title: "Chemical Reactions and Equations", progress: 90, done: true, difficulty: "Medium" },
-    { id: "s2", title: "Acids, Bases and Salts", progress: 85, done: true, difficulty: "Medium" },
-    { id: "s3", title: "Metals and Non-metals", progress: 80, done: true, difficulty: "Medium" },
-    { id: "s4", title: "Carbon and its Compounds", progress: 45, done: false, difficulty: "Hard" },
-    { id: "s5", title: "Life Processes", progress: 100, done: true, difficulty: "Medium" },
-    { id: "s6", title: "Control and Coordination", progress: 75, done: false, difficulty: "Medium" },
-    { id: "s7", title: "Reproduction in Organisms", progress: 70, done: false, difficulty: "Medium" },
-    { id: "s8", title: "Heredity", progress: 60, done: false, difficulty: "Hard" },
-    { id: "s9", title: "Light — Reflection & Refraction", progress: 100, done: true, difficulty: "Medium" },
-    { id: "s10", title: "Human Eye and Colourful World", progress: 90, done: true, difficulty: "Easy" },
-    { id: "s11", title: "Electricity", progress: 35, done: false, difficulty: "Hard" },
-    { id: "s12", title: "Magnetic Effects of Current", progress: 50, done: false, difficulty: "Hard" },
-    { id: "s13", title: "Our Environment", progress: 80, done: true, difficulty: "Easy" },
-    { id: "s14", title: "Sources of Energy", progress: 70, done: false, difficulty: "Easy" },
-  ],
-  social: [
-    { id: "ss1", title: "Nationalism in India", progress: 95, done: true, difficulty: "Medium" },
-    { id: "ss2", title: "Making of a Global World", progress: 70, done: false, difficulty: "Medium" },
-    { id: "ss3", title: "Forest Society and Colonialism", progress: 35, done: false, difficulty: "Hard" },
-    { id: "ss4", title: "Resources & Development", progress: 80, done: true, difficulty: "Easy" },
-    { id: "ss5", title: "Agriculture", progress: 75, done: false, difficulty: "Medium" },
-    { id: "ss6", title: "Minerals and Energy Resources", progress: 60, done: false, difficulty: "Medium" },
-    { id: "ss7", title: "Power Sharing", progress: 90, done: true, difficulty: "Easy" },
-    { id: "ss8", title: "Federalism", progress: 70, done: false, difficulty: "Medium" },
-    { id: "ss9", title: "Democracy & Diversity", progress: 65, done: false, difficulty: "Medium" },
-    { id: "ss10", title: "Development", progress: 55, done: false, difficulty: "Medium" },
-    { id: "ss11", title: "Money and Credit", progress: 30, done: false, difficulty: "Hard" },
-    { id: "ss12", title: "Globalisation & Indian Economy", progress: 50, done: false, difficulty: "Medium" },
-  ],
-  english: [
-    { id: "e1", title: "A Letter to God", progress: 100, done: true, difficulty: "Easy" },
-    { id: "e2", title: "Nelson Mandela: Long Walk to Freedom", progress: 100, done: true, difficulty: "Medium" },
-    { id: "e3", title: "Two Stories About Flying", progress: 90, done: true, difficulty: "Medium" },
-    { id: "e4", title: "From the Diary of Anne Frank", progress: 85, done: true, difficulty: "Medium" },
-    { id: "e5", title: "Glimpses of India", progress: 80, done: true, difficulty: "Easy" },
-    { id: "e6", title: "Mijbil the Otter", progress: 75, done: false, difficulty: "Easy" },
-    { id: "e7", title: "Grammar — Tenses", progress: 60, done: false, difficulty: "Hard" },
-    { id: "e8", title: "Grammar — Reported Speech", progress: 70, done: false, difficulty: "Medium" },
-    { id: "e9", title: "Writing — Letters", progress: 85, done: true, difficulty: "Medium" },
-    { id: "e10", title: "Writing — Essays", progress: 80, done: true, difficulty: "Medium" },
-  ],
-  kannada: [
-    { id: "k1", title: "ಶಬರಿ", progress: 100, done: true, difficulty: "Medium" },
-    { id: "k2", title: "ಹೊಸ ಹಾಡು", progress: 95, done: true, difficulty: "Medium" },
-    { id: "k3", title: "ವಚನ ಸಾಹಿತ್ಯ", progress: 90, done: true, difficulty: "Medium" },
-    { id: "k4", title: "ಭಾಗ್ಯಶಿಲ್ಪಿಗಳು", progress: 80, done: true, difficulty: "Easy" },
-    { id: "k5", title: "ಗದ್ಯ — ಬಸವಣ್ಣನವರ ಜೀವನ", progress: 75, done: false, difficulty: "Easy" },
-    { id: "k6", title: "ವ್ಯಾಕರಣ — ಸಂಧಿ", progress: 35, done: false, difficulty: "Hard" },
-    { id: "k7", title: "ಪತ್ರ ಲೇಖನ", progress: 40, done: false, difficulty: "Medium" },
-    { id: "k8", title: "ಪ್ರಬಂಧ ರಚನೆ", progress: 65, done: false, difficulty: "Medium" },
-    { id: "k9", title: "ಪದ್ಯ ವಿಮರ್ಶೆ", progress: 85, done: true, difficulty: "Medium" },
-  ],
-  hindi: [
-    { id: "h1", title: "गद्य — कबीर के दोहे", progress: 80, done: true, difficulty: "Medium" },
-    { id: "h2", title: "मीराबाई", progress: 75, done: false, difficulty: "Medium" },
-    { id: "h3", title: "बिहारी के दोहे", progress: 70, done: false, difficulty: "Medium" },
-    { id: "h4", title: "मैथिलीशरण गुप्त", progress: 60, done: false, difficulty: "Medium" },
-    { id: "h5", title: "साखी", progress: 65, done: false, difficulty: "Easy" },
-    { id: "h6", title: "व्याकरण — संधि", progress: 30, done: false, difficulty: "Hard" },
-    { id: "h7", title: "व्याकरण — समास", progress: 35, done: false, difficulty: "Hard" },
-    { id: "h8", title: "अनुवाद", progress: 40, done: false, difficulty: "Hard" },
-    { id: "h9", title: "पत्र लेखन", progress: 70, done: false, difficulty: "Easy" },
-  ],
-};
+export const subjectChapters: Record<string, Chapter[]> = buildSubjectChaptersMap();
 
 export const subjectMCQs: Record<string, MCQ[]> = {
   math: [
@@ -312,7 +159,7 @@ export const subjectMCQs: Record<string, MCQ[]> = {
       correctIndex: 0,
       explanation:
         "sin²θ + cos²θ = 1 → cos²θ = 1 − 9/25 = 16/25 → cos θ = 4/5 (acute angle).",
-      topic: "Trigonometry",
+      topic: "Introduction to Trigonometry",
       difficulty: "Medium",
     },
     {
@@ -322,7 +169,7 @@ export const subjectMCQs: Record<string, MCQ[]> = {
       correctIndex: 1,
       explanation:
         "TSA of hemisphere = curved (2πr²) + base circle (πr²) = 3πr².",
-      topic: "Surface Areas & Volumes",
+      topic: "Surface Areas and Volumes",
       difficulty: "Medium",
     },
     {
@@ -367,7 +214,7 @@ export const subjectMCQs: Record<string, MCQ[]> = {
       correctIndex: 1,
       explanation:
         "Two reactants combine to form a single product — a combination reaction.",
-      topic: "Chemical Reactions",
+      topic: "Chemical Reactions and Equations",
       difficulty: "Medium",
     },
     {
@@ -376,7 +223,7 @@ export const subjectMCQs: Record<string, MCQ[]> = {
       options: ["−OH", "−CHO", "−COOH", "−CO−"],
       correctIndex: 2,
       explanation: "−COOH is the carboxylic acid functional group.",
-      topic: "Carbon Compounds",
+      topic: "Carbon and its Compounds",
       difficulty: "Easy",
     },
     {
@@ -385,7 +232,7 @@ export const subjectMCQs: Record<string, MCQ[]> = {
       options: ["Hypermetropia", "Myopia", "Presbyopia", "Astigmatism"],
       correctIndex: 1,
       explanation: "Myopia (near-sightedness) — image forms in front of retina.",
-      topic: "Human Eye",
+      topic: "The Human Eye and the Colourful World",
       difficulty: "Easy",
     },
     {
@@ -405,7 +252,7 @@ export const subjectMCQs: Record<string, MCQ[]> = {
       options: ["Subhas Chandra Bose", "Mahatma Gandhi", "Jawaharlal Nehru", "Sardar Patel"],
       correctIndex: 1,
       explanation: "Mahatma Gandhi launched the Non-Cooperation Movement in 1920.",
-      topic: "Nationalism in India",
+      topic: "The Freedom Struggle",
       difficulty: "Easy",
     },
     {
@@ -415,25 +262,25 @@ export const subjectMCQs: Record<string, MCQ[]> = {
       correctIndex: 2,
       explanation:
         "Formal sources are supervised by RBI: banks and cooperatives. Others are informal.",
-      topic: "Money and Credit",
+      topic: "Banking Transactions",
       difficulty: "Medium",
     },
     {
       id: "ssq3",
-      question: "The Bhilangana valley is famous for which type of forest?",
-      options: ["Tropical evergreen", "Mangrove", "Reserved", "Thorny"],
-      correctIndex: 2,
-      explanation: "Reserved forests are managed for permanent timber production.",
-      topic: "Forest Society",
-      difficulty: "Hard",
+      question: "Which of the following is a renewable forest resource?",
+      options: ["Timber from sustainably managed forests", "Coal deposits", "Iron ore", "Petroleum"],
+      correctIndex: 0,
+      explanation: "Timber from sustainably managed forests can be replenished; minerals and fossil fuels are non-renewable.",
+      topic: "India Forest Resources",
+      difficulty: "Medium",
     },
     {
       id: "ssq4",
-      question: "Which of these is NOT a feature of federalism?",
-      options: ["Two or more levels of government", "Single source of authority", "Written constitution", "Independent judiciary"],
-      correctIndex: 1,
-      explanation: "Federalism distributes authority across levels, not a single source.",
-      topic: "Federalism",
+      question: "Which body implements government policies at the district level in Karnataka?",
+      options: ["District Commissioner", "State Legislature", "Lok Sabha", "High Court"],
+      correctIndex: 0,
+      explanation: "The District Commissioner (Deputy Commissioner) administers district-level public administration.",
+      topic: "Public Administration – An Introduction",
       difficulty: "Medium",
     },
   ],

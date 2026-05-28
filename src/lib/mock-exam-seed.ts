@@ -1,7 +1,9 @@
 /**
  * Local seed catalog of mock exams. Used when Firestore `mockExams` is empty
- * so the feature is fully usable in dev / for guest users. Real catalog comes
- * from `fetchMockExams()`; the engine treats both sources identically.
+ * so the feature is fully usable in dev / for guest users. Chapter ids align
+ * with content slugs (`mock_{subject}_ch_{slug}`).
+ *
+ * Lovable = visual generation · Cursor = engineering · GitHub = source of truth
  */
 import { SEED_MCQS } from "./quiz-seed";
 import { buildExamQuestions } from "./mock-exam-engine";
@@ -22,7 +24,7 @@ const RAW: MockExamDoc[] = [
     id: "mock_math_full_01",
     kind: "full",
     title: "Mathematics — Full Mock Exam",
-    description: "Board-pattern full paper covering all chapters.",
+    description: "KSEAB board-pattern full paper covering all 15 chapters.",
     subjectId: "math",
     subjects: ["math"],
     durationSeconds: 60 * 60,
@@ -37,7 +39,7 @@ const RAW: MockExamDoc[] = [
     id: "mock_science_full_01",
     kind: "full",
     title: "Science — Full Mock Exam",
-    description: "Comprehensive Science paper, all chapters.",
+    description: "Comprehensive Science paper — all 13 rationalised chapters.",
     subjectId: "science",
     subjects: ["science"],
     durationSeconds: 60 * 60,
@@ -49,18 +51,18 @@ const RAW: MockExamDoc[] = [
     createdAt: now,
   },
   {
-    id: "mock_math_ch_quad",
+    id: "mock_math_ch_quadratic-equations",
     kind: "chapter",
     title: "Quadratic Equations — Chapter Test",
-    description: "Focused practice on quadratic equations.",
+    description: "Focused practice on quadratic equations (Chapter 4).",
     subjectId: "math",
-    chapterId: "math_ch4",
+    chapterId: "quadratic-equations",
     subjects: ["math"],
     durationSeconds: 20 * 60,
     totalMarks: 0,
     negativeMarkingFactor: 0,
     questions: buildExamQuestions(
-      SEED_MCQS.filter((m) => m.chapterId === "math_ch4"),
+      SEED_MCQS.filter((m) => m.chapterId === "quadratic-equations"),
       10,
       33,
     ),
@@ -71,8 +73,8 @@ const RAW: MockExamDoc[] = [
   {
     id: "mock_mixed_01",
     kind: "mixed",
-    title: "Mixed Revision — All Subjects",
-    description: "Multi-subject mixed paper for quick revision.",
+    title: "Mixed Revision — Math, Science, Social",
+    description: "Multi-subject mixed paper for SSLC quick revision.",
     subjects: ["math", "science", "social"],
     durationSeconds: 45 * 60,
     totalMarks: 0,
@@ -86,7 +88,7 @@ const RAW: MockExamDoc[] = [
     id: "mock_prev_2024",
     kind: "previous",
     title: "SSLC 2024 — Previous Year Pattern",
-    description: "Simulates the KSEAB 2024 board paper structure.",
+    description: "Simulates the KSEAB 2024 Mathematics board paper structure.",
     subjectId: "math",
     subjects: ["math"],
     year: "2024",
