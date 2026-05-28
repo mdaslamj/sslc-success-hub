@@ -18,6 +18,7 @@ type Props = {
   chapterName: string;
   subjectId: string;
   onSessionComplete?: (score: number, results: QuestionResult[]) => void;
+  onExit?: () => void;
 };
 
 function toQuestionResults(
@@ -43,6 +44,7 @@ export function PracticeSession({
   chapterId,
   subjectId,
   onSessionComplete,
+  onExit,
 }: Props) {
   const bankById = useMemo(
     () => new Map(questions.map((q) => [q.id, q])),
@@ -59,11 +61,13 @@ export function PracticeSession({
 
   return (
     <AdaptivePracticeEngine
+      key={chapterId}
       questions={engineQuestions}
       chapterId={chapterId}
       subject={subject}
       sessionLength={10}
       onSessionComplete={handleComplete}
+      onExit={onExit}
     />
   );
 }

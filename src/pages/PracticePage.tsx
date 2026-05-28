@@ -123,6 +123,11 @@ export default function PracticePage() {
     setPhase("selecting");
   };
 
+  const handleExit = () => {
+    setSession(null);
+    setPhase("selecting");
+  };
+
   // ── Render ────────────────────────────────────────────────────────────────
 
   const title =
@@ -144,6 +149,7 @@ export default function PracticePage() {
           chapterName={session.chapterName}
           subjectId={session.subjectId}
           onSessionComplete={handleSessionComplete}
+          onExit={handleExit}
         />
       )}
 

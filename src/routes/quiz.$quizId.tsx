@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { DashboardLayout } from "@/components/dashboard-layout";
 import { Button } from "@/components/ui/button";
+import { QuizExitConfirmDialog } from "@/components/exam/QuizExitConfirmDialog";
 import { cn } from "@/lib/utils";
 import { useQuiz } from "@/hooks/use-quiz";
 import { cacheQuiz, readCachedQuiz } from "@/lib/quiz-store";
@@ -134,9 +135,15 @@ function Player({ quiz }: { quiz: QuizDoc }) {
   const c = useQuiz(quiz);
   const q = quiz.questions[c.index];
   const answered = c.answers[c.index];
+  const [showExitModal, setShowExitModal] = useState(false);
 
   const timed = quiz.durationSeconds > 0;
   const timerLabel = useMemo(() => formatTime(c.timeSeconds), [c.timeSeconds]);
+
+  const handleConfirmExit = () => {
+    c.saveProgressAndExit();
+    navigate({ to: "/quizzes" });
+  };
 
   // Auto-start on first render so users don't see an empty shell.
   useEffect(() => {
@@ -155,6 +162,14 @@ function Player({ quiz }: { quiz: QuizDoc }) {
             Question {c.index + 1} of {quiz.questions.length}
           </div>
           <div className="flex items-center gap-2">
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={() => setShowExitModal(true)}
+              className="rounded-full"
+            >
+              Exit Quiz
+            </Button>
             <div
               className={cn(
                 "inline-flex items-center gap-1.5 rounded-full border border-border/60 bg-card px-3 py-1 text-xs font-medium tabular-nums",
@@ -185,7 +200,10 @@ function Player({ quiz }: { quiz: QuizDoc }) {
           />
         </div>
 
-        <div className="mt-6 rounded-3xl border border-border/60 bg-card p-6 shadow-card">
+        <div
+          key={`${quiz.chapterId}-${q.mcqId}`}
+          className="mt-6 rounded-3xl border border-border/60 bg-card p-6 shadow-card"
+        >
           <h2 className="font-display text-lg font-semibold leading-snug">
             {q.question}
           </h2>
@@ -243,14 +261,22 @@ function Player({ quiz }: { quiz: QuizDoc }) {
           )}
         </div>
 
-        <div className="mt-4 text-center">
-          <button
-            onClick={() => navigate({ to: "/quizzes" })}
-            className="text-xs text-muted-foreground hover:text-foreground"
+        <div className="mt-4 flex justify-center">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => setShowExitModal(true)}
+            className="text-muted-foreground"
           >
-            Exit quiz
-          </button>
+            Stop Session
+          </Button>
         </div>
+
+        <QuizExitConfirmDialog
+          open={showExitModal}
+          onOpenChange={setShowExitModal}
+          onConfirm={handleConfirmExit}
+        />
       </div>
     </DashboardLayout>
   );

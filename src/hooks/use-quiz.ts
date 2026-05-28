@@ -37,6 +37,8 @@ export type QuizController = {
   prev: () => void;
   goto: (i: number) => void;
   submit: () => QuizAttemptDoc | null;
+  saveProgressAndExit: () => QuizAttemptDoc | null;
+  resetSession: () => void;
   attempt: QuizAttemptDoc | null;
 };
 
@@ -55,6 +57,17 @@ export function useQuiz(quiz: QuizDoc): QuizController {
   const elapsedRef = useRef<number>(0); // ms accumulated across run segments
   const questionStartRef = useRef<number>(0);
   const [tick, setTick] = useState(0);
+
+  // Reset player when quiz definition changes.
+  useEffect(() => {
+    setPhase("idle");
+    setIndex(0);
+    setAnswers(quiz.questions.map(() => null));
+    setAttempt(null);
+    startedAtRef.current = 0;
+    elapsedRef.current = 0;
+    questionStartRef.current = Date.now();
+  }, [quiz.id, quiz.questions]);
 
   // 1 Hz ticker while running drives the visible timer.
   useEffect(() => {
@@ -127,12 +140,13 @@ export function useQuiz(quiz: QuizDoc): QuizController {
   const next = useCallback(() => goto(index + 1), [goto, index]);
   const prev = useCallback(() => goto(index - 1), [goto, index]);
 
-  const submit = useCallback((): QuizAttemptDoc | null => {
+  const buildAttemptDoc = useCallback((): QuizAttemptDoc | null => {
     if (phase === "completed" || attempt) return attempt;
-    // Capture final elapsed before flipping phase.
+
     if (phase === "running") {
       elapsedRef.current += Date.now() - startedAtRef.current;
     }
+
     const filled: QuizAnswer[] = quiz.questions.map((q, i) => {
       const a = answers[i];
       return a ?? gradeAnswer(q, null);
@@ -140,7 +154,7 @@ export function useQuiz(quiz: QuizDoc): QuizController {
     const result = summarizeAnswers(quiz.questions, filled);
     const endedAt = Date.now();
     const startedAt = endedAt - elapsedRef.current;
-    const doc = appendQuizAttempt({
+    return appendQuizAttempt({
       userId,
       quizId: quiz.id,
       subjectId: quiz.subjectId,
@@ -158,10 +172,38 @@ export function useQuiz(quiz: QuizDoc): QuizController {
       xpAwarded: result.xpAwarded,
       dayKey: toDayKey(endedAt),
     });
+  }, [answers, attempt, phase, quiz, userId]);
+
+  const resetSession = useCallback(() => {
+    startedAtRef.current = 0;
+    elapsedRef.current = 0;
+    questionStartRef.current = Date.now();
+    setPhase("idle");
+    setIndex(0);
+    setAnswers(quiz.questions.map(() => null));
+    setAttempt(null);
+  }, [quiz.questions]);
+
+  const submit = useCallback((): QuizAttemptDoc | null => {
+    if (phase === "completed" || attempt) return attempt;
+    const doc = buildAttemptDoc();
+    if (!doc) return null;
     setAttempt(doc);
     setPhase("completed");
     return doc;
-  }, [answers, attempt, phase, quiz, userId]);
+  }, [attempt, buildAttemptDoc, phase]);
+
+  const saveProgressAndExit = useCallback((): QuizAttemptDoc | null => {
+    if (phase === "idle") return null;
+    const hasAnswers = answers.some((a) => a !== null);
+    if (!hasAnswers) {
+      resetSession();
+      return null;
+    }
+    const doc = buildAttemptDoc();
+    resetSession();
+    return doc;
+  }, [answers, buildAttemptDoc, phase, resetSession]);
 
   // Auto-submit on timer expiry.
   useEffect(() => {
@@ -183,6 +225,8 @@ export function useQuiz(quiz: QuizDoc): QuizController {
     prev,
     goto,
     submit,
+    saveProgressAndExit,
+    resetSession,
     attempt,
   };
 }

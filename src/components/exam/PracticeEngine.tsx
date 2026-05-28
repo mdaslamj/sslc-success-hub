@@ -1,20 +1,25 @@
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState, useCallback } from "react";
 import type { Question, QuestionAttempt } from "@/types/question";
 import { useExamEngine } from "@/hooks/useExamEngine";
 import { QuestionCard } from "@/components/exam/QuestionCard";
 import { QuestionNavigator } from "@/components/exam/QuestionNavigator";
+import { QuizExitConfirmDialog } from "@/components/exam/QuizExitConfirmDialog";
+import { Button } from "@/components/ui/button";
 
 interface PracticeEngineProps {
   questions: Question[];
   chapterId: string;
   onSessionComplete?: (attempts: QuestionAttempt[], score: number) => void;
+  onExit?: () => void;
 }
 
 export function PracticeEngine({
   questions,
   chapterId,
   onSessionComplete,
+  onExit,
 }: PracticeEngineProps) {
+  const [showExitModal, setShowExitModal] = useState(false);
   const {
     state,
     actions,
@@ -49,6 +54,14 @@ export function PracticeEngine({
       onSessionComplete(state.sessionAttempts, state.score);
     }
   }, [isComplete, onSessionComplete, state.score, state.sessionAttempts]);
+
+  const handleConfirmExit = useCallback(() => {
+    if (state.sessionAttempts.length > 0) {
+      onSessionComplete?.(state.sessionAttempts, state.score);
+    }
+    actions.endSession();
+    onExit?.();
+  }, [actions, onExit, onSessionComplete, state.score, state.sessionAttempts]);
 
   if (questions.length === 0) {
     return (
@@ -104,6 +117,17 @@ export function PracticeEngine({
 
   return (
     <div className="flex flex-col gap-5 max-w-2xl mx-auto px-4 pb-10">
+      <div className="flex items-center justify-end">
+        <Button
+          type="button"
+          variant="outline"
+          size="sm"
+          onClick={() => setShowExitModal(true)}
+        >
+          Exit Quiz
+        </Button>
+      </div>
+
       <QuestionCard
         key={`${chapterId}-${state.currentQuestion.id}`}
         question={state.currentQuestion}
@@ -138,6 +162,13 @@ export function PracticeEngine({
         onComplete={() =>
           onSessionComplete?.(state.sessionAttempts, state.score)
         }
+        onStopSession={() => setShowExitModal(true)}
+      />
+
+      <QuizExitConfirmDialog
+        open={showExitModal}
+        onOpenChange={setShowExitModal}
+        onConfirm={handleConfirmExit}
       />
     </div>
   );

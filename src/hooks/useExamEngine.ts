@@ -39,6 +39,7 @@ export interface ExamEngineActions {
   previousQuestion: () => void;
   retryWrongQuestions: () => void;
   reset: () => void;
+  endSession: () => void;
   goToQuestion: (index: number) => void;
 }
 
@@ -74,6 +75,27 @@ function buildInitialState(): ExamEngineState {
   };
 }
 
+function resetTransientState(): Pick<
+  ExamEngineState,
+  | "selectedOption"
+  | "isChecked"
+  | "isCorrect"
+  | "showExplanation"
+  | "confidenceSelection"
+  | "mistakeTag"
+  | "timeTakenMs"
+> {
+  return {
+    selectedOption: null,
+    isChecked: false,
+    isCorrect: null,
+    showExplanation: false,
+    confidenceSelection: null,
+    mistakeTag: null,
+    timeTakenMs: 0,
+  };
+}
+
 export function useExamEngine(
   questions: Question[],
   mode: AttemptMode = "practice",
@@ -89,8 +111,10 @@ export function useExamEngine(
   );
 
   const questionStartTime = useRef<number>(Date.now());
+  const navigationKeyRef = useRef<string>("");
 
   useEffect(() => {
+    navigationKeyRef.current = "";
     setActiveQuestions(questions);
     setQuestionStatuses(Array(questions.length).fill("unattempted"));
     questionStartTime.current = Date.now();
@@ -100,6 +124,31 @@ export function useExamEngine(
       totalQuestions: questions.length,
     });
   }, [questions]);
+
+  // Safety net: clear per-question UI state whenever the active question changes.
+  useEffect(() => {
+    const question = state.currentQuestion;
+    if (!question) return;
+
+    const key = `${state.currentIndex}:${question.id}`;
+    if (navigationKeyRef.current === key) return;
+    navigationKeyRef.current = key;
+    questionStartTime.current = Date.now();
+
+    setState((prev) => {
+      if (
+        prev.selectedOption === null &&
+        !prev.isChecked &&
+        prev.isCorrect === null &&
+        !prev.showExplanation &&
+        prev.confidenceSelection === null &&
+        prev.mistakeTag === null
+      ) {
+        return prev;
+      }
+      return { ...prev, ...resetTransientState() };
+    });
+  }, [state.currentIndex, state.currentQuestion?.id]);
 
   const selectOption = useCallback((option: string) => {
     setState((prev) => {
@@ -188,14 +237,8 @@ export function useExamEngine(
   const resetQuestionState = useCallback(
     (index: number): Partial<ExamEngineState> => ({
       currentIndex: index,
-      currentQuestion: activeQuestions[index],
-      selectedOption: null,
-      isChecked: false,
-      isCorrect: null,
-      showExplanation: false,
-      confidenceSelection: null,
-      mistakeTag: null,
-      timeTakenMs: 0,
+      currentQuestion: activeQuestions[index] ?? null,
+      ...resetTransientState(),
     }),
     [activeQuestions],
   );
@@ -203,6 +246,10 @@ export function useExamEngine(
   const goToQuestion = useCallback(
     (index: number) => {
       if (index < 0 || index >= activeQuestions.length) return;
+      const nextQuestion = activeQuestions[index];
+      navigationKeyRef.current = nextQuestion
+        ? `${index}:${nextQuestion.id}`
+        : "";
       questionStartTime.current = Date.now();
       setState((prev) => ({ ...prev, ...resetQuestionState(index) }));
     },
@@ -213,6 +260,10 @@ export function useExamEngine(
     setState((prev) => {
       const next = prev.currentIndex + 1;
       if (next >= activeQuestions.length) return prev;
+      const nextQuestion = activeQuestions[next];
+      navigationKeyRef.current = nextQuestion
+        ? `${next}:${nextQuestion.id}`
+        : "";
       questionStartTime.current = Date.now();
       return { ...prev, ...resetQuestionState(next) };
     });
@@ -222,16 +273,23 @@ export function useExamEngine(
     setState((prev) => {
       const prevIdx = prev.currentIndex - 1;
       if (prevIdx < 0) return prev;
+      const prevQuestion = activeQuestions[prevIdx];
+      navigationKeyRef.current = prevQuestion
+        ? `${prevIdx}:${prevQuestion.id}`
+        : "";
       questionStartTime.current = Date.now();
       return { ...prev, ...resetQuestionState(prevIdx) };
     });
-  }, [resetQuestionState]);
+  }, [activeQuestions, resetQuestionState]);
 
   const retryWrongQuestions = useCallback(() => {
     const wrongOnes = questions.filter((q) =>
       state.wrongQuestionIds.includes(q.id),
     );
     if (wrongOnes.length === 0) return;
+    navigationKeyRef.current = wrongOnes[0]
+      ? `0:${wrongOnes[0].id}`
+      : "";
     setActiveQuestions(wrongOnes);
     setQuestionStatuses(Array(wrongOnes.length).fill("unattempted"));
     questionStartTime.current = Date.now();
@@ -244,6 +302,19 @@ export function useExamEngine(
   }, [questions, state.wrongQuestionIds]);
 
   const reset = useCallback(() => {
+    navigationKeyRef.current = questions[0] ? `0:${questions[0].id}` : "";
+    setActiveQuestions(questions);
+    setQuestionStatuses(Array(questions.length).fill("unattempted"));
+    questionStartTime.current = Date.now();
+    setState({
+      ...buildInitialState(),
+      currentQuestion: questions[0] ?? null,
+      totalQuestions: questions.length,
+    });
+  }, [questions]);
+
+  const endSession = useCallback(() => {
+    navigationKeyRef.current = "";
     setActiveQuestions(questions);
     setQuestionStatuses(Array(questions.length).fill("unattempted"));
     questionStartTime.current = Date.now();
@@ -280,6 +351,7 @@ export function useExamEngine(
       previousQuestion,
       retryWrongQuestions,
       reset,
+      endSession,
       goToQuestion,
     },
     questionStatuses,

@@ -5,6 +5,8 @@ import { useExamEngine } from "@/hooks/useExamEngine";
 import { useSessionLogger } from "@/hooks/useSessionLogger";
 import { QuestionCard } from "@/components/exam/QuestionCard";
 import { QuestionNavigator } from "@/components/exam/QuestionNavigator";
+import { QuizExitConfirmDialog } from "@/components/exam/QuizExitConfirmDialog";
+import { Button } from "@/components/ui/button";
 import { MidSessionCheckIn } from "@/components/analytics/MidSessionCheckIn";
 import { getSessionInsights } from "@/engines/analytics/sessionAnalytics";
 import {
@@ -27,6 +29,7 @@ interface AdaptivePracticeEngineProps {
   subject: QuestionSubject;
   sessionLength?: number;
   onSessionComplete?: (attempts: QuestionAttempt[], score: number) => void;
+  onExit?: () => void;
 }
 
 function toAuraSubject(subject: QuestionSubject): Subject {
@@ -60,6 +63,7 @@ export function AdaptivePracticeEngine({
   subject,
   sessionLength = 10,
   onSessionComplete,
+  onExit,
 }: AdaptivePracticeEngineProps) {
   const profile = useMemo(() => readProfile(), []);
   const { profile: auraProfile, logSession } = useSessionLogger();
@@ -90,6 +94,11 @@ export function AdaptivePracticeEngine({
   const [showCheckIn, setShowCheckIn] = useState(false);
   const [lastCheckInAt, setLastCheckInAt] = useState(0);
   const [showRecovery, setShowRecovery] = useState(false);
+  const [showExitModal, setShowExitModal] = useState(false);
+
+  useEffect(() => {
+    sessionLoggedRef.current = false;
+  }, [chapterId]);
 
   const recentAttempts = useMemo(() => {
     try {
@@ -212,6 +221,15 @@ export function AdaptivePracticeEngine({
     }
   }, [isComplete, recordSession]);
 
+  const handleConfirmExit = useCallback(() => {
+    recordSession();
+    actions.endSession();
+    sessionLoggedRef.current = false;
+    setShowCheckIn(false);
+    setShowRecovery(false);
+    onExit?.();
+  }, [actions, onExit, recordSession]);
+
   if (adaptiveQuestions.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center py-16 text-gray-400">
@@ -264,6 +282,17 @@ export function AdaptivePracticeEngine({
 
   return (
     <div className="flex flex-col gap-5 max-w-2xl mx-auto px-4 pb-10">
+      <div className="flex items-center justify-end">
+        <Button
+          type="button"
+          variant="outline"
+          size="sm"
+          onClick={() => setShowExitModal(true)}
+        >
+          Exit Quiz
+        </Button>
+      </div>
+
       {showRecovery && (
         <div className="rounded-xl bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-800 px-4 py-3 flex items-start gap-3">
           <span className="text-lg flex-shrink-0">🔄</span>
@@ -353,6 +382,13 @@ export function AdaptivePracticeEngine({
         onGoTo={actions.goToQuestion}
         onRetry={actions.retryWrongQuestions}
         onComplete={recordSession}
+        onStopSession={() => setShowExitModal(true)}
+      />
+
+      <QuizExitConfirmDialog
+        open={showExitModal}
+        onOpenChange={setShowExitModal}
+        onConfirm={handleConfirmExit}
       />
     </div>
   );

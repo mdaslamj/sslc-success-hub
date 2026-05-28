@@ -44,7 +44,7 @@ export function AnswerOptions({
 
         return (
           <button
-            key={option}
+            key={`${idx}-${option}`}
             type="button"
             className={classes}
             onClick={() => !isChecked && onSelect(option)}

@@ -15,6 +15,7 @@ interface QuestionNavigatorProps {
   onGoTo: (index: number) => void;
   onRetry: () => void;
   onComplete?: () => void;
+  onStopSession?: () => void;
 }
 
 export function QuestionNavigator({
@@ -32,6 +33,7 @@ export function QuestionNavigator({
   onGoTo,
   onRetry,
   onComplete,
+  onStopSession,
 }: QuestionNavigatorProps) {
   const wrongCount = statuses.filter((s) => s === "wrong").length;
   const doneCount = statuses.filter((s) => s !== "unattempted").length;
@@ -91,6 +93,16 @@ export function QuestionNavigator({
         >
           ← Previous
         </button>
+
+        {onStopSession && (
+          <button
+            type="button"
+            onClick={onStopSession}
+            className="px-4 py-2 rounded-xl border border-gray-200 dark:border-gray-700 text-sm text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-all"
+          >
+            Stop Session
+          </button>
+        )}
 
         <div className="flex-1" />
 
