@@ -219,13 +219,25 @@ function SubjectDetailPage() {
 
   const [selectedContentId, setSelectedContentId] = useState<string | null>(null);
   const [chapterDetailOpen, setChapterDetailOpen] = useState(false);
-  const activeContentId =
-    selectedContentId && normalizedById.has(selectedContentId)
-      ? selectedContentId
-      : (readyChapterId ?? null);
+
+  useEffect(() => {
+    if (selectedContentId || !readyChapterId) return;
+    setSelectedContentId(readyChapterId);
+  }, [readyChapterId, selectedContentId]);
+
+  const activeContentId = selectedContentId ?? readyChapterId ?? null;
   const activeChapter = activeContentId
     ? normalizedById.get(activeContentId)
     : undefined;
+  const activeChapterQueryIndex = useMemo(
+    () => readyChapters.findIndex((c) => c.id === activeContentId),
+    [readyChapters, activeContentId],
+  );
+  const activeChapterLoading =
+    activeChapterQueryIndex >= 0 &&
+    !chapterQueries[activeChapterQueryIndex]?.data &&
+    (chapterQueries[activeChapterQueryIndex]?.isLoading ||
+      chapterQueries[activeChapterQueryIndex]?.isFetching);
   const anyChapterLoading = chapterQueries.some((q) => q.isLoading);
 
   if (subjectQuery.isLoading || chaptersQuery.isLoading) {
@@ -486,10 +498,14 @@ function SubjectDetailPage() {
                 activeId={activeContentId}
                 onSelect={setSelectedContentId}
                 loading={anyChapterLoading}
+                activeChapterLoading={activeChapterLoading}
                 emptyMessage="No resources available for this chapter yet."
               >
                 {(ch) => (
-                  <ContentResourcesGrid resources={ch.resources ?? []} />
+                  <ContentResourcesGrid
+                    key={ch.id}
+                    resources={ch.resources ?? []}
+                  />
                 )}
               </ContentChapterPane>
             ) : (
@@ -650,11 +666,12 @@ function SubjectDetailPage() {
                 activeId={activeContentId}
                 onSelect={setSelectedContentId}
                 loading={anyChapterLoading}
+                activeChapterLoading={activeChapterLoading}
                 emptyMessage="MCQs for this chapter coming soon."
               >
-                {() =>
+                {(ch) =>
                   mcqs.length > 0 ? (
-                    <PracticeQuiz mcqs={mcqs} color={subject.color} />
+                    <PracticeQuiz key={ch.id} mcqs={mcqs} color={subject.color} />
                   ) : (
                     <div className="rounded-3xl border border-dashed border-border/60 p-10 text-center text-sm text-muted-foreground">
                       MCQs for this chapter coming soon.
@@ -1935,7 +1952,11 @@ function ChapterDetailViewInner({
 
 /* ---------------- Content Resources (from chapter JSON) ---------------- */
 
-function ContentResourcesGrid({ resources }: { resources: ContentResource[] }) {
+function ContentResourcesGrid({
+  resources,
+}: {
+  resources: ContentResource[];
+}) {
   const iconFor = (type: string) => {
     const t = type.toLowerCase();
     if (t === "video") return "🎬";
@@ -1943,6 +1964,14 @@ function ContentResourcesGrid({ resources }: { resources: ContentResource[] }) {
     if (t === "course") return "🎓";
     return "🔗";
   };
+
+  if (resources.length === 0) {
+    return (
+      <div className="rounded-2xl border border-dashed border-border/60 bg-card p-8 text-center text-sm text-muted-foreground">
+        No recommendations available yet.
+      </div>
+    );
+  }
 
   return (
     <div className="rounded-2xl border border-border/60 bg-card p-4">
@@ -1986,9 +2015,12 @@ function ContentResourcesGrid({ resources }: { resources: ContentResource[] }) {
 
 
 function ResourcesSection({ chapters }: { chapters: ChapterDoc[] }) {
-  const [selectedId, setSelectedId] = useState<string | null>(
-    chapters[0]?.id ?? null,
-  );
+  const [selectedId, setSelectedId] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (selectedId || chapters.length === 0) return;
+    setSelectedId(chapters[0].id);
+  }, [chapters, selectedId]);
 
   if (chapters.length === 0) {
     return (
@@ -1998,7 +2030,9 @@ function ResourcesSection({ chapters }: { chapters: ChapterDoc[] }) {
     );
   }
 
-  const selected = chapters.find((c) => c.id === selectedId) ?? chapters[0];
+  const selected =
+    (selectedId ? chapters.find((c) => c.id === selectedId) : undefined) ??
+    chapters[0];
 
   return (
     <div className="grid gap-4 md:grid-cols-[220px_1fr]">
@@ -2029,7 +2063,7 @@ function ResourcesSection({ chapters }: { chapters: ChapterDoc[] }) {
       </div>
 
       <div className="min-w-0">
-        <ChapterResources chapter={selected} />
+        <ChapterResources key={selected.id} chapter={selected} />
       </div>
     </div>
   );
@@ -2231,6 +2265,7 @@ function ContentChapterPane({
   activeId,
   onSelect,
   loading,
+  activeChapterLoading = false,
   emptyMessage,
   children,
 }: {
@@ -2238,6 +2273,7 @@ function ContentChapterPane({
   activeId: string | null;
   onSelect: (id: string) => void;
   loading: boolean;
+  activeChapterLoading?: boolean;
   emptyMessage: string;
   children: (chapter: NormalizedChapter) => React.ReactNode;
 }) {
@@ -2252,7 +2288,9 @@ function ContentChapterPane({
     );
   }
   const selected =
-    chapters.find((c) => c.id === activeId) ?? chapters[0];
+    (activeId ? chapters.find((c) => c.id === activeId) : undefined) ??
+    chapters[0];
+  const panelLoading = activeChapterLoading && selected.id === activeId;
   return (
     <div className="grid gap-4 md:grid-cols-[220px_1fr]">
       <div className="rounded-2xl border border-border/60 bg-card p-2 md:max-h-[640px] md:overflow-y-auto">
@@ -2279,7 +2317,17 @@ function ContentChapterPane({
           })}
         </ul>
       </div>
-      <div className="min-w-0">{children(selected)}</div>
+      <div className="min-w-0">
+        {panelLoading ? (
+          <div className="space-y-3">
+            <Skeleton className="h-8 w-48 rounded-lg" />
+            <Skeleton className="h-32 w-full rounded-2xl" />
+            <Skeleton className="h-32 w-full rounded-2xl" />
+          </div>
+        ) : (
+          children(selected)
+        )}
+      </div>
     </div>
   );
 }
