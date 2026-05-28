@@ -51,8 +51,10 @@ import {
   toDateKey,
 } from "@/lib/planner-events-store";
 import { AuraExecutionSystem } from "@/components/AuraExecutionSystem";
+import AuraCausalityChain from "@/components/AuraCausalityChain";
 import { useAcademicExecution } from "@/core/academic-state/useAcademicExecution";
 import { processPlannerTaskCompletion } from "@/core/academic-state/plannerCompletionAdapter";
+import type { CausalityChain } from "@/core/academic-state/masteryEngine";
 import { useStudentProfile } from "@/hooks/useStudentProfile";
 import { useAuraEngines } from "@/hooks/useAuraEngines";
 
@@ -189,6 +191,7 @@ function PlannerPage() {
   const [hydrated, setHydrated] = useState(false);
   const [highlightId, setHighlightId] = useState<number | null>(null);
   const [expandedTaskId, setExpandedTaskId] = useState<number | null>(null);
+  const [causalityChain, setCausalityChain] = useState<CausalityChain | null>(null);
 
   // Clear the "just added" highlight after a short beat.
   useEffect(() => {
@@ -237,6 +240,7 @@ function PlannerPage() {
         plannerSubjects,
         buildPlannerChapterPool(),
         burnoutScore,
+        burnout,
       );
 
       if (result) {
@@ -246,9 +250,10 @@ function PlannerPage() {
           result.newChapterMastery,
         );
         appendSession(result.sessionInput);
+        setCausalityChain(result.causalityChain);
 
         toast.success("Task completed", {
-          description: result.completion.causalityChain.summary,
+          description: result.causalityChain.summary,
           icon: <CheckCircle2 className="h-4 w-4" />,
         });
 
@@ -520,6 +525,13 @@ function PlannerPage() {
             <StatPill icon={<Trophy className="h-4 w-4" />} label="Badges" value={`${earnedCount}/${unlocked.length}`} />
           </div>
         </header>
+
+        {causalityChain && (
+          <AuraCausalityChain
+            chain={causalityChain}
+            onDismiss={() => setCausalityChain(null)}
+          />
+        )}
 
         <AuraExecutionSystem snapshot={executionSnapshot} />
 

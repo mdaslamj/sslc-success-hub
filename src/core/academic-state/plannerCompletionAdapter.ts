@@ -4,13 +4,15 @@ import { resolveProfileChapterKey } from "@/lib/chapter-profile-key";
 import {
   generateReplanSummary,
   processSessionCompletion,
+  enrichCausalityChain,
   type AdaptiveAcademicState,
   type MasterySession,
   type MasterySessionType,
   type SessionCompletionResult,
+  type CausalityChain,
 } from "@/core/academic-state/masteryEngine";
 import type { NewSessionInput } from "@/engines/sessionLogger";
-import type { StudentLearningProfile, Subject } from "@/types/aura-engine-contracts";
+import type { BurnoutOutput, StudentLearningProfile, Subject } from "@/types/aura-engine-contracts";
 import { mapTaskSubjectToEngine } from "@/core/academic-state/executionEngine";
 
 const ENGINE_SUBJECTS: Subject[] = ["math", "science", "social"];
@@ -30,6 +32,7 @@ export type PlannerCompletionResult = {
   newChapterMastery: number;
   sessionInput: NewSessionInput;
   completion: SessionCompletionResult;
+  causalityChain: CausalityChain;
   replanSummary: string | null;
 };
 
@@ -130,6 +133,7 @@ export function processPlannerTaskCompletion(
   subjectSeeds: PlannerSubjectSeed[],
   chapterPool: PlannerEngineChapter[],
   burnoutScore = 0,
+  burnout?: BurnoutOutput | null,
 ): PlannerCompletionResult | null {
   const engineSubject = mapTaskSubjectToEngine(task.subject);
   if (!engineSubject || task.chapter.id.startsWith("manual-")) return null;
@@ -173,12 +177,24 @@ export function processPlannerTaskCompletion(
       )
     : null;
 
+  const causalityChain = enrichCausalityChain(completion.causalityChain, {
+    replanSummary,
+    burnout: burnout
+      ? {
+          score: burnoutScore,
+          risk: burnout.risk,
+          recommendation: burnout.recommendation,
+        }
+      : undefined,
+  });
+
   return {
     engineSubject,
     profileChapterKey,
     newChapterMastery: Math.round(completion.updatedChapter.mastery),
     sessionInput,
-    completion,
+    completion: { ...completion, causalityChain },
+    causalityChain,
     replanSummary,
   };
 }

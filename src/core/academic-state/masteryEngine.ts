@@ -403,3 +403,46 @@ export function generateReplanSummary(
   }
   return `A new gap opened in ${subjectName}. Aura has reordered this week to address it.`;
 }
+
+export type BurnoutChainContext = {
+  score: number;
+  risk: string;
+  recommendation: string;
+};
+
+/** Presentation-only enrichment — does not mutate academic state. */
+export function enrichCausalityChain(
+  chain: CausalityChain,
+  options?: {
+    burnout?: BurnoutChainContext;
+    replanSummary?: string | null;
+  },
+): CausalityChain {
+  let nodes = [...chain.nodes];
+
+  if (options?.replanSummary) {
+    nodes = nodes.map((node) =>
+      node.id === "plan" ? { ...node, sub: options.replanSummary! } : node,
+    );
+  }
+
+  const burnout = options?.burnout;
+  if (burnout && burnout.score >= 25) {
+    const burnoutNode = {
+      id: "burnout",
+      icon: burnout.score >= 60 ? "○" : "~",
+      label: "Energy check",
+      value: `${Math.round(burnout.score)}/100`,
+      sub: burnout.recommendation,
+      color: burnout.score >= 60 ? "#F87171" : "#FBBF24",
+    };
+    const planIndex = nodes.findIndex((node) => node.id === "plan");
+    if (planIndex >= 0) {
+      nodes.splice(planIndex, 0, burnoutNode);
+    } else {
+      nodes.push(burnoutNode);
+    }
+  }
+
+  return { ...chain, nodes };
+}

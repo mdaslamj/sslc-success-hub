@@ -16,6 +16,12 @@ export type {
   CausalityChain,
   MasterySession,
   SessionCompletionResult,
+  BurnoutChainContext,
+} from "@/core/academic-state/masteryEngine";
+export {
+  enrichCausalityChain,
+  shouldReplanWeek,
+  generateReplanSummary,
 } from "@/core/academic-state/masteryEngine";
 export {
   processPlannerTaskCompletion,
