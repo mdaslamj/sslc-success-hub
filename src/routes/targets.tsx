@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { type ReactNode, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { DashboardLayout } from "@/components/dashboard-layout";
 import { ProgressRing } from "@/components/widgets/progress-ring";
 import { subjects as initialSubjects, gradeFor, type Subject } from "@/lib/mock-data";
@@ -10,10 +10,8 @@ import {
   Sparkles,
   RotateCcw,
   Save,
-  CheckCircle2,
-  AlertTriangle,
-  Zap,
 } from "lucide-react";
+import { getSubjectStatus } from "@/lib/taskPriorityEngine";
 import { Slider } from "@/components/ui/slider";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -59,26 +57,6 @@ function probabilityFor(target: number, predicted: number, mastery: number) {
   // Mastery nudges confidence ±8 pts
   const adj = base * 100 + (mastery - 70) * 0.15;
   return Math.round(Math.max(5, Math.min(98, adj)));
-}
-
-function statusFor(prob: number): { label: string; tone: string; icon: ReactNode } {
-  if (prob >= 80)
-    return {
-      label: "On track",
-      tone: "bg-success/15 text-success border-success/30",
-      icon: <CheckCircle2 className="h-3 w-3" />,
-    };
-  if (prob >= 55)
-    return {
-      label: "Stretch",
-      tone: "bg-warning/15 text-warning border-warning/30",
-      icon: <Zap className="h-3 w-3" />,
-    };
-  return {
-    label: "At risk",
-    tone: "bg-destructive/15 text-destructive border-destructive/30",
-    icon: <AlertTriangle className="h-3 w-3" />,
-  };
 }
 
 function TargetsPage() {
@@ -354,7 +332,7 @@ function TargetsPage() {
             {subjects.map((s) => {
               const sGap = s.target - s.predicted;
               const prob = probabilityFor(s.target, s.predicted, s.mastery);
-              const status = statusFor(prob);
+              const status = getSubjectStatus(s.predicted, s.target);
               return (
                 <div
                   key={s.id}
@@ -380,9 +358,9 @@ function TargetsPage() {
                     </div>
                     <Badge
                       variant="outline"
-                      className={`rounded-full gap-1 ${status.tone}`}
+                      className="rounded-full border-0"
+                      style={{ color: status.color, backgroundColor: status.bg }}
                     >
-                      {status.icon}
                       {status.label}
                     </Badge>
                   </div>

@@ -35,7 +35,9 @@ import {
   ExternalLink,
   ChevronDown,
 } from "lucide-react";
-import { todayTasks, subjects } from "@/lib/mock-data";
+import { subjects } from "@/lib/mock-data";
+import { rankChaptersForToday, type RankedPlannerTask } from "@/lib/taskPriorityEngine";
+import { buildPlannerChapterPool } from "@/lib/planner-chapter-pool";
 import { toast } from "sonner";
 import { RevisionPlannerCard, type RevisionPick } from "@/components/revision-planner-card";
 import { useAnalytics } from "@/hooks/use-analytics";
@@ -65,31 +67,64 @@ export const Route = createFileRoute("/planner")({
   component: PlannerPage,
 });
 
-type Task = {
-  id: number;
-  subject: string;
-  task: string;
-  time: string;
-  durationMin: number;
-  done: boolean;
+type Task = RankedPlannerTask & {
   /** Optional external link (e.g. KTBS textbook PDF). */
   link?: string;
 };
 
 const STORAGE = "vidyapath.planner.v1";
 
-function estimateMinutes(time: string): number {
-  // e.g. "45 min", "1 hr", "30 min"
-  const lower = time.toLowerCase();
-  const num = parseFloat(lower) || 30;
-  if (lower.includes("hr") || lower.includes("hour")) return Math.round(num * 60);
-  return Math.round(num);
-}
-
-const seedTasks: Task[] = todayTasks.map((t) => ({
-  ...t,
-  durationMin: estimateMinutes(t.time),
+const plannerSubjects = subjects.map((s) => ({
+  id: s.id,
+  name: s.name,
+  color: s.color,
+  target: s.target,
+  predicted: s.predicted,
+  mastery: s.mastery,
+  emoji: s.emoji,
 }));
+
+const seedTasks: Task[] = rankChaptersForToday(
+  buildPlannerChapterPool(),
+  plannerSubjects,
+  4,
+);
+
+function createManualTask(input: {
+  id: number;
+  subjectName: string;
+  task: string;
+  durationMin: number;
+  link?: string;
+}): Task {
+  const subj =
+    subjects.find((s) => s.name === input.subjectName) ??
+    subjects.find((s) => input.subjectName.startsWith(s.name)) ??
+    subjects[0];
+  return {
+    id: input.id,
+    subject: input.subjectName,
+    subjectId: subj.id,
+    task: input.task,
+    title: input.task.replace(/^(Recover|Practice|Revise|Focus|Quick review) — /, ""),
+    time: `${input.durationMin} min`,
+    durationMin: input.durationMin,
+    done: false,
+    whyText: "",
+    subjectColor: subj.color,
+    priorityScore: 0,
+    chapter: {
+      id: `manual-${input.id}`,
+      title: input.task,
+      subjectId: subj.id,
+      mastery: subj.mastery,
+      subjectName: subj.name,
+      whyText: "",
+      priorityScore: 0,
+    },
+    link: input.link,
+  };
+}
 
 function subjectRouteIdFromTaskName(subjectName: string): string {
   const subj =
@@ -190,14 +225,12 @@ function PlannerPage() {
     const id = Math.max(0, ...tasks.map((t) => t.id)) + 1;
     setTasks((prev) => [
       ...prev,
-      {
+      createManualTask({
         id,
-        subject: newSubject,
+        subjectName: newSubject,
         task: newTask.trim(),
-        time: `${newDuration} min`,
         durationMin: newDuration,
-        done: false,
-      },
+      }),
     ]);
     setNewTask("");
     setHighlightId(id);
@@ -212,14 +245,12 @@ function PlannerPage() {
     const id = Math.max(0, ...tasks.map((t) => t.id)) + 1;
     setTasks((prev) => [
       ...prev,
-      {
+      createManualTask({
         id,
-        subject: pick.subjectName,
+        subjectName: pick.subjectName,
         task: `Revise — ${pick.topic}`,
-        time: `${pick.minutes} min`,
         durationMin: pick.minutes,
-        done: false,
-      },
+      }),
     ]);
     setHighlightId(id);
     toast.success("Added to today's plan", {
@@ -253,14 +284,12 @@ function PlannerPage() {
     const id = Math.max(0, ...tasks.map((t) => t.id)) + 1;
     setTasks((prev) => [
       ...prev,
-      {
+      createManualTask({
         id,
-        subject: subjectMatch.name,
+        subjectName: subjectMatch.name,
         task: taskTitle,
-        time: `${item.minutes} min`,
         durationMin: item.minutes,
-        done: false,
-      },
+      }),
     ]);
     setHighlightId(id);
     toast.success("Added to today's plan", {
@@ -280,14 +309,12 @@ function PlannerPage() {
     const title = `${mode.label} — ${parent.task}`;
     setTasks((prev) => [
       ...prev,
-      {
+      createManualTask({
         id,
-        subject: parent.subject,
+        subjectName: parent.subject,
         task: title,
-        time: `${durationMin} min`,
         durationMin,
-        done: false,
-      },
+      }),
     ]);
     try {
       addCalendarEvent({
@@ -550,6 +577,17 @@ function PlannerPage() {
                       >
                         {t.task}
                       </div>
+                      {t.whyText && (
+                        <div
+                          className="mt-1 rounded-md px-2 py-1 text-[10px] leading-snug"
+                          style={{
+                            color: t.subjectColor,
+                            backgroundColor: `color-mix(in oklab, ${t.subjectColor} 14%, transparent)`,
+                          }}
+                        >
+                          {t.whyText}
+                        </div>
+                      )}
                       <div className="flex items-center gap-2 text-[11px] text-muted-foreground">
                         <span>
                           {t.subject} · {t.time}
