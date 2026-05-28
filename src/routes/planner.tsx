@@ -52,6 +52,9 @@ import {
 } from "@/lib/planner-events-store";
 import { AuraExecutionSystem } from "@/components/AuraExecutionSystem";
 import { useAcademicExecution } from "@/core/academic-state/useAcademicExecution";
+import { processPlannerTaskCompletion } from "@/core/academic-state/plannerCompletionAdapter";
+import { useStudentProfile } from "@/hooks/useStudentProfile";
+import { useAuraEngines } from "@/hooks/useAuraEngines";
 
 export const Route = createFileRoute("/planner")({
   head: () => ({
@@ -160,8 +163,24 @@ function prepModeHref(subjectName: string, mode: PrepMode): string {
   }
 }
 
+function replanIncompleteTasks(currentTasks: Task[]): Task[] {
+  const done = currentTasks.filter((t) => t.done);
+  const doneChapterIds = new Set(done.map((t) => t.chapter.id));
+  const openSlots = Math.max(1, currentTasks.length - done.length);
+  let nextId = Math.max(0, ...currentTasks.map((t) => t.id)) + 1;
+
+  const fresh = rankChaptersForToday(buildPlannerChapterPool(), plannerSubjects, openSlots + done.length)
+    .filter((t) => !doneChapterIds.has(t.chapter.id))
+    .slice(0, openSlots)
+    .map((t) => ({ ...t, id: nextId++, done: false }));
+
+  return [...done, ...fresh];
+}
+
 function PlannerPage() {
   const { logSession } = useAnalytics();
+  const { profile, updateMastery, appendSession } = useStudentProfile();
+  const { burnout } = useAuraEngines();
   const [tasks, setTasks] = useState<Task[]>(seedTasks);
   const [newTask, setNewTask] = useState("");
   const [newSubject, setNewSubject] = useState(subjects[0].name);
@@ -205,18 +224,51 @@ function PlannerPage() {
   const completionPct = tasks.length ? Math.round((doneCount / tasks.length) * 100) : 0;
 
   function toggleTask(id: number) {
-    setTasks((prev) =>
-      prev.map((t) => {
-        if (t.id !== id) return t;
-        const next = { ...t, done: !t.done };
-        if (next.done) {
-          toast.success("Task completed", {
-            description: `${t.subject} · ${t.task}`,
-            icon: <CheckCircle2 className="h-4 w-4" />,
+    const task = tasks.find((t) => t.id === id);
+    if (!task) return;
+
+    const markingDone = !task.done;
+
+    if (markingDone) {
+      const burnoutScore = Math.round(burnout?.score ?? 0);
+      const result = processPlannerTaskCompletion(
+        task,
+        profile,
+        plannerSubjects,
+        buildPlannerChapterPool(),
+        burnoutScore,
+      );
+
+      if (result) {
+        updateMastery(
+          result.engineSubject,
+          result.profileChapterKey,
+          result.newChapterMastery,
+        );
+        appendSession(result.sessionInput);
+
+        toast.success("Task completed", {
+          description: result.completion.causalityChain.summary,
+          icon: <CheckCircle2 className="h-4 w-4" />,
+        });
+
+        if (result.completion.needsReplan) {
+          setTasks((prev) => replanIncompleteTasks(prev.map((t) => (t.id === id ? { ...t, done: true } : t))));
+          toast.info("Plan rebalanced", {
+            description: result.replanSummary ?? "Aura adjusted remaining tasks for today.",
           });
+          return;
         }
-        return next;
-      }),
+      } else {
+        toast.success("Task completed", {
+          description: `${task.subject} · ${task.task}`,
+          icon: <CheckCircle2 className="h-4 w-4" />,
+        });
+      }
+    }
+
+    setTasks((prev) =>
+      prev.map((t) => (t.id === id ? { ...t, done: !t.done } : t)),
     );
   }
 

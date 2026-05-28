@@ -61,29 +61,7 @@ export function computeTaskImpact(task: PlannerTaskSnapshot): ExecutionDelta {
   };
 }
 
-function bumpChapterMastery(
-  profile: StudentLearningProfile,
-  subject: Subject,
-  delta: number,
-): void {
-  const chapters = profile.chapterMastery[subject];
-  if (!chapters) return;
-
-  const entries = Object.entries(chapters).filter(([key]) => !key.startsWith("_"));
-  if (entries.length === 0) return;
-
-  const [weakestKey, weakest] = entries.reduce((acc, cur) =>
-    cur[1].mastery < acc[1].mastery ? cur : acc,
-  );
-
-  weakest.mastery = Math.min(100, Math.round(weakest.mastery + delta));
-  weakest.trend = "improving";
-  weakest.lastPracticed = new Date().toISOString().slice(0, 10);
-  weakest.attemptCount += 1;
-  chapters[weakestKey] = weakest;
-}
-
-/** Apply today's completed planner tasks onto a cloned profile. */
+/** Apply today's completed planner tasks onto a cloned profile (display deltas only). */
 export function applyExecutionDeltas(
   profile: StudentLearningProfile,
   tasks: PlannerTaskSnapshot[],
@@ -101,7 +79,6 @@ export function applyExecutionDeltas(
 
     if (impact.subject) {
       aggregateDelta[impact.subject] += impact.subjectMasteryDelta[impact.subject];
-      bumpChapterMastery(next, impact.subject, impact.subjectMasteryDelta[impact.subject]);
     }
   }
 
