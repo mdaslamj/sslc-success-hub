@@ -14,10 +14,10 @@ const GUEST_ONBOARDING_KEY = "aura.guest.onboarding.v1";
 export const Route = createFileRoute("/login")({
   head: () => ({
     meta: [
-      { title: "Sign in — VidyaPath SSLC Prep" },
+      { title: "Aura — Sign in" },
       {
         name: "description",
-        content: "Sign in to VidyaPath to sync your SSLC prep across devices.",
+        content: "Sign in to Aura to sync your SSLC prep across devices.",
       },
     ],
   }),
@@ -44,7 +44,7 @@ function LoginPage() {
             <GraduationCap className="h-6 w-6 text-primary-foreground" />
           </div>
           <h1 className="mt-5 font-display text-2xl font-bold tracking-tight">
-            Welcome to VidyaPath
+            Welcome to Aura
           </h1>
           <p className="mt-2 text-sm text-muted-foreground leading-relaxed">
             Sign in to sync your SSLC prep across devices.

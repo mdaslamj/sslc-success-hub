@@ -15,7 +15,7 @@ import type { AchievementCategory } from "@/lib/achievements-catalog";
 export const Route = createFileRoute("/achievements")({
   head: () => ({
     meta: [
-      { title: "Achievements — VidyaPath SSLC Prep" },
+      { title: "Aura — Achievements" },
       {
         name: "description",
         content:

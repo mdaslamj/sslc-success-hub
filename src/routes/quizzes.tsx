@@ -19,7 +19,7 @@ import type { IndexedChapter } from "@/lib/content-question-index";
 export const Route = createFileRoute("/quizzes")({
   head: () => ({
     meta: [
-      { title: "Quizzes — VidyaPath SSLC Prep" },
+      { title: "Aura — Quizzes" },
       {
         name: "description",
         content:

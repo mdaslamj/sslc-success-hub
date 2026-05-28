@@ -24,7 +24,7 @@ import { UploadAnswerButton } from "@/components/answer-upload/upload-answer-but
 export const Route = createFileRoute("/quiz/$quizId")({
   head: () => ({
     meta: [
-      { title: "Quiz — VidyaPath" },
+      { title: "Aura — Quiz" },
       {
         name: "description",
         content: "Take a chapter quiz, review your answers, and earn XP.",

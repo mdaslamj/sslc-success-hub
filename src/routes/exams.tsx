@@ -38,7 +38,7 @@ import {
 export const Route = createFileRoute("/exams")({
   head: () => ({
     meta: [
-      { title: "Mock Exams — VidyaPath SSLC Prep" },
+      { title: "Aura — Mock Exams" },
       {
         name: "description",
         content:

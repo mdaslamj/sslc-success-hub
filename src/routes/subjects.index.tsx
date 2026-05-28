@@ -18,7 +18,7 @@ function contentFolderFor(subjectId: string): string | null {
 export const Route = createFileRoute("/subjects/")({
   head: () => ({
     meta: [
-      { title: "Subjects — VidyaPath" },
+      { title: "Aura — Subjects" },
       { name: "description", content: "Browse SSLC subjects: Mathematics, Science, Social, English, Kannada, Hindi." },
     ],
   }),

@@ -52,7 +52,7 @@ import {
 export const Route = createFileRoute("/planner")({
   head: () => ({
     meta: [
-      { title: "Study Planner — VidyaPath" },
+      { title: "Aura — Study Planner" },
       {
         name: "description",
         content:

@@ -32,7 +32,7 @@ import { DEFAULT_LIBRARY_CATEGORIES } from "@/lib/resource-seed";
 export const Route = createFileRoute("/resources")({
   head: () => ({
     meta: [
-      { title: "Resources — VidyaPath Academic Library" },
+      { title: "Aura — Resources" },
       {
         name: "description",
         content:

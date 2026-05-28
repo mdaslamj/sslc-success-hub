@@ -67,10 +67,10 @@ export function AppSidebar() {
           </div>
           <div className="flex flex-col group-data-[collapsible=icon]:hidden">
             <span className="font-display text-base font-bold tracking-tight text-sidebar-foreground">
-              VidyaPath
+              Aura
             </span>
             <span className="text-[10px] uppercase tracking-widest text-sidebar-foreground/60">
-              SSLC · Karnataka
+              Aura · Karnataka SSLC
             </span>
           </div>
         </Link>

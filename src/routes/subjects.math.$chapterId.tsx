@@ -50,7 +50,7 @@ import type {
 export const Route = createFileRoute("/subjects/math/$chapterId")({
   head: ({ params }) => ({
     meta: [
-      { title: `Math chapter ${params.chapterId} — VidyaPath` },
+      { title: `Aura — Math Chapter ${params.chapterId}` },
       {
         name: "description",
         content:

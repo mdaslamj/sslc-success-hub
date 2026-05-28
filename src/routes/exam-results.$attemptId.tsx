@@ -37,7 +37,7 @@ import type {
 export const Route = createFileRoute("/exam-results/$attemptId")({
   head: () => ({
     meta: [
-      { title: "Exam Result — VidyaPath" },
+      { title: "Aura — Exam Result" },
       {
         name: "description",
         content:

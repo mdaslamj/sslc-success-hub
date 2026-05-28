@@ -35,7 +35,7 @@ import {
 export const Route = createFileRoute("/targets")({
   head: () => ({
     meta: [
-      { title: "Target Score System — VidyaPath" },
+      { title: "Aura — Target Score" },
       {
         name: "description",
         content:

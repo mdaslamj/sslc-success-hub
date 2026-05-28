@@ -10,10 +10,10 @@ import { useAuth } from "@/contexts/auth-context";
 export const Route = createFileRoute("/forgot-password")({
   head: () => ({
     meta: [
-      { title: "Reset password — VidyaPath SSLC Prep" },
+      { title: "Aura — Reset Password" },
       {
         name: "description",
-        content: "Reset your VidyaPath account password via email.",
+        content: "Reset your Aura account password via email.",
       },
     ],
   }),

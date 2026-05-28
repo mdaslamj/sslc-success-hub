@@ -6,7 +6,7 @@ import { UploadAnswerButton } from "@/components/answer-upload/upload-answer-but
 export const Route = createFileRoute("/answer-uploads")({
   head: () => ({
     meta: [
-      { title: "My Answers — VidyaPath" },
+      { title: "Aura — My Answers" },
       {
         name: "description",
         content:

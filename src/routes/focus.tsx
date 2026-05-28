@@ -38,7 +38,7 @@ import {
 export const Route = createFileRoute("/focus")({
   head: () => ({
     meta: [
-      { title: "Focus Mode — VidyaPath" },
+      { title: "Aura — Focus Mode" },
       {
         name: "description",
         content:

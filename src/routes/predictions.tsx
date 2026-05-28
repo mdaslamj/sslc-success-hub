@@ -23,7 +23,7 @@ import { tierFor } from "@/lib/math-intelligence/mastery-tiers";
 export const Route = createFileRoute("/predictions")({
   head: () => ({
     meta: [
-      { title: "AI Prediction — VidyaPath SSLC Prep" },
+      { title: "Aura — AI Prediction" },
       {
         name: "description",
         content:

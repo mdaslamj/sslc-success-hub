@@ -44,7 +44,7 @@ import { subjects } from "@/lib/mock-data";
 export const Route = createFileRoute("/profile")({
   head: () => ({
     meta: [
-      { title: "Profile — VidyaPath SSLC Prep" },
+      { title: "Aura — Profile" },
       {
         name: "description",
         content: "Manage your student profile, target score and study preferences.",

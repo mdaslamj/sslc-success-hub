@@ -40,7 +40,7 @@ import { useEvaluation } from "@/hooks/use-evaluation";
 export const Route = createFileRoute("/answer-uploads/$attemptId")({
   head: () => ({
     meta: [
-      { title: "Review answer — VidyaPath" },
+      { title: "Aura — Review Answer" },
       {
         name: "description",
         content:

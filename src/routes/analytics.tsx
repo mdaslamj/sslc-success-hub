@@ -27,7 +27,7 @@ import { useAnalytics } from "@/hooks/use-analytics";
 export const Route = createFileRoute("/analytics")({
   head: () => ({
     meta: [
-      { title: "Analytics — VidyaPath SSLC Prep" },
+      { title: "Aura — Analytics" },
       {
         name: "description",
         content:

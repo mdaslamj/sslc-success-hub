@@ -9,7 +9,7 @@ import { seedFirestore, fetchSeedStatus } from "@/integrations/firebase/seed";
 
 export const Route = createFileRoute("/seed")({
   head: () => ({
-    meta: [{ title: "Seed Firestore — VidyaPath" }],
+    meta: [{ title: "Aura — Seed Firestore" }],
   }),
   component: GuardedSeedPage,
 });

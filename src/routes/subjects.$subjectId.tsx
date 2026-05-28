@@ -103,15 +103,26 @@ function runtimeSubjectIdFor(subjectId: string): string | null {
 }
 
 export const Route = createFileRoute("/subjects/$subjectId")({
-  head: ({ params }) => ({
-    meta: [
-      { title: `${params.subjectId} — VidyaPath` },
-      {
-        name: "description",
-        content: `Chapter progress, weak/strong topics and practice MCQs for Karnataka SSLC.`,
-      },
-    ],
-  }),
+  head: ({ params }) => {
+    const subjectKey = canonicalSubjectRouteId(params.subjectId);
+    const subjectTitles: Record<string, string> = {
+      mathematics: "Mathematics",
+      science: "Science",
+      "social-science": "Social Science",
+    };
+    const subjectName =
+      subjectTitles[subjectKey] ??
+      params.subjectId.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
+    return {
+      meta: [
+        { title: `Aura — ${subjectName}` },
+        {
+          name: "description",
+          content: `Chapter progress, weak/strong topics and practice MCQs for Karnataka SSLC.`,
+        },
+      ],
+    };
+  },
   notFoundComponent: () => (
     <DashboardLayout title="Not found">
       <div className="mx-auto max-w-lg py-24 text-center">

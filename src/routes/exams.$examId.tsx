@@ -43,7 +43,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 export const Route = createFileRoute("/exams/$examId")({
   head: ({ params }) => ({
     meta: [
-      { title: `Mock Exam — VidyaPath` },
+      { title: "Aura — Mock Exam" },
       {
         name: "description",
         content: `Timed mock exam ${params.examId} with auto-grading and weak-area analytics.`,

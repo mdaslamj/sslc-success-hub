@@ -16,7 +16,7 @@ export const Route = createFileRoute(
 )({
   head: ({ params }) => ({
     meta: [
-      { title: `Formulas — ${params.chapterId} — VidyaPath` },
+      { title: `Aura — Formulas — ${params.chapterId}` },
       {
         name: "description",
         content: "Key formulas for this chapter, ready for quick revision.",
