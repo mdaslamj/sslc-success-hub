@@ -40,6 +40,17 @@ export function useMockExam(exam: MockExamDoc) {
   const saveRef = useRef<number | null>(null);
   const dirtyRef = useRef(false);
 
+  // Clamp cursor when question count changes (resumed attempt / rebuilt paper).
+  useEffect(() => {
+    const max = Math.max(0, (exam.questions ?? []).length - 1);
+    setAttempt((a) => {
+      if (!a || a.cursor <= max) return a;
+      const next = { ...a, cursor: max, updatedAt: Date.now() };
+      cacheAttempt(next);
+      return next;
+    });
+  }, [exam.id, exam.questions?.length]);
+
   // ---- resume or create attempt -------------------------------------------
   useEffect(() => {
     const activeId = readActiveAttemptId(exam.id);
@@ -132,9 +143,11 @@ export function useMockExam(exam: MockExamDoc) {
     (qIndex: number, optionIndex: number) => {
       setAttempt((a) => {
         if (!a) return a;
+        const question = exam.questions?.[qIndex];
+        if (!question) return a;
         const answers = a.answers.slice();
         const current = answers[qIndex] ?? {
-          mcqId: exam.questions[qIndex].mcqId,
+          mcqId: question.mcqId,
           selectedIndex: null,
           marked: false,
           correct: null,
@@ -176,16 +189,17 @@ export function useMockExam(exam: MockExamDoc) {
 
   const setCursor = useCallback(
     (i: number) => {
-      if (i < 0 || i >= exam.questions.length) return;
+      const len = exam.questions?.length ?? 0;
+      if (i < 0 || i >= len) return;
       update({ cursor: i });
     },
-    [exam.questions.length, update],
+    [exam.questions?.length, update],
   );
 
   const next = useCallback(() => {
     if (!attempt) return;
-    setCursor(Math.min(attempt.cursor + 1, exam.questions.length - 1));
-  }, [attempt, exam.questions.length, setCursor]);
+    setCursor(Math.min(attempt.cursor + 1, Math.max(0, (exam.questions?.length ?? 1) - 1)));
+  }, [attempt, exam.questions?.length, setCursor]);
 
   const prev = useCallback(() => {
     if (!attempt) return;

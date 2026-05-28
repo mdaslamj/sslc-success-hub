@@ -48,6 +48,8 @@ import {
   addEvent as addCalendarEvent,
   toDateKey,
 } from "@/lib/planner-events-store";
+import { AuraExecutionSystem } from "@/components/AuraExecutionSystem";
+import { useAcademicExecution } from "@/core/academic-state/useAcademicExecution";
 
 export const Route = createFileRoute("/planner")({
   head: () => ({
@@ -401,6 +403,22 @@ function PlannerPage() {
 
   const earnedCount = unlocked.filter((a) => a.earned).length;
 
+  const plannerTaskSnapshots = useMemo(
+    () =>
+      tasks.map((t) => ({
+        id: t.id,
+        subject: t.subject,
+        task: t.task,
+        durationMin: t.durationMin,
+        done: t.done,
+      })),
+    [tasks],
+  );
+
+  const { snapshot: executionSnapshot } = useAcademicExecution({
+    tasks: plannerTaskSnapshots,
+  });
+
   return (
     <DashboardLayout title="Study Planner">
       <div className="mx-auto w-full max-w-7xl space-y-6 overflow-x-clip">
@@ -423,6 +441,8 @@ function PlannerPage() {
             <StatPill icon={<Trophy className="h-4 w-4" />} label="Badges" value={`${earnedCount}/${unlocked.length}`} />
           </div>
         </header>
+
+        <AuraExecutionSystem snapshot={executionSnapshot} />
 
         {/* Day progress bar */}
         <section className="rounded-3xl border border-border/60 bg-card p-5 shadow-card">

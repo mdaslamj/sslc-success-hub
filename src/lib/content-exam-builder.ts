@@ -137,7 +137,7 @@ export function pickByBlueprint(
 
   for (const c of chapters) {
     const slots = Math.max(1, Math.round((c.blueprintWeight / totalWeight) * count));
-    const pool = c.questions
+    const pool = (c.questions ?? [])
       .filter((q) => q.questionType === "mcq" && q.options.length > 0)
       .filter((q) => !taken.has(q.id));
     // Deterministic shuffle of the chapter pool, then take `slots`.
@@ -155,7 +155,7 @@ export function pickByBlueprint(
   // Top up if rounding under-filled the paper.
   if (out.length < count) {
     for (const c of chapters) {
-      for (const q of c.questions) {
+      for (const q of c.questions ?? []) {
         if (out.length >= count) break;
         if (q.questionType !== "mcq" || q.options.length === 0) continue;
         if (taken.has(q.id)) continue;
@@ -290,6 +290,20 @@ export function buildMixedMockExam(args: {
  * cleared. Returns null if the id doesn't match any known pattern.
  */
 export function rebuildContentExamById(
+  examId: string,
+  catalogue: {
+    subjects: { runtimeId: string; name: string; chapters: IndexedChapter[] }[];
+  },
+): MockExamDoc | null {
+  try {
+    return rebuildContentExamByIdUnsafe(examId, catalogue);
+  } catch (err) {
+    console.warn("[exam] rebuild failed", { examId, err });
+    return null;
+  }
+}
+
+function rebuildContentExamByIdUnsafe(
   examId: string,
   catalogue: {
     subjects: { runtimeId: string; name: string; chapters: IndexedChapter[] }[];

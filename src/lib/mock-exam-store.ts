@@ -8,6 +8,7 @@ import type {
   MockExamDoc,
   MockExamResultDoc,
 } from "@/integrations/firebase/types";
+import { sanitizeMockExam } from "@/lib/mock-exam-validation";
 
 const EXAM_KEY = (id: string) => `exam:exam:${id}`;
 const ATTEMPT_KEY = (id: string) => `exam:attempt:${id}`;
@@ -23,12 +24,23 @@ function safe<T>(fn: () => T, fallback: T): T {
 }
 
 export function cacheExam(exam: MockExamDoc) {
-  safe(() => localStorage.setItem(EXAM_KEY(exam.id), JSON.stringify(exam)), undefined);
+  const validated = sanitizeMockExam(exam);
+  if (!validated.ok) return;
+  safe(
+    () =>
+      localStorage.setItem(
+        EXAM_KEY(validated.exam.id),
+        JSON.stringify(validated.exam),
+      ),
+    undefined,
+  );
 }
 export function readCachedExam(id: string): MockExamDoc | null {
   return safe(() => {
     const v = localStorage.getItem(EXAM_KEY(id));
-    return v ? (JSON.parse(v) as MockExamDoc) : null;
+    if (!v) return null;
+    const parsed = sanitizeMockExam(JSON.parse(v));
+    return parsed.ok ? parsed.exam : null;
   }, null);
 }
 

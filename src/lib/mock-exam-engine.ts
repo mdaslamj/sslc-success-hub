@@ -72,23 +72,35 @@ export function gradeAnswer(
   selectedIndex: number | null,
   negativeMarkingFactor: number,
 ): { correct: boolean; marksEarned: number } {
-  if (selectedIndex == null) return { correct: false, marksEarned: 0 };
-  if (selectedIndex === q.correctIndex) return { correct: true, marksEarned: q.marks };
-  return { correct: false, marksEarned: -q.marks * negativeMarkingFactor };
+  if (!q || selectedIndex == null) return { correct: false, marksEarned: 0 };
+  const marks = typeof q.marks === "number" && q.marks > 0 ? q.marks : 1;
+  const factor =
+    typeof negativeMarkingFactor === "number" && Number.isFinite(negativeMarkingFactor)
+      ? negativeMarkingFactor
+      : 0;
+  if (selectedIndex === q.correctIndex) return { correct: true, marksEarned: marks };
+  return { correct: false, marksEarned: -marks * factor };
 }
 
 export function gradeAttempt(
   exam: MockExamDoc,
   answers: MockExamAnswer[],
 ): MockExamAnswer[] {
-  return exam.questions.map((q, i) => {
+  const questions = exam.questions ?? [];
+  return questions.map((q, i) => {
     const a = answers[i];
     const { correct, marksEarned } = gradeAnswer(
       q,
       a?.selectedIndex ?? null,
-      exam.negativeMarkingFactor,
+      exam.negativeMarkingFactor ?? 0,
     );
-    return { ...a, correct, marksEarned };
+    return {
+      mcqId: q.mcqId,
+      selectedIndex: a?.selectedIndex ?? null,
+      marked: a?.marked ?? false,
+      correct,
+      marksEarned,
+    };
   });
 }
 
@@ -111,7 +123,8 @@ export function buildExamResult(args: {
   userId: string;
 }): MockExamResultDoc {
   const { attempt, exam, graded, endedAt, userId } = args;
-  const total = exam.questions.length;
+  const questions = exam.questions ?? [];
+  const total = questions.length;
   const correct = graded.filter((a) => a.correct).length;
   const answered = graded.filter((a) => a.selectedIndex != null).length;
   const marksScored = Math.max(
@@ -122,8 +135,9 @@ export function buildExamResult(args: {
   const bySubject: MockExamResultDoc["bySubject"] = {};
   const byTopic: MockExamResultDoc["byTopic"] = {};
 
-  for (let i = 0; i < exam.questions.length; i++) {
-    const q = exam.questions[i];
+  for (let i = 0; i < questions.length; i++) {
+    const q = questions[i];
+    if (!q) continue;
     const a = graded[i];
     const sub = (bySubject[q.subjectId] ??= {
       correct: 0,

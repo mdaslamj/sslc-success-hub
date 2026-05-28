@@ -1,4 +1,9 @@
 import { loadManifest } from "@/lib/contentLoader";
+import {
+  chapterKeysMatch,
+  findChapterByKey,
+  normalizeChapterKey,
+} from "@/lib/normalizeChapterKey";
 
 /**
  * Canonical route IDs and chapter slug helpers for content routes.
@@ -69,10 +74,14 @@ export async function resolveChapterContentSlug(
     const fromMigrated = migratedChapterIdToContentSlug(chapterParam, chapters);
     if (fromMigrated) return fromMigrated;
 
+    const byKey = findChapterByKey(chapters, chapterParam);
+    if (byKey?.id) return byKey.id;
+
     const byTitle = chapters.find(
       (c) =>
-        slugifyChapterTitle(c.title ?? "") ===
-        slugifyChapterTitle(chapterParam),
+        slugifyChapterTitle(c.title ?? "") === slugifyChapterTitle(chapterParam) ||
+        chapterKeysMatch(c.title ?? "", chapterParam) ||
+        normalizeChapterKey(c.id) === normalizeChapterKey(chapterParam),
     );
     if (byTitle?.id) return byTitle.id;
   } catch {

@@ -133,6 +133,23 @@ function buildSubjectSeed(
   return out;
 }
 
+/** NCERT English PDF for a SSLC chapter when JSON resources are missing. */
+export function ncertPdfForChapter(
+  subjectId: string,
+  chapterNumber: number,
+): string | null {
+  const table =
+    subjectId === "math"
+      ? MATH_CHAPTERS
+      : subjectId === "science"
+        ? SCIENCE_CHAPTERS
+        : subjectId === "social"
+          ? SOCIAL_CHAPTERS
+          : null;
+  if (!table) return null;
+  return table.find((c) => c.number === chapterNumber)?.en ?? null;
+}
+
 /** Full KTBS textbook seed across all available subjects. */
 export const KTBS_TEXTBOOK_SEED: LibraryResourceDoc[] = [
   ...buildSubjectSeed("math", MATH_CHAPTERS),

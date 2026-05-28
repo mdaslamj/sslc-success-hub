@@ -64,6 +64,13 @@ import {
   chapterRouteSlug,
   isSubjectNestedChapterRoute,
 } from "@/lib/chapter-routes";
+import {
+  chapterKeysMatch,
+  findChapterByKey,
+  indexChaptersByKey,
+  normalizeChapterKey,
+} from "@/lib/normalizeChapterKey";
+import { ncertPdfForChapter } from "@/lib/ktbs-textbook-seed";
 
 type ManifestChapter = {
   id: string;
@@ -223,25 +230,41 @@ function SubjectDetailPage() {
   }, [isContentDriven, readyChapters, chapterQueries]);
 
   const normalizedById = useMemo(() => {
-    const map = new Map<string, NormalizedChapter>();
-    for (const c of normalizedChapters) map.set(c.id, c);
-    return map;
+    return indexChaptersByKey(normalizedChapters);
   }, [normalizedChapters]);
+
+  const resolveContentChapter = (key: string | null): NormalizedChapter | undefined => {
+    if (!key) return undefined;
+    return (
+      normalizedById.get(key) ??
+      normalizedById.get(normalizeChapterKey(key)) ??
+      findChapterByKey(normalizedChapters, key)
+    );
+  };
+
+  const resolveManifestChapterId = (key: string | null): string | null => {
+    if (!key) return null;
+    return findChapterByKey(readyChapters, key)?.id ?? key;
+  };
 
   const [selectedContentId, setSelectedContentId] = useState<string | null>(null);
   const [chapterDetailOpen, setChapterDetailOpen] = useState(false);
 
   useEffect(() => {
-    if (selectedContentId || !readyChapterId) return;
-    setSelectedContentId(readyChapterId);
-  }, [readyChapterId, selectedContentId]);
+    if (!readyChapterId) return;
+    setSelectedContentId((prev) => {
+      if (!prev) return readyChapterId;
+      return findChapterByKey(readyChapters, prev)?.id ?? readyChapterId;
+    });
+  }, [readyChapterId, readyChapters]);
 
   const activeContentId = selectedContentId ?? readyChapterId ?? null;
-  const activeChapter = activeContentId
-    ? normalizedById.get(activeContentId)
-    : undefined;
+  const activeChapter = resolveContentChapter(activeContentId);
   const activeChapterQueryIndex = useMemo(
-    () => readyChapters.findIndex((c) => c.id === activeContentId),
+    () =>
+      readyChapters.findIndex((c) =>
+        chapterKeysMatch(c.id, activeContentId ?? ""),
+      ),
     [readyChapters, activeContentId],
   );
   const activeChapterLoading =
@@ -250,6 +273,75 @@ function SubjectDetailPage() {
     (chapterQueries[activeChapterQueryIndex]?.isLoading ||
       chapterQueries[activeChapterQueryIndex]?.isFetching);
   const anyChapterLoading = chapterQueries.some((q) => q.isLoading);
+
+  const subject = subjectQuery.data as SubjectDoc | null;
+  const rawChapters: ChapterDoc[] = chaptersQuery.data ?? [];
+  const chapters: ChapterDoc[] = rawChapters;
+
+  const mcqs: MCQ[] = useMemo(() => {
+    if (!isContentDriven || !activeChapter) return [];
+    return mapContentMcqs(activeChapter.mcqs ?? [], activeChapter.title);
+  }, [isContentDriven, activeChapter]);
+
+  const manifestReady = useMemo(() => {
+    if (!isContentDriven) return null;
+    const list = ((manifestQuery.data as ManifestDoc | undefined)?.chapters ?? []) as ManifestChapter[];
+    const ready = list.filter((c) => c.status === "ready").length;
+    return ready > 0 ? ready : null;
+  }, [isContentDriven, manifestQuery.data]);
+
+  const isSocial = SOCIAL_SUBJECT_IDS.has(subjectId);
+  const manifestChaptersAll =
+    ((manifestQuery.data as ManifestDoc | undefined)?.chapters ?? []) as ManifestChapter[];
+  const HISTORY_SECTIONS = new Set(["History"]);
+  const MAPS_SECTIONS = new Set(["Geography"]);
+  const CIVICS_SECTIONS = new Set([
+    "Political Science",
+    "Sociology",
+    "Economics",
+    "Business Studies",
+  ]);
+
+  const readyIds = useMemo(
+    () => new Set(manifestChaptersAll.filter((c) => c.status === "ready").map((c) => c.id)),
+    [manifestChaptersAll],
+  );
+  const sectionById = useMemo(() => {
+    const m = new Map<string, string | undefined>();
+    for (const c of manifestChaptersAll) m.set(c.id, c.section);
+    return m;
+  }, [manifestChaptersAll]);
+
+  const decoratedChapters = useMemo(
+    () =>
+      normalizedChapters.map((c) => ({
+        ...c,
+        section: c.section || sectionById.get(c.id),
+      })),
+    [normalizedChapters, sectionById],
+  );
+
+  const historyChapters = useMemo(
+    () => decoratedChapters.filter((c) => c.section && HISTORY_SECTIONS.has(c.section)),
+    [decoratedChapters],
+  );
+  const geographyChapters = useMemo(
+    () => decoratedChapters.filter((c) => c.section && MAPS_SECTIONS.has(c.section)),
+    [decoratedChapters],
+  );
+  const civicsChapters = useMemo(
+    () => decoratedChapters.filter((c) => c.section && CIVICS_SECTIONS.has(c.section)),
+    [decoratedChapters],
+  );
+
+  const doneChapters = chapters.filter((c) => c.done).length;
+  const chapterCountDisplay =
+    manifestReady != null
+      ? `${manifestReady}/${manifestReady}`
+      : `${doneChapters}/${chapters.length}`;
+  const overallProgress = chapters.length
+    ? Math.round(chapters.reduce((a, c) => a + c.progress, 0) / chapters.length)
+    : (subject?.completion ?? 0);
 
   if (subjectQuery.isLoading || chaptersQuery.isLoading) {
     return (
@@ -286,14 +378,6 @@ function SubjectDetailPage() {
     );
   }
 
-  const subject = subjectQuery.data as SubjectDoc | null;
-  const rawChapters: ChapterDoc[] = chaptersQuery.data ?? [];
-  // Chapter list is sourced purely from the JSON manifest for content-driven
-  // subjects (math/science/social). Legacy Firestore math-intelligence
-  // mapping was removed so chapter clicks no longer hit the
-  // "Math data not seeded yet" path.
-  const chapters: ChapterDoc[] = rawChapters;
-
   if (!subject) {
     return (
       <DashboardLayout title="Not found">
@@ -306,73 +390,6 @@ function SubjectDetailPage() {
       </DashboardLayout>
     );
   }
-
-  const mcqs: MCQ[] = useMemo(() => {
-    if (!isContentDriven || !activeChapter) return [];
-    return mapContentMcqs(activeChapter.mcqs ?? [], activeChapter.title);
-  }, [isContentDriven, activeChapter]);
-
-  const manifestReady = useMemo(() => {
-    if (!isContentDriven) return null;
-    const list = ((manifestQuery.data as ManifestDoc | undefined)?.chapters ?? []) as ManifestChapter[];
-    const ready = list.filter((c) => c.status === "ready").length;
-    return ready > 0 ? ready : null;
-  }, [isContentDriven, manifestQuery.data]);
-
-  const doneChapters = chapters.filter((c) => c.done).length;
-  const chapterCountDisplay =
-    manifestReady != null
-      ? `${manifestReady}/${manifestReady}`
-      : `${doneChapters}/${chapters.length}`;
-  const overallProgress = chapters.length
-    ? Math.round(chapters.reduce((a, c) => a + c.progress, 0) / chapters.length)
-    : subject.completion;
-
-  const isSocial = SOCIAL_SUBJECT_IDS.has(subjectId);
-  const manifestChaptersAll =
-    ((manifestQuery.data as ManifestDoc | undefined)?.chapters ?? []) as ManifestChapter[];
-  const HISTORY_SECTIONS = new Set(["History"]);
-  const MAPS_SECTIONS = new Set(["Geography"]);
-  const CIVICS_SECTIONS = new Set([
-    "Political Science",
-    "Sociology",
-    "Economics",
-    "Business Studies",
-  ]);
-
-  const readyIds = useMemo(
-    () => new Set(manifestChaptersAll.filter((c) => c.status === "ready").map((c) => c.id)),
-    [manifestChaptersAll],
-  );
-  const sectionById = useMemo(() => {
-    const m = new Map<string, string | undefined>();
-    for (const c of manifestChaptersAll) m.set(c.id, c.section);
-    return m;
-  }, [manifestChaptersAll]);
-
-  // Decorate normalized chapters with section from manifest (chapter JSON
-  // also carries `section`, but manifest is authoritative).
-  const decoratedChapters = useMemo(
-    () =>
-      normalizedChapters.map((c) => ({
-        ...c,
-        section: c.section || sectionById.get(c.id),
-      })),
-    [normalizedChapters, sectionById],
-  );
-
-  const historyChapters = useMemo(
-    () => decoratedChapters.filter((c) => c.section && HISTORY_SECTIONS.has(c.section)),
-    [decoratedChapters],
-  );
-  const geographyChapters = useMemo(
-    () => decoratedChapters.filter((c) => c.section && MAPS_SECTIONS.has(c.section)),
-    [decoratedChapters],
-  );
-  const civicsChapters = useMemo(
-    () => decoratedChapters.filter((c) => c.section && CIVICS_SECTIONS.has(c.section)),
-    [decoratedChapters],
-  );
 
   return (
     <DashboardLayout title={subject.name}>
@@ -476,18 +493,19 @@ function SubjectDetailPage() {
                   chapters={(manifestQuery.data as ManifestDoc).chapters as ManifestChapter[]}
                   color={subject.color}
                   onSelect={(id) => {
+                    const manifestId = resolveManifestChapterId(id) ?? id;
+                    setSelectedContentId(manifestId);
                     if (isSocial) {
-                      setSelectedContentId(id);
                       setChapterDetailOpen(true);
-                    } else {
-                      navigate({
-                        to: "/subjects/$subjectId/topics/$chapterId",
-                        params: {
-                          subjectId,
-                          chapterId: chapterRouteSlug(id),
-                        },
-                      });
+                      return;
                     }
+                    navigate({
+                      to: "/subjects/$subjectId/topics/$chapterId",
+                      params: {
+                        subjectId,
+                        chapterId: chapterRouteSlug(manifestId),
+                      },
+                    });
                   }}
                 />
               )
@@ -507,17 +525,23 @@ function SubjectDetailPage() {
               <ContentChapterPane
                 chapters={normalizedChapters}
                 activeId={activeContentId}
-                onSelect={setSelectedContentId}
+                onSelect={(id) => setSelectedContentId(resolveManifestChapterId(id))}
                 loading={anyChapterLoading}
                 activeChapterLoading={activeChapterLoading}
                 emptyMessage="No resources available for this chapter yet."
               >
-                {(ch) => (
-                  <ContentResourcesGrid
-                    key={ch.id}
-                    resources={ch.resources ?? []}
-                  />
-                )}
+                {(ch) => {
+                  const resolved =
+                    resolveContentChapter(activeContentId) ?? ch;
+                  return (
+                    <ContentResourcesGrid
+                      key={resolved.id}
+                      chapter={resolved}
+                      runtimeSubjectId={runtimeSubjectIdFor(subjectId)}
+                      loading={activeChapterLoading}
+                    />
+                  );
+                }}
               </ContentChapterPane>
             ) : (
               <ResourcesSection chapters={chapters} />
@@ -675,7 +699,7 @@ function SubjectDetailPage() {
               <ContentChapterPane
                 chapters={normalizedChapters}
                 activeId={activeContentId}
-                onSelect={setSelectedContentId}
+                onSelect={(id) => setSelectedContentId(resolveManifestChapterId(id))}
                 loading={anyChapterLoading}
                 activeChapterLoading={activeChapterLoading}
                 emptyMessage="MCQs for this chapter coming soon."
@@ -1121,91 +1145,122 @@ function SocialMapsView({
       ) : chapters.length === 0 ? (
         <EmptyBlock>No geography chapters available yet.</EmptyBlock>
       ) : (
-        <div className="grid gap-3 md:grid-cols-2">
-          {sortedChapters.map((c) => {
-            const isReady = readyIds.has(c.id);
-            const topTerms = (c.keyTerms ?? []).slice(0, 4);
-            return (
-              <button
-                key={c.id}
-                type="button"
-                disabled={!isReady}
-                onClick={() => isReady && onSelect(c.id)}
-                className={`rounded-2xl border p-4 text-left transition ${
-                  isReady
-                    ? "border-border/60 bg-card hover:border-brand/40 cursor-pointer"
-                    : "border-dashed border-border/60 bg-muted/30 opacity-75 cursor-not-allowed"
-                }`}
-              >
-                {c.map?.image && (
-                  <div className="mb-3 overflow-hidden rounded-xl border border-border/50 bg-muted/30">
-                    <img
-                      src={c.map.image}
-                      alt={c.map.title || `${c.title} map`}
-                      loading="lazy"
-                      decoding="async"
-                      className="h-32 w-full object-contain bg-white"
-                    />
-                  </div>
-                )}
-                <div className="flex items-center gap-2 text-[11px] text-muted-foreground">
-                  <span>Chapter {c.chapterNumber || "—"}</span>
-                  <Badge
-                    variant="outline"
-                    className="h-4 rounded-full border-border/60 px-1.5 text-[9px]"
-                  >
-                    Geography
-                  </Badge>
-                  {c.map?.image && (
-                    <Badge
-                      variant="outline"
-                      className="h-4 rounded-full border-brand/40 px-1.5 text-[9px] text-brand"
-                    >
-                      Map
-                    </Badge>
-                  )}
-                </div>
-                <div
-                  className="font-display font-semibold"
-                  style={isReady ? { color } : undefined}
-                >
-                  {c.title}
-                </div>
-                {c.map && c.map.topics.length > 0 && (
-                  <div className="mt-2 flex flex-wrap gap-1">
-                    {c.map.topics.slice(0, 4).map((t) => (
-                      <span
-                        key={t}
-                        className="rounded-full bg-brand/10 px-2 py-0.5 text-[10px] text-brand"
-                      >
-                        {t}
-                      </span>
-                    ))}
-                  </div>
-                )}
-                {topTerms.length > 0 && (
-                  <div className="mt-2 flex flex-wrap gap-1">
-                    {topTerms.map((t) => (
-                      <span
-                        key={t.term}
-                        className="rounded-full bg-muted px-2 py-0.5 text-[10px] text-muted-foreground"
-                      >
-                        {t.term}
-                      </span>
-                    ))}
-                    {c.keyTerms.length > topTerms.length && (
-                      <span className="text-[10px] text-muted-foreground">
-                        +{c.keyTerms.length - topTerms.length} more
-                      </span>
-                    )}
-                  </div>
-                )}
-              </button>
-            );
-          })}
+        <div className="grid items-start gap-4 [grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr))]">
+          {sortedChapters.map((c) => (
+            <SocialMapCard
+              key={c.id}
+              chapter={c}
+              isReady={readyIds.has(c.id)}
+              color={color}
+              onSelect={() => onSelect(c.id)}
+            />
+          ))}
         </div>
       )}
     </div>
+  );
+}
+
+function SocialMapCard({
+  chapter,
+  isReady,
+  color,
+  onSelect,
+}: {
+  chapter: NormalizedChapter;
+  isReady: boolean;
+  color: string;
+  onSelect: () => void;
+}) {
+  const topTerms = (chapter.keyTerms ?? []).slice(0, 4);
+  const mapTopics = chapter.map?.topics?.slice(0, 4) ?? [];
+
+  return (
+    <button
+      type="button"
+      disabled={!isReady}
+      onClick={() => isReady && onSelect()}
+      className={`flex h-full min-w-0 w-full flex-col rounded-2xl border p-4 text-left transition ${
+        isReady
+          ? "cursor-pointer border-border/60 bg-card hover:border-brand/40"
+          : "cursor-not-allowed border-dashed border-border/60 bg-muted/30 opacity-75"
+      }`}
+    >
+      <div className="relative mb-3 aspect-[4/3] w-full shrink-0 overflow-hidden rounded-xl border border-border/50 bg-white">
+        {chapter.map?.image ? (
+          <img
+            src={chapter.map.image}
+            alt={chapter.map.title || `${chapter.title} map`}
+            loading="lazy"
+            decoding="async"
+            className="absolute inset-0 h-full w-full max-w-full object-contain p-2"
+          />
+        ) : (
+          <div className="absolute inset-0 flex flex-col items-center justify-center gap-1 bg-muted/20 text-muted-foreground">
+            <MapIcon className="h-6 w-6 opacity-50" aria-hidden />
+            <span className="text-[10px]">Map preview</span>
+          </div>
+        )}
+      </div>
+
+      <div className="flex min-w-0 flex-1 flex-col">
+        <div className="flex flex-wrap items-center gap-2 text-[11px] text-muted-foreground">
+          <span>Chapter {chapter.chapterNumber || "—"}</span>
+          <Badge
+            variant="outline"
+            className="h-4 rounded-full border-border/60 px-1.5 text-[9px]"
+          >
+            Geography
+          </Badge>
+          {chapter.map?.image && (
+            <Badge
+              variant="outline"
+              className="h-4 rounded-full border-brand/40 px-1.5 text-[9px] text-brand"
+            >
+              Map
+            </Badge>
+          )}
+        </div>
+
+        <div
+          className="mt-1 line-clamp-2 font-display font-semibold leading-snug"
+          style={isReady ? { color } : undefined}
+        >
+          {chapter.title}
+        </div>
+
+        {mapTopics.length > 0 && (
+          <div className="mt-2 flex min-h-[1.5rem] flex-wrap gap-1">
+            {mapTopics.map((t) => (
+              <span
+                key={t}
+                className="rounded-full bg-brand/10 px-2 py-0.5 text-[10px] text-brand"
+              >
+                {t}
+              </span>
+            ))}
+          </div>
+        )}
+
+        {topTerms.length > 0 && (
+          <div className="mt-2 flex min-h-[1.5rem] flex-wrap gap-1">
+            {topTerms.map((t) => (
+              <span
+                key={t.term}
+                className="rounded-full bg-muted px-2 py-0.5 text-[10px] text-muted-foreground"
+              >
+                {t.term}
+              </span>
+            ))}
+            {chapter.keyTerms.length > topTerms.length && (
+              <span className="text-[10px] text-muted-foreground">
+                +{chapter.keyTerms.length - topTerms.length} more
+              </span>
+            )}
+          </div>
+        )}
+      </div>
+    </button>
   );
 }
 
@@ -1275,18 +1330,20 @@ function ChapterMap({
 
       <div className="overflow-hidden rounded-xl border border-border/50 bg-white">
         {errored ? (
-          <div className="flex h-48 items-center justify-center text-xs text-muted-foreground">
+          <div className="flex aspect-[4/3] max-h-[480px] w-full items-center justify-center text-xs text-muted-foreground">
             Map image unavailable
           </div>
         ) : (
-          <img
-            src={map.image}
-            alt={map.title || `${chapterTitle} map`}
-            loading="lazy"
-            decoding="async"
-            onError={() => setErrored(true)}
-            className="max-h-[480px] w-full object-contain"
-          />
+          <div className="relative mx-auto aspect-[4/3] w-full max-h-[480px]">
+            <img
+              src={map.image}
+              alt={map.title || `${chapterTitle} map`}
+              loading="lazy"
+              decoding="async"
+              onError={() => setErrored(true)}
+              className="absolute inset-0 h-full w-full max-w-full object-contain p-2"
+            />
+          </div>
         )}
       </div>
 
@@ -1963,11 +2020,47 @@ function ChapterDetailViewInner({
 
 /* ---------------- Content Resources (from chapter JSON) ---------------- */
 
+function resolveChapterResources(
+  chapter: NormalizedChapter,
+  runtimeSubjectId: string | null,
+): ContentResource[] {
+  if (chapter.resources?.length) return chapter.resources;
+
+  const pdf = runtimeSubjectId
+    ? ncertPdfForChapter(runtimeSubjectId, chapter.chapterNumber)
+    : null;
+  if (pdf) {
+    return [
+      {
+        type: "textbook",
+        provider: "NCERT",
+        label: `${chapter.title} — Textbook PDF`,
+        description: "Official NCERT chapter PDF for quick revision.",
+        url: pdf,
+      },
+      {
+        type: "textbook",
+        provider: "KTBS",
+        label: "Karnataka SSLC Textbooks Portal",
+        description: "Download Karnataka state board textbooks.",
+        url: "https://textbooks.karnataka.gov.in/",
+      },
+    ];
+  }
+
+  return [];
+}
+
 function ContentResourcesGrid({
-  resources,
+  chapter,
+  runtimeSubjectId,
+  loading = false,
 }: {
-  resources: ContentResource[];
+  chapter: NormalizedChapter;
+  runtimeSubjectId: string | null;
+  loading?: boolean;
 }) {
+  const resources = resolveChapterResources(chapter, runtimeSubjectId);
   const iconFor = (type: string) => {
     const t = type.toLowerCase();
     if (t === "video") return "🎬";
@@ -1975,6 +2068,16 @@ function ContentResourcesGrid({
     if (t === "course") return "🎓";
     return "🔗";
   };
+
+  if (loading && resources.length === 0) {
+    return (
+      <div className="space-y-3">
+        <Skeleton className="h-8 w-48 rounded-lg" />
+        <Skeleton className="h-32 w-full rounded-2xl" />
+        <Skeleton className="h-32 w-full rounded-2xl" />
+      </div>
+    );
+  }
 
   if (resources.length === 0) {
     return (
@@ -2042,7 +2145,7 @@ function ResourcesSection({ chapters }: { chapters: ChapterDoc[] }) {
   }
 
   const selected =
-    (selectedId ? chapters.find((c) => c.id === selectedId) : undefined) ??
+    (selectedId ? findChapterByKey(chapters, selectedId) : undefined) ??
     chapters[0];
 
   return (
@@ -2051,7 +2154,7 @@ function ResourcesSection({ chapters }: { chapters: ChapterDoc[] }) {
       <div className="rounded-2xl border border-border/60 bg-card p-2 md:max-h-[640px] md:overflow-y-auto">
         <ul className="space-y-1">
           {chapters.map((c, i) => {
-            const active = selected.id === c.id;
+            const active = chapterKeysMatch(selected.id, c.id);
             return (
               <li key={c.id}>
                 <button
@@ -2299,15 +2402,16 @@ function ContentChapterPane({
     );
   }
   const selected =
-    (activeId ? chapters.find((c) => c.id === activeId) : undefined) ??
-    chapters[0];
-  const panelLoading = activeChapterLoading && selected.id === activeId;
+    (activeId ? findChapterByKey(chapters, activeId) : undefined) ?? chapters[0];
+  const panelLoading =
+    activeChapterLoading &&
+    chapterKeysMatch(selected.id, activeId ?? "");
   return (
     <div className="grid gap-4 md:grid-cols-[220px_1fr]">
       <div className="rounded-2xl border border-border/60 bg-card p-2 md:max-h-[640px] md:overflow-y-auto">
         <ul className="space-y-1">
           {chapters.map((c, i) => {
-            const active = selected.id === c.id;
+            const active = chapterKeysMatch(selected.id, c.id);
             return (
               <li key={c.id}>
                 <button

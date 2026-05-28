@@ -38,6 +38,7 @@ import type { MockExamDoc } from "@/integrations/firebase/types";
 import { UploadAnswerButton } from "@/components/answer-upload/upload-answer-button";
 import { useContentCatalog } from "@/hooks/use-content-catalog";
 import { rebuildContentExamById } from "@/lib/content-exam-builder";
+import { sanitizeMockExam } from "@/lib/mock-exam-validation";
 import { Skeleton } from "@/components/ui/skeleton";
 
 export const Route = createFileRoute("/exams/$examId")({
@@ -52,79 +53,149 @@ export const Route = createFileRoute("/exams/$examId")({
     ],
   }),
   component: ExamPlayerPage,
+  errorComponent: ({ error, reset }) => {
+    console.error("[exam] route error", error);
+    return (
+      <DashboardLayout title="Mock Exam">
+        <div className="mx-auto max-w-md rounded-3xl border border-border/60 bg-card p-8 text-center">
+          <AlertTriangle className="mx-auto h-8 w-8 text-destructive" />
+          <p className="mt-3 text-sm font-medium">This exam could not be loaded.</p>
+          <p className="mt-1 text-xs text-muted-foreground">
+            The paper may be missing questions or have incomplete blueprint data.
+          </p>
+          <div className="mt-4 flex justify-center gap-2">
+            <Button className="rounded-full" onClick={reset}>
+              Try again
+            </Button>
+            <Link to="/exams">
+              <Button variant="outline" className="rounded-full">
+                Back to exams
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </DashboardLayout>
+    );
+  },
 });
 
 function ExamPlayerPage() {
   const { examId } = Route.useParams();
   const [exam, setExam] = useState<MockExamDoc | null>(null);
+  const [loadError, setLoadError] = useState<string | null>(null);
   const [missing, setMissing] = useState(false);
   const [retryToken, setRetryToken] = useState(0);
   const content = useContentCatalog();
 
   useEffect(() => {
     setMissing(false);
+    setLoadError(null);
     setExam(null);
   }, [examId]);
 
   useEffect(() => {
-    const cached = readCachedExam(examId);
-    if (cached) {
-      console.debug("[exam] cache-hit", { examId });
+    const acceptExam = (candidate: MockExamDoc | null, source: string) => {
+      if (!candidate) return false;
+      const validated = sanitizeMockExam(candidate);
+      const scienceCatalog = content.subjects.find((s) => s.runtimeId === "science");
+      if (import.meta.env.DEV) {
+        console.debug("[exam] resolve", {
+          examId,
+          source,
+          blueprintExists: (scienceCatalog?.chapters?.length ?? 0) > 0,
+          subject: candidate.subjectId ?? scienceCatalog?.runtimeId ?? null,
+          questionsLength: validated.ok
+            ? validated.exam.questions.length
+            : Array.isArray(candidate.questions)
+              ? candidate.questions.length
+              : 0,
+          valid: validated.ok,
+          reason: validated.ok ? undefined : validated.reason,
+        });
+      }
+      if (!validated.ok) {
+        setLoadError(validated.reason);
+        setExam(null);
+        setMissing(false);
+        return false;
+      }
+      setLoadError(null);
       setMissing(false);
-      setExam(cached);
-      return;
-    }
-    // Try to rebuild from content (subject mock, chapter test, mixed).
-    const built = rebuildContentExamById(examId, {
-      subjects: content.subjects.map((s) => ({
-        runtimeId: s.runtimeId,
-        name: s.name,
-        chapters: s.chapters,
-      })),
-    });
-    if (built) {
-      console.debug("[exam] rebuild-hit", { examId });
-      setMissing(false);
-      setExam(built);
-      return;
-    }
-    const seed = SEED_MOCK_EXAMS.find((e) => e.id === examId);
-    if (seed) {
-      console.debug("[exam] seed-hit", { examId });
-      setMissing(false);
-      setExam(seed);
-      return;
-    }
-    // Wait until the content catalogue has finished loading before
-    // giving up — chapter / subject mock ids are built from that data.
-    if (content.isLoading) {
-      console.debug("[exam] waiting-catalog", { examId });
-      return;
-    }
-
-    let cancelled = false;
-    fetchMockExam(examId)
-      .then((e) => {
-        if (cancelled) return;
-        if (e) {
-          console.debug("[exam] remote-hit", { examId });
-          setMissing(false);
-          setExam(e);
-        } else {
-          console.debug("[exam] missing", { examId });
-          setMissing(true);
-        }
-      })
-      .catch(() => {
-        if (!cancelled) {
-          console.debug("[exam] missing", { examId });
-          setMissing(true);
-        }
-      });
-    return () => {
-      cancelled = true;
+      setExam(validated.exam);
+      return true;
     };
+
+    try {
+      const cached = readCachedExam(examId);
+      if (cached && acceptExam(cached, "cache")) return;
+
+      const built = rebuildContentExamById(examId, {
+        subjects: content.subjects.map((s) => ({
+          runtimeId: s.runtimeId,
+          name: s.name,
+          chapters: s.chapters,
+        })),
+      });
+      if (built && acceptExam(built, "rebuild")) return;
+
+      const seed = SEED_MOCK_EXAMS.find((e) => e.id === examId) ?? null;
+      if (seed && acceptExam(seed, "seed")) return;
+
+      if (content.isLoading) {
+        if (import.meta.env.DEV) console.debug("[exam] waiting-catalog", { examId });
+        return;
+      }
+
+      let cancelled = false;
+      fetchMockExam(examId)
+        .then((e) => {
+          if (cancelled) return;
+          if (e && acceptExam(e, "remote")) return;
+          if (import.meta.env.DEV) console.debug("[exam] missing", { examId });
+          setLoadError(null);
+          setMissing(true);
+        })
+        .catch((err) => {
+          if (!cancelled) {
+            if (import.meta.env.DEV) console.debug("[exam] missing", { examId, err });
+            setLoadError(null);
+            setMissing(true);
+          }
+        });
+      return () => {
+        cancelled = true;
+      };
+    } catch (err) {
+      console.error("[exam] loader failed", { examId, err });
+      setLoadError("Unable to assemble this exam from blueprint data.");
+      setExam(null);
+      setMissing(false);
+    }
   }, [examId, content.subjects, content.isLoading, retryToken]);
+
+  if (loadError) {
+    return (
+      <DashboardLayout title="Mock Exam">
+        <div className="mx-auto max-w-md rounded-3xl border border-border/60 bg-card p-8 text-center">
+          <AlertTriangle className="mx-auto h-8 w-8 text-destructive" />
+          <p className="mt-3 text-sm">{loadError}</p>
+          <div className="mt-4 flex justify-center gap-2">
+            <Button
+              className="rounded-full"
+              onClick={() => setRetryToken((t) => t + 1)}
+            >
+              Retry
+            </Button>
+            <Link to="/exams">
+              <Button variant="outline" className="rounded-full">
+                Back to exams
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </DashboardLayout>
+    );
+  }
 
   if (missing) {
     return (
@@ -179,15 +250,54 @@ function ExamPlayerPage() {
 
 function Player({ exam }: { exam: MockExamDoc }) {
   const navigate = useNavigate();
-  const c = useMockExam(exam);
+  const validated = useMemo(() => sanitizeMockExam(exam), [exam]);
+  const safeExam = validated.ok ? validated.exam : null;
+  const c = useMockExam(safeExam ?? exam);
   const [confirmSubmit, setConfirmSubmit] = useState(false);
 
-  const total = exam.questions.length;
+  if (!safeExam) {
+    return (
+      <DashboardLayout title="Mock Exam">
+        <div className="mx-auto max-w-md rounded-3xl border border-border/60 bg-card p-8 text-center">
+          <AlertTriangle className="mx-auto h-8 w-8 text-destructive" />
+          <p className="mt-3 text-sm">
+            {validated.ok ? "Exam unavailable." : validated.reason}
+          </p>
+          <Link to="/exams" className="mt-4 inline-block">
+            <Button variant="outline" className="rounded-full">
+              Back to exams
+            </Button>
+          </Link>
+        </div>
+      </DashboardLayout>
+    );
+  }
+
+  const total = safeExam.questions.length;
   const answered = c.answers.filter((a) => a?.selectedIndex != null).length;
   const marked = c.answers.filter((a) => a?.marked).length;
 
-  const q = exam.questions[c.cursor];
-  const a = c.answers[c.cursor];
+  const cursor = Math.min(Math.max(c.cursor, 0), Math.max(0, total - 1));
+  const q = safeExam.questions[cursor];
+  const a = c.answers[cursor];
+
+  if (!q || !Array.isArray(q.options) || q.options.length === 0) {
+    return (
+      <DashboardLayout title={safeExam.title}>
+        <div className="mx-auto max-w-md rounded-3xl border border-border/60 bg-card p-8 text-center">
+          <AlertTriangle className="mx-auto h-8 w-8 text-destructive" />
+          <p className="mt-3 text-sm">
+            Question {cursor + 1} is missing or incomplete.
+          </p>
+          <Link to="/exams" className="mt-4 inline-block">
+            <Button variant="outline" className="rounded-full">
+              Back to exams
+            </Button>
+          </Link>
+        </div>
+      </DashboardLayout>
+    );
+  }
 
   // Navigate to results once submitted.
   useEffect(() => {
@@ -202,14 +312,14 @@ function Player({ exam }: { exam: MockExamDoc }) {
   const timerLow = c.secondsLeft <= 60;
 
   return (
-    <DashboardLayout title={exam.title}>
+    <DashboardLayout title={safeExam.title}>
       <div className="mx-auto max-w-6xl">
         {/* Sticky exam header */}
         <div className="sticky top-14 z-10 -mx-4 sm:-mx-5 md:-mx-6 lg:-mx-8 mb-4 border-b border-border/60 bg-background/85 px-4 sm:px-5 md:px-6 lg:px-8 py-3 backdrop-blur-xl">
           <div className="flex items-center justify-between gap-2">
             <div className="min-w-0">
               <div className="text-[11px] uppercase tracking-widest text-muted-foreground">
-                Question {c.cursor + 1} / {total}
+                Question {cursor + 1} / {total}
               </div>
               <div className="truncate text-xs text-muted-foreground">
                 {answered} answered · {marked} marked
@@ -236,8 +346,8 @@ function Player({ exam }: { exam: MockExamDoc }) {
                     <SheetTitle>Question navigator</SheetTitle>
                   </SheetHeader>
                   <Navigator
-                    exam={exam}
-                    cursor={c.cursor}
+                    exam={safeExam}
+                    cursor={cursor}
                     answers={c.answers}
                     onPick={c.setCursor}
                   />
@@ -268,7 +378,7 @@ function Player({ exam }: { exam: MockExamDoc }) {
                 {q.question}
               </h2>
               <button
-                onClick={() => c.toggleMark(c.cursor)}
+                onClick={() => c.toggleMark(cursor)}
                 className={cn(
                   "shrink-0 rounded-full border px-3 py-1.5 text-[11px] font-medium",
                   a?.marked
@@ -300,7 +410,7 @@ function Player({ exam }: { exam: MockExamDoc }) {
                 return (
                   <button
                     key={i}
-                    onClick={() => c.select(c.cursor, i)}
+                    onClick={() => c.select(cursor, i)}
                     className={cn(
                       "rounded-2xl border px-4 py-3 text-left text-sm transition-colors min-h-12",
                       selected
@@ -319,7 +429,7 @@ function Player({ exam }: { exam: MockExamDoc }) {
 
             {a?.selectedIndex != null && (
               <button
-                onClick={() => c.clear(c.cursor)}
+                onClick={() => c.clear(cursor)}
                 className="mt-3 text-xs text-muted-foreground hover:text-destructive"
               >
                 Clear response
@@ -330,12 +440,12 @@ function Player({ exam }: { exam: MockExamDoc }) {
               <Button
                 variant="outline"
                 onClick={c.prev}
-                disabled={c.cursor === 0}
+                disabled={cursor === 0}
                 className="rounded-full"
               >
                 <ArrowLeft className="mr-1 h-4 w-4" /> Prev
               </Button>
-              {c.cursor < total - 1 ? (
+              {cursor < total - 1 ? (
                 <Button onClick={c.next} className="rounded-full">
                   Next <ArrowRight className="ml-1 h-4 w-4" />
                 </Button>
@@ -354,8 +464,8 @@ function Player({ exam }: { exam: MockExamDoc }) {
                 <ListChecks className="h-3.5 w-3.5" /> Navigator
               </div>
               <Navigator
-                exam={exam}
-                cursor={c.cursor}
+                exam={safeExam}
+                cursor={cursor}
                 answers={c.answers}
                 onPick={c.setCursor}
               />
@@ -374,9 +484,9 @@ function Player({ exam }: { exam: MockExamDoc }) {
           <UploadAnswerButton
             context={{
               type: "mock",
-              refId: exam.id,
-              subjectId: exam.subjectId,
-              label: exam.title,
+              refId: safeExam.id,
+              subjectId: safeExam.subjectId,
+              label: safeExam.title,
             }}
             label="Upload handwritten answer sheet"
           />
