@@ -47,6 +47,7 @@ export function AuraDashboard({
 
   const [doneTasks, setDoneTasks] = useState<Record<string, boolean>>({});
   const [bouncing, setBouncing] = useState<Record<string, boolean>>({});
+  const [activeTab, setActiveTab] = useState<'Recovery' | 'Subjects' | 'Target'>('Recovery')
 
   const planTasks = (recovery?.top3 ?? []).slice(0, 3).map((item, index) => ({
     id: item.chapter,
@@ -110,29 +111,60 @@ export function AuraDashboard({
         />
       </AuraErrorBoundary>
 
+      <div className="flex md:hidden border-b border-border mb-2">
+        {(['Recovery', 'Subjects', 'Target'] as const).map((tab) => (
+          <button
+            key={tab}
+            onClick={() => setActiveTab(tab)}
+            style={{
+              flex: 1,
+              padding: '10px 0',
+              fontSize: 12,
+              fontWeight: 600,
+              background: 'transparent',
+              border: 'none',
+              cursor: 'pointer',
+              color: activeTab === tab ? theme.primary : 'var(--muted-foreground)',
+              borderBottom: activeTab === tab
+                ? `3px solid ${theme.primary}`
+                : '3px solid transparent',
+              transition: 'border-color 0.2s ease, color 0.2s ease',
+            }}
+          >
+            {tab}
+          </button>
+        ))}
+      </div>
+
       <section
         className={`grid min-h-0 flex-1 grid-cols-1 gap-3 overflow-hidden px-4 pb-3 md:grid-cols-3 ${densityGap}`}
       >
         <AuraErrorBoundary sectionName="Subject Heatmap">
-          <SubjectHeatmap
-            projection={projection}
-            profile={profile}
-            analytics={analytics}
-            theme={theme}
-            layoutDensity={layoutDensity}
-          />
+          <div className={`${activeTab === 'Subjects' ? 'block' : 'hidden'} md:block`}>
+            <SubjectHeatmap
+              projection={projection}
+              profile={profile}
+              analytics={analytics}
+              theme={theme}
+              layoutDensity={layoutDensity}
+            />
+          </div>
         </AuraErrorBoundary>
         <AuraErrorBoundary sectionName="Recovery Section">
-          <RecoverySection recovery={recovery} theme={theme} layoutDensity={layoutDensity} />
+          <div className={`${activeTab === 'Recovery' ? 'block' : 'hidden'} md:block`}>
+            <RecoverySection recovery={recovery} theme={theme} layoutDensity={layoutDensity} />
+          </div>
         </AuraErrorBoundary>
         <AuraErrorBoundary sectionName="Target Section">
-          <TargetSection
-            projection={projection}
-            target={target}
-            nextAction={nextAction}
-            theme={theme}
-            layoutDensity={layoutDensity}
-          />
+          <div className={`${activeTab === 'Target' ? 'block' : 'hidden'} md:block`}>
+            <TargetSection
+              projection={projection}
+              target={target}
+              nextAction={nextAction}
+              theme={theme}
+              layoutDensity={layoutDensity}
+            />
+          </div>
         </AuraErrorBoundary>
       </section>
 
