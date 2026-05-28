@@ -41,6 +41,7 @@ import { patchUserProfile } from "@/integrations/firebase/services/users";
 import { syncStudentDisplayName } from "@/lib/student-display-name";
 import { useDisplayName } from "@/hooks/use-display-name";
 import { AuraDevResetAction } from "@/components/dev/AuraDevResetAction";
+import { ProfileConstellationSection } from "@/components/profile/ProfileConstellationSection";
 import type { PreferredLanguage } from "@/integrations/firebase/types";
 import { subjects } from "@/lib/mock-data";
 
@@ -78,6 +79,7 @@ function ProfilePage() {
   return (
     <DashboardLayout title="Profile">
       <div className="mx-auto max-w-3xl space-y-4">
+        <ProfileConstellationSection />
         <ProfileHeader
           profile={profile}
           onSignOut={async () => {

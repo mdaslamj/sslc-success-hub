@@ -349,6 +349,17 @@ body {
   animation: aura-orb-pulse 3s ease-in-out infinite;
 }
 
+@keyframes aura-constellation-pulse {
+  0%, 100% { opacity: 0.6; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.06); }
+}
+.aura-constellation-pulse-outer,
+.aura-constellation-pulse-inner {
+  animation: aura-constellation-pulse 3s ease-in-out infinite;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
 @keyframes aura-bar-grow {
   from { width: 0%; }
   to   { width: var(--bar-target, 0%); }
