@@ -37,6 +37,7 @@ import { JourneyStrip } from "@/components/gamification/journey-strip";
 import { ScanHeroBanner } from "@/components/scan/scan-hero-banner";
 import { useQuery } from "@tanstack/react-query";
 import { fetchSubjectChapters } from "@/integrations/firebase/services/subject-chapters";
+import { useAuraEngines } from "@/hooks/useAuraEngines";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -55,8 +56,12 @@ export const Route = createFileRoute("/")({
 function HomePage() {
   const { user, profile, loading: authLoading } = useAuth();
   const navigate = useNavigate();
-  const firstName = (profile?.studentName || profile?.displayName || user?.displayName || "")
-    .split(" ")[0];
+  const displayName =
+    profile?.studentName ||
+    profile?.displayName ||
+    user?.displayName ||
+    user?.email?.split("@")[0] ||
+    "Student";
 
   const [quote, setQuote] = useState(motivationalQuotes[0]);
   const [greet, setGreet] = useState<{ label: string; icon: React.ReactNode }>({
@@ -115,7 +120,27 @@ function HomePage() {
     revisionDue: 3,
   });
 
-  const focus = engine.plan?.tasks.find((t) => !t.done) ?? engine.plan?.tasks[0];
+  const aura = useAuraEngines();
+  const nextAction = aura.nextAction;
+
+  const focusCard = nextAction
+    ? {
+        title: nextAction.recommendedAction,
+        subject: nextAction.subject,
+        duration: nextAction.timeRequired,
+        subtitle: nextAction.rationale,
+      }
+    : {
+        title: "Start your first session",
+        subject: "math",
+        duration: 30,
+        subtitle: "Pick any chapter to begin",
+      };
+
+  const planTasks = nextAction
+    ? [nextAction, ...(nextAction.followUp ? [nextAction.followUp] : [])]
+    : [];
+
   const todayPct = engine.completion;
 
   // Hold the dashboard until auth + profile + today's plan are ready,
@@ -160,7 +185,7 @@ function HomePage() {
             Good {greet.label}
           </div>
           <h1 className="mt-2 font-display text-[28px] font-bold leading-tight tracking-tight text-foreground">
-            {firstName ? `Good ${greet.label}, ${firstName} 🌱` : "Hello 🌱"}
+            Hello, {displayName} 🌱
           </h1>
           <p className="mt-1 text-sm text-muted-foreground">{engine.motivation}</p>
           {user && (
@@ -173,41 +198,45 @@ function HomePage() {
           )}
         </section>
 
-        {focus && (
-          <FocusCard
-            subject={focus.subject ?? "Today"}
-            task={focus.title}
-            time={`${focus.durationMin} min`}
-            done={!!focus.done}
-            onToggle={() => void engine.toggleTask(focus.id)}
-            onStart={() => navigate({ to: "/session", search: { taskId: focus.id } })}
-            progress={todayPct}
-            hint={engine.aiPriorityHint ?? focus.reason}
-          />
-        )}
+        <FocusCard
+          subject={focusCard.subject}
+          task={focusCard.title}
+          time={`${focusCard.duration} min`}
+          done={false}
+          onToggle={() => undefined}
+          onStart={() => navigate({ to: "/session" })}
+          progress={todayPct}
+          hint={focusCard.subtitle}
+        />
 
         <section>
-          <SectionHeader
-            title="Today's plan"
-            hint={engine.plan ? `${todayPct}% · ${engine.totalMinutes}m` : ""}
-          />
+          <SectionHeader title="Today's plan" hint="" />
           <div className="mt-3 space-y-2">
-            {engine.loading || !engine.plan ? (
+            {planTasks.length === 0 ? (
               <div className="rounded-2xl bg-card p-4 text-sm text-muted-foreground shadow-soft">
-                Generating your daily plan…
+                Complete your profile to see your plan
               </div>
             ) : (
-              engine.plan.tasks.map((t) => (
-                <TaskRow
-                  key={t.id}
-                  task={t}
-                  active={engine.activeTaskId === t.id}
-                  onToggle={() => {
-                    if (t.kind === "reflection" && !t.done) setReflectionOpen(true);
-                    else void engine.toggleTask(t.id);
-                  }}
-                  onStart={t.kind === "reflection" ? undefined : () => undefined}
-                />
+              planTasks.map((t, i) => (
+                <div
+                  key={i}
+                  className="rounded-2xl bg-card p-4 shadow-soft"
+                >
+                  <div className="flex items-center gap-2">
+                    <span className="inline-flex items-center rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-primary">
+                      {t.sessionType}
+                    </span>
+                    <span className="text-[11px] text-muted-foreground">
+                      {t.timeRequired} min
+                    </span>
+                  </div>
+                  <div className="mt-1.5 font-display text-sm font-semibold text-foreground">
+                    {t.recommendedAction}
+                  </div>
+                  <div className="mt-0.5 text-[11px] text-muted-foreground">
+                    {t.rationale}
+                  </div>
+                </div>
               ))
             )}
           </div>
