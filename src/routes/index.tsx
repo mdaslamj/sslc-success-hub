@@ -19,7 +19,7 @@ export const Route = createFileRoute("/")({
 function AuraDashboardRoute() {
   return (
     <DashboardLayout title="Aura">
-      <div className="-mx-4 -mt-4 mb-0 sm:-mx-5 sm:-mt-5 md:-mx-6 md:-mt-6 md:mb-0">
+      <div className="-mx-4 -mt-4 mb-0 min-h-full sm:-mx-5 sm:-mt-5 md:-mx-6 md:-mt-6 md:mb-0">
         <DashboardPage />
       </div>
     </DashboardLayout>

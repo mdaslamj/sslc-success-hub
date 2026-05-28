@@ -104,7 +104,7 @@ export function DashboardLayout({ children, title }: { children: ReactNode; titl
             )}
           </header>
 
-          <main className="flex-1 min-w-0 p-4 sm:p-5 md:p-6 lg:p-8 pb-[calc(5.25rem+env(safe-area-inset-bottom))] md:pb-8">
+          <main className="flex-1 min-w-0 overflow-y-auto p-4 sm:p-5 md:p-6 lg:p-8 pb-[calc(5.25rem+env(safe-area-inset-bottom))] md:pb-8">
             <SyncStatusBanner className="mb-3" />
             <PageTransition>{children}</PageTransition>
           </main>

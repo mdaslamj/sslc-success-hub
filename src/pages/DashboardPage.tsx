@@ -13,7 +13,7 @@ const placeholderStyle = {
 function AuraDashboardSkeleton() {
   return (
     <div
-      className="flex h-[calc(100vh-4rem)] flex-col gap-3 overflow-hidden bg-[#020817] p-4"
+      className="flex min-h-full flex-col gap-3 bg-[#020817] p-4 pb-[max(120px,env(safe-area-inset-bottom))]"
       style={{ fontFamily: "DM Sans, sans-serif" }}
     >
       <div style={placeholderStyle} />

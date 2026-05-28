@@ -66,8 +66,8 @@ export function AuraDashboard({
 
   const wrapperClass =
     layoutDensity === "simple"
-      ? "density-simple flex h-[calc(100vh-4rem)] flex-col overflow-hidden bg-[#020817] text-slate-200"
-      : "flex h-[calc(100vh-4rem)] flex-col overflow-hidden bg-[#020817] text-slate-200";
+      ? "density-simple flex min-h-full flex-col bg-[#020817] text-slate-200 pb-[max(120px,env(safe-area-inset-bottom))]"
+      : "flex min-h-full flex-col bg-[#020817] text-slate-200 pb-[max(120px,env(safe-area-inset-bottom))]";
 
   return (
     <div className={wrapperClass} style={{ fontFamily: "DM Sans, sans-serif" }}>
@@ -133,7 +133,7 @@ export function AuraDashboard({
       </div>
 
       <section
-        className={`grid min-h-0 flex-1 grid-cols-1 gap-3 overflow-hidden px-4 pb-3 md:grid-cols-3 ${densityGap}`}
+        className={`grid grid-cols-1 gap-3 px-4 pb-3 md:grid-cols-3 ${densityGap}`}
       >
         <AuraErrorBoundary sectionName="Subject Heatmap">
           <div className={`${activeTab === 'Subjects' ? 'block' : 'hidden'} md:block`}>
