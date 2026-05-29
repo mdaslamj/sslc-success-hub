@@ -47,11 +47,17 @@ export type RankedPlannerTask = {
 
 export function getSubjectStatus(predicted: number, target: number): SubjectStatus;
 
-export function rankChaptersForToday(
+export function rankChaptersForTodaySync(
   chapters: PlannerEngineChapter[],
   subjects: PlannerEngineSubject[],
   limit?: number,
 ): RankedPlannerTask[];
+
+export function rankChaptersForToday(
+  chapters: PlannerEngineChapter[],
+  subjects: PlannerEngineSubject[],
+  limit?: number,
+): Promise<RankedPlannerTask[]>;
 
 export const SAMPLE_SUBJECTS: PlannerEngineSubject[];
 export const SAMPLE_CHAPTERS: PlannerEngineChapter[];

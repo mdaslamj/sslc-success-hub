@@ -296,6 +296,7 @@ export function useDailyEngine(input: Omit<GeneratorInput, "dayKey">) {
       const res = await runSemanticReasoning({
         data: {
           idToken,
+          taskType: "planner-reasoning",
           systemPrompt:
             "You are Aura, a calm, encouraging study coach for an Indian board-exam student. " +
             "Respond ONLY as JSON with keys 'greeting' (one warm sentence, <=18 words) and 'priorityHint' " +

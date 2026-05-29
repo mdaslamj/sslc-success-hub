@@ -93,6 +93,7 @@ export function useAskTutor() {
       const result = await run({
         data: {
           idToken,
+          taskType: "general",
           model: vars.model,
           systemPrompt: tutorSystemPrompt(vars.level),
           grounding: groundingText,
@@ -200,6 +201,7 @@ export function useRequestHint() {
       const result = await run({
         data: {
           idToken,
+          taskType: "general",
           model: vars.model,
           systemPrompt: hintSystemPrompt(vars.level),
           grounding: buildGroundingPrompt(vars.grounding),
@@ -295,6 +297,7 @@ export function useEvaluateAnswerSemantically() {
       const result = await run({
         data: {
           idToken,
+          taskType: "paper-evaluation",
           model: vars.model,
           systemPrompt: SEMANTIC_EVAL_SYSTEM,
           grounding: groundingText,

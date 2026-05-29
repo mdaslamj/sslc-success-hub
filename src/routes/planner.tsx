@@ -36,7 +36,7 @@ import {
   ChevronDown,
 } from "lucide-react";
 import { subjects } from "@/lib/mock-data";
-import { rankChaptersForToday, type RankedPlannerTask } from "@/lib/taskPriorityEngine";
+import { rankChaptersForToday, rankChaptersForTodaySync, type RankedPlannerTask } from "@/lib/taskPriorityEngine";
 import { buildPlannerChapterPool } from "@/lib/planner-chapter-pool";
 import { toast } from "sonner";
 import { RevisionPlannerCard, type RevisionPick } from "@/components/revision-planner-card";
@@ -62,6 +62,7 @@ import {
   PLANNER_STORE_UPDATED_EVENT,
   type PlannerStoreUpdatedDetail,
 } from "@/lib/today-plan-store";
+import { flushOfflineQueue } from "@/lib/offlineQueue";
 
 export const Route = createFileRoute("/planner")({
   head: () => ({
@@ -94,7 +95,7 @@ const plannerSubjects = subjects.map((s) => ({
   emoji: s.emoji,
 }));
 
-const seedTasks: Task[] = rankChaptersForToday(
+const seedTasks: Task[] = rankChaptersForTodaySync(
   buildPlannerChapterPool(),
   plannerSubjects,
   4,
@@ -170,13 +171,27 @@ function prepModeHref(subjectName: string, mode: PrepMode): string {
   }
 }
 
-function replanIncompleteTasks(currentTasks: Task[]): Task[] {
+async function replanIncompleteTasks(currentTasks: Task[]): Promise<Task[]> {
   const done = currentTasks.filter((t) => t.done);
   const doneChapterIds = new Set(done.map((t) => t.chapter.id));
   const openSlots = Math.max(1, currentTasks.length - done.length);
   let nextId = Math.max(0, ...currentTasks.map((t) => t.id)) + 1;
 
-  const fresh = rankChaptersForToday(buildPlannerChapterPool(), plannerSubjects, openSlots + done.length)
+  const fresh = (await rankChaptersForToday(buildPlannerChapterPool(), plannerSubjects, openSlots + done.length))
+    .filter((t) => !doneChapterIds.has(t.chapter.id))
+    .slice(0, openSlots)
+    .map((t) => ({ ...t, id: nextId++, done: false }));
+
+  return [...done, ...fresh];
+}
+
+function replanIncompleteTasksSync(currentTasks: Task[]): Task[] {
+  const done = currentTasks.filter((t) => t.done);
+  const doneChapterIds = new Set(done.map((t) => t.chapter.id));
+  const openSlots = Math.max(1, currentTasks.length - done.length);
+  let nextId = Math.max(0, ...currentTasks.map((t) => t.id)) + 1;
+
+  const fresh = rankChaptersForTodaySync(buildPlannerChapterPool(), plannerSubjects, openSlots + done.length)
     .filter((t) => !doneChapterIds.has(t.chapter.id))
     .slice(0, openSlots)
     .map((t) => ({ ...t, id: nextId++, done: false }));
@@ -196,6 +211,27 @@ function PlannerPage() {
   const [highlightId, setHighlightId] = useState<number | null>(null);
   const [expandedTaskId, setExpandedTaskId] = useState<number | null>(null);
   const [causalityChain, setCausalityChain] = useState<CausalityChain | null>(null);
+  const [isOnline, setIsOnline] = useState(
+    () => typeof navigator !== "undefined" && navigator.onLine,
+  );
+
+  useEffect(() => {
+    if (isOnline) void flushOfflineQueue();
+  }, [isOnline]);
+
+  useEffect(() => {
+    const online = () => {
+      setIsOnline(true);
+      void flushOfflineQueue();
+    };
+    const offline = () => setIsOnline(false);
+    window.addEventListener("online", online);
+    window.addEventListener("offline", offline);
+    return () => {
+      window.removeEventListener("online", online);
+      window.removeEventListener("offline", offline);
+    };
+  }, []);
 
   // Clear the "just added" highlight after a short beat.
   useEffect(() => {
@@ -204,22 +240,48 @@ function PlannerPage() {
     return () => clearTimeout(t);
   }, [highlightId]);
 
-  // Hydrate
+  // Hydrate from localStorage first — instant, no network.
   useEffect(() => {
     try {
       const raw = localStorage.getItem(STORAGE);
       if (raw) {
         const parsed = JSON.parse(raw);
         if (Array.isArray(parsed.tasks)) {
-          setTasks(parsed.tasks);
-          setTasks((prev) => replanIncompleteTasks(prev));
+          setTasks(replanIncompleteTasksSync(parsed.tasks));
         }
-        if (typeof parsed.focusMinutes === "number") setFocusMinutes(parsed.focusMinutes);
+        if (typeof parsed.focusMinutes === "number") {
+          setFocusMinutes(parsed.focusMinutes);
+        }
       }
     } catch {
       /* ignore */
     }
     setHydrated(true);
+
+    // Enrich WHY texts from Firestore when online (non-blocking).
+    if (typeof navigator !== "undefined" && navigator.onLine) {
+      void (async () => {
+        try {
+          const raw = localStorage.getItem(STORAGE);
+          if (!raw) {
+            const fresh = await rankChaptersForToday(
+              buildPlannerChapterPool(),
+              plannerSubjects,
+              4,
+            );
+            setTasks(fresh);
+            return;
+          }
+          const parsed = JSON.parse(raw);
+          if (Array.isArray(parsed.tasks)) {
+            const enriched = await replanIncompleteTasks(parsed.tasks);
+            setTasks(enriched);
+          }
+        } catch {
+          /* cached tasks remain usable offline */
+        }
+      })();
+    }
   }, []);
 
   // Live sync when War Room / Textbooks append via today-plan-store
@@ -276,7 +338,14 @@ function PlannerPage() {
         });
 
         if (result.completion.needsReplan) {
-          setTasks((prev) => replanIncompleteTasks(prev.map((t) => (t.id === id ? { ...t, done: true } : t))));
+          setTasks((prev) => {
+            const next = prev.map((t) => (t.id === id ? { ...t, done: true } : t));
+            if (typeof navigator !== "undefined" && navigator.onLine) {
+              void replanIncompleteTasks(next).then(setTasks);
+              return next;
+            }
+            return replanIncompleteTasksSync(next);
+          });
           toast.info("Plan rebalanced", {
             description: result.replanSummary ?? "Aura adjusted remaining tasks for today.",
           });
@@ -524,6 +593,15 @@ function PlannerPage() {
   return (
     <DashboardLayout title="Study Planner">
       <div className="mx-auto w-full max-w-7xl space-y-6 overflow-x-clip">
+        {!isOnline && (
+          <div
+            role="status"
+            className="rounded-lg border border-amber-500/40 bg-amber-500/10 px-4 py-2 text-center text-sm text-amber-800 dark:text-amber-200"
+          >
+            Offline — progress saves when you reconnect
+          </div>
+        )}
+
         {/* Header */}
         <header className="flex flex-wrap items-end justify-between gap-4 min-w-0">
           <div className="min-w-0">

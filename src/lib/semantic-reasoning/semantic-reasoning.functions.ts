@@ -2,6 +2,17 @@ import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { createRemoteJWKSet, jwtVerify } from "jose";
 
+// T26 AI ROUTING LAYER
+// Current: Gemini Flash for all tasks via Lovable Gateway
+// When paper evaluation is built (T28-T30):
+//   1. Verify Lovable Gateway slug for Claude Haiku:
+//      likely 'anthropic/claude-haiku-4-5'
+//   2. Add to ALLOWED_MODELS
+//   3. Switch paper-evaluation case to claude-haiku for OCR
+//      and claude-sonnet for final evaluation judgement
+// Gateway URL: https://ai.gateway.lovable.dev/v1/chat/completions
+// Auth: LOVABLE_API_KEY (server-side only, never client)
+
 /**
  * Server-only call to the Lovable AI Gateway (OpenAI-compatible /chat/completions).
  * Reads LOVABLE_API_KEY from the server runtime; never exposed to the client.
@@ -12,7 +23,15 @@ import { createRemoteJWKSet, jwtVerify } from "jose";
  */
 
 const GATEWAY_URL = "https://ai.gateway.lovable.dev/v1/chat/completions";
-const DEFAULT_MODEL = "google/gemini-2.5-flash";
+
+export type AITaskType =
+  | "paper-evaluation" // highest quality — Sonnet
+  | "ocr-extraction" // fast + cheap — Flash Lite
+  | "war-room-insight" // informational — Flash
+  | "why-text-generation" // bulk pre-compute — Flash Lite
+  | "coach-message" // conversational — Flash
+  | "planner-reasoning" // adaptive — Flash
+  | "general"; // default — Flash
 
 /**
  * Model allowlist. Prevents authenticated callers from requesting expensive
@@ -25,6 +44,25 @@ const ALLOWED_MODELS = [
   "google/gemini-2.5-flash-image",
 ] as const;
 type AllowedModel = (typeof ALLOWED_MODELS)[number];
+
+export function resolveModel(task: AITaskType): AllowedModel {
+  switch (task) {
+    case "paper-evaluation":
+      // Sonnet for mark scheme evaluation — quality critical
+      // TODO: verify anthropic/claude-sonnet slug with
+      // Lovable gateway before enabling
+      return "google/gemini-2.5-flash"; // placeholder until verified
+    case "ocr-extraction":
+    case "why-text-generation":
+      return "google/gemini-2.5-flash-lite";
+    case "war-room-insight":
+    case "coach-message":
+    case "planner-reasoning":
+    case "general":
+    default:
+      return "google/gemini-2.5-flash";
+  }
+}
 
 /**
  * Firebase ID token verification. Prevents unauthenticated callers from
@@ -148,6 +186,7 @@ const MessageSchema = z.object({
 const InputSchema = z.object({
   idToken: z.string().min(20).max(8000),
   model: z.enum(ALLOWED_MODELS).optional(),
+  taskType: z.custom<AITaskType>().optional(),
   systemPrompt: z.string().min(1).max(8000),
   grounding: z.string().max(20000).optional(),
   messages: z.array(MessageSchema).min(1).max(40),
@@ -193,7 +232,7 @@ export const runSemanticReasoning = createServerFn({ method: "POST" })
       return { ok: false, status: 500, error: "LOVABLE_API_KEY not configured" };
     }
 
-    const model = data.model ?? DEFAULT_MODEL;
+    const model = data.model ?? resolveModel(data.taskType ?? "general");
     const messages = [
       { role: "system" as const, content: data.systemPrompt },
       ...(data.grounding

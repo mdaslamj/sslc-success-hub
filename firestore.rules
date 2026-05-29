@@ -44,6 +44,19 @@ service cloud.firestore {
       }
     }
 
+    // Canonical syllabus layout used by subjects.ts / seed.ts:
+    //   subject/{subjectId}
+    //   subject/{subjectId}/chapters/{chapterId}
+    match /subject/{subjectId} {
+      allow read: if true;
+      allow write: if isAdmin();
+
+      match /chapters/{chapterId} {
+        allow read: if true;
+        allow write: if isAdmin();
+      }
+    }
+
     match /_meta/{doc} {
       allow read: if true;
       allow write: if isAdmin();
@@ -737,6 +750,17 @@ service cloud.firestore {
         && request.resource.data.teacherUid == request.auth.uid;
       allow update, delete: if isSignedIn()
         && (resource.data.teacherUid == request.auth.uid || isAdmin());
+    }
+
+    // Per-user Aura academic profile (mastery, sessions, targets).
+    match /academic_profiles/{userId} {
+      allow read, write: if isOwner(userId);
+    }
+
+    // Pre-computed planner WHY texts — signed-in read/write (public educational content).
+    match /why_texts/{docId} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null;
     }
 
     // Default deny.

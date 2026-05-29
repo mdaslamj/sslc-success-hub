@@ -137,6 +137,8 @@ export const COLLECTIONS = {
   TEACHERS: "teachers",
   CLASSES: "classes",
   CLASS_INVITES: "classInvites",
+  /** Pre-computed planner WHY strings — doc id `{chapterId}_{level}`. */
+  WHY_TEXTS: "why_texts",
 } as const;
 
 // Weakness Diagnosis & Adaptive Remediation Engine

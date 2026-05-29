@@ -24,6 +24,7 @@ export async function fetchCoachCue(user: User | null, task: DailyTask, daysToEx
     const res = await runSemanticReasoning({
       data: {
         idToken,
+        taskType: "coach-message",
         systemPrompt:
           "You are Aura, a calm, encouraging study coach. Respond ONLY as JSON with keys " +
           "'motivation' (one warm sentence, <=18 words) and 'nextStep' (one concrete first action, <=20 words). No markdown.",
@@ -55,6 +56,7 @@ export async function fetchCoachHint(
     const res = await runSemanticReasoning({
       data: {
         idToken,
+        taskType: "coach-message",
         systemPrompt:
           "You are Aura, a Socratic study coach for an Indian SSLC student. Give ONE short hint that nudges them " +
           "without revealing the full answer. Respond ONLY as JSON: keys 'hint' (<=30 words) and 'followUp' (one " +

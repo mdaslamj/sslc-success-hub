@@ -26,6 +26,8 @@
  * @property {Difficulty} [difficulty]
  */
 
+import { getWhyText, masteryToLevel } from "./whyTextCache";
+
 const STATUS_BANDS = {
   critical: { key: "critical", label: "Critical", color: "#F87171", bg: "rgba(248,113,113,0.15)" },
   fragile: { key: "fragile", label: "Fragile", color: "#FBBF24", bg: "rgba(251,191,36,0.15)" },
@@ -108,52 +110,49 @@ function buildWhyText(chapter, subject, score) {
   return `${marks} marks on paper · ${mastery}% mastery · priority ${score.toFixed(1)}`;
 }
 
-function taskLabel(chapter, mastery) {
-  if (mastery < 50) return `Recover — ${chapter.title}`;
-  if (mastery < 70) return `Practice — ${chapter.title}`;
-  if (mastery < 85) return `Revise — ${chapter.title}`;
-  return `Quick review — ${chapter.title}`;
-}
-
-function estimateMinutes(chapter) {
-  const base = chapter.difficulty === "Hard" ? 45 : chapter.difficulty === "Easy" ? 25 : 35;
-  const mastery = chapter.mastery ?? 50;
-  if (mastery < 50) return base + 10;
-  if (mastery > 80) return Math.max(20, base - 10);
-  return base;
+function computePriorityScore(chapter, subject) {
+  const marks = marksAtRisk(chapter);
+  const prob = probabilityImpact(subject);
+  const weight = examWeight(chapter.blueprintMarks);
+  const load = cognitiveLoad(chapter.difficulty ?? "Medium");
+  return (marks * prob * weight) / load;
 }
 
 /**
- * @param {PlannerChapter[]} chapters
- * @param {PlannerSubject[]} subjects
- * @param {number} [limit=4]
+ * Synchronous enrichment — heuristic whyText only (no Firestore).
+ * getWhyText is async; callers that need cached text should use enrichChapterAsync.
+ * @param {PlannerChapter} chapter
+ * @param {PlannerSubject | null} subject
  */
-export function rankChaptersForToday(chapters, subjects, limit = 4) {
-  const pool = chapters?.length ? chapters : SAMPLE_CHAPTERS;
-  const subjectList = subjects?.length ? subjects : SAMPLE_SUBJECTS;
+function enrichChapter(chapter, subject) {
+  const priorityScore = computePriorityScore(chapter, subject);
+  const durationMin = estimateMinutes(chapter);
+  const subjectColor = subject?.color ?? "#6366f1";
 
-  const enriched = pool.map((chapter) => {
-    const subject = subjectById(subjectList, chapter.subjectId);
-    const marks = marksAtRisk(chapter);
-    const prob = probabilityImpact(subject);
-    const weight = examWeight(chapter.blueprintMarks);
-    const load = cognitiveLoad(chapter.difficulty ?? "Medium");
-    const priorityScore = (marks * prob * weight) / load;
-    const durationMin = estimateMinutes(chapter);
-    const subjectColor = subject?.color ?? "#6366f1";
-    const whyText = buildWhyText(chapter, subject, priorityScore);
+  return {
+    ...chapter,
+    subjectName: subject?.name ?? chapter.subjectId,
+    subjectColor,
+    priorityScore,
+    whyText: buildWhyText(chapter, subject, priorityScore),
+    durationMin,
+    task: taskLabel(chapter, chapter.mastery ?? 50),
+  };
+}
 
-    return {
-      ...chapter,
-      subjectName: subject?.name ?? chapter.subjectId,
-      subjectColor,
-      priorityScore,
-      whyText,
-      durationMin,
-      task: taskLabel(chapter, chapter.mastery ?? 50),
-    };
-  });
+/**
+ * Async enrichment — overrides whyText when a pre-computed Firestore entry exists.
+ * @param {PlannerChapter} chapter
+ * @param {PlannerSubject | null} subject
+ */
+async function enrichChapterAsync(chapter, subject) {
+  const base = enrichChapter(chapter, subject);
+  const level = masteryToLevel(chapter.mastery ?? 50);
+  const whyText = await getWhyText(chapter.id, level, base.whyText);
+  return { ...base, whyText };
+}
 
+function finalizeRankedTasks(enriched, limit) {
   enriched.sort((a, b) => b.priorityScore - a.priorityScore);
 
   return enriched.slice(0, limit).map((ch, index) => ({
@@ -170,4 +169,57 @@ export function rankChaptersForToday(chapters, subjects, limit = 4) {
     priorityScore: ch.priorityScore,
     chapter: ch,
   }));
+}
+
+function taskLabel(chapter, mastery) {
+  if (mastery < 50) return `Recover — ${chapter.title}`;
+  if (mastery < 70) return `Practice — ${chapter.title}`;
+  if (mastery < 85) return `Revise — ${chapter.title}`;
+  return `Quick review — ${chapter.title}`;
+}
+
+function estimateMinutes(chapter) {
+  const base = chapter.difficulty === "Hard" ? 45 : chapter.difficulty === "Easy" ? 25 : 35;
+  const mastery = chapter.mastery ?? 50;
+  if (mastery < 50) return base + 10;
+  if (mastery > 80) return Math.max(20, base - 10);
+  return base;
+}
+
+/**
+ * Synchronous bootstrap ranking — heuristic whyText only (no Firestore).
+ * @param {PlannerChapter[]} chapters
+ * @param {PlannerSubject[]} subjects
+ * @param {number} [limit=4]
+ */
+export function rankChaptersForTodaySync(chapters, subjects, limit = 4) {
+  const pool = chapters?.length ? chapters : SAMPLE_CHAPTERS;
+  const subjectList = subjects?.length ? subjects : SAMPLE_SUBJECTS;
+
+  const enriched = pool.map((chapter) => {
+    const subject = subjectById(subjectList, chapter.subjectId);
+    return enrichChapter(chapter, subject);
+  });
+
+  return finalizeRankedTasks(enriched, limit);
+}
+
+/**
+ * @param {PlannerChapter[]} chapters
+ * @param {PlannerSubject[]} subjects
+ * @param {number} [limit=4]
+ * @returns {Promise<ReturnType<typeof finalizeRankedTasks>>}
+ */
+export async function rankChaptersForToday(chapters, subjects, limit = 4) {
+  const pool = chapters?.length ? chapters : SAMPLE_CHAPTERS;
+  const subjectList = subjects?.length ? subjects : SAMPLE_SUBJECTS;
+
+  const enriched = await Promise.all(
+    pool.map(async (chapter) => {
+      const subject = subjectById(subjectList, chapter.subjectId);
+      return enrichChapterAsync(chapter, subject);
+    }),
+  );
+
+  return finalizeRankedTasks(enriched, limit);
 }

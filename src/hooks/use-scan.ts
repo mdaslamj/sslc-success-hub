@@ -94,6 +94,7 @@ export function useCreateScan() {
           const r = await run({
             data: {
               idToken,
+              taskType: "ocr-extraction",
               systemPrompt: UNDERSTANDING_SYSTEM,
               messages: [
                 {
@@ -229,6 +230,7 @@ export function useSolveScan(scan: ScanDoc | null) {
         const r = await run({
           data: {
             idToken,
+            taskType: "ocr-extraction",
             systemPrompt: solveSystemPrompt(mode, language),
             grounding: [
               scan.understanding

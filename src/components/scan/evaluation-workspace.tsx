@@ -37,6 +37,7 @@ export function EvaluationWorkspace({ scan }: { scan: ScanDoc }) {
       const r = await run({
         data: {
           idToken,
+          taskType: "paper-evaluation",
           systemPrompt: EVAL_SYSTEM,
           grounding: `Question: ${scan.extractedText}`,
           messages: [{ role: "user", content: `Student answer:\n"""\n${answer}\n"""` }],

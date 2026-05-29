@@ -237,6 +237,7 @@ export function useVoiceTutor(opts: UseVoiceTutorOptions = {}): UseVoiceTutorApi
         const result = await run({
           data: {
             idToken,
+            taskType: "coach-message",
             systemPrompt: voiceTutorSystemPrompt(prefs.mode, prefs.language),
             grounding: opts.grounding,
             messages: [...priorTurns, { role: "user", content: studentText }],
@@ -378,6 +379,7 @@ export function useVoiceTutor(opts: UseVoiceTutorOptions = {}): UseVoiceTutorApi
         const result = await run({
           data: {
             idToken,
+            taskType: "general",
             systemPrompt: audioRevisionPrompt(prefs.language, topic),
             messages: [
               { role: "user", content: `Create a 60-second audio revision capsule for ${topic}.` },
@@ -427,6 +429,7 @@ export function useVoiceTutor(opts: UseVoiceTutorOptions = {}): UseVoiceTutorApi
         const result = await run({
           data: {
             idToken,
+            taskType: "coach-message",
             systemPrompt: spokenHintPrompt(prefs.language, level),
             grounding: opts.grounding,
             messages: [{ role: "user", content: `Question: ${questionText}` }],

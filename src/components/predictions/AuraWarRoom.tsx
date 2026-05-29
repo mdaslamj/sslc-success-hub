@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 import {
   MATHEMATICS_CHAPTERS,
@@ -234,10 +234,17 @@ export function AuraWarRoom() {
 
   const catalogMap = useMemo(() => buildChapterCatalogMap(), []);
 
-  const rankedTasks = useMemo(
-    () => rankChaptersForToday(chapterPool, rankSubjects, 8),
-    [chapterPool, rankSubjects],
-  );
+  const [rankedTasks, setRankedTasks] = useState<RankedPlannerTask[]>([]);
+
+  useEffect(() => {
+    let cancelled = false;
+    void rankChaptersForToday(chapterPool, rankSubjects, 8).then((tasks) => {
+      if (!cancelled) setRankedTasks(tasks);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [chapterPool, rankSubjects]);
 
   const rankedLadder = useMemo(
     () =>

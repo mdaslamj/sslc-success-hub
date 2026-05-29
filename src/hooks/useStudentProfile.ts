@@ -6,6 +6,7 @@ import type {
   Trend,
 } from "@/types/aura-engine-contracts";
 import { appendSessionToProfile, type NewSessionInput } from "@/engines/sessionLogger";
+import { queueOfflineWrite } from "@/lib/offlineQueue";
 
 import seedProfile from "@/data/StudentLearningProfile.json";
 import {
@@ -18,9 +19,16 @@ import {
 
 export const PROFILE_STORAGE_KEY = "aura_profile";
 export const PROFILE_VERSION_KEY = "aura_profile_version";
+export const PROFILE_UPDATED_AT_KEY = "aura_profile_updated_at";
 export const PROFILE_SCHEMA_VERSION = "2.0";
+export const ACADEMIC_PROFILES_COLLECTION = "academic_profiles";
 
 type MasteryReadingsMap = Record<string, number[]>;
+
+type AcademicProfileDoc = {
+  profile: AuraProfileStorage;
+  updatedAt: string;
+};
 
 export type AuraProfileStorage = StudentLearningProfile & {
   _masteryReadings?: MasteryReadingsMap;
@@ -97,13 +105,77 @@ export function readStoredProfile(): AuraProfileStorage | null {
   }
 }
 
-export function writeStoredProfile(stored: AuraProfileStorage): void {
+function readLocalUpdatedAt(): string | null {
+  const storage = getStorage();
+  if (!storage) return null;
+  return storage.getItem(PROFILE_UPDATED_AT_KEY);
+}
+
+export async function syncProfileToFirestore(
+  stored: AuraProfileStorage,
+  updatedAt: string,
+): Promise<void> {
+  try {
+    const [{ doc, setDoc }, { auth, db }] = await Promise.all([
+      import("firebase/firestore"),
+      import("@/integrations/firebase/config"),
+    ]);
+    const user = auth.currentUser;
+    if (!user) return;
+
+    await setDoc(
+      doc(db, ACADEMIC_PROFILES_COLLECTION, user.uid),
+      { profile: stored, updatedAt },
+      { merge: true },
+    );
+  } catch {
+    // Offline or rules mismatch — localStorage remains source of truth until retry.
+  }
+}
+
+export async function readCloudProfile(
+  userId: string,
+): Promise<AcademicProfileDoc | null> {
+  try {
+    const [{ doc, getDoc }, { db }] = await Promise.all([
+      import("firebase/firestore"),
+      import("@/integrations/firebase/config"),
+    ]);
+    const snap = await getDoc(doc(db, ACADEMIC_PROFILES_COLLECTION, userId));
+    if (!snap.exists()) return null;
+    const data = snap.data() as Partial<AcademicProfileDoc>;
+    if (!data.profile || !data.updatedAt) return null;
+    return {
+      profile: data.profile,
+      updatedAt: data.updatedAt,
+    };
+  } catch {
+    return null;
+  }
+}
+
+export function writeStoredProfile(
+  stored: AuraProfileStorage,
+  options?: { updatedAt?: string; skipCloudSync?: boolean },
+): void {
   const storage = getStorage();
   if (!storage) return;
+
+  const updatedAt = options?.updatedAt ?? new Date().toISOString();
 
   try {
     storage.setItem(PROFILE_STORAGE_KEY, JSON.stringify(stored));
     storage.setItem(PROFILE_VERSION_KEY, PROFILE_SCHEMA_VERSION);
+    storage.setItem(PROFILE_UPDATED_AT_KEY, updatedAt);
+    if (!options?.skipCloudSync) {
+      if (typeof navigator !== "undefined" && !navigator.onLine) {
+        queueOfflineWrite({ type: "profile_sync", stored, updatedAt });
+      } else {
+        void syncProfileToFirestore(stored, updatedAt).catch(() => {
+          queueOfflineWrite({ type: "profile_sync", stored, updatedAt });
+        });
+      }
+    }
   } catch {
     // Never crash UI flows on storage failure.
   }
@@ -133,6 +205,71 @@ export function loadInitialProfileStorage(): AuraProfileStorage {
   );
   writeStoredProfile(fresh);
   return fresh;
+}
+
+/** Cloud-first load for signed-in users; falls back to local/seed. */
+export async function loadInitialProfileStorageAsync(
+  userId: string | null = null,
+): Promise<AuraProfileStorage> {
+  const localStored = readStoredProfile();
+  const localUpdatedAt = readLocalUpdatedAt();
+
+  if (typeof navigator !== "undefined" && !navigator.onLine) {
+    if (localStored) {
+      return migrateDemoProfileName(localStored);
+    }
+    return loadInitialProfileStorage();
+  }
+
+  let resolvedUserId = userId;
+  if (resolvedUserId == null) {
+    try {
+      const { auth } = await import("@/integrations/firebase/config");
+      if (typeof auth.authStateReady === "function") {
+        await auth.authStateReady();
+      }
+      resolvedUserId = auth.currentUser?.uid ?? null;
+    } catch {
+      resolvedUserId = null;
+    }
+  }
+
+  if (resolvedUserId) {
+    const cloud = await readCloudProfile(resolvedUserId);
+    if (cloud) {
+      const cloudNewer =
+        !localUpdatedAt || cloud.updatedAt.localeCompare(localUpdatedAt) > 0;
+      if (cloudNewer) {
+        const migrated = migrateDemoProfileName(cloud.profile);
+        writeStoredProfile(migrated, {
+          updatedAt: cloud.updatedAt,
+          skipCloudSync: true,
+        });
+        return migrated;
+      }
+    }
+
+    if (localStored) {
+      const migrated = migrateDemoProfileName(localStored);
+      if (JSON.stringify(migrated) !== JSON.stringify(localStored)) {
+        writeStoredProfile(migrated);
+      } else if (!cloud) {
+        void syncProfileToFirestore(migrated, localUpdatedAt ?? new Date().toISOString());
+      }
+      return migrated;
+    }
+
+    if (cloud) {
+      const migrated = migrateDemoProfileName(cloud.profile);
+      writeStoredProfile(migrated, {
+        updatedAt: cloud.updatedAt,
+        skipCloudSync: true,
+      });
+      return migrated;
+    }
+  }
+
+  return loadInitialProfileStorage();
 }
 
 export function applyUpdateMastery(
@@ -236,20 +373,39 @@ export function logSessionOnStorage(
   return applyUpdateMastery(withSession, params.subject, params.chapter, newMastery);
 }
 
+function readLocalProfileOrSeed(): AuraProfileStorage {
+  const stored = readStoredProfile();
+  if (stored) {
+    return migrateDemoProfileName(stored);
+  }
+  return loadInitialProfileStorage();
+}
+
 export function useStudentProfile() {
-  const [stored, setStored] = useState<AuraProfileStorage | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [stored, setStored] = useState<AuraProfileStorage>(() => readLocalProfileOrSeed());
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    setIsLoading(true);
-    const loaded = loadInitialProfileStorage();
-    setStored((prev) => {
-      const prevKey = prev ? JSON.stringify(prev) : "";
-      const nextKey = JSON.stringify(loaded);
-      if (prevKey === nextKey) return prev;
-      return loaded;
-    });
-    setIsLoading(false);
+    let cancelled = false;
+
+    void (async () => {
+      try {
+        const synced = await loadInitialProfileStorageAsync();
+        if (cancelled) return;
+        setStored((prev) => {
+          const prevKey = JSON.stringify(prev);
+          const nextKey = JSON.stringify(synced);
+          if (prevKey === nextKey) return prev;
+          return synced;
+        });
+      } catch {
+        /* Firestore unavailable — cached profile is fine */
+      }
+    })();
+
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   useEffect(() => {

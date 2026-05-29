@@ -20,6 +20,7 @@ import {
   installAuraDevGlobals,
   runAuraStartupRecovery,
 } from "@/lib/dev/aura-app-reset";
+import { flushOfflineQueue } from "@/lib/offlineQueue";
 
 function NotFoundComponent() {
   return (
@@ -142,6 +143,9 @@ function RootComponent() {
   useEffect(() => {
     runAuraStartupRecovery();
     installAuraDevGlobals();
+    if (typeof navigator !== "undefined" && navigator.onLine) {
+      void flushOfflineQueue();
+    }
   }, []);
 
   return (
