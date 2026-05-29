@@ -38,6 +38,9 @@ dist-ssr
 
 # Firebase service account credentials
 serviceAccount.json
+
+# Auto-generated FCM service worker config (from VITE_FIREBASE_* at build/dev start)
+public/firebase-sw-config.js
 serviceAccount.json.json
 *.json.json
 

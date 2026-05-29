@@ -769,6 +769,27 @@ service cloud.firestore {
       allow write: if isAdmin();
     }
 
+    // FCM device tokens for push notifications — owner read/write only.
+    match /fcm_tokens/{userId} {
+      allow read, write: if isOwner(userId);
+    }
+
+    // Shared study group plans — up to 5 students on one subscription.
+    match /study_groups/{groupId} {
+      // Signed-in users can read invite targets before joining.
+      allow read: if request.auth != null;
+      allow create: if request.auth != null &&
+        request.auth.uid == request.resource.data.createdBy;
+      allow update: if request.auth != null &&
+        (request.auth.uid in resource.data.members ||
+         request.auth.uid == resource.data.createdBy ||
+         (
+           resource.data.status == 'active' &&
+           resource.data.members.size() < resource.data.maxMembers &&
+           !(request.auth.uid in resource.data.members)
+         ));
+    }
+
     // Default deny.
     match /{document=**} {
       allow read, write: if false;

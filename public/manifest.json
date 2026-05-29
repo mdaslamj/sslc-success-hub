@@ -22,6 +22,9 @@
     }
   ],
   "screenshots": [],
-  "categories": ["education"],
-  "lang": "en-IN"
+  "categories": [
+    "education"
+  ],
+  "lang": "en-IN",
+  "gcm_sender_id": "428486835894"
 }

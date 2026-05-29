@@ -10,6 +10,7 @@ import {
   EVAL_BRIDGE_STORAGE_KEY,
   EVAL_REPORT_STORAGE_KEY,
 } from "@/routes/evaluate";
+import { notifyEvaluationComplete } from "@/lib/notifications";
 
 export const Route = createFileRoute("/evaluate/results")({
   head: () => ({
@@ -111,6 +112,21 @@ function EvaluateResultsPage() {
     () => (report ? buildEvaluationCausalityChain(report, bridge) : null),
     [report, bridge],
   );
+
+  useEffect(() => {
+    if (!report) return;
+    const key = `aura.eval_notified.${report.id}`;
+    if (sessionStorage.getItem(key)) return;
+    sessionStorage.setItem(key, "1");
+
+    const subjectLabel = SUBJECT_LABELS[report.subjectId] ?? report.subjectId;
+    notifyEvaluationComplete({
+      subject: subjectLabel,
+      scoredMarks: report.scoredMarks,
+      totalMarks: report.totalMarks,
+      grade: report.grade,
+    });
+  }, [report]);
 
   useEffect(() => {
     if (!showChain) return;

@@ -22,6 +22,7 @@ import {
 } from "@/lib/dev/aura-app-reset";
 import { flushOfflineQueue } from "@/lib/offlineQueue";
 import { InstallPrompt } from "@/components/shared/InstallPrompt";
+import { NotificationProvider } from "@/components/NotificationProvider";
 import { registerPwaServiceWorker } from "@/lib/pwa-register";
 
 function NotFoundComponent() {
@@ -158,6 +159,7 @@ function RootComponent() {
           <SessionSync queryClient={queryClient}>
             <OnboardingGate>
               <GlobalInteractionGuard />
+              <NotificationProvider />
               <Outlet />
             </OnboardingGate>
           </SessionSync>
@@ -270,6 +272,7 @@ const PUBLIC_PATHS = new Set([
   "/onboarding",
   "/seed",
   "/privacy",
+  "/join-group",
 ]);
 
 const GUEST_KEY = "aura.guest.v1";

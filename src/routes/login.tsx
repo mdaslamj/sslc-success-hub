@@ -2,6 +2,7 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState, type FormEvent } from "react";
 import { GraduationCap, Mail, Lock, User } from "lucide-react";
 import { toast } from "sonner";
+import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -11,7 +12,12 @@ import { useAuth } from "@/contexts/auth-context";
 const GUEST_KEY = "aura.guest.v1";
 const GUEST_ONBOARDING_KEY = "aura.guest.onboarding.v1";
 
+const searchSchema = z.object({
+  redirect: z.string().optional(),
+});
+
 export const Route = createFileRoute("/login")({
+  validateSearch: (search) => searchSchema.parse(search),
   head: () => ({
     meta: [
       { title: "Aura — Sign in" },
@@ -26,12 +32,19 @@ export const Route = createFileRoute("/login")({
 
 function LoginPage() {
   const navigate = useNavigate();
+  const { redirect } = Route.useSearch();
   const { user, loading, signInWithEmail, signUpWithEmail, signInWithGoogle } =
     useAuth();
 
   useEffect(() => {
-    if (!loading && user) navigate({ to: "/" });
-  }, [loading, user, navigate]);
+    if (!loading && user) {
+      if (redirect && redirect.startsWith("/")) {
+        window.location.href = redirect;
+        return;
+      }
+      navigate({ to: "/" });
+    }
+  }, [loading, user, navigate, redirect]);
 
   return (
     <div

@@ -41,8 +41,10 @@ import { patchUserProfile } from "@/integrations/firebase/services/users";
 import { syncStudentDisplayName } from "@/lib/student-display-name";
 import { useDisplayName } from "@/hooks/use-display-name";
 import { AuraDevResetAction } from "@/components/dev/AuraDevResetAction";
+import { GroupPlanCard } from "@/components/settings/GroupPlanCard";
 import { ProfileConstellationSection } from "@/components/profile/ProfileConstellationSection";
 import type { PreferredLanguage } from "@/integrations/firebase/types";
+import { requestNotificationPermission } from "@/lib/notifications";
 import { subjects } from "@/lib/mock-data";
 
 export const Route = createFileRoute("/profile")({
@@ -392,8 +394,12 @@ function ProfileCard({
 }
 
 function SettingsCard() {
+  const { user } = useAuth();
   const { settings, loading, update } = useUserSettings();
   const { theme, setTheme } = useTheme();
+  const [pushBusy, setPushBusy] = useState(false);
+  const pushEnabled =
+    typeof Notification !== "undefined" && Notification.permission === "granted";
 
   if (loading || !settings) {
     return (
@@ -409,6 +415,8 @@ function SettingsCard() {
 
   return (
     <div className="space-y-4">
+      <GroupPlanCard />
+
       {/* Appearance */}
       <Section title="Appearance" icon={<Sun className="h-4 w-4" />}>
         <div className="grid grid-cols-3 gap-2">
@@ -444,10 +452,54 @@ function SettingsCard() {
       {/* Notifications */}
       <Section title="Notifications" icon={<Bell className="h-4 w-4" />}>
         <ToggleRow
+          label="Push notifications"
+          hint="Daily session reminders and evaluation alerts"
+          checked={pushEnabled}
+          onChange={async (v) => {
+            if (!v || !user) return;
+            setPushBusy(true);
+            try {
+              const granted = await requestNotificationPermission(user.uid, {
+                dailyDigest: settings.notifications.dailyDigest,
+                revisionReminders: settings.notifications.revisionReminders,
+                plannerAlerts: settings.notifications.plannerAlerts ?? true,
+                studyReminderTime: reminders.studyReminderTime ?? "18:00",
+                revisionReminderTime: reminders.revisionReminderTime ?? "20:30",
+              });
+              if (granted) {
+                toast.success("Push notifications enabled");
+              } else {
+                toast.error("Could not enable push notifications");
+              }
+            } finally {
+              setPushBusy(false);
+            }
+          }}
+        />
+        {pushBusy ? (
+          <p className="text-xs text-muted-foreground">Enabling push notifications…</p>
+        ) : null}
+        <ToggleRow
           label="Daily digest"
           hint="Morning summary of today's plan"
           checked={settings.notifications.dailyDigest}
-          onChange={(v) => update({ notifications: { ...settings.notifications, dailyDigest: v } })}
+          onChange={async (v) => {
+            await update({ notifications: { ...settings.notifications, dailyDigest: v } });
+            if (v && user && Notification.permission === "default") {
+              setPushBusy(true);
+              try {
+                await requestNotificationPermission(user.uid, {
+                  dailyDigest: v,
+                  revisionReminders: settings.notifications.revisionReminders,
+                  plannerAlerts: settings.notifications.plannerAlerts ?? true,
+                  studyReminderTime: reminders.studyReminderTime ?? "18:00",
+                  revisionReminderTime: reminders.revisionReminderTime ?? "20:30",
+                });
+              } finally {
+                setPushBusy(false);
+              }
+            }
+          }}
         />
         <ToggleRow
           label="Revision reminders"

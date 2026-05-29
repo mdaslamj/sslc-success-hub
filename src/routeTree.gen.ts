@@ -30,6 +30,7 @@ import { Route as MockTestRouteImport } from './routes/mock-test'
 import { Route as MockExamRouteImport } from './routes/mock-exam'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as LogRouteImport } from './routes/log'
+import { Route as JoinGroupRouteImport } from './routes/join-group'
 import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
 import { Route as FocusRouteImport } from './routes/focus'
 import { Route as ExamsRouteImport } from './routes/exams'
@@ -165,6 +166,11 @@ const LoginRoute = LoginRouteImport.update({
 const LogRoute = LogRouteImport.update({
   id: '/log',
   path: '/log',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const JoinGroupRoute = JoinGroupRouteImport.update({
+  id: '/join-group',
+  path: '/join-group',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ForgotPasswordRoute = ForgotPasswordRouteImport.update({
@@ -341,6 +347,7 @@ export interface FileRoutesByFullPath {
   '/exams': typeof ExamsRouteWithChildren
   '/focus': typeof FocusRoute
   '/forgot-password': typeof ForgotPasswordRoute
+  '/join-group': typeof JoinGroupRoute
   '/log': typeof LogRoute
   '/login': typeof LoginRoute
   '/mock-exam': typeof MockExamRoute
@@ -395,6 +402,7 @@ export interface FileRoutesByTo {
   '/exams': typeof ExamsRouteWithChildren
   '/focus': typeof FocusRoute
   '/forgot-password': typeof ForgotPasswordRoute
+  '/join-group': typeof JoinGroupRoute
   '/log': typeof LogRoute
   '/login': typeof LoginRoute
   '/mock-exam': typeof MockExamRoute
@@ -450,6 +458,7 @@ export interface FileRoutesById {
   '/exams': typeof ExamsRouteWithChildren
   '/focus': typeof FocusRoute
   '/forgot-password': typeof ForgotPasswordRoute
+  '/join-group': typeof JoinGroupRoute
   '/log': typeof LogRoute
   '/login': typeof LoginRoute
   '/mock-exam': typeof MockExamRoute
@@ -506,6 +515,7 @@ export interface FileRouteTypes {
     | '/exams'
     | '/focus'
     | '/forgot-password'
+    | '/join-group'
     | '/log'
     | '/login'
     | '/mock-exam'
@@ -560,6 +570,7 @@ export interface FileRouteTypes {
     | '/exams'
     | '/focus'
     | '/forgot-password'
+    | '/join-group'
     | '/log'
     | '/login'
     | '/mock-exam'
@@ -614,6 +625,7 @@ export interface FileRouteTypes {
     | '/exams'
     | '/focus'
     | '/forgot-password'
+    | '/join-group'
     | '/log'
     | '/login'
     | '/mock-exam'
@@ -669,6 +681,7 @@ export interface RootRouteChildren {
   ExamsRoute: typeof ExamsRouteWithChildren
   FocusRoute: typeof FocusRoute
   ForgotPasswordRoute: typeof ForgotPasswordRoute
+  JoinGroupRoute: typeof JoinGroupRoute
   LogRoute: typeof LogRoute
   LoginRoute: typeof LoginRoute
   MockExamRoute: typeof MockExamRoute
@@ -847,6 +860,13 @@ declare module '@tanstack/react-router' {
       path: '/log'
       fullPath: '/log'
       preLoaderRoute: typeof LogRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/join-group': {
+      id: '/join-group'
+      path: '/join-group'
+      fullPath: '/join-group'
+      preLoaderRoute: typeof JoinGroupRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/forgot-password': {
@@ -1196,6 +1216,7 @@ const rootRouteChildren: RootRouteChildren = {
   ExamsRoute: ExamsRouteWithChildren,
   FocusRoute: FocusRoute,
   ForgotPasswordRoute: ForgotPasswordRoute,
+  JoinGroupRoute: JoinGroupRoute,
   LogRoute: LogRoute,
   LoginRoute: LoginRoute,
   MockExamRoute: MockExamRoute,
