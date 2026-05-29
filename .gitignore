@@ -40,3 +40,6 @@ dist-ssr
 serviceAccount.json
 serviceAccount.json.json
 *.json.json
+
+# Question paper PDFs (local only — not committed)
+public/papers/

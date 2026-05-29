@@ -763,6 +763,12 @@ service cloud.firestore {
       allow write: if request.auth != null;
     }
 
+    // Structured mark schemes for paper evaluation — expert-validated content.
+    match /mark_schemes/{schemeId} {
+      allow read: if request.auth != null;
+      allow write: if isAdmin();
+    }
+
     // Default deny.
     match /{document=**} {
       allow read, write: if false;
