@@ -6,6 +6,7 @@ import {
   FlaskConical,
   LineChart,
   User as UserIcon,
+  ClipboardCheck,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -14,6 +15,7 @@ const TABS = [
   { to: "/planner",   label: "Planner",   icon: CalendarClock, match: (p: string) => p.startsWith("/planner") || p.startsWith("/log") },
   { to: "/subjects",  label: "Subjects",  icon: BookOpen,      match: (p: string) => p.startsWith("/subjects") },
   { to: "/exams",     label: "Exams",     icon: FlaskConical,  match: (p: string) => p.startsWith("/exams") || p.startsWith("/exam-results") },
+  { to: "/evaluate",  label: "Evaluate",  icon: ClipboardCheck, match: (p: string) => p.startsWith("/evaluate") },
   { to: "/analytics", label: "Insights",  icon: LineChart,     match: (p: string) => p.startsWith("/analytics") || p.startsWith("/predictions") },
   { to: "/profile",   label: "Profile",   icon: UserIcon,      match: (p: string) => p.startsWith("/profile") },
 ] as const;
@@ -30,7 +32,7 @@ export function BottomNav() {
       className="fixed inset-x-0 bottom-0 z-40 md:hidden border-t border-border/50 bg-background/80 backdrop-blur-2xl supports-[backdrop-filter]:bg-background/70"
       style={{ paddingBottom: "max(env(safe-area-inset-bottom), 0.5rem)" }}
     >
-      <ul className="mx-auto grid max-w-md grid-cols-6 px-1 pt-1.5">
+      <ul className="mx-auto grid max-w-lg grid-cols-7 px-0.5 pt-1.5">
         {TABS.map((t) => {
           const active = t.match(pathname);
           const Icon = t.icon;

@@ -34,6 +34,7 @@ import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
 import { Route as FocusRouteImport } from './routes/focus'
 import { Route as ExamsRouteImport } from './routes/exams'
 import { Route as ExamHallRouteImport } from './routes/exam-hall'
+import { Route as EvaluateRouteImport } from './routes/evaluate'
 import { Route as DailyPracticeRouteImport } from './routes/daily-practice'
 import { Route as ChapterTestRouteImport } from './routes/chapter-test'
 import { Route as BadgesRouteImport } from './routes/badges'
@@ -50,6 +51,7 @@ import { Route as MockTestTestIdRouteImport } from './routes/mock-test.$testId'
 import { Route as ExamsExamIdRouteImport } from './routes/exams.$examId'
 import { Route as ExamResultsAttemptIdRouteImport } from './routes/exam-results.$attemptId'
 import { Route as ExamHallSessionIdRouteImport } from './routes/exam-hall.$sessionId'
+import { Route as EvaluateResultsRouteImport } from './routes/evaluate.results'
 import { Route as AnswerUploadsAttemptIdRouteImport } from './routes/answer-uploads.$attemptId'
 import { Route as AdminOpsRouteImport } from './routes/admin.ops'
 import { Route as AdminImportRouteImport } from './routes/admin.import'
@@ -185,6 +187,11 @@ const ExamHallRoute = ExamHallRouteImport.update({
   path: '/exam-hall',
   getParentRoute: () => rootRouteImport,
 } as any)
+const EvaluateRoute = EvaluateRouteImport.update({
+  id: '/evaluate',
+  path: '/evaluate',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const DailyPracticeRoute = DailyPracticeRouteImport.update({
   id: '/daily-practice',
   path: '/daily-practice',
@@ -265,6 +272,11 @@ const ExamHallSessionIdRoute = ExamHallSessionIdRouteImport.update({
   path: '/$sessionId',
   getParentRoute: () => ExamHallRoute,
 } as any)
+const EvaluateResultsRoute = EvaluateResultsRouteImport.update({
+  id: '/results',
+  path: '/results',
+  getParentRoute: () => EvaluateRoute,
+} as any)
 const AnswerUploadsAttemptIdRoute = AnswerUploadsAttemptIdRouteImport.update({
   id: '/$attemptId',
   path: '/$attemptId',
@@ -324,6 +336,7 @@ export interface FileRoutesByFullPath {
   '/badges': typeof BadgesRoute
   '/chapter-test': typeof ChapterTestRoute
   '/daily-practice': typeof DailyPracticeRoute
+  '/evaluate': typeof EvaluateRouteWithChildren
   '/exam-hall': typeof ExamHallRouteWithChildren
   '/exams': typeof ExamsRouteWithChildren
   '/focus': typeof FocusRoute
@@ -353,6 +366,7 @@ export interface FileRoutesByFullPath {
   '/admin/import': typeof AdminImportRoute
   '/admin/ops': typeof AdminOpsRoute
   '/answer-uploads/$attemptId': typeof AnswerUploadsAttemptIdRoute
+  '/evaluate/results': typeof EvaluateResultsRoute
   '/exam-hall/$sessionId': typeof ExamHallSessionIdRoute
   '/exam-results/$attemptId': typeof ExamResultsAttemptIdRoute
   '/exams/$examId': typeof ExamsExamIdRoute
@@ -376,6 +390,7 @@ export interface FileRoutesByTo {
   '/badges': typeof BadgesRoute
   '/chapter-test': typeof ChapterTestRoute
   '/daily-practice': typeof DailyPracticeRoute
+  '/evaluate': typeof EvaluateRouteWithChildren
   '/exam-hall': typeof ExamHallRouteWithChildren
   '/exams': typeof ExamsRouteWithChildren
   '/focus': typeof FocusRoute
@@ -405,6 +420,7 @@ export interface FileRoutesByTo {
   '/admin/import': typeof AdminImportRoute
   '/admin/ops': typeof AdminOpsRoute
   '/answer-uploads/$attemptId': typeof AnswerUploadsAttemptIdRoute
+  '/evaluate/results': typeof EvaluateResultsRoute
   '/exam-hall/$sessionId': typeof ExamHallSessionIdRoute
   '/exam-results/$attemptId': typeof ExamResultsAttemptIdRoute
   '/exams/$examId': typeof ExamsExamIdRoute
@@ -429,6 +445,7 @@ export interface FileRoutesById {
   '/badges': typeof BadgesRoute
   '/chapter-test': typeof ChapterTestRoute
   '/daily-practice': typeof DailyPracticeRoute
+  '/evaluate': typeof EvaluateRouteWithChildren
   '/exam-hall': typeof ExamHallRouteWithChildren
   '/exams': typeof ExamsRouteWithChildren
   '/focus': typeof FocusRoute
@@ -458,6 +475,7 @@ export interface FileRoutesById {
   '/admin/import': typeof AdminImportRoute
   '/admin/ops': typeof AdminOpsRoute
   '/answer-uploads/$attemptId': typeof AnswerUploadsAttemptIdRoute
+  '/evaluate/results': typeof EvaluateResultsRoute
   '/exam-hall/$sessionId': typeof ExamHallSessionIdRoute
   '/exam-results/$attemptId': typeof ExamResultsAttemptIdRoute
   '/exams/$examId': typeof ExamsExamIdRoute
@@ -483,6 +501,7 @@ export interface FileRouteTypes {
     | '/badges'
     | '/chapter-test'
     | '/daily-practice'
+    | '/evaluate'
     | '/exam-hall'
     | '/exams'
     | '/focus'
@@ -512,6 +531,7 @@ export interface FileRouteTypes {
     | '/admin/import'
     | '/admin/ops'
     | '/answer-uploads/$attemptId'
+    | '/evaluate/results'
     | '/exam-hall/$sessionId'
     | '/exam-results/$attemptId'
     | '/exams/$examId'
@@ -535,6 +555,7 @@ export interface FileRouteTypes {
     | '/badges'
     | '/chapter-test'
     | '/daily-practice'
+    | '/evaluate'
     | '/exam-hall'
     | '/exams'
     | '/focus'
@@ -564,6 +585,7 @@ export interface FileRouteTypes {
     | '/admin/import'
     | '/admin/ops'
     | '/answer-uploads/$attemptId'
+    | '/evaluate/results'
     | '/exam-hall/$sessionId'
     | '/exam-results/$attemptId'
     | '/exams/$examId'
@@ -587,6 +609,7 @@ export interface FileRouteTypes {
     | '/badges'
     | '/chapter-test'
     | '/daily-practice'
+    | '/evaluate'
     | '/exam-hall'
     | '/exams'
     | '/focus'
@@ -616,6 +639,7 @@ export interface FileRouteTypes {
     | '/admin/import'
     | '/admin/ops'
     | '/answer-uploads/$attemptId'
+    | '/evaluate/results'
     | '/exam-hall/$sessionId'
     | '/exam-results/$attemptId'
     | '/exams/$examId'
@@ -640,6 +664,7 @@ export interface RootRouteChildren {
   BadgesRoute: typeof BadgesRoute
   ChapterTestRoute: typeof ChapterTestRoute
   DailyPracticeRoute: typeof DailyPracticeRoute
+  EvaluateRoute: typeof EvaluateRouteWithChildren
   ExamHallRoute: typeof ExamHallRouteWithChildren
   ExamsRoute: typeof ExamsRouteWithChildren
   FocusRoute: typeof FocusRoute
@@ -852,6 +877,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ExamHallRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/evaluate': {
+      id: '/evaluate'
+      path: '/evaluate'
+      fullPath: '/evaluate'
+      preLoaderRoute: typeof EvaluateRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/daily-practice': {
       id: '/daily-practice'
       path: '/daily-practice'
@@ -964,6 +996,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ExamHallSessionIdRouteImport
       parentRoute: typeof ExamHallRoute
     }
+    '/evaluate/results': {
+      id: '/evaluate/results'
+      path: '/results'
+      fullPath: '/evaluate/results'
+      preLoaderRoute: typeof EvaluateResultsRouteImport
+      parentRoute: typeof EvaluateRoute
+    }
     '/answer-uploads/$attemptId': {
       id: '/answer-uploads/$attemptId'
       path: '/$attemptId'
@@ -1040,6 +1079,18 @@ const AnswerUploadsRouteChildren: AnswerUploadsRouteChildren = {
 
 const AnswerUploadsRouteWithChildren = AnswerUploadsRoute._addFileChildren(
   AnswerUploadsRouteChildren,
+)
+
+interface EvaluateRouteChildren {
+  EvaluateResultsRoute: typeof EvaluateResultsRoute
+}
+
+const EvaluateRouteChildren: EvaluateRouteChildren = {
+  EvaluateResultsRoute: EvaluateResultsRoute,
+}
+
+const EvaluateRouteWithChildren = EvaluateRoute._addFileChildren(
+  EvaluateRouteChildren,
 )
 
 interface ExamHallRouteChildren {
@@ -1140,6 +1191,7 @@ const rootRouteChildren: RootRouteChildren = {
   BadgesRoute: BadgesRoute,
   ChapterTestRoute: ChapterTestRoute,
   DailyPracticeRoute: DailyPracticeRoute,
+  EvaluateRoute: EvaluateRouteWithChildren,
   ExamHallRoute: ExamHallRouteWithChildren,
   ExamsRoute: ExamsRouteWithChildren,
   FocusRoute: FocusRoute,

@@ -89,6 +89,18 @@ export async function preprocessAnswerImage(file: File): Promise<PreprocessResul
   };
 }
 
+export async function preprocessPages(
+  files: File[],
+  onProgress?: (current: number, total: number) => void,
+): Promise<PreprocessResult[]> {
+  const results: PreprocessResult[] = [];
+  for (let i = 0; i < files.length; i++) {
+    onProgress?.(i + 1, files.length);
+    results.push(await preprocessAnswerImage(files[i]!));
+  }
+  return results;
+}
+
 /** Alias used by the paper-evaluation pipeline. */
 export const preprocessImage = preprocessAnswerImage;
 
