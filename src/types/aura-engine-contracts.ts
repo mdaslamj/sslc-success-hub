@@ -50,6 +50,52 @@ export interface BlueprintEntry {
   name:  string;
 }
 
+/** Available study minutes per weekday (0 = unavailable). */
+export interface WeeklySchedule {
+  monday: number;
+  tuesday: number;
+  wednesday: number;
+  thursday: number;
+  friday: number;
+  saturday: number;
+  sunday: number;
+}
+
+export type PlannerOverrideEntry = {
+  type: "swap" | "push";
+  chapterId: string;
+  date: string;
+  reason?: string;
+};
+
+export type DeferredTaskSnapshot = {
+  subject: string;
+  subjectId: string;
+  task: string;
+  title: string;
+  time: string;
+  durationMin: number;
+  whyText: string;
+  subjectColor: string;
+  priorityScore: number;
+  chapter: {
+    id: string;
+    title: string;
+    subjectId: string;
+    mastery: number;
+    blueprintMarks?: number;
+    difficulty?: "Easy" | "Medium" | "Hard";
+    subjectName?: string;
+    whyText?: string;
+    priorityScore?: number;
+  };
+};
+
+export type DeferredPlannerTask = {
+  targetDate: string;
+  snapshot: DeferredTaskSnapshot;
+};
+
 export interface StudentLearningProfile {
   _meta: {
     schema:      string;
@@ -78,6 +124,12 @@ export interface StudentLearningProfile {
   recoveryPlans:   Array<Partial<Omit<RecoveryPlan, "subject">> & { subject?: string }>;
   /** Per-subject target percentages (all six SSLC subjects). */
   subjectTargets?: Record<string, number>;
+  /** Available study minutes per weekday (0 = unavailable). */
+  weeklySchedule?: WeeklySchedule;
+  /** Swap/push overrides — Aura learns avoidance patterns. */
+  overrideHistory?: PlannerOverrideEntry[];
+  /** Tasks deferred to a future date (prepended on that day). */
+  deferredTasks?: DeferredPlannerTask[];
   targetConfig?:   TargetConfiguration;
   adaptiveMsg?:    AdaptiveMessaging;
   blueprint:       Record<Subject, Record<string, BlueprintEntry>>;

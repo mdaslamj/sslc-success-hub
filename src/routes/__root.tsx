@@ -21,6 +21,8 @@ import {
   runAuraStartupRecovery,
 } from "@/lib/dev/aura-app-reset";
 import { flushOfflineQueue } from "@/lib/offlineQueue";
+import { InstallPrompt } from "@/components/shared/InstallPrompt";
+import { registerPwaServiceWorker } from "@/lib/pwa-register";
 
 function NotFoundComponent() {
   return (
@@ -84,7 +86,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1, viewport-fit=cover" },
-      { name: "theme-color", content: "#0b1220" },
+      { name: "theme-color", content: "#8B5CF6" },
       { name: "apple-mobile-web-app-capable", content: "yes" },
       { name: "apple-mobile-web-app-status-bar-style", content: "black-translucent" },
       { name: "apple-mobile-web-app-title", content: "Aura" },
@@ -108,7 +110,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         rel: "stylesheet",
         href: appCss,
       },
-      { rel: "manifest", href: "/manifest.webmanifest" },
+      { rel: "manifest", href: "/manifest.json" },
       { rel: "icon", type: "image/png", sizes: "192x192", href: "/icon-192.png" },
       { rel: "icon", type: "image/png", sizes: "512x512", href: "/icon-512.png" },
       { rel: "apple-touch-icon", sizes: "180x180", href: "/apple-touch-icon.png" },
@@ -143,6 +145,7 @@ function RootComponent() {
   useEffect(() => {
     runAuraStartupRecovery();
     installAuraDevGlobals();
+    registerPwaServiceWorker();
     if (typeof navigator !== "undefined" && navigator.onLine) {
       void flushOfflineQueue();
     }
@@ -159,6 +162,7 @@ function RootComponent() {
             </OnboardingGate>
           </SessionSync>
           <Toaster richColors position="top-right" />
+          <InstallPrompt />
         </AuthProvider>
       </ThemeProvider>
     </QueryClientProvider>

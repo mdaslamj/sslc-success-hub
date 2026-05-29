@@ -37,6 +37,33 @@ import {
 } from "lucide-react";
 import { subjects } from "@/lib/mock-data";
 import { rankChaptersForToday, rankChaptersForTodaySync, type RankedPlannerTask } from "@/lib/taskPriorityEngine";
+import {
+  appendOverrideEntry,
+  consumeDeferredTasks,
+  countRecentOverrides,
+  deferTaskSnapshot,
+  findSwapReplacement,
+  getAvoidanceCoachMessage,
+  getChapterCriticalInfo,
+  getDueDeferredTasks,
+  snapshotToRankedTask,
+  taskToDeferredSnapshot,
+  tomorrowIso,
+} from "@/lib/planner-overrides";
+import {
+  TaskOverrideBar,
+  type CustomTaskInput,
+} from "@/components/planner/TaskOverrideBar";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { buildPlannerChapterPool } from "@/lib/planner-chapter-pool";
 import { toast } from "sonner";
 import { RevisionPlannerCard, type RevisionPick } from "@/components/revision-planner-card";
@@ -63,6 +90,12 @@ import {
   type PlannerStoreUpdatedDetail,
 } from "@/lib/today-plan-store";
 import { flushOfflineQueue } from "@/lib/offlineQueue";
+import {
+  DEFAULT_WEEKLY_SCHEDULE,
+  effectiveTaskLimit,
+  getTodayAvailability,
+} from "@/lib/availabilityEngine";
+import type { WeeklySchedule } from "@/types/aura-engine-contracts";
 
 export const Route = createFileRoute("/planner")({
   head: () => ({
@@ -81,7 +114,13 @@ export const Route = createFileRoute("/planner")({
 type Task = RankedPlannerTask & {
   /** Optional external link (e.g. KTBS textbook PDF). */
   link?: string;
+  carriedForward?: boolean;
 };
+
+type OverrideGuard =
+  | { kind: "swap"; task: Task; marksAtRisk: number; title: string }
+  | { kind: "push"; task: Task; title: string; pushCount: number }
+  | null;
 
 const STORAGE = "vidyapath.planner.v1";
 
@@ -137,6 +176,29 @@ function createManualTask(input: {
   };
 }
 
+function createCustomTask(input: {
+  id: number;
+  subjectName: string;
+  chapterName: string;
+  durationMin: number;
+}): Task {
+  const label = `Practice — ${input.chapterName}`;
+  const task = createManualTask({
+    id: input.id,
+    subjectName: input.subjectName,
+    task: label,
+    durationMin: input.durationMin,
+  });
+  return {
+    ...task,
+    chapter: {
+      ...task.chapter,
+      id: `custom-${input.id}`,
+      title: input.chapterName,
+    },
+  };
+}
+
 function subjectRouteIdFromTaskName(subjectName: string): string {
   const subj =
     subjects.find(
@@ -171,10 +233,12 @@ function prepModeHref(subjectName: string, mode: PrepMode): string {
   }
 }
 
-async function replanIncompleteTasks(currentTasks: Task[]): Promise<Task[]> {
+async function replanIncompleteTasks(currentTasks: Task[], maxTasks: number): Promise<Task[]> {
   const done = currentTasks.filter((t) => t.done);
+  if (maxTasks === 0) return done;
+
   const doneChapterIds = new Set(done.map((t) => t.chapter.id));
-  const openSlots = Math.max(1, currentTasks.length - done.length);
+  const openSlots = Math.max(1, Math.min(maxTasks, currentTasks.length - done.length));
   let nextId = Math.max(0, ...currentTasks.map((t) => t.id)) + 1;
 
   const fresh = (await rankChaptersForToday(buildPlannerChapterPool(), plannerSubjects, openSlots + done.length))
@@ -185,10 +249,12 @@ async function replanIncompleteTasks(currentTasks: Task[]): Promise<Task[]> {
   return [...done, ...fresh];
 }
 
-function replanIncompleteTasksSync(currentTasks: Task[]): Task[] {
+function replanIncompleteTasksSync(currentTasks: Task[], maxTasks: number): Task[] {
   const done = currentTasks.filter((t) => t.done);
+  if (maxTasks === 0) return done;
+
   const doneChapterIds = new Set(done.map((t) => t.chapter.id));
-  const openSlots = Math.max(1, currentTasks.length - done.length);
+  const openSlots = Math.max(1, Math.min(maxTasks, currentTasks.length - done.length));
   let nextId = Math.max(0, ...currentTasks.map((t) => t.id)) + 1;
 
   const fresh = rankChaptersForTodaySync(buildPlannerChapterPool(), plannerSubjects, openSlots + done.length)
@@ -201,7 +267,7 @@ function replanIncompleteTasksSync(currentTasks: Task[]): Task[] {
 
 function PlannerPage() {
   const { logSession } = useAnalytics();
-  const { profile, updateMastery, appendSession, burnout } = useAuraEngines();
+  const { profile, updateMastery, appendSession, updateProfile, burnout } = useAuraEngines();
   const [tasks, setTasks] = useState<Task[]>(seedTasks);
   const [newTask, setNewTask] = useState("");
   const [newSubject, setNewSubject] = useState(subjects[0].name);
@@ -210,10 +276,29 @@ function PlannerPage() {
   const [hydrated, setHydrated] = useState(false);
   const [highlightId, setHighlightId] = useState<number | null>(null);
   const [expandedTaskId, setExpandedTaskId] = useState<number | null>(null);
+  const [customFormTaskId, setCustomFormTaskId] = useState<number | null>(null);
+  const [overrideGuard, setOverrideGuard] = useState<OverrideGuard>(null);
+  const deferredAppliedRef = useRef(false);
   const [causalityChain, setCausalityChain] = useState<CausalityChain | null>(null);
   const [isOnline, setIsOnline] = useState(
     () => typeof navigator !== "undefined" && navigator.onLine,
   );
+
+  const schedule = useMemo<WeeklySchedule>(
+    () => profile.weeklySchedule ?? DEFAULT_WEEKLY_SCHEDULE,
+    [profile.weeklySchedule],
+  );
+  const todayPlan = useMemo(() => getTodayAvailability(schedule), [schedule]);
+  const taskLimit = useMemo(() => effectiveTaskLimit(todayPlan), [todayPlan]);
+
+  const visibleTasks = useMemo(() => {
+    if (todayPlan.isUnavailable) {
+      return tasks.filter((t) => t.done);
+    }
+    const done = tasks.filter((t) => t.done);
+    const pending = tasks.filter((t) => !t.done).slice(0, Math.max(1, taskLimit));
+    return [...done, ...pending];
+  }, [tasks, todayPlan.isUnavailable, taskLimit]);
 
   useEffect(() => {
     if (isOnline) void flushOfflineQueue();
@@ -242,16 +327,24 @@ function PlannerPage() {
 
   // Hydrate from localStorage first — instant, no network.
   useEffect(() => {
+    const limit = effectiveTaskLimit(getTodayAvailability(schedule));
+
     try {
       const raw = localStorage.getItem(STORAGE);
       if (raw) {
         const parsed = JSON.parse(raw);
         if (Array.isArray(parsed.tasks)) {
-          setTasks(replanIncompleteTasksSync(parsed.tasks));
+          setTasks(replanIncompleteTasksSync(parsed.tasks, limit));
         }
         if (typeof parsed.focusMinutes === "number") {
           setFocusMinutes(parsed.focusMinutes);
         }
+      } else if (limit > 0) {
+        setTasks(
+          rankChaptersForTodaySync(buildPlannerChapterPool(), plannerSubjects, limit),
+        );
+      } else {
+        setTasks([]);
       }
     } catch {
       /* ignore */
@@ -264,17 +357,18 @@ function PlannerPage() {
         try {
           const raw = localStorage.getItem(STORAGE);
           if (!raw) {
+            if (limit <= 0) return;
             const fresh = await rankChaptersForToday(
               buildPlannerChapterPool(),
               plannerSubjects,
-              4,
+              limit,
             );
             setTasks(fresh);
             return;
           }
           const parsed = JSON.parse(raw);
           if (Array.isArray(parsed.tasks)) {
-            const enriched = await replanIncompleteTasks(parsed.tasks);
+            const enriched = await replanIncompleteTasks(parsed.tasks, limit);
             setTasks(enriched);
           }
         } catch {
@@ -282,7 +376,35 @@ function PlannerPage() {
         }
       })();
     }
-  }, []);
+  }, [schedule]);
+
+  // Prepend deferred tasks due today (carried forward from push).
+  useEffect(() => {
+    if (!hydrated || deferredAppliedRef.current) return;
+    const due = getDueDeferredTasks(profile);
+    if (due.length === 0) return;
+
+    deferredAppliedRef.current = true;
+    const chapterIds = due.map((d) => d.snapshot.chapter.id);
+
+    setTasks((prev) => {
+      const existing = new Set(prev.map((t) => t.chapter.id));
+      let nextId = Math.max(0, ...prev.map((t) => t.id));
+      const prepend = due
+        .filter((d) => !existing.has(d.snapshot.chapter.id))
+        .map((d) => ({
+          ...snapshotToRankedTask(d.snapshot, ++nextId, { carriedForward: true }),
+          carriedForward: true,
+        }));
+
+      if (prepend.length === 0) return prev;
+      return [...prepend, ...prev];
+    });
+
+    updateProfile({
+      deferredTasks: consumeDeferredTasks(profile, chapterIds),
+    });
+  }, [hydrated, profile, updateProfile]);
 
   // Live sync when War Room / Textbooks append via today-plan-store
   useEffect(() => {
@@ -301,10 +423,12 @@ function PlannerPage() {
     localStorage.setItem(STORAGE, JSON.stringify({ tasks, focusMinutes }));
   }, [tasks, focusMinutes, hydrated]);
 
-  const doneCount = tasks.filter((t) => t.done).length;
-  const totalMin = tasks.reduce((a, t) => a + t.durationMin, 0);
-  const doneMin = tasks.filter((t) => t.done).reduce((a, t) => a + t.durationMin, 0);
-  const completionPct = tasks.length ? Math.round((doneCount / tasks.length) * 100) : 0;
+  const doneCount = visibleTasks.filter((t) => t.done).length;
+  const totalMin = visibleTasks.reduce((a, t) => a + t.durationMin, 0);
+  const doneMin = visibleTasks.filter((t) => t.done).reduce((a, t) => a + t.durationMin, 0);
+  const completionPct = visibleTasks.length
+    ? Math.round((doneCount / visibleTasks.length) * 100)
+    : 0;
 
   function toggleTask(id: number) {
     const task = tasks.find((t) => t.id === id);
@@ -341,10 +465,10 @@ function PlannerPage() {
           setTasks((prev) => {
             const next = prev.map((t) => (t.id === id ? { ...t, done: true } : t));
             if (typeof navigator !== "undefined" && navigator.onLine) {
-              void replanIncompleteTasks(next).then(setTasks);
+              void replanIncompleteTasks(next, taskLimit).then(setTasks);
               return next;
             }
-            return replanIncompleteTasksSync(next);
+            return replanIncompleteTasksSync(next, taskLimit);
           });
           toast.info("Plan rebalanced", {
             description: result.replanSummary ?? "Aura adjusted remaining tasks for today.",
@@ -383,6 +507,82 @@ function PlannerPage() {
 
   function removeTask(id: number) {
     setTasks((prev) => prev.filter((t) => t.id !== id));
+  }
+
+  function executeSwap(task: Task) {
+    const replacement = findSwapReplacement(
+      tasks,
+      buildPlannerChapterPool(),
+      plannerSubjects,
+      task.chapter.id,
+    );
+    if (!replacement) {
+      toast.error("No other chapters available to swap in");
+      return;
+    }
+    setTasks((prev) =>
+      prev.map((t) => (t.id === task.id ? { ...replacement, id: t.id, done: false } : t)),
+    );
+    updateProfile({
+      overrideHistory: appendOverrideEntry(profile, {
+        type: "swap",
+        chapterId: task.chapter.id,
+      }),
+    });
+    toast.success("Task swapped", { description: replacement.task });
+  }
+
+  function executePush(task: Task) {
+    const snapshot = taskToDeferredSnapshot(task);
+    updateProfile({
+      overrideHistory: appendOverrideEntry(profile, {
+        type: "push",
+        chapterId: task.chapter.id,
+      }),
+      deferredTasks: deferTaskSnapshot(profile, snapshot, tomorrowIso()),
+    });
+    setTasks((prev) => prev.filter((t) => t.id !== task.id));
+    toast.success("Moved to tomorrow", { description: task.title });
+  }
+
+  function requestSwap(task: Task) {
+    if (task.done || todayPlan.isUnavailable) return;
+    const { critical, marksAtRisk, title } = getChapterCriticalInfo(task, plannerSubjects);
+    if (critical) {
+      setOverrideGuard({ kind: "swap", task, marksAtRisk, title });
+      return;
+    }
+    executeSwap(task);
+  }
+
+  function requestPush(task: Task) {
+    if (task.done || todayPlan.isUnavailable) return;
+    const pushCount = countRecentOverrides(profile.overrideHistory, task.chapter.id, "push");
+    if (pushCount >= 3) {
+      setOverrideGuard({
+        kind: "push",
+        task,
+        title: task.chapter.title ?? task.title,
+        pushCount,
+      });
+      return;
+    }
+    executePush(task);
+  }
+
+  function saveCustomTask(afterTaskId: number, input: CustomTaskInput) {
+    const id = Math.max(0, ...tasks.map((t) => t.id)) + 1;
+    const custom = createCustomTask({ id, ...input });
+    setTasks((prev) => {
+      const idx = prev.findIndex((t) => t.id === afterTaskId);
+      if (idx === -1) return [...prev, custom];
+      const next = [...prev];
+      next.splice(idx + 1, 0, custom);
+      return next;
+    });
+    setCustomFormTaskId(null);
+    setHighlightId(id);
+    toast.success("Custom task added");
   }
 
   function addFromRecommendation(pick: RevisionPick) {
@@ -479,10 +679,10 @@ function PlannerPage() {
   }
 
   /* ----- Academic continuity signals (lightweight, derived only) ----- */
-  const pendingCount = tasks.length - doneCount;
-  const nextUp = useMemo(() => tasks.find((t) => !t.done) ?? null, [tasks]);
-  const overloadHint = tasks.length >= 8;
-  const underloadHint = tasks.length > 0 && tasks.length <= 2;
+  const pendingCount = visibleTasks.length - doneCount;
+  const nextUp = useMemo(() => visibleTasks.find((t) => !t.done) ?? null, [visibleTasks]);
+  const overloadHint = visibleTasks.length >= 8;
+  const underloadHint = visibleTasks.length > 0 && visibleTasks.length <= 2;
   const emotional = useMemo(() => {
     try {
       const { getEmotionalSummary } = require("@/lib/emotionalProgress");
@@ -492,14 +692,21 @@ function PlannerPage() {
     }
   }, [tasks, doneCount, focusMinutes]);
 
+  const avoidanceCoach = useMemo(
+    () => getAvoidanceCoachMessage(profile),
+    [profile.overrideHistory, profile.deferredTasks],
+  );
+
   const mentorMessage = useMemo(() => {
+    if (avoidanceCoach) return avoidanceCoach;
+
     // Prefer emotional signal when learning data exists, else fall back to
     // task-completion coaching.
-    if (emotional && (doneCount > 0 || tasks.length === 0)) {
+    if (emotional && (doneCount > 0 || visibleTasks.length === 0)) {
       // Blend emotional headline with a gentle task hint.
-      if (tasks.length === 0)
+      if (visibleTasks.length === 0)
         return `${emotional.headline} ${emotional.consistency}`;
-      if (doneCount === tasks.length)
+      if (doneCount === visibleTasks.length)
         return `${emotional.headline} ${emotional.progress}`;
       if (completionPct >= 50)
         return `${emotional.confidence} You're past halfway — finish the next task before the energy dips.`;
@@ -507,9 +714,11 @@ function PlannerPage() {
         return `${emotional.headline} A 25-min sprint on the first task will unlock the day.`;
       return `${emotional.headline} ${emotional.recovery || emotional.consistency}`;
     }
-    if (tasks.length === 0)
-      return "Plan one thing — even 25 minutes of focus today builds momentum.";
-    if (doneCount === tasks.length)
+    if (visibleTasks.length === 0)
+      return todayPlan.isUnavailable
+        ? "Rest day — recharge so tomorrow's session hits harder."
+        : "Plan one thing — even 25 minutes of focus today builds momentum.";
+    if (doneCount === visibleTasks.length)
       return "Every task done. Protect this rhythm — schedule tomorrow now.";
     if (overloadHint && doneCount === 0)
       return "Heavy day ahead. Start with the smallest task to build flow.";
@@ -520,7 +729,7 @@ function PlannerPage() {
     if (focusMinutes === 0 && doneCount === 0)
       return "No focus logged yet. A 25-min sprint on the first task will unlock the day.";
     return "Keep the rhythm — one task, then a short break.";
-  }, [tasks.length, doneCount, completionPct, overloadHint, underloadHint, focusMinutes, emotional]);
+  }, [visibleTasks.length, doneCount, completionPct, overloadHint, underloadHint, focusMinutes, emotional, todayPlan.isUnavailable, avoidanceCoach]);
 
   // Achievements (live)
   const unlocked = useMemo(() => {
@@ -544,7 +753,7 @@ function PlannerPage() {
         icon: "🏆",
         label: "Plan crusher",
         desc: "Complete all today's tasks",
-        earned: tasks.length > 0 && doneCount === tasks.length,
+        earned: visibleTasks.length > 0 && doneCount === visibleTasks.length,
       },
       {
         id: "deep-focus",
@@ -566,24 +775,24 @@ function PlannerPage() {
         label: "Balanced day",
         desc: "Complete tasks in 3+ subjects",
         earned:
-          new Set(tasks.filter((t) => t.done).map((t) => t.subject)).size >= 3,
+          new Set(visibleTasks.filter((t) => t.done).map((t) => t.subject)).size >= 3,
       },
     ];
     return list;
-  }, [doneCount, completionPct, tasks, focusMinutes]);
+  }, [doneCount, completionPct, visibleTasks, focusMinutes]);
 
   const earnedCount = unlocked.filter((a) => a.earned).length;
 
   const plannerTaskSnapshots = useMemo(
     () =>
-      tasks.map((t) => ({
+      visibleTasks.map((t) => ({
         id: t.id,
         subject: t.subject,
         task: t.task,
         durationMin: t.durationMin,
         done: t.done,
       })),
-    [tasks],
+    [visibleTasks],
   );
 
   const { snapshot: executionSnapshot } = useAcademicExecution({
@@ -616,7 +825,7 @@ function PlannerPage() {
             </p>
           </div>
           <div className="flex w-full flex-wrap items-center gap-2 sm:w-auto sm:gap-3">
-            <StatPill icon={<CheckCircle2 className="h-4 w-4" />} label="Done" value={`${doneCount}/${tasks.length}`} />
+            <StatPill icon={<CheckCircle2 className="h-4 w-4" />} label="Done" value={`${doneCount}/${visibleTasks.length}`} />
             <StatPill icon={<Clock className="h-4 w-4" />} label="Focused" value={`${focusMinutes}m`} />
             <StatPill icon={<Trophy className="h-4 w-4" />} label="Badges" value={`${earnedCount}/${unlocked.length}`} />
           </div>
@@ -633,6 +842,18 @@ function PlannerPage() {
 
         {/* Day progress bar */}
         <section className="rounded-3xl border border-border/60 bg-card p-5 shadow-card">
+          {todayPlan.isUnavailable ? (
+            <div className="flex items-start gap-3 rounded-2xl border border-amber-500/30 bg-amber-500/10 p-4">
+              <Coffee className="mt-0.5 h-5 w-5 shrink-0 text-amber-600" />
+              <div>
+                <p className="font-medium text-foreground">Rest day</p>
+                <p className="mt-1 text-sm text-muted-foreground">
+                  No study scheduled today — you marked this day unavailable. Come back tomorrow.
+                </p>
+              </div>
+            </div>
+          ) : (
+            <>
           <div className="flex items-center justify-between text-sm">
             <span className="font-medium">Daily progress</span>
             <span className="text-muted-foreground">
@@ -640,6 +861,10 @@ function PlannerPage() {
             </span>
           </div>
           <Progress value={completionPct} className="mt-3" />
+          <p className="mt-2 text-[11px] text-muted-foreground">
+            {todayPlan.availableMinutes} min available today · up to {taskLimit} task
+            {taskLimit === 1 ? "" : "s"}
+          </p>
           <div className="mt-4 flex flex-wrap items-center gap-2 text-[11px]">
             <span className="inline-flex items-center gap-1 rounded-full border border-border/60 bg-background/60 px-2 py-1">
               <span className="h-1.5 w-1.5 rounded-full bg-warning" />
@@ -663,6 +888,8 @@ function PlannerPage() {
             <Brain className="mt-0.5 h-3.5 w-3.5 shrink-0 text-brand" />
             <p className="leading-snug">{mentorMessage}</p>
           </div>
+            </>
+          )}
         </section>
 
         {/* Calendar & life-planning layer */}
@@ -676,12 +903,12 @@ function PlannerPage() {
                 <Sparkles className="h-4 w-4 text-brand" /> Today's Schedule
               </h3>
               <Badge variant="outline" className="rounded-full">
-                {tasks.length} tasks
+                {visibleTasks.length} tasks
               </Badge>
             </div>
 
             <div className="space-y-2">
-              {tasks.map((t) => {
+              {visibleTasks.map((t) => {
                 const subj = subjects.find((s) => s.name.startsWith(t.subject)) ?? subjects[0];
                 const prepModes = getPrepModes(t.subject);
                 return (
@@ -752,6 +979,11 @@ function PlannerPage() {
                         <span>
                           {t.subject} · {t.time}
                         </span>
+                        {t.carriedForward && (
+                          <span className="rounded-full bg-amber-500/15 px-2 py-0.5 text-[10px] font-medium text-amber-700 dark:text-amber-300">
+                            Carried forward
+                          </span>
+                        )}
                         {t.link && (
                           <a
                             href={t.link}
@@ -787,7 +1019,20 @@ function PlannerPage() {
                     </Button>
                     </div>
                     <CollapsiblePanel>
-                      <div className="border-t border-border/60 px-3 py-3">
+                      <div className="space-y-3 border-t border-border/60 px-3 py-3">
+                        {!t.done && !todayPlan.isUnavailable && (
+                          <TaskOverrideBar
+                            disabled={t.done}
+                            showCustomForm={customFormTaskId === t.id}
+                            onSwap={() => requestSwap(t)}
+                            onPush={() => requestPush(t)}
+                            onToggleCustomForm={() =>
+                              setCustomFormTaskId((current) => (current === t.id ? null : t.id))
+                            }
+                            onSaveCustom={(input) => saveCustomTask(t.id, input)}
+                          />
+                        )}
+                        <div>
                         <div className="mb-2 text-[10px] uppercase tracking-widest text-muted-foreground">
                           Preparation modes
                         </div>
@@ -821,14 +1066,17 @@ function PlannerPage() {
                             );
                           })}
                         </div>
+                        </div>
                       </div>
                     </CollapsiblePanel>
                   </Collapsible>
                 );
               })}
-              {tasks.length === 0 && (
+              {visibleTasks.length === 0 && (
               <div className="rounded-2xl border border-dashed border-border/60 p-6 text-center text-sm text-muted-foreground sm:p-8">
-                  No tasks left. Add one below to keep momentum going.
+                  {todayPlan.isUnavailable
+                    ? "Rest day — no tasks scheduled. Enjoy the break."
+                    : "No tasks left. Add one below to keep momentum going."}
                 </div>
               )}
             </div>
@@ -942,6 +1190,67 @@ function PlannerPage() {
           </section>
         </div>
       </div>
+
+      <AlertDialog
+        open={overrideGuard !== null}
+        onOpenChange={(open) => {
+          if (!open) setOverrideGuard(null);
+        }}
+      >
+        <AlertDialogContent>
+          {overrideGuard?.kind === "swap" && (
+            <>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Swap critical chapter?</AlertDialogTitle>
+                <AlertDialogDescription>
+                  {overrideGuard.title} is Critical — swapping it increases your marks at risk
+                  by {overrideGuard.marksAtRisk}. Continue?
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Keep it</AlertDialogCancel>
+                <AlertDialogAction
+                  onClick={() => {
+                    executeSwap(overrideGuard.task);
+                    setOverrideGuard(null);
+                  }}
+                >
+                  Swap anyway
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </>
+          )}
+          {overrideGuard?.kind === "push" && (
+            <>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Push again?</AlertDialogTitle>
+                <AlertDialogDescription>
+                  You have pushed {overrideGuard.title} {overrideGuard.pushCount} times. Avoiding
+                  it is costing marks. Study it today?
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogAction
+                  onClick={() => {
+                    setOverrideGuard(null);
+                    setExpandedTaskId(overrideGuard.task.id);
+                  }}
+                >
+                  Study now
+                </AlertDialogAction>
+                <AlertDialogCancel
+                  onClick={() => {
+                    executePush(overrideGuard.task);
+                    setOverrideGuard(null);
+                  }}
+                >
+                  Push anyway
+                </AlertDialogCancel>
+              </AlertDialogFooter>
+            </>
+          )}
+        </AlertDialogContent>
+      </AlertDialog>
     </DashboardLayout>
   );
 }

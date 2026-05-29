@@ -4,6 +4,8 @@ import type {
   StudentLearningProfile,
   Subject,
   Trend,
+  PlannerOverrideEntry,
+  DeferredPlannerTask,
 } from "@/types/aura-engine-contracts";
 import { appendSessionToProfile, type NewSessionInput } from "@/engines/sessionLogger";
 import { queueOfflineWrite } from "@/lib/offlineQueue";
@@ -462,6 +464,8 @@ export function useStudentProfile() {
     (patch: {
       student?: Partial<StudentLearningProfile["student"]>;
       subjectTargets?: Record<string, number>;
+      overrideHistory?: PlannerOverrideEntry[];
+      deferredTasks?: DeferredPlannerTask[];
     }) => {
       if (!stored) return;
       const { profile: current, masteryReadings } = stripProfileStorage(stored);
@@ -473,6 +477,8 @@ export function useStudentProfile() {
               ? { ...current.student, ...patch.student }
               : current.student,
             subjectTargets: patch.subjectTargets ?? current.subjectTargets,
+            overrideHistory: patch.overrideHistory ?? current.overrideHistory,
+            deferredTasks: patch.deferredTasks ?? current.deferredTasks,
           },
           masteryReadings,
         ),

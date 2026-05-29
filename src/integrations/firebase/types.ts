@@ -1147,6 +1147,18 @@ export type UserProfileDoc = {
   weekendStudy?: "none" | "light" | "full";
   /** Revision intensity preference set during onboarding. */
   revisionIntensity?: "light" | "balanced" | "intense";
+  /** Pricing tier from school type — used at subscription checkout. */
+  pricingTier?: "rural" | "semi-urban" | "urban";
+  /** Available study minutes per weekday (0 = unavailable). */
+  weeklySchedule?: {
+    monday: number;
+    tuesday: number;
+    wednesday: number;
+    thursday: number;
+    friday: number;
+    saturday: number;
+    sunday: number;
+  };
   createdAt: number;
   updatedAt: number;
 };
