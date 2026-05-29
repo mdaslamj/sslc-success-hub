@@ -8,6 +8,7 @@ import type {
   RankPredictionOutput,
   RecoveryEngineOutput,
   RevisionOutput,
+  TrajectoryOutput,
   StudentLearningProfile,
 } from "@/types/aura-engine-contracts";
 
@@ -24,6 +25,7 @@ import {
 } from "@/engines/scoreProjection";
 import { studentArchetypeEngine } from "@/engines/studentArchetype";
 import { targetGapEngine } from "@/engines/targetGap";
+import { trajectoryEngine } from "@/core/academic-state/trajectoryEngine";
 
 const EMPTY_SIGNALS: BehavioralSignals = {
   overallMastery: 0,
@@ -91,6 +93,18 @@ const EMPTY_REVISION: RevisionOutput = {
   dailyMinutes: 0,
 };
 
+const EMPTY_TRAJECTORY: TrajectoryOutput = {
+  currentScore: 0,
+  projectedScore: 0,
+  examDayScore: 0,
+  trend: "at_risk",
+  weeklyPoints: [{ week: 0, date: new Date().toISOString().slice(0, 10), score: 0 }],
+  daysUntilExam: 0,
+  sessionsNeededPerDay: 1,
+  confidenceLevel: "low",
+  message: "Start your first session today to build a trajectory.",
+};
+
 const EMPTY_NEXT_ACTION: NextActionOutput = {
   recommendedAction: "Begin with any chapter",
   subject: "math",
@@ -110,6 +124,7 @@ export function runAllEngines(profile: StudentLearningProfile): AuraEngineOutput
   const sessions = profile.sessionHistory ?? [];
 
   const projection = scoreProjectionEngine(profile.chapterMastery, blueprint);
+  const trajectory = trajectoryEngine(profile, projection);
   const target = targetGapEngine(
     profile.student.targetScore,
     projection,
@@ -137,6 +152,7 @@ export function runAllEngines(profile: StudentLearningProfile): AuraEngineOutput
       burnout: EMPTY_BURNOUT,
       rank: EMPTY_RANK,
       revision: EMPTY_REVISION,
+      trajectory,
     };
   }
 
@@ -160,5 +176,6 @@ export function runAllEngines(profile: StudentLearningProfile): AuraEngineOutput
     burnout,
     rank,
     revision,
+    trajectory,
   };
 }

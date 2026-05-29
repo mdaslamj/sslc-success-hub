@@ -4,7 +4,7 @@ import { buildAcademicAnalyticsView } from "@/core/academic-state/analyticsView"
 import { useAuraEngines } from "@/hooks/useAuraEngines";
 
 export function AcademicAnalyticsSection() {
-  const { profile, projection, target, momentum, burnout, analytics, isLoading } =
+  const { profile, projection, target, momentum, burnout, analytics, trajectory, isLoading } =
     useAuraEngines();
 
   const view = useMemo(
@@ -15,8 +15,9 @@ export function AcademicAnalyticsSection() {
         momentum,
         burnout,
         analytics,
+        trajectory,
       }),
-    [profile, projection, target, momentum, burnout, analytics],
+    [profile, projection, target, momentum, burnout, analytics, trajectory],
   );
 
   if (isLoading) {

@@ -78,7 +78,7 @@ function AuraAnalytics({ view }) {
             Readiness trajectory
           </h3>
           <p className="text-xs text-muted-foreground">
-            Session score trend converging on current engine readiness
+            Projected readiness from today through exam day
           </p>
           <div className="mt-4 h-52 w-full min-w-0 sm:h-56">
             <ResponsiveContainer width="100%" height="100%" minWidth={0}>

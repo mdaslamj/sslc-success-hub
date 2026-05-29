@@ -7,6 +7,7 @@ import type {
   AuraEngineOutputs,
   SessionRecord,
   StudentLearningProfile,
+  TrajectoryOutput,
 } from "@/types/aura-engine-contracts";
 
 export type AnalyticsSubjectRow = {
@@ -320,50 +321,6 @@ function buildLast14Days(
   return out;
 }
 
-/** Running session-score trend ending at current engine readiness. */
-function buildTrajectorySeries(
-  sessions: SessionRecord[],
-  currentReadiness: number,
-): AnalyticsTrajectoryPoint[] {
-  const sorted = [...sessions].sort(
-    (a, b) => parseDate(a.date) - parseDate(b.date),
-  );
-
-  const byDate = new Map<string, number[]>();
-  for (const session of sorted) {
-    if (session.score == null) continue;
-    const list = byDate.get(session.date) ?? [];
-    list.push(session.score);
-    byDate.set(session.date, list);
-  }
-
-  const dates = [...byDate.keys()].sort((a, b) => parseDate(a) - parseDate(b));
-  const points: AnalyticsTrajectoryPoint[] = [];
-  const allScores: number[] = [];
-
-  for (const date of dates) {
-    for (const score of byDate.get(date) ?? []) {
-      allScores.push(score);
-    }
-    const running =
-      allScores.length > 0
-        ? Math.round(allScores.reduce((a, b) => a + b, 0) / allScores.length)
-        : 0;
-    points.push({ date, label: formatDayLabel(date), score: running });
-  }
-
-  if (points.length === 0) {
-    return [{ date: "today", label: "Now", score: currentReadiness }];
-  }
-
-  const last = points[points.length - 1]!;
-  if (last.score !== currentReadiness) {
-    points.push({ date: "now", label: "Now", score: currentReadiness });
-  }
-
-  return points.slice(-12);
-}
-
 function buildDimensions(analytics: AnalyticsState): AnalyticsDimensionRow[] {
   return DIMENSION_ORDER.map((key) => {
     const dim = analytics.dimensions[key];
@@ -379,8 +336,17 @@ function buildDimensions(analytics: AnalyticsState): AnalyticsDimensionRow[] {
 
 type EngineSlice = Pick<
   AuraEngineOutputs,
-  "projection" | "target" | "momentum" | "burnout" | "analytics"
+  "projection" | "target" | "momentum" | "burnout" | "analytics" | "trajectory"
 >;
+
+/** Forward-looking weekly score projection for the readiness chart. */
+function mapTrajectoryToChart(trajectory: TrajectoryOutput): AnalyticsTrajectoryPoint[] {
+  return trajectory.weeklyPoints.map((point) => ({
+    date: point.date,
+    label: point.week === 0 ? "Now" : point.week === trajectory.weeklyPoints.length - 1 ? "Exam" : `W${point.week}`,
+    score: point.score,
+  }));
+}
 
 /**
  * Read-only analytics projection over the single academic-state graph.
@@ -390,7 +356,7 @@ export function buildAcademicAnalyticsView(
   profile: StudentLearningProfile,
   engines: EngineSlice,
 ): AcademicAnalyticsView {
-  const { projection, target, momentum, burnout, analytics } = engines;
+  const { projection, target, momentum, burnout, analytics, trajectory } = engines;
   const readiness = Math.round(projection.percentage);
   const targetScore = profile.student.targetScore;
   const gap = Math.max(0, Math.round(target.gap));
@@ -446,7 +412,7 @@ export function buildAcademicAnalyticsView(
     subjects,
     dimensions: buildDimensions(analytics),
     sessionActivity: buildLast14Days(profile.sessionHistory),
-    trajectory: buildTrajectorySeries(profile.sessionHistory, readiness),
+    trajectory: mapTrajectoryToChart(trajectory),
     readinessHistory: buildReadinessHistory(profile.sessionHistory, readiness),
     gapData: buildGapData(constellation, target.bySubject),
     sessionHeatmap: buildSessionHeatmap(profile.sessionHistory),

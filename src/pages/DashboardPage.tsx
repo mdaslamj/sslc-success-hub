@@ -120,6 +120,7 @@ export default function DashboardPage() {
     burnout,
     rank,
     revision,
+    trajectory,
     isLoading,
     updateMastery,
     appendSession,
@@ -159,6 +160,7 @@ export default function DashboardPage() {
       burnout,
       rank,
       revision,
+      trajectory,
     }),
     [
       projection,
@@ -171,6 +173,7 @@ export default function DashboardPage() {
       burnout,
       rank,
       revision,
+      trajectory,
     ],
   );
 

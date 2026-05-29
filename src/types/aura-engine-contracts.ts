@@ -539,7 +539,26 @@ export function revisionOptimizerEngine(
  *   Γöé
  *   ΓööΓöÇΓû║ [6] nextActionEngine(recovery, target, momentum, archetype, sessions)
  *             ΓööΓöÇΓû║ NextActionOutput  ΓåÉ Aura's signature experience
+ *
+ *   ΓööΓöÇΓû║ [7] trajectoryEngine(profile, projection)
+ *             ΓööΓöÇΓû║ TrajectoryOutput
  */
+
+export interface TrajectoryOutput {
+  currentScore: number;
+  projectedScore: number;
+  examDayScore: number;
+  trend: "improving" | "stable" | "declining" | "at_risk";
+  weeklyPoints: Array<{
+    week: number;
+    date: string;
+    score: number;
+  }>;
+  daysUntilExam: number;
+  sessionsNeededPerDay: number;
+  confidenceLevel: "high" | "medium" | "low";
+  message: string;
+}
 
 export interface AuraEngineOutputs {
   projection: ScoreProjectionOutput;
@@ -552,6 +571,7 @@ export interface AuraEngineOutputs {
   burnout:    BurnoutOutput;
   rank:       RankPredictionOutput;
   revision:   RevisionOutput;
+  trajectory: TrajectoryOutput;
 }
 
 export function runAllEngines(

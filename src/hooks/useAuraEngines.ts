@@ -73,6 +73,7 @@ export function useAuraEngines() {
     burnout: output.burnout,
     rank: output.rank,
     revision: output.revision,
+    trajectory: output.trajectory,
     profile,
     isLoading,
     updateMastery,
