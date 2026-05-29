@@ -790,6 +790,23 @@ service cloud.firestore {
          ));
     }
 
+    // Pre-computed class-level analytics — teachers read aggregates only.
+    match /class_analytics/{docId} {
+      allow read: if request.auth != null &&
+        (request.auth.token.role == 'teacher' ||
+         request.auth.token.role == 'admin');
+      allow write: if request.auth.token.role == 'admin';
+    }
+
+    // Parent share links — public read for token URLs; student creates own share.
+    match /parent_shares/{token} {
+      allow read: if true;
+      allow create: if request.auth != null &&
+        request.resource.data.studentId == request.auth.uid;
+      allow update, delete: if request.auth != null &&
+        resource.data.studentId == request.auth.uid;
+    }
+
     // Default deny.
     match /{document=**} {
       allow read, write: if false;

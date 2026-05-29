@@ -279,6 +279,10 @@ const GUEST_KEY = "aura.guest.v1";
 const GUEST_ONBOARDING_KEY = "aura.guest.onboarding.v1";
 const SPLASH_SEEN_KEY = "aura.splash.seen.v1";
 
+function isPublicPath(pathname: string): boolean {
+  return PUBLIC_PATHS.has(pathname) || pathname.startsWith("/parent/share/");
+}
+
 function Splash({ label = "Preparing your study space" }: { label?: string }) {
   return (
     <div
@@ -325,7 +329,7 @@ function OnboardingGate({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     if (loading) return;
-    const isPublic = PUBLIC_PATHS.has(pathname);
+    const isPublic = isPublicPath(pathname);
 
     // Authenticated path — gate on profile completion.
     if (user) {

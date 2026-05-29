@@ -63,6 +63,8 @@ if (typeof window !== "undefined") {
 // Collection name constants — single source of truth.
 export const COLLECTIONS = {
   STUDY_GROUPS: "study_groups",
+  CLASS_ANALYTICS: "class_analytics",
+  PARENT_SHARES: "parent_shares",
   SUBJECTS: "subjects",
   CHAPTERS: "chapters",
   USERS: "users",

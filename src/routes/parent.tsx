@@ -1,8 +1,19 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
-import { Users, Bell, CalendarRange, LinkIcon, Sparkles, Copy, RefreshCw, Check } from "lucide-react";
+import {
+  Users,
+  Bell,
+  CalendarRange,
+  LinkIcon,
+  Copy,
+  Check,
+  RefreshCw,
+  Share2,
+  Loader2,
+} from "lucide-react";
 import { toast } from "sonner";
 import { DashboardLayout } from "@/components/dashboard-layout";
+import { ParentSummaryView } from "@/components/parent/ParentSummaryView";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -13,16 +24,21 @@ import {
   useParentDashboard,
   useStudentInviteCodes,
 } from "@/hooks/use-parent-dashboard";
+import { useParentSummaryView } from "@/hooks/useParentSummaryView";
+import { useAuth } from "@/contexts/auth-context";
+import { useAuraEngines } from "@/hooks/useAuraEngines";
+import { buildParentSummary } from "@/lib/parentSummaryService";
+import { buildShareUrl, saveParentShare } from "@/lib/parentShareService";
 import type { ParentAlertDoc, ParentAlertSeverity } from "@/integrations/firebase/types";
 
 export const Route = createFileRoute("/parent")({
   head: () => ({
     meta: [
-      { title: "Parent Dashboard — Project Aura" },
+      { title: "Parent Dashboard — Aura" },
       {
         name: "description",
         content:
-          "Stay calmly involved in your child's learning — daily insights, supportive alerts, and weekly reports.",
+          "A calm, parent-friendly summary of your child's SSLC progress — no raw scores or anxiety metrics.",
       },
     ],
   }),
@@ -31,6 +47,7 @@ export const Route = createFileRoute("/parent")({
 
 function ParentPage() {
   const d = useParentDashboard();
+  const { summary, loading } = useParentSummaryView();
   const [tab, setTab] = useState("overview");
 
   return (
@@ -41,63 +58,46 @@ function ParentPage() {
             <Users className="h-3.5 w-3.5" /> Parent view
           </div>
           <h1 className="mt-2 font-display text-[26px] font-bold tracking-tight">
-            {d.activeStudent?.studentName
-              ? `How ${d.activeStudent.studentName.split(" ")[0]} is doing`
+            {summary?.studentName
+              ? `${summary.studentName.split(" ")[0]}'s progress`
               : "Your child's calm progress"}
           </h1>
           <p className="mt-1 text-sm text-muted-foreground">
-            Supportive insights, never pressure. Tap any alert for a constructive next step.
+            Supportive language only — no raw scores, probabilities, or anxiety data.
           </p>
         </header>
 
         <Tabs value={tab} onValueChange={setTab} className="w-full">
           <TabsList className="grid w-full grid-cols-4 rounded-2xl">
-            <TabsTrigger value="overview" className="text-xs">Overview</TabsTrigger>
-            <TabsTrigger value="alerts" className="text-xs">
-              Alerts {d.unreadAlerts > 0 && <span className="ml-1 rounded-full bg-primary px-1.5 text-[10px] text-primary-foreground">{d.unreadAlerts}</span>}
+            <TabsTrigger value="overview" className="text-xs">
+              Summary
             </TabsTrigger>
-            <TabsTrigger value="weekly" className="text-xs">Weekly</TabsTrigger>
-            <TabsTrigger value="connect" className="text-xs">Connect</TabsTrigger>
+            <TabsTrigger value="alerts" className="text-xs">
+              Alerts{" "}
+              {d.unreadAlerts > 0 && (
+                <span className="ml-1 rounded-full bg-primary px-1.5 text-[10px] text-primary-foreground">
+                  {d.unreadAlerts}
+                </span>
+              )}
+            </TabsTrigger>
+            <TabsTrigger value="weekly" className="text-xs">
+              Weekly
+            </TabsTrigger>
+            <TabsTrigger value="connect" className="text-xs">
+              Connect
+            </TabsTrigger>
           </TabsList>
 
           <TabsContent value="overview" className="mt-4 space-y-3">
-            {!d.activeStudent ? (
+            {!d.activeStudent && d.linkedStudents.length === 0 ? (
               <EmptyConnect onGo={() => setTab("connect")} />
-            ) : d.snapshot ? (
-              <>
-                <div className="grid grid-cols-2 gap-3">
-                  <Stat label="Today" value={`${d.snapshot.todayMinutes}m`} hint="study time" />
-                  <Stat label="This week" value={`${Math.round(d.snapshot.weeklyMinutes / 60)}h`} hint="focus" />
-                  <Stat label="Planner" value={`${d.snapshot.plannerCompletionPct}%`} hint="completion" />
-                  <Stat label="Consistency" value={`${d.snapshot.streakCurrent}d`} hint="recent rhythm" />
-                  <Stat label="Confidence" value={d.snapshot.averageConfidence.toFixed(1)} hint="of 5.0" />
-                  <Stat label="Readiness" value={`${Math.round(d.snapshot.boardReadiness)}%`} hint={`${d.snapshot.readinessDelta >= 0 ? "+" : ""}${d.snapshot.readinessDelta} this week`} />
-                </div>
-                <section className="rounded-3xl bg-card p-5 shadow-soft">
-                  <h3 className="font-display text-sm font-semibold uppercase tracking-wider text-muted-foreground">
-                    Growing subjects
-                  </h3>
-                  <ul className="mt-3 space-y-2">
-                    {d.snapshot.weakSubjects.slice(0, 3).map((s) => (
-                      <li key={s.id} className="flex items-center justify-between rounded-2xl bg-background/40 p-3">
-                        <span className="text-sm font-medium text-foreground">{s.name}</span>
-                        <span className="text-[11px] text-muted-foreground">{Math.round(s.mastery)}% mastery</span>
-                      </li>
-                    ))}
-                  </ul>
-                </section>
-                {d.snapshot.recentRecoveries[0] && (
-                  <section className="rounded-3xl bg-success/5 border border-success/30 p-5">
-                    <div className="flex items-center gap-1.5 text-xs uppercase tracking-wider text-success">
-                      <Sparkles className="h-3.5 w-3.5" /> Quiet win
-                    </div>
-                    <p className="mt-2 text-sm text-foreground">
-                      {d.snapshot.recentRecoveries[0].conceptLabel} is clicking — confidence +{d.snapshot.recentRecoveries[0].delta}.
-                    </p>
-                  </section>
-                )}
-              </>
-            ) : null}
+            ) : loading || !summary ? (
+              <div className="flex justify-center py-12">
+                <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+              </div>
+            ) : (
+              <ParentSummaryView summary={summary} />
+            )}
           </TabsContent>
 
           <TabsContent value="alerts" className="mt-4 space-y-3">
@@ -118,7 +118,7 @@ function ParentPage() {
                 </div>
                 {d.alerts.length === 0 ? (
                   <div className="rounded-2xl bg-card p-4 text-sm text-muted-foreground shadow-soft">
-                    All quiet — no alerts today. That's a good thing.
+                    All quiet — no alerts today. That&apos;s a good thing.
                   </div>
                 ) : (
                   d.alerts.map((a) => (
@@ -143,10 +143,14 @@ function ParentPage() {
                   <MiniMetric label="Planner" value={`${d.latestReport.plannerCompletionPct}%`} />
                   <MiniMetric label="Mocks" value={`${d.latestReport.mockExamsAttempted}`} />
                 </div>
-                <h3 className="mt-5 text-xs font-semibold uppercase tracking-wider text-muted-foreground">Strengths</h3>
+                <h3 className="mt-5 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                  Strengths
+                </h3>
                 <ul className="mt-2 space-y-1.5">
                   {d.latestReport.strengths.map((s, i) => (
-                    <li key={i} className="rounded-xl bg-success/5 px-3 py-2 text-sm text-foreground">• {s}</li>
+                    <li key={i} className="rounded-xl bg-success/5 px-3 py-2 text-sm text-foreground">
+                      • {s}
+                    </li>
                   ))}
                 </ul>
                 {d.latestReport.weakChapters.length > 0 && (
@@ -168,10 +172,16 @@ function ParentPage() {
                 </h3>
                 <ul className="mt-2 space-y-1.5">
                   {d.latestReport.parentSuggestions.map((s, i) => (
-                    <li key={i} className="rounded-xl bg-primary/5 px-3 py-2 text-sm text-foreground">💡 {s}</li>
+                    <li key={i} className="rounded-xl bg-primary/5 px-3 py-2 text-sm text-foreground">
+                      💡 {s}
+                    </li>
                   ))}
                 </ul>
-                <Button onClick={() => void d.regenerateWeeklyReport()} variant="outline" className="mt-4 h-10 w-full rounded-2xl text-xs">
+                <Button
+                  onClick={() => void d.regenerateWeeklyReport()}
+                  variant="outline"
+                  className="mt-4 h-10 w-full rounded-2xl text-xs"
+                >
                   <RefreshCw className="mr-1 h-3.5 w-3.5" /> Refresh report
                 </Button>
               </section>
@@ -184,6 +194,7 @@ function ParentPage() {
 
           <TabsContent value="connect" className="mt-4 space-y-4">
             <ParentConnectPanel onLinked={() => setTab("overview")} />
+            <ShareProgressPanel />
             <StudentInvitePanel />
             {d.linkedStudents.length > 0 && (
               <section className="rounded-3xl bg-card p-5 shadow-soft">
@@ -192,7 +203,10 @@ function ParentPage() {
                 </h3>
                 <ul className="mt-3 space-y-2">
                   {d.linkedStudents.map((l) => (
-                    <li key={l.studentUid} className="flex items-center justify-between rounded-2xl bg-background/40 p-3">
+                    <li
+                      key={l.studentUid}
+                      className="flex items-center justify-between rounded-2xl bg-background/40 p-3"
+                    >
                       <div>
                         <div className="text-sm font-semibold text-foreground">
                           {l.studentName ?? "Linked student"}
@@ -201,7 +215,9 @@ function ParentPage() {
                           Linked {new Date(l.linkedAt).toLocaleDateString()}
                         </div>
                       </div>
-                      <Badge variant="secondary" className="text-[10px]">{l.status}</Badge>
+                      <Badge variant="secondary" className="text-[10px]">
+                        {l.status}
+                      </Badge>
                     </li>
                   ))}
                 </ul>
@@ -215,13 +231,67 @@ function ParentPage() {
   );
 }
 
-function Stat({ label, value, hint }: { label: string; value: string; hint?: string }) {
+function ShareProgressPanel() {
+  const { user } = useAuth();
+  const engines = useAuraEngines();
+  const [shareUrl, setShareUrl] = useState<string | null>(null);
+  const [busy, setBusy] = useState(false);
+  const [copied, setCopied] = useState(false);
+
+  const createShareLink = async () => {
+    if (!user || !engines.profile) return;
+    setBusy(true);
+    try {
+      const summary = buildParentSummary(engines.profile, engines);
+      const saved = await saveParentShare(user.uid, summary);
+      const url = buildShareUrl(saved.token);
+      setShareUrl(url);
+      toast.success("Share link created — valid for 30 days");
+    } catch (err) {
+      console.error(err);
+      toast.error("Could not create share link");
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const copy = async () => {
+    if (!shareUrl) return;
+    try {
+      await navigator.clipboard.writeText(shareUrl);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1500);
+    } catch {
+      toast.error("Could not copy link");
+    }
+  };
+
   return (
-    <div className="rounded-2xl bg-card p-4 shadow-soft">
-      <div className="text-[10px] uppercase tracking-wider text-muted-foreground">{label}</div>
-      <div className="mt-1 font-display text-xl font-bold text-foreground">{value}</div>
-      {hint && <div className="text-[10px] text-muted-foreground">{hint}</div>}
-    </div>
+    <section className="rounded-3xl bg-card p-5 shadow-soft">
+      <h3 className="flex items-center gap-1.5 font-display text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+        <Share2 className="h-3.5 w-3.5" /> Share progress link
+      </h3>
+      <p className="mt-2 text-sm text-muted-foreground">
+        Create a calm summary link for parents — no raw scores or anxiety metrics included.
+      </p>
+      {shareUrl ? (
+        <div className="mt-3 space-y-2">
+          <Input readOnly value={shareUrl} className="rounded-2xl text-xs" />
+          <Button onClick={() => void copy()} variant="outline" className="h-9 w-full rounded-2xl text-xs">
+            {copied ? <Check className="mr-1 h-3.5 w-3.5" /> : <Copy className="mr-1 h-3.5 w-3.5" />}
+            {copied ? "Copied" : "Copy link"}
+          </Button>
+        </div>
+      ) : (
+        <Button
+          onClick={() => void createShareLink()}
+          disabled={busy || !user}
+          className="press mt-3 h-10 w-full rounded-2xl text-sm"
+        >
+          {busy ? "Creating…" : "Create share link"}
+        </Button>
+      )}
+    </section>
   );
 }
 
@@ -241,7 +311,13 @@ function AlertCard({ alert, onMarkRead }: { alert: ParentAlertDoc; onMarkRead: (
     celebration: "border-success/30 bg-success/5",
   };
   return (
-    <article className={cn("rounded-3xl border p-4 shadow-soft", tone[alert.severity], alert.read && "opacity-60")}>
+    <article
+      className={cn(
+        "rounded-3xl border p-4 shadow-soft",
+        tone[alert.severity],
+        alert.read && "opacity-60",
+      )}
+    >
       <div className="flex items-start justify-between gap-3">
         <div className="flex items-center gap-1.5 text-xs uppercase tracking-wider text-muted-foreground">
           <Bell className="h-3.5 w-3.5" /> {alert.kind.replace(/_/g, " ")}
@@ -252,10 +328,12 @@ function AlertCard({ alert, onMarkRead }: { alert: ParentAlertDoc; onMarkRead: (
           </button>
         )}
       </div>
-      <h3 className="mt-2 font-display text-base font-semibold leading-snug text-foreground">{alert.title}</h3>
+      <h3 className="mt-2 font-display text-base font-semibold leading-snug text-foreground">
+        {alert.title}
+      </h3>
       <p className="mt-1 text-sm text-foreground/80">{alert.body}</p>
       {alert.suggestion && (
-        <p className="mt-2 rounded-2xl bg-background/40 px-3 py-2 text-[12px] leading-snug text-foreground">
+        <p className="mt-2 rounded-2xl bg-background/40 px-3 py-2 text-[12px] leading-snug">
           💡 {alert.suggestion}
         </p>
       )}
@@ -269,10 +347,10 @@ function EmptyConnect({ onGo }: { onGo: () => void }) {
       <Users className="mx-auto h-8 w-8 text-primary" />
       <h3 className="mt-3 font-display text-lg font-bold">Connect with your child</h3>
       <p className="mt-1 text-sm text-muted-foreground">
-        Ask them to share their 8-character Aura invite code.
+        Ask them to share their Aura invite code or progress link.
       </p>
       <Button onClick={onGo} className="press mt-4 h-11 rounded-2xl">
-        <LinkIcon className="mr-1 h-4 w-4" /> Enter code
+        <LinkIcon className="mr-1 h-4 w-4" /> Connect
       </Button>
     </section>
   );
@@ -290,7 +368,7 @@ function ParentConnectPanel({ onLinked }: { onLinked: () => void }) {
     const res = await d.linkWithCode(code, name || undefined);
     setBusy(false);
     if (res.ok) {
-      toast.success("Linked! You'll now see calm daily insights.");
+      toast.success("Linked! You'll now see a calm progress summary.");
       setCode("");
       onLinked();
     } else {
@@ -301,11 +379,13 @@ function ParentConnectPanel({ onLinked }: { onLinked: () => void }) {
   return (
     <section className="rounded-3xl bg-card p-5 shadow-soft">
       <h3 className="font-display text-sm font-semibold uppercase tracking-wider text-muted-foreground">
-        I'm a parent — link my child
+        I&apos;m a parent — link my child
       </h3>
       <form onSubmit={submit} className="mt-3 space-y-3">
         <div>
-          <Label htmlFor="code" className="text-xs">Invite code</Label>
+          <Label htmlFor="code" className="text-xs">
+            Invite code
+          </Label>
           <Input
             id="code"
             value={code}
@@ -316,7 +396,9 @@ function ParentConnectPanel({ onLinked }: { onLinked: () => void }) {
           />
         </div>
         <div>
-          <Label htmlFor="name" className="text-xs">Your child's name (optional)</Label>
+          <Label htmlFor="name" className="text-xs">
+            Your child&apos;s name (optional)
+          </Label>
           <Input
             id="name"
             value={name}
@@ -352,7 +434,7 @@ function StudentInvitePanel() {
   return (
     <section className="rounded-3xl bg-card p-5 shadow-soft">
       <h3 className="font-display text-sm font-semibold uppercase tracking-wider text-muted-foreground">
-        I'm the student — share with my parent
+        I&apos;m the student — share with my parent
       </h3>
       {active ? (
         <div className="mt-3 rounded-2xl bg-secondary p-4 text-center">
@@ -362,7 +444,11 @@ function StudentInvitePanel() {
           <p className="mt-1 text-[11px] text-muted-foreground">
             Expires {new Date(active.expiresAt).toLocaleDateString()}
           </p>
-          <Button onClick={() => copy(active.code)} variant="outline" className="press mt-3 h-9 rounded-2xl text-xs">
+          <Button
+            onClick={() => copy(active.code)}
+            variant="outline"
+            className="press mt-3 h-9 rounded-2xl text-xs"
+          >
             {copied ? <Check className="mr-1 h-3.5 w-3.5" /> : <Copy className="mr-1 h-3.5 w-3.5" />}
             {copied ? "Copied" : "Copy code"}
           </Button>
