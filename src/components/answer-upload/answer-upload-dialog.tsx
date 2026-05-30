@@ -16,18 +16,18 @@ import { Badge } from "@/components/ui/badge";
 import { useAnswerUpload, type StagedImage } from "@/hooks/use-answer-upload";
 import {
   AUTO_ENHANCE,
-  DEFAULT_PREPROCESSING,
+  DEFAULT_CANVAS_PREPROCESSING,
   fileToDataUrl,
-  preprocessImage,
-  type PreprocessOptions,
-} from "@/lib/image-preprocess";
+  preprocessCanvasImage,
+  type CanvasPreprocessOptions,
+} from "@/lib/imagePreprocessor";
 import type { AnswerAttemptContext } from "@/integrations/firebase/types";
 import { cn } from "@/lib/utils";
 
 type Draft = {
   id: string;
   sourceDataUrl: string;
-  options: PreprocessOptions;
+  options: CanvasPreprocessOptions;
   staged: StagedImage | null;
   processing: boolean;
 };
@@ -60,14 +60,14 @@ export function AnswerUploadDialog({
   );
 
   const reprocess = useCallback(
-    async (id: string, options: PreprocessOptions) => {
+    async (id: string, options: CanvasPreprocessOptions) => {
       setDrafts((prev) =>
         prev.map((d) => (d.id === id ? { ...d, options, processing: true } : d)),
       );
       const draft = drafts.find((d) => d.id === id);
       if (!draft) return;
       try {
-        const result = await preprocessImage(draft.sourceDataUrl, options);
+        const result = await preprocessCanvasImage(draft.sourceDataUrl, options);
         setDrafts((prev) =>
           prev.map((d) =>
             d.id === id
@@ -114,14 +114,14 @@ export function AnswerUploadDialog({
           const draft: Draft = {
             id,
             sourceDataUrl: dataUrl,
-            options: { ...DEFAULT_PREPROCESSING },
+            options: { ...DEFAULT_CANVAS_PREPROCESSING },
             staged: null,
             processing: true,
           };
           setDrafts((prev) => [...prev, draft]);
           setActiveId(id);
           // Process initial.
-          const result = await preprocessImage(dataUrl, DEFAULT_PREPROCESSING);
+          const result = await preprocessCanvasImage(dataUrl, DEFAULT_CANVAS_PREPROCESSING);
           setDrafts((prev) =>
             prev.map((d) =>
               d.id === id
@@ -336,15 +336,15 @@ function EditorPanel({
   onChange,
 }: {
   draft: Draft;
-  onChange: (opts: PreprocessOptions) => void;
+  onChange: (opts: CanvasPreprocessOptions) => void;
 }) {
   const opts = draft.options;
 
-  const update = (patch: Partial<PreprocessOptions>) =>
+  const update = (patch: Partial<CanvasPreprocessOptions>) =>
     onChange({ ...opts, ...patch });
 
   const rotate = () => {
-    const order: PreprocessOptions["rotation"][] = [0, 90, 180, 270];
+    const order: CanvasPreprocessOptions["rotation"][] = [0, 90, 180, 270];
     const next = order[(order.indexOf(opts.rotation) + 1) % 4];
     update({ rotation: next });
   };

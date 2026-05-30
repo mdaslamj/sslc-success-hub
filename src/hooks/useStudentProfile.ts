@@ -316,7 +316,16 @@ export function applyAppendSession(
   session: NewSessionInput,
 ): AuraProfileStorage {
   const { profile, masteryReadings } = stripProfileStorage(stored);
-  const nextProfile = appendSessionToProfile(profile, session);
+  let nextProfile = appendSessionToProfile(profile, session);
+
+  // Keep only last 90 days of sessions
+  const cutoff = new Date();
+  cutoff.setDate(cutoff.getDate() - 90);
+  const cutoffStr = cutoff.toISOString().split("T")[0];
+  nextProfile = {
+    ...nextProfile,
+    sessionHistory: nextProfile.sessionHistory.filter((s) => s.date >= cutoffStr),
+  };
 
   const nextReadings = { ...masteryReadings };
   if (session.subject && session.chapter && session.questionsAttempted > 0) {
