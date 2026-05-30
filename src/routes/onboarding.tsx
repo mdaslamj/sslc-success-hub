@@ -13,6 +13,7 @@ import {
   buildWeeklyScheduleFromOnboarding,
   syncWeeklyScheduleToAcademicProfile,
 } from "@/lib/availabilityEngine";
+import { joinSchoolByCode, PENDING_SCHOOL_JOIN_KEY } from "@/lib/schoolService";
 import { toast } from "sonner";
 
 const GUEST_KEY = "aura.guest.v1";
@@ -80,6 +81,12 @@ function OnboardingFlow() {
           JSON.stringify({ ...data, weeklySchedule, completedAt: Date.now() }),
         );
         syncStudentDisplayName(data.name || "Student");
+        if (data.schoolCode?.trim()) {
+          sessionStorage.setItem(
+            PENDING_SCHOOL_JOIN_KEY,
+            JSON.stringify({ code: data.schoolCode.trim() }),
+          );
+        }
         toast.success("Your plan is ready 🌱");
         navigate({ to: "/plan-reveal" });
       } finally {
@@ -129,6 +136,21 @@ function OnboardingFlow() {
       );
       await refreshProfile();
       syncStudentDisplayName(data.name || profile?.studentName || "Student");
+
+      if (data.schoolCode?.trim()) {
+        const joinResult = await joinSchoolByCode(
+          data.schoolCode.trim(),
+          user.uid,
+          data.name || profile?.studentName || profile?.displayName,
+        );
+        if (joinResult.success) {
+          await refreshProfile();
+          toast.success(`Connected to ${joinResult.school?.name ?? "your school"}`);
+        } else if (joinResult.error !== "already_joined") {
+          toast.message("School code not found — you can join later from Settings");
+        }
+      }
+
       toast.success("Your plan is ready 🌱");
       navigate({ to: "/plan-reveal" });
     } catch (err) {

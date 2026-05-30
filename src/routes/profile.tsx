@@ -42,6 +42,7 @@ import { syncStudentDisplayName } from "@/lib/student-display-name";
 import { useDisplayName } from "@/hooks/use-display-name";
 import { AuraDevResetAction } from "@/components/dev/AuraDevResetAction";
 import { GroupPlanCard } from "@/components/settings/GroupPlanCard";
+import { SchoolConnectionCard } from "@/components/settings/SchoolConnectionCard";
 import { ProfileConstellationSection } from "@/components/profile/ProfileConstellationSection";
 import { ShareWithParentCard } from "@/components/parent/ShareWithParentCard";
 import type { PreferredLanguage } from "@/integrations/firebase/types";
@@ -417,6 +418,7 @@ function SettingsCard() {
 
   return (
     <div className="space-y-4">
+      <SchoolConnectionCard />
       <GroupPlanCard />
 
       {/* Appearance */}

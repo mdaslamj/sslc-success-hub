@@ -1149,6 +1149,10 @@ export type UserProfileDoc = {
   revisionIntensity?: "light" | "balanced" | "intense";
   /** Pricing tier from school type — used at subscription checkout. */
   pricingTier?: "rural" | "semi-urban" | "urban";
+  /** Linked school — optional; students can use Aura without joining. */
+  schoolId?: string;
+  schoolCode?: string;
+  schoolName?: string;
   /** Available study minutes per weekday (0 = unavailable). */
   weeklySchedule?: {
     monday: number;

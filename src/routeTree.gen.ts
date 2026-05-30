@@ -34,6 +34,7 @@ import { Route as MockExamRouteImport } from './routes/mock-exam'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as LogRouteImport } from './routes/log'
 import { Route as JoinGroupRouteImport } from './routes/join-group'
+import { Route as JoinRouteImport } from './routes/join'
 import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
 import { Route as FocusRouteImport } from './routes/focus'
 import { Route as ExamsRouteImport } from './routes/exams'
@@ -192,6 +193,11 @@ const LogRoute = LogRouteImport.update({
 const JoinGroupRoute = JoinGroupRouteImport.update({
   id: '/join-group',
   path: '/join-group',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const JoinRoute = JoinRouteImport.update({
+  id: '/join',
+  path: '/join',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ForgotPasswordRoute = ForgotPasswordRouteImport.update({
@@ -384,6 +390,7 @@ export interface FileRoutesByFullPath {
   '/exams': typeof ExamsRouteWithChildren
   '/focus': typeof FocusRoute
   '/forgot-password': typeof ForgotPasswordRoute
+  '/join': typeof JoinRoute
   '/join-group': typeof JoinGroupRoute
   '/log': typeof LogRoute
   '/login': typeof LoginRoute
@@ -445,6 +452,7 @@ export interface FileRoutesByTo {
   '/exams': typeof ExamsRouteWithChildren
   '/focus': typeof FocusRoute
   '/forgot-password': typeof ForgotPasswordRoute
+  '/join': typeof JoinRoute
   '/join-group': typeof JoinGroupRoute
   '/log': typeof LogRoute
   '/login': typeof LoginRoute
@@ -507,6 +515,7 @@ export interface FileRoutesById {
   '/exams': typeof ExamsRouteWithChildren
   '/focus': typeof FocusRoute
   '/forgot-password': typeof ForgotPasswordRoute
+  '/join': typeof JoinRoute
   '/join-group': typeof JoinGroupRoute
   '/log': typeof LogRoute
   '/login': typeof LoginRoute
@@ -570,6 +579,7 @@ export interface FileRouteTypes {
     | '/exams'
     | '/focus'
     | '/forgot-password'
+    | '/join'
     | '/join-group'
     | '/log'
     | '/login'
@@ -631,6 +641,7 @@ export interface FileRouteTypes {
     | '/exams'
     | '/focus'
     | '/forgot-password'
+    | '/join'
     | '/join-group'
     | '/log'
     | '/login'
@@ -692,6 +703,7 @@ export interface FileRouteTypes {
     | '/exams'
     | '/focus'
     | '/forgot-password'
+    | '/join'
     | '/join-group'
     | '/log'
     | '/login'
@@ -754,6 +766,7 @@ export interface RootRouteChildren {
   ExamsRoute: typeof ExamsRouteWithChildren
   FocusRoute: typeof FocusRoute
   ForgotPasswordRoute: typeof ForgotPasswordRoute
+  JoinRoute: typeof JoinRoute
   JoinGroupRoute: typeof JoinGroupRoute
   LogRoute: typeof LogRoute
   LoginRoute: typeof LoginRoute
@@ -965,6 +978,13 @@ declare module '@tanstack/react-router' {
       path: '/join-group'
       fullPath: '/join-group'
       preLoaderRoute: typeof JoinGroupRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/join': {
+      id: '/join'
+      path: '/join'
+      fullPath: '/join'
+      preLoaderRoute: typeof JoinRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/forgot-password': {
@@ -1347,6 +1367,7 @@ const rootRouteChildren: RootRouteChildren = {
   ExamsRoute: ExamsRouteWithChildren,
   FocusRoute: FocusRoute,
   ForgotPasswordRoute: ForgotPasswordRoute,
+  JoinRoute: JoinRoute,
   JoinGroupRoute: JoinGroupRoute,
   LogRoute: LogRoute,
   LoginRoute: LoginRoute,
@@ -1385,3 +1406,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}

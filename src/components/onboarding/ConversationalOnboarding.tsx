@@ -43,6 +43,7 @@ export type ConversationalAnswers = {
   worriedSubject: string;
   schoolType?: PricingTier;
   startingLevel: "just_starting" | "some_chapters" | "well_prepared";
+  schoolCode?: string;
 };
 
 export type OnboardingMappedState = {
@@ -57,6 +58,7 @@ export type OnboardingMappedState = {
   unavailableDays?: string[];
   startingLevel?: ConversationalAnswers["startingLevel"];
   pricingTier?: PricingTier;
+  schoolCode?: string;
 };
 
 type Props = {
@@ -112,6 +114,7 @@ export function mapConversationalToState(
     unavailableDays: answers.unavailableDays,
     startingLevel: answers.startingLevel,
     pricingTier: answers.schoolType ?? "urban",
+    schoolCode: answers.schoolCode,
   };
 }
 
@@ -141,7 +144,11 @@ function buildAuraResponse(
       }
     }
     case 5:
-      return "Perfect. I've built your first week around where you actually are.";
+      return "Got it. One optional step — connect to your school if you have a code.";
+    case 6:
+      return answers.schoolCode
+        ? "Great — I'll link you to your school after you sign in."
+        : "No problem — you can join your school anytime from Settings.";
     default:
       return "";
   }
@@ -154,6 +161,7 @@ const QUESTIONS = [
   "Which subject worries you most right now?",
   "One last thing — what type of school are you in? This helps us set the right plan for you.",
   "Have you started studying for boards or are you starting fresh?",
+  "Does your school use Aura? Enter your school code to connect with your teachers. Skip if you are not sure.",
 ];
 
 export function ConversationalOnboarding({ defaultName, saving, onComplete }: Props) {
@@ -166,8 +174,9 @@ export function ConversationalOnboarding({ defaultName, saving, onComplete }: Pr
   const [examDateDraft, setExamDateDraft] = useState("2026-03-25");
   const [selectedDays, setSelectedDays] = useState<string[]>([]);
   const [transitioning, setTransitioning] = useState(false);
+  const [schoolCodeDraft, setSchoolCodeDraft] = useState("");
 
-  const progress = Math.min(questionIndex + (showInput ? 0 : 1), 6);
+  const progress = Math.min(questionIndex + (showInput ? 0 : 1), 7);
 
   const appendMessage = useCallback((role: ChatMessage["role"], text: string) => {
     setMessages((prev) => [
@@ -185,7 +194,7 @@ export function ConversationalOnboarding({ defaultName, saving, onComplete }: Pr
       appendMessage("aura", response);
 
       window.setTimeout(() => {
-        if (answeredIndex >= 5) {
+        if (answeredIndex >= 6) {
           onComplete(
             mapConversationalToState(nextAnswers as ConversationalAnswers, defaultName),
           );
@@ -262,6 +271,32 @@ export function ConversationalOnboarding({ defaultName, saving, onComplete }: Pr
     setAnswers(next);
     appendMessage("student", LEVEL_OPTIONS.find((l) => l.id === level)?.label ?? level);
     advanceAfterResponse(next, 5);
+  };
+
+  const finishWithSchoolAnswers = (next: Partial<ConversationalAnswers>, answeredIndex: number) => {
+    setTransitioning(true);
+    setShowInput(false);
+    const response = buildAuraResponse(answeredIndex, next);
+    appendMessage("aura", response);
+    window.setTimeout(() => {
+      onComplete(mapConversationalToState(next as ConversationalAnswers, defaultName));
+    }, 1200);
+  };
+
+  const handleSchoolConnect = () => {
+    if (transitioning) return;
+    const code = schoolCodeDraft.trim().toUpperCase();
+    if (code.length < 3) return;
+    const next = { ...answers, schoolCode: code };
+    setAnswers(next);
+    appendMessage("student", code);
+    finishWithSchoolAnswers(next, 6);
+  };
+
+  const handleSchoolSkip = () => {
+    if (transitioning) return;
+    appendMessage("student", "Skip for now");
+    finishWithSchoolAnswers(answers, 6);
   };
 
   const inputBlock = (() => {
@@ -367,6 +402,32 @@ export function ConversationalOnboarding({ defaultName, saving, onComplete }: Pr
             ))}
           </div>
         );
+      case 6:
+        return (
+          <div className="space-y-3 fade-in">
+            <input
+              type="text"
+              value={schoolCodeDraft}
+              onChange={(e) => setSchoolCodeDraft(e.target.value.toUpperCase())}
+              maxLength={16}
+              placeholder="KAR-BGM"
+              className="w-full rounded-xl border px-4 py-3 text-sm uppercase tracking-wider text-white outline-none"
+              style={{
+                background: "#14141F",
+                borderColor: "rgba(255,255,255,0.1)",
+                fontFamily: "'JetBrains Mono', monospace",
+              }}
+            />
+            <AnswerButton onClick={handleSchoolConnect}>Connect to school</AnswerButton>
+            <button
+              type="button"
+              onClick={handleSchoolSkip}
+              className="w-full py-2 text-center text-sm text-white/60 underline-offset-2 hover:text-white/80 hover:underline"
+            >
+              Skip for now
+            </button>
+          </div>
+        );
       default:
         return null;
     }
@@ -465,10 +526,10 @@ export function ConversationalOnboarding({ defaultName, saving, onComplete }: Pr
 
         <div className="flex flex-col items-center gap-2 pt-4">
           <p className="text-xs text-white/55">
-            {Math.min(progress, 6)} of 6
+            {Math.min(progress, 7)} of 7
           </p>
           <div className="flex gap-2">
-            {Array.from({ length: 6 }).map((_, i) => (
+            {Array.from({ length: 7 }).map((_, i) => (
               <span
                 key={i}
                 className="h-2 w-2 rounded-full transition-colors"

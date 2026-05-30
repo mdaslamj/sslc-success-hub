@@ -2,15 +2,19 @@ import { deleteApp, initializeApp } from "firebase/app";
 import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
 import {
   collection,
+  deleteDoc,
+  deleteField,
   doc,
   getDoc,
   getDocs,
   getFirestore,
+  limit,
   query,
   setDoc,
   updateDoc,
   where,
 } from "firebase/firestore";
+import { patchUserProfile } from "@/integrations/firebase/services/users";
 import {
   COLLECTIONS,
   db,
@@ -31,6 +35,13 @@ const USER_PROFILES = COLLECTIONS.USER_PROFILES;
 const CODE_CHARS = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
 
 export const SCHOOL_WELCOME_STORAGE_KEY = "aura_school_welcome.v1";
+export const PENDING_SCHOOL_JOIN_KEY = "aura.pending_school_join.v1";
+
+export type JoinSchoolResult = {
+  success: boolean;
+  school?: School;
+  error?: string;
+};
 
 export type CreateSchoolResult = {
   schoolId: string;
@@ -188,6 +199,91 @@ export async function getSchoolByCode(code: string): Promise<School | null> {
   const snap = await getDocs(q);
   if (snap.empty) return null;
   return snap.docs[0].data() as School;
+}
+
+/** Exact match first, then prefix match for short codes (e.g. KAR-BGM). */
+export async function resolveSchoolByCode(code: string): Promise<School | null> {
+  const normalized = code.trim().toUpperCase().replace(/\s/g, "");
+  if (!normalized) return null;
+
+  const exact = await getSchoolByCode(normalized);
+  if (exact) return exact;
+
+  const prefixQ = query(
+    collection(db, SCHOOLS),
+    where("schoolCode", ">=", normalized),
+    where("schoolCode", "<=", `${normalized}\uf8ff`),
+    limit(5),
+  );
+  const prefixSnap = await getDocs(prefixQ);
+  if (prefixSnap.empty) return null;
+
+  const matches = prefixSnap.docs
+    .map((d) => d.data() as School)
+    .filter((s) => s.schoolCode.startsWith(normalized));
+
+  if (matches.length === 1) return matches[0]!;
+  return null;
+}
+
+export async function joinSchoolByCode(
+  code: string,
+  studentUid: string,
+  studentName?: string,
+): Promise<JoinSchoolResult> {
+  const school = await resolveSchoolByCode(code);
+  if (!school) {
+    return { success: false, error: "School code not found" };
+  }
+
+  const schoolId = school.schoolId;
+  const studentRef = doc(db, SCHOOL_STUDENTS, schoolId, STUDENTS_SUB, studentUid);
+  const existingSnap = await getDoc(studentRef);
+
+  if (existingSnap.exists()) {
+    return { success: false, error: "already_joined", school };
+  }
+
+  const now = new Date().toISOString();
+  const payload: SchoolStudent = {
+    uid: studentUid,
+    name: studentName?.trim() || "Student",
+    joinedAt: now,
+    sharingLevel: 2,
+    subjectSharing: defaultSubjectSharing(),
+    consentGiven: true,
+    consentAt: now,
+    parentConsentGiven: false,
+  };
+
+  await setDoc(studentRef, payload);
+
+  await patchUserProfile(studentUid, {
+    schoolId,
+    schoolCode: school.schoolCode,
+    schoolName: school.name,
+  });
+
+  return { success: true, school };
+}
+
+export async function leaveSchool(studentUid: string, schoolId: string): Promise<void> {
+  await deleteDoc(doc(db, SCHOOL_STUDENTS, schoolId, STUDENTS_SUB, studentUid));
+  await updateDoc(doc(db, USER_PROFILES, studentUid), {
+    schoolId: deleteField(),
+    schoolCode: deleteField(),
+    schoolName: deleteField(),
+    updatedAt: Date.now(),
+  });
+}
+
+export async function getStudentSchoolMembership(
+  studentUid: string,
+  schoolId: string,
+): Promise<SchoolStudent | null> {
+  const snap = await getDoc(doc(db, SCHOOL_STUDENTS, schoolId, STUDENTS_SUB, studentUid));
+  if (!snap.exists()) return null;
+  return snap.data() as SchoolStudent;
 }
 
 export async function getSchoolBySharedLoginUid(uid: string): Promise<School | null> {

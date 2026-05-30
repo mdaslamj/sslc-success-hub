@@ -809,7 +809,8 @@ service cloud.firestore {
     // -----------------------------------------------------------------------
 
     match /schools/{schoolId} {
-      allow read: if isSchoolAccountOf(schoolId);
+      allow get: if true;
+      allow list: if request.query.limit <= 5;
       allow create: if isSignedIn()
         && request.resource.data.sharedLoginUid == request.auth.uid
         && request.resource.data.adminUid == request.auth.uid

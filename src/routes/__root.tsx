@@ -275,6 +275,7 @@ const PUBLIC_PATHS = new Set([
   "/seed",
   "/privacy",
   "/join-group",
+  "/join",
   "/school-setup",
 ]);
 
