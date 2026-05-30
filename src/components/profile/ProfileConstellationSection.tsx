@@ -20,7 +20,7 @@ export function ProfileConstellationSection() {
   if (isLoading) {
     return (
       <div
-        className="flex h-[360px] items-center justify-center rounded-2xl border border-[rgba(255,255,255,0.06)] bg-[#08080E] text-sm text-[rgba(240,240,248,0.55)]"
+        className="flex h-[360px] items-center justify-center rounded-2xl border border-[rgba(255,255,255,0.06)] bg-[#08080E] text-sm text-[rgba(240,240,248,0.70)]"
         aria-busy="true"
       >
         Loading constellation…

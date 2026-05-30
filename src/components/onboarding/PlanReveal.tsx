@@ -168,7 +168,7 @@ export function PlanReveal({
           <h1 className="text-2xl font-bold tracking-tight">
             Your plan is ready, {studentName || "Student"}
           </h1>
-          <p className="mt-2 text-sm" style={{ color: "rgba(240,240,248,0.55)" }}>
+          <p className="mt-2 text-sm" style={{ color: "rgba(240,240,248,0.70)" }}>
             Here is what Aura built based on your answers
           </p>
         </header>
@@ -181,7 +181,7 @@ export function PlanReveal({
             <p className="mt-1 text-lg font-semibold">
               Board exam in {daysToExam} days
             </p>
-            <p className="mt-1 text-sm" style={{ color: "rgba(240,240,248,0.55)" }}>
+            <p className="mt-1 text-sm" style={{ color: "rgba(240,240,248,0.70)" }}>
               {formatExamDate(examDate)} — {weeks} weeks of preparation
             </p>
           </CardShell>
@@ -194,7 +194,7 @@ export function PlanReveal({
             {topTask ? (
               <>
                 <p className="mt-2 text-sm font-medium">{topTask.title}</p>
-                <p className="mt-1 text-xs" style={{ color: "rgba(240,240,248,0.55)" }}>
+                <p className="mt-1 text-xs" style={{ color: "rgba(240,240,248,0.70)" }}>
                   {topTask.subject} · {topTask.time}
                 </p>
                 {topTask.whyText ? (
@@ -204,7 +204,7 @@ export function PlanReveal({
                 ) : null}
               </>
             ) : (
-              <p className="mt-2 text-sm" style={{ color: "rgba(240,240,248,0.55)" }}>
+              <p className="mt-2 text-sm" style={{ color: "rgba(240,240,248,0.70)" }}>
                 Open the planner to see your ranked sessions.
               </p>
             )}
@@ -217,7 +217,7 @@ export function PlanReveal({
             <p className="mt-1 text-lg font-semibold">
               Starting with {worriedLabel}
             </p>
-            <p className="mt-2 text-sm leading-relaxed" style={{ color: "rgba(240,240,248,0.55)" }}>
+            <p className="mt-2 text-sm leading-relaxed" style={{ color: "rgba(240,240,248,0.70)" }}>
               You told us this worries you most — we have prioritised it in your plan
             </p>
           </CardShell>
@@ -229,10 +229,10 @@ export function PlanReveal({
             <p className="mt-1 text-lg font-semibold">
               Study plan: {sessionsPerDay} session{sessionsPerDay === 1 ? "" : "s"} per day
             </p>
-            <p className="mt-2 text-sm" style={{ color: "rgba(240,240,248,0.55)" }}>
+            <p className="mt-2 text-sm" style={{ color: "rgba(240,240,248,0.70)" }}>
               Available: {availableDays.length ? availableDays.join(", ") : "Every day"}
             </p>
-            <p className="mt-1 text-sm" style={{ color: "rgba(240,240,248,0.55)" }}>
+            <p className="mt-1 text-sm" style={{ color: "rgba(240,240,248,0.70)" }}>
               Rest days: {restDays.length ? restDays.join(", ") : "None"}
             </p>
           </CardShell>
@@ -243,7 +243,7 @@ export function PlanReveal({
             </p>
             <p className="mt-1 text-lg font-semibold">{pricing.school}</p>
             <p className="mt-2 text-sm font-medium">{pricing.price}</p>
-            <p className="mt-1 text-sm" style={{ color: "rgba(240,240,248,0.55)" }}>
+            <p className="mt-1 text-sm" style={{ color: "rgba(240,240,248,0.70)" }}>
               Free for now — upgrade when ready
             </p>
           </CardShell>
@@ -262,7 +262,7 @@ export function PlanReveal({
             type="button"
             onClick={onSkip}
             className="w-full py-2 text-sm transition-colors hover:text-white"
-            style={{ color: "rgba(240,240,248,0.45)" }}
+            style={{ color: "rgba(240,240,248,0.55)" }}
           >
             Explore Aura first
           </button>

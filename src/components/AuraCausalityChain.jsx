@@ -17,7 +17,7 @@ function AuraCausalityChain({ chain, onDismiss, className = "" }) {
     >
       <div className="mb-4 flex items-start justify-between gap-3">
         <div className="min-w-0">
-          <p className="text-[10px] font-bold uppercase tracking-[0.08em] text-[rgba(240,240,248,0.55)]">
+          <p className="text-[10px] font-bold uppercase tracking-[0.08em] text-[rgba(240,240,248,0.70)]">
             Adaptive loop
           </p>
           <p className="mt-1 text-sm leading-snug text-[rgba(240,240,248,0.88)]">
@@ -29,7 +29,7 @@ function AuraCausalityChain({ chain, onDismiss, className = "" }) {
             type="button"
             variant="ghost"
             size="icon"
-            className="h-8 w-8 shrink-0 text-[rgba(240,240,248,0.55)] hover:text-foreground"
+            className="h-8 w-8 shrink-0 text-[rgba(240,240,248,0.70)] hover:text-foreground"
             onClick={onDismiss}
             aria-label="Dismiss summary"
           >
@@ -60,7 +60,7 @@ function AuraCausalityChain({ chain, onDismiss, className = "" }) {
                 {node.icon}
               </span>
               <div className="min-w-0 flex-1 pt-0.5">
-                <p className="text-[11px] font-medium uppercase tracking-wide text-[rgba(240,240,248,0.55)]">
+                <p className="text-[11px] font-medium uppercase tracking-wide text-[rgba(240,240,248,0.70)]">
                   {node.label}
                 </p>
                 <p

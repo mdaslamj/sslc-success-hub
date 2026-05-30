@@ -352,7 +352,7 @@ export function ConversationalOnboarding({ defaultName, saving, onComplete }: Pr
             {SCHOOL_OPTIONS.map((opt) => (
               <AnswerButton key={opt.tier} onClick={() => handleSchoolSelect(opt.tier)}>
                 <span className="block font-medium">{opt.label}</span>
-                <span className="mt-0.5 block text-xs text-white/50">{opt.price}</span>
+                <span className="mt-0.5 block text-xs text-white/60">{opt.price}</span>
               </AnswerButton>
             ))}
           </div>
@@ -416,7 +416,7 @@ export function ConversationalOnboarding({ defaultName, saving, onComplete }: Pr
           </span>
           <div>
             <p className="text-sm font-semibold text-white">Aura</p>
-            <p className="text-xs text-white/50">Your study companion</p>
+            <p className="text-xs text-white/60">Your study companion</p>
           </div>
         </div>
 
@@ -464,7 +464,7 @@ export function ConversationalOnboarding({ defaultName, saving, onComplete }: Pr
         </div>
 
         <div className="flex flex-col items-center gap-2 pt-4">
-          <p className="text-xs text-white/40">
+          <p className="text-xs text-white/55">
             {Math.min(progress, 6)} of 6
           </p>
           <div className="flex gap-2">

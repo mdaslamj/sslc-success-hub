@@ -158,7 +158,7 @@ function EvaluatePage() {
           />
         </div>
         {continuing ? (
-          <p className="mt-4 text-xs text-white/45">Finishing your results…</p>
+          <p className="mt-4 text-xs text-white/55">Finishing your results…</p>
         ) : null}
       </div>
     );
@@ -211,7 +211,7 @@ function EvaluatePage() {
       </header>
 
       <section className="mt-6">
-        <p className="text-xs font-semibold uppercase tracking-wide text-white/45">Subject</p>
+        <p className="text-xs font-semibold uppercase tracking-wide text-white/55">Subject</p>
         <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-3">
           {SUBJECTS.map((subject) => (
             <button
@@ -232,7 +232,7 @@ function EvaluatePage() {
               </span>
               <span className="mt-1 block font-semibold">{subject.label}</span>
               {!subject.enabled ? (
-                <span className="mt-0.5 block text-[10px] text-white/45">Coming soon</span>
+                <span className="mt-0.5 block text-[10px] text-white/55">Coming soon</span>
               ) : null}
             </button>
           ))}
@@ -240,7 +240,7 @@ function EvaluatePage() {
       </section>
 
       <section className="mt-6">
-        <p className="text-xs font-semibold uppercase tracking-wide text-white/45">Exam type</p>
+        <p className="text-xs font-semibold uppercase tracking-wide text-white/55">Exam type</p>
         <div className="mt-3 flex flex-wrap gap-2">
           {EXAM_TYPES.map((type) => (
             <button

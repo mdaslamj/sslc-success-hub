@@ -196,7 +196,7 @@ function AuraConstellation({
 
   return (
     <section className="w-full">
-      <p className="mb-3 text-center text-[10px] font-bold uppercase tracking-[0.08em] text-[rgba(240,240,248,0.55)]">
+      <p className="mb-3 text-center text-[10px] font-bold uppercase tracking-[0.08em] text-[rgba(240,240,248,0.70)]">
         Your constellation
       </p>
 
@@ -281,7 +281,7 @@ function AuraConstellation({
               x={160}
               y={160}
               dy={14}
-              fill="rgba(240,240,248,0.55)"
+              fill="rgba(240,240,248,0.70)"
               fontSize="7"
               textAnchor="middle"
               style={{ fontFamily: "JetBrains Mono, monospace" }}
@@ -314,7 +314,7 @@ function AuraConstellation({
                 className="h-2 w-2 shrink-0 rounded-full"
                 style={{ backgroundColor: subjectColor }}
               />
-              <span className="truncate text-[10px] text-[rgba(240,240,248,0.55)]">{short}</span>
+              <span className="truncate text-[10px] text-[rgba(240,240,248,0.70)]">{short}</span>
               <span
                 className="text-[11px] font-semibold tabular-nums"
                 style={{ fontFamily: "JetBrains Mono, monospace", color: subjectColor }}
@@ -326,7 +326,7 @@ function AuraConstellation({
         })}
       </div>
 
-      <p className="mt-3 text-center text-xs italic text-[rgba(240,240,248,0.55)]">{contextLine}</p>
+      <p className="mt-3 text-center text-xs italic text-[rgba(240,240,248,0.70)]">{contextLine}</p>
     </section>
   );
 }

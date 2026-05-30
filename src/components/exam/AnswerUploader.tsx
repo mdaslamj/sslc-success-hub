@@ -177,7 +177,7 @@ export default function AnswerUploader({ subjectId, examType, onPagesReady, onCa
     <div className="mx-auto w-full max-w-lg px-4 py-5 pb-28" style={shellStyle}>
       <div className="flex items-center justify-between gap-3">
         <div>
-          <p className="text-xs uppercase tracking-wide text-white/45">Answer pages</p>
+          <p className="text-xs uppercase tracking-wide text-white/55">Answer pages</p>
           <p className="text-lg font-semibold text-white">
             Page {pages.length + 1} of {pages.length > 0 ? `${pages.length}+` : "?"}
           </p>
@@ -212,7 +212,7 @@ export default function AnswerUploader({ subjectId, examType, onPagesReady, onCa
           <Camera className="h-7 w-7" />
         </span>
         <span className="text-base font-semibold text-white">Tap to photograph page</span>
-        <span className="text-xs text-white/50">Opens your phone camera</span>
+        <span className="text-xs text-white/60">Opens your phone camera</span>
       </button>
 
       {previews.length > 0 ? (

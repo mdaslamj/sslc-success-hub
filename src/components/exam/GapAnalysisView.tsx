@@ -89,9 +89,9 @@ export default function GapAnalysisView({ report }: Props) {
                   <h3 className="text-sm font-semibold">{config.title(count)}</h3>
                 </div>
                 <p className="mt-2 text-sm text-white/70">{config.explanation}</p>
-                <p className="mt-2 text-xs text-white/55">{config.action}</p>
+                <p className="mt-2 text-xs text-white/70">{config.action}</p>
                 {weakChapters.length > 0 ? (
-                  <p className="mt-2 text-[11px] text-white/40">
+                  <p className="mt-2 text-[11px] text-white/55">
                     Chapters: {weakChapters.map(formatChapterLabel).join(", ")}
                   </p>
                 ) : null}
@@ -103,7 +103,7 @@ export default function GapAnalysisView({ report }: Props) {
 
       {weakChapters.length > 0 ? (
         <div className="border-t border-white/[0.06] pt-4">
-          <p className="text-xs font-semibold uppercase tracking-wide text-white/45">
+          <p className="text-xs font-semibold uppercase tracking-wide text-white/55">
             Added to your plan
           </p>
           <p className="mt-1 text-sm text-white/65">

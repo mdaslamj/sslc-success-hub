@@ -88,10 +88,10 @@ export default function EvaluationResults({
               {report.scoredMarks}/{report.totalMarks}
             </p>
             <p className="mt-1 font-mono text-lg text-white/70">{report.percentage}%</p>
-            <p className="mt-3 text-sm text-white/55">
+            <p className="mt-3 text-sm text-white/70">
               {subjectLabel} · {EXAM_LABELS[report.examType]}
             </p>
-            <p className="text-xs text-white/40">{report.date}</p>
+            <p className="text-xs text-white/55">{report.date}</p>
           </div>
           <div
             className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full border-2 text-xl font-bold"
@@ -134,7 +134,7 @@ export default function EvaluationResults({
             key={tile.label}
             className="rounded-xl border border-white/[0.06] bg-[#0F0F18] px-2 py-3 text-center"
           >
-            <p className="text-[10px] uppercase tracking-wide text-white/40">{tile.label}</p>
+            <p className="text-[10px] uppercase tracking-wide text-white/55">{tile.label}</p>
             <p className="mt-1 text-xs font-semibold leading-snug text-white">{tile.value}</p>
           </div>
         ))}
@@ -142,7 +142,7 @@ export default function EvaluationResults({
 
       {/* SECTION 3 — Per-question breakdown */}
       <section className="space-y-3">
-        <h2 className="text-sm font-semibold uppercase tracking-wide text-white/45">
+        <h2 className="text-sm font-semibold uppercase tracking-wide text-white/55">
           Question breakdown
         </h2>
         {report.questionResults.map((question) => {
@@ -154,7 +154,7 @@ export default function EvaluationResults({
             >
               <div className="flex flex-wrap items-start justify-between gap-2">
                 <div className="flex flex-wrap items-center gap-2">
-                  <span className="text-xs font-bold uppercase text-white/50">
+                  <span className="text-xs font-bold uppercase text-white/60">
                     {question.questionId}
                   </span>
                   {badge ? (
@@ -216,7 +216,7 @@ export default function EvaluationResults({
               ) : null}
 
               {question.teacherMark != null && !question.marksMatch ? (
-                <p className="mt-2 text-[11px] text-white/40">
+                <p className="mt-2 text-[11px] text-white/55">
                   Teacher: {question.teacherMark}/{question.marksTotal} · Aura:{" "}
                   {question.marksAwarded}/{question.marksTotal} · Under review
                 </p>
@@ -229,7 +229,7 @@ export default function EvaluationResults({
       {/* SECTION 4 — Mastery updates */}
       {report.masteryUpdates.length > 0 ? (
         <section>
-          <h2 className="text-sm font-semibold uppercase tracking-wide text-white/45">
+          <h2 className="text-sm font-semibold uppercase tracking-wide text-white/55">
             Mastery updates
           </h2>
           <div className="mt-3 flex gap-2 overflow-x-auto pb-1">

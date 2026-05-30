@@ -171,7 +171,7 @@ function PlanRevealPage() {
     return (
       <div
         className="flex min-h-[100dvh] items-center justify-center text-sm"
-        style={{ background: "#08080E", color: "rgba(240,240,248,0.55)" }}
+        style={{ background: "#08080E", color: "rgba(240,240,248,0.70)" }}
       >
         Preparing your plan…
       </div>

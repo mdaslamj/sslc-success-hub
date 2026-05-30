@@ -376,7 +376,7 @@ export function AuraWarRoom() {
   if (isLoading) {
     return (
       <div
-        className="mx-auto flex min-h-[480px] w-full max-w-7xl items-center justify-center rounded-2xl border border-[rgba(255,255,255,0.06)] bg-[#08080E] text-sm text-[rgba(240,240,248,0.55)]"
+        className="mx-auto flex min-h-[480px] w-full max-w-7xl items-center justify-center rounded-2xl border border-[rgba(255,255,255,0.06)] bg-[#08080E] text-sm text-[rgba(240,240,248,0.70)]"
         aria-busy="true"
       >
         Loading exam intelligence…
@@ -390,7 +390,7 @@ export function AuraWarRoom() {
       <header className="flex flex-wrap items-start justify-between gap-4">
         <div className="min-w-0 space-y-2">
           <div className="flex flex-wrap items-center gap-2">
-            <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-[rgba(240,240,248,0.55)]">
+            <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-[rgba(240,240,248,0.70)]">
               AI Prediction
             </span>
             <span className="rounded-full border border-[rgba(248,113,113,0.35)] bg-[rgba(248,113,113,0.12)] px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-[#F87171]">
@@ -411,7 +411,7 @@ export function AuraWarRoom() {
           >
             {daysLeft}
           </div>
-          <div className="mt-1 text-[9px] font-bold uppercase tracking-[0.14em] text-[rgba(240,240,248,0.55)]">
+          <div className="mt-1 text-[9px] font-bold uppercase tracking-[0.14em] text-[rgba(240,240,248,0.70)]">
             Days left
           </div>
         </div>
@@ -419,7 +419,7 @@ export function AuraWarRoom() {
 
       {/* Hero card */}
       <section className="rounded-2xl border border-[rgba(248,113,113,0.15)] bg-[#14141F] p-5 sm:p-6">
-        <div className="text-[10px] font-bold uppercase tracking-[0.16em] text-[rgba(240,240,248,0.55)]">
+        <div className="text-[10px] font-bold uppercase tracking-[0.16em] text-[rgba(240,240,248,0.70)]">
           Total marks at risk
         </div>
         <div className="mt-2 flex flex-wrap items-end gap-3">
@@ -429,13 +429,13 @@ export function AuraWarRoom() {
           >
             {totalMarksAtRisk}
           </span>
-          <span className="pb-2 text-sm text-[rgba(240,240,248,0.55)]">
+          <span className="pb-2 text-sm text-[rgba(240,240,248,0.70)]">
             marks across / {subjectCount} subjects
           </span>
         </div>
         <div className="mt-5 grid gap-3 sm:grid-cols-2">
           <div className="rounded-xl bg-[rgba(248,113,113,0.1)] px-4 py-3">
-            <div className="text-[10px] font-bold uppercase tracking-wider text-[rgba(240,240,248,0.55)]">
+            <div className="text-[10px] font-bold uppercase tracking-wider text-[rgba(240,240,248,0.70)]">
               Critical chapters
             </div>
             <div
@@ -446,7 +446,7 @@ export function AuraWarRoom() {
             </div>
           </div>
           <div className="rounded-xl bg-[rgba(251,191,36,0.1)] px-4 py-3">
-            <div className="text-[10px] font-bold uppercase tracking-wider text-[rgba(240,240,248,0.55)]">
+            <div className="text-[10px] font-bold uppercase tracking-wider text-[rgba(240,240,248,0.70)]">
               4 sessions recovers
             </div>
             <div
@@ -469,7 +469,7 @@ export function AuraWarRoom() {
               "flex-1 border-b-2 px-4 py-3 text-sm font-semibold transition",
               tab === "ladder"
                 ? "border-[#8B5CF6] text-[#F0F0F8]"
-                : "border-transparent text-[rgba(240,240,248,0.55)] hover:text-[#F0F0F8]",
+                : "border-transparent text-[rgba(240,240,248,0.70)] hover:text-[#F0F0F8]",
             )}
           >
             Chapter Recovery Ladder
@@ -481,7 +481,7 @@ export function AuraWarRoom() {
               "flex-1 border-b-2 px-4 py-3 text-sm font-semibold transition",
               tab === "probability"
                 ? "border-[#8B5CF6] text-[#F0F0F8]"
-                : "border-transparent text-[rgba(240,240,248,0.55)] hover:text-[#F0F0F8]",
+                : "border-transparent text-[rgba(240,240,248,0.70)] hover:text-[#F0F0F8]",
             )}
           >
             Probability Movement
@@ -528,7 +528,7 @@ export function AuraWarRoom() {
                       <div className="min-w-0 flex-1">
                         <div className="flex flex-wrap items-center gap-2">
                           <span
-                            className="text-[11px] text-[rgba(240,240,248,0.35)]"
+                            className="text-[11px] text-[rgba(240,240,248,0.45)]"
                             style={{ fontFamily: "JetBrains Mono, monospace" }}
                           >
                             #{index + 1}
@@ -537,7 +537,7 @@ export function AuraWarRoom() {
                             {task.title}
                           </span>
                         </div>
-                        <div className="mt-0.5 text-[11px] text-[rgba(240,240,248,0.55)]">
+                        <div className="mt-0.5 text-[11px] text-[rgba(240,240,248,0.70)]">
                           {task.subject} · {row.chapterRef}
                         </div>
                         <div
@@ -617,10 +617,10 @@ export function AuraWarRoom() {
                   className="shrink-0 text-right text-sm"
                   style={{ fontFamily: "JetBrains Mono, monospace" }}
                 >
-                  <span className="text-[rgba(240,240,248,0.35)]">
+                  <span className="text-[rgba(240,240,248,0.45)]">
                     {row.previousProbability}%
                   </span>
-                  <span className="mx-1.5 text-[rgba(240,240,248,0.35)]">→</span>
+                  <span className="mx-1.5 text-[rgba(240,240,248,0.45)]">→</span>
                   <span style={{ color: row.subject.color }}>{row.currentProbability}%</span>
                   {row.delta > 0 && (
                     <span className="ml-2 text-[#4ADE80]">+{row.delta}%</span>
@@ -638,7 +638,7 @@ export function AuraWarRoom() {
                 />
               </div>
 
-              <p className="mt-2 text-[11px] text-[rgba(240,240,248,0.55)]">{row.reason}</p>
+              <p className="mt-2 text-[11px] text-[rgba(240,240,248,0.70)]">{row.reason}</p>
             </div>
           ))}
         </section>
