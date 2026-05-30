@@ -6,7 +6,8 @@ import type {
   Subject,
 } from "@/types/aura-engine-contracts";
 import type { AdaptiveTheme } from "@/hooks/useAdaptiveTheme";
-import { numericFontStyle } from "@/lib/design-tokens";
+import { numericFontStyle, SUBJECT_COLORS } from "@/lib/design-tokens";
+import { getMasteryStatus } from "@/lib/taskPriorityEngine";
 
 const SUBJECT_LABEL: Record<string, string> = {
   math: "Math",
@@ -14,11 +15,7 @@ const SUBJECT_LABEL: Record<string, string> = {
   social: "Social",
 };
 
-const SUBJECT_COLOR: Record<string, string> = {
-  math: "#6366f1",
-  science: "#06b6d4",
-  social: "#f59e0b",
-};
+const SUBJECT_COLOR: Record<string, string> = SUBJECT_COLORS;
 
 type LayoutDensity = AdaptiveTheme["layoutDensity"];
 
@@ -104,7 +101,13 @@ export function SubjectHeatmap({
                     >
                       <span className="truncate capitalize">{chapterId.replace(/_/g, " ")}</span>
                       {layoutDensity === "advanced" ? (
-                        <span className="shrink-0 text-slate-300 tabular-nums" style={numericFontStyle}>
+                        <span
+                          className="shrink-0 tabular-nums"
+                          style={{
+                            color: getMasteryStatus(entry.mastery).color,
+                            ...numericFontStyle,
+                          }}
+                        >
                           {entry.mastery}%
                         </span>
                       ) : null}

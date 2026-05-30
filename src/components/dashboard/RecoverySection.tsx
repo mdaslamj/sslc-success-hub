@@ -1,18 +1,18 @@
 import type { RecoveryEngineOutput } from "@/types/aura-engine-contracts";
 import type { AdaptiveTheme } from "@/hooks/useAdaptiveTheme";
-import { numericFontStyle } from "@/lib/design-tokens";
+import { numericFontStyle, STATUS_COLORS } from "@/lib/design-tokens";
+
+const URGENCY_COLOR: Record<string, string> = {
+  critical: STATUS_COLORS.critical,
+  high: STATUS_COLORS.fragile,
+  medium: STATUS_COLORS.recoverable,
+  low: STATUS_COLORS.stable,
+};
 
 const SUBJECT_LABEL: Record<string, string> = {
   math: "Math",
   science: "Science",
   social: "Social",
-};
-
-const URGENCY_COLOR: Record<string, string> = {
-  critical: "#ef4444",
-  high: "#f59e0b",
-  medium: "#22c55e",
-  low: "#34d399",
 };
 
 type LayoutDensity = AdaptiveTheme["layoutDensity"];

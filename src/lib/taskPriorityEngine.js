@@ -27,14 +27,67 @@
  */
 
 import { getWhyText, masteryToLevel } from "./whyTextCache";
+import { STATUS_COLORS, SUBJECT_COLORS } from "./design-tokens";
 
-const STATUS_BANDS = {
-  critical: { key: "critical", label: "Critical", color: "#F87171", bg: "rgba(248,113,113,0.15)" },
-  fragile: { key: "fragile", label: "Fragile", color: "#FBBF24", bg: "rgba(251,191,36,0.15)" },
-  recoverable: { key: "recoverable", label: "Recoverable", color: "#38BDF8", bg: "rgba(56,189,248,0.15)" },
-  stable: { key: "stable", label: "Stable", color: "#4ADE80", bg: "rgba(74,222,128,0.15)" },
-  strong: { key: "strong", label: "Strong", color: "#C084FC", bg: "rgba(192,132,252,0.15)" },
+const STATUS_BG = {
+  critical: "rgba(248,113,113,0.15)",
+  fragile: "rgba(251,191,36,0.15)",
+  recoverable: "rgba(56,189,248,0.15)",
+  stable: "rgba(74,222,128,0.15)",
+  strong: "rgba(192,132,252,0.15)",
 };
+
+const STATUS_LABELS = {
+  critical: "Critical",
+  fragile: "Fragile",
+  recoverable: "Recoverable",
+  stable: "Stable",
+  strong: "Strong",
+};
+
+const STATUS_BANDS = Object.fromEntries(
+  Object.keys(STATUS_COLORS).map((key) => [
+    key,
+    {
+      key,
+      label: STATUS_LABELS[key],
+      color: STATUS_COLORS[key],
+      bg: STATUS_BG[key],
+    },
+  ]),
+);
+
+/** @param {keyof typeof STATUS_COLORS} status */
+export function getStatusColor(status) {
+  return STATUS_COLORS[status] ?? "#8B5CF6";
+}
+
+/** @param {keyof typeof STATUS_COLORS} status */
+export function getStatusBand(status) {
+  return STATUS_BANDS[status] ?? STATUS_BANDS.strong;
+}
+
+/** Exam readiness from chapter/subject mastery %. */
+export function getMasteryStatus(mastery) {
+  const m = mastery ?? 0;
+  if (m < 40) return STATUS_BANDS.critical;
+  if (m < 55) return STATUS_BANDS.fragile;
+  if (m < 70) return STATUS_BANDS.recoverable;
+  if (m < 85) return STATUS_BANDS.stable;
+  return STATUS_BANDS.strong;
+}
+
+/** Marks-at-risk urgency band (uses status colours, not subject colours). */
+export function getMarksAtRiskStatus(marksAtRisk) {
+  if (marksAtRisk > 6) return STATUS_BANDS.critical;
+  if (marksAtRisk >= 4) return STATUS_BANDS.fragile;
+  if (marksAtRisk >= 2) return STATUS_BANDS.recoverable;
+  return STATUS_BANDS.stable;
+}
+
+function subjectColorFor(subjectId, fallback) {
+  return SUBJECT_COLORS[subjectId] ?? fallback ?? "#8B5CF6";
+}
 
 const COGNITIVE_LOAD = { Easy: 1, Medium: 1.5, Hard: 2.2 };
 
@@ -160,7 +213,7 @@ function computePriorityScore(chapter, subject) {
 function enrichChapter(chapter, subject) {
   const priorityScore = computePriorityScore(chapter, subject);
   const durationMin = estimateMinutes(chapter);
-  const subjectColor = subject?.color ?? "#6366f1";
+  const subjectColor = subjectColorFor(chapter.subjectId, subject?.color);
 
   return {
     ...chapter,

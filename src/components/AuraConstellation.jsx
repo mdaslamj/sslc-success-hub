@@ -1,4 +1,5 @@
 import { memo, useCallback, useMemo, useState } from "react";
+import { getMasteryStatus } from "@/lib/taskPriorityEngine";
 
 const SUBJECT_LAYOUT = [
   { id: "science", cx: 160, cy: 60, short: "Sci", color: "#38BDF8" },
@@ -281,7 +282,7 @@ function AuraConstellation({
               x={160}
               y={160}
               dy={14}
-              fill="rgba(240,240,248,0.70)"
+              fill={getMasteryStatus(overallReadiness).color}
               fontSize="7"
               textAnchor="middle"
               style={{ fontFamily: "JetBrains Mono, monospace" }}
@@ -317,7 +318,10 @@ function AuraConstellation({
               <span className="truncate text-[10px] text-[rgba(240,240,248,0.70)]">{short}</span>
               <span
                 className="text-[11px] font-semibold tabular-nums"
-                style={{ fontFamily: "JetBrains Mono, monospace", color: subjectColor }}
+                style={{
+                  fontFamily: "JetBrains Mono, monospace",
+                  color: getMasteryStatus(subject?.mastery ?? 0).color,
+                }}
               >
                 {Math.round(subject?.mastery ?? 0)}%
               </span>

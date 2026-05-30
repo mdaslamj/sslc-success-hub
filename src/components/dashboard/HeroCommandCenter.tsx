@@ -9,7 +9,7 @@ import type { AdaptiveTheme } from "@/hooks/useAdaptiveTheme";
 import { MomentumMeter } from "@/components/shared/MomentumMeter";
 import { RankBadge } from "@/components/shared/RankBadge";
 import { useEffect, useRef, useState } from "react";
-import { numericFontStyle } from "@/lib/design-tokens";
+import { numericFontStyle, SUBJECT_COLORS, STATUS_COLORS } from "@/lib/design-tokens";
 
 function useCountUp(target: number, duration = 1000) {
   const [value, setValue] = useState(0);
@@ -42,17 +42,13 @@ const SUBJECT_LABEL: Record<string, string> = {
   social: "Social",
 };
 
-const SUBJECT_COLOR: Record<string, string> = {
-  math: "#6366f1",
-  science: "#06b6d4",
-  social: "#f59e0b",
-};
+const SUBJECT_COLOR: Record<string, string> = SUBJECT_COLORS;
 
 const URGENCY_COLOR: Record<string, string> = {
-  critical: "#ef4444",
-  high: "#f59e0b",
-  medium: "#22c55e",
-  low: "#34d399",
+  critical: STATUS_COLORS.critical,
+  high: STATUS_COLORS.fragile,
+  medium: STATUS_COLORS.recoverable,
+  low: STATUS_COLORS.stable,
 };
 
 type LayoutDensity = AdaptiveTheme["layoutDensity"];

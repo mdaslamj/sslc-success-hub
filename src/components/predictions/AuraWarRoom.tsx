@@ -16,27 +16,19 @@ import { computeProbabilitySnapshot } from "@/core/academic-state/probabilityEng
 import { useAuraEngines } from "@/hooks/useAuraEngines";
 import { buildPlannerChapterPool } from "@/lib/planner-chapter-pool";
 import {
-  getSubjectStatus,
+  getMarksAtRiskStatus,
+  getMasteryStatus,
   rankChaptersForToday,
   type PlannerEngineChapter,
   type PlannerEngineSubject,
   type RankedPlannerTask,
 } from "@/lib/taskPriorityEngine";
+import { SUBJECT_COLORS, STATUS_COLORS } from "@/lib/design-tokens";
 import {
   addRankedTaskToTodayPlan,
   hasTaskWithTitle,
 } from "@/lib/today-plan-store";
 import { cn } from "@/lib/utils";
-
-/** War Room subject accent colours (spec). */
-const SUBJECT_HEX: Record<string, string> = {
-  math: "#FBBF24",
-  science: "#38BDF8",
-  social: "#4ADE80",
-  english: "#C084FC",
-  kannada: "#FB923C",
-  hindi: "#F472B6",
-};
 
 type WarRoomSubject = {
   id: string;
@@ -125,7 +117,7 @@ function buildWarRoomSubjects(
   const out: Record<string, WarRoomSubject> = {};
   for (const catalogSubject of SSLC_SUBJECTS) {
     const view = constellationSubjects[catalogSubject.id];
-    const hex = SUBJECT_HEX[catalogSubject.id] ?? view?.color ?? catalogSubject.color;
+    const hex = SUBJECT_COLORS[catalogSubject.id as keyof typeof SUBJECT_COLORS] ?? view?.color ?? catalogSubject.color;
     out[catalogSubject.id] = {
       id: catalogSubject.id,
       name: catalogSubject.name,
@@ -170,10 +162,8 @@ function toLadderRow(
 }
 
 function urgencyStyle(marksAtRisk: number): { color: string; bg: string } {
-  if (marksAtRisk > 6) return { color: "#F87171", bg: "rgba(248,113,113,0.15)" };
-  if (marksAtRisk >= 4) return { color: "#FBBF24", bg: "rgba(251,191,36,0.15)" };
-  if (marksAtRisk >= 2) return { color: "#38BDF8", bg: "rgba(56,189,248,0.15)" };
-  return { color: "#4ADE80", bg: "rgba(74,222,128,0.15)" };
+  const band = getMarksAtRiskStatus(marksAtRisk);
+  return { color: band.color, bg: band.bg };
 }
 
 function subjectSessionsToday(
@@ -204,7 +194,7 @@ export function AuraWarRoom() {
         return {
           id: subject.id,
           name: subject.name,
-          color: SUBJECT_HEX[subject.id] ?? view?.color ?? subject.color,
+          color: SUBJECT_COLORS[subject.id as keyof typeof SUBJECT_COLORS] ?? view?.color ?? subject.color,
           target: view?.target ?? subject.target,
           predicted: view?.predicted ?? subject.predicted,
           mastery: view?.mastery ?? subject.mastery,
@@ -309,7 +299,7 @@ export function AuraWarRoom() {
         previousMastery,
       );
       const delta = currentProbability - previousProbability;
-      const status = getSubjectStatus(subject.predicted, subject.target);
+      const status = getMasteryStatus(subject.mastery);
 
       let reason = "No sessions completed today";
       if (masteryGain > 0) {
@@ -507,7 +497,7 @@ export function AuraWarRoom() {
               const isAdded =
                 addedIds.has(task.chapter.id) || hasTaskWithTitle(task.task);
               const subjectColor =
-                SUBJECT_HEX[task.subjectId] ??
+                SUBJECT_COLORS[task.subjectId as keyof typeof SUBJECT_COLORS] ??
                 subjectsById[task.subjectId]?.color ??
                 task.subjectColor;
 
@@ -623,7 +613,9 @@ export function AuraWarRoom() {
                   <span className="mx-1.5 text-[rgba(240,240,248,0.45)]">→</span>
                   <span style={{ color: row.subject.color }}>{row.currentProbability}%</span>
                   {row.delta > 0 && (
-                    <span className="ml-2 text-[#4ADE80]">+{row.delta}%</span>
+                    <span className="ml-2" style={{ color: STATUS_COLORS.stable }}>
+                      +{row.delta}%
+                    </span>
                   )}
                 </div>
               </div>

@@ -14,8 +14,8 @@ import {
   RotateCcw,
   Check,
 } from "lucide-react";
-import { getSubjectStatus } from "@/lib/taskPriorityEngine";
-import { numericFontStyle } from "@/lib/design-tokens";
+import { getMasteryStatus } from "@/lib/taskPriorityEngine";
+import { numericFontStyle, SUBJECT_COLORS } from "@/lib/design-tokens";
 import { Slider } from "@/components/ui/slider";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -110,7 +110,7 @@ function TargetsPage() {
           id: catalogSubject.id,
           name: catalogSubject.name,
           emoji: catalogSubject.emoji,
-          color: view?.color ?? catalogSubject.color,
+          color: SUBJECT_COLORS[catalogSubject.id as keyof typeof SUBJECT_COLORS] ?? view?.color ?? catalogSubject.color,
           predicted: view?.predicted ?? catalogSubject.predicted,
           mastery: view?.mastery ?? catalogSubject.mastery,
           weakTopics: catalogSubject.weakTopics,
@@ -428,7 +428,7 @@ function TargetsPage() {
                 subject.predicted,
                 subject.mastery,
               );
-              const status = getSubjectStatus(subject.predicted, subject.target);
+              const status = getMasteryStatus(subject.mastery);
 
               return (
                 <div

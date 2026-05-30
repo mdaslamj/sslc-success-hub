@@ -47,6 +47,14 @@ export type RankedPlannerTask = {
 
 export function getSubjectStatus(predicted: number, target: number): SubjectStatus;
 
+export function getStatusColor(status: string): string;
+
+export function getStatusBand(status: string): SubjectStatus;
+
+export function getMasteryStatus(mastery: number): SubjectStatus;
+
+export function getMarksAtRiskStatus(marksAtRisk: number): SubjectStatus;
+
 export function rankChaptersForTodaySync(
   chapters: PlannerEngineChapter[],
   subjects: PlannerEngineSubject[],
