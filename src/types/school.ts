@@ -1,4 +1,6 @@
-export type SchoolStatus = "active" | "inactive";
+export type SchoolStatus = "active" | "inactive" | "pending";
+
+export type SchoolType = "government" | "private_aided" | "private_unaided";
 
 export type SchoolTeacherStatus = "active" | "pending";
 
@@ -8,6 +10,10 @@ export interface School {
   dise_code: string;
   district: string;
   taluk: string;
+  city?: string;
+  schoolType?: SchoolType;
+  principalName?: string;
+  principalPhone?: string;
   adminEmail: string;
   adminUid: string;
   /** Join code, e.g. KAR-XXXXXX */

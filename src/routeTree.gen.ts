@@ -15,6 +15,7 @@ import { Route as TeacherRouteImport } from './routes/teacher'
 import { Route as TargetsRouteImport } from './routes/targets'
 import { Route as SessionRouteImport } from './routes/session'
 import { Route as SeedRouteImport } from './routes/seed'
+import { Route as SchoolSetupRouteImport } from './routes/school-setup'
 import { Route as ScanRouteImport } from './routes/scan'
 import { Route as RevisionRouteImport } from './routes/revision'
 import { Route as ResourcesRouteImport } from './routes/resources'
@@ -49,6 +50,7 @@ import { Route as AchievementsRouteImport } from './routes/achievements'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as SubjectsIndexRouteImport } from './routes/subjects.index'
 import { Route as SubjectsSubjectIdRouteImport } from './routes/subjects.$subjectId'
+import { Route as SchoolDashboardRouteImport } from './routes/school/dashboard'
 import { Route as ScanScanIdRouteImport } from './routes/scan.$scanId'
 import { Route as QuizQuizIdRouteImport } from './routes/quiz.$quizId'
 import { Route as MockTestTestIdRouteImport } from './routes/mock-test.$testId'
@@ -95,6 +97,11 @@ const SessionRoute = SessionRouteImport.update({
 const SeedRoute = SeedRouteImport.update({
   id: '/seed',
   path: '/seed',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SchoolSetupRoute = SchoolSetupRouteImport.update({
+  id: '/school-setup',
+  path: '/school-setup',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ScanRoute = ScanRouteImport.update({
@@ -267,6 +274,11 @@ const SubjectsSubjectIdRoute = SubjectsSubjectIdRouteImport.update({
   path: '/subjects/$subjectId',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SchoolDashboardRoute = SchoolDashboardRouteImport.update({
+  id: '/school/dashboard',
+  path: '/school/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ScanScanIdRoute = ScanScanIdRouteImport.update({
   id: '/$scanId',
   path: '/$scanId',
@@ -390,6 +402,7 @@ export interface FileRoutesByFullPath {
   '/resources': typeof ResourcesRoute
   '/revision': typeof RevisionRoute
   '/scan': typeof ScanRouteWithChildren
+  '/school-setup': typeof SchoolSetupRoute
   '/seed': typeof SeedRoute
   '/session': typeof SessionRoute
   '/targets': typeof TargetsRoute
@@ -407,6 +420,7 @@ export interface FileRoutesByFullPath {
   '/mock-test/$testId': typeof MockTestTestIdRoute
   '/quiz/$quizId': typeof QuizQuizIdRoute
   '/scan/$scanId': typeof ScanScanIdRoute
+  '/school/dashboard': typeof SchoolDashboardRoute
   '/subjects/$subjectId': typeof SubjectsSubjectIdRouteWithChildren
   '/subjects/': typeof SubjectsIndexRoute
   '/parent/share/$token': typeof ParentShareTokenRoute
@@ -449,6 +463,7 @@ export interface FileRoutesByTo {
   '/resources': typeof ResourcesRoute
   '/revision': typeof RevisionRoute
   '/scan': typeof ScanRouteWithChildren
+  '/school-setup': typeof SchoolSetupRoute
   '/seed': typeof SeedRoute
   '/session': typeof SessionRoute
   '/targets': typeof TargetsRoute
@@ -466,6 +481,7 @@ export interface FileRoutesByTo {
   '/mock-test/$testId': typeof MockTestTestIdRoute
   '/quiz/$quizId': typeof QuizQuizIdRoute
   '/scan/$scanId': typeof ScanScanIdRoute
+  '/school/dashboard': typeof SchoolDashboardRoute
   '/subjects/$subjectId': typeof SubjectsSubjectIdRouteWithChildren
   '/subjects': typeof SubjectsIndexRoute
   '/parent/share/$token': typeof ParentShareTokenRoute
@@ -509,6 +525,7 @@ export interface FileRoutesById {
   '/resources': typeof ResourcesRoute
   '/revision': typeof RevisionRoute
   '/scan': typeof ScanRouteWithChildren
+  '/school-setup': typeof SchoolSetupRoute
   '/seed': typeof SeedRoute
   '/session': typeof SessionRoute
   '/targets': typeof TargetsRoute
@@ -526,6 +543,7 @@ export interface FileRoutesById {
   '/mock-test/$testId': typeof MockTestTestIdRoute
   '/quiz/$quizId': typeof QuizQuizIdRoute
   '/scan/$scanId': typeof ScanScanIdRoute
+  '/school/dashboard': typeof SchoolDashboardRoute
   '/subjects/$subjectId': typeof SubjectsSubjectIdRouteWithChildren
   '/subjects/': typeof SubjectsIndexRoute
   '/parent/share/$token': typeof ParentShareTokenRoute
@@ -570,6 +588,7 @@ export interface FileRouteTypes {
     | '/resources'
     | '/revision'
     | '/scan'
+    | '/school-setup'
     | '/seed'
     | '/session'
     | '/targets'
@@ -587,6 +606,7 @@ export interface FileRouteTypes {
     | '/mock-test/$testId'
     | '/quiz/$quizId'
     | '/scan/$scanId'
+    | '/school/dashboard'
     | '/subjects/$subjectId'
     | '/subjects/'
     | '/parent/share/$token'
@@ -629,6 +649,7 @@ export interface FileRouteTypes {
     | '/resources'
     | '/revision'
     | '/scan'
+    | '/school-setup'
     | '/seed'
     | '/session'
     | '/targets'
@@ -646,6 +667,7 @@ export interface FileRouteTypes {
     | '/mock-test/$testId'
     | '/quiz/$quizId'
     | '/scan/$scanId'
+    | '/school/dashboard'
     | '/subjects/$subjectId'
     | '/subjects'
     | '/parent/share/$token'
@@ -688,6 +710,7 @@ export interface FileRouteTypes {
     | '/resources'
     | '/revision'
     | '/scan'
+    | '/school-setup'
     | '/seed'
     | '/session'
     | '/targets'
@@ -705,6 +728,7 @@ export interface FileRouteTypes {
     | '/mock-test/$testId'
     | '/quiz/$quizId'
     | '/scan/$scanId'
+    | '/school/dashboard'
     | '/subjects/$subjectId'
     | '/subjects/'
     | '/parent/share/$token'
@@ -748,6 +772,7 @@ export interface RootRouteChildren {
   ResourcesRoute: typeof ResourcesRoute
   RevisionRoute: typeof RevisionRoute
   ScanRoute: typeof ScanRouteWithChildren
+  SchoolSetupRoute: typeof SchoolSetupRoute
   SeedRoute: typeof SeedRoute
   SessionRoute: typeof SessionRoute
   TargetsRoute: typeof TargetsRoute
@@ -759,6 +784,7 @@ export interface RootRouteChildren {
   AdminOpsRoute: typeof AdminOpsRoute
   ExamResultsAttemptIdRoute: typeof ExamResultsAttemptIdRoute
   QuizQuizIdRoute: typeof QuizQuizIdRoute
+  SchoolDashboardRoute: typeof SchoolDashboardRoute
   SubjectsSubjectIdRoute: typeof SubjectsSubjectIdRouteWithChildren
   SubjectsIndexRoute: typeof SubjectsIndexRoute
   SubjectsMathChapterIdRoute: typeof SubjectsMathChapterIdRoute
@@ -806,6 +832,13 @@ declare module '@tanstack/react-router' {
       path: '/seed'
       fullPath: '/seed'
       preLoaderRoute: typeof SeedRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/school-setup': {
+      id: '/school-setup'
+      path: '/school-setup'
+      fullPath: '/school-setup'
+      preLoaderRoute: typeof SchoolSetupRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/scan': {
@@ -1044,6 +1077,13 @@ declare module '@tanstack/react-router' {
       path: '/subjects/$subjectId'
       fullPath: '/subjects/$subjectId'
       preLoaderRoute: typeof SubjectsSubjectIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/school/dashboard': {
+      id: '/school/dashboard'
+      path: '/school/dashboard'
+      fullPath: '/school/dashboard'
+      preLoaderRoute: typeof SchoolDashboardRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/scan/$scanId': {
@@ -1325,6 +1365,7 @@ const rootRouteChildren: RootRouteChildren = {
   ResourcesRoute: ResourcesRoute,
   RevisionRoute: RevisionRoute,
   ScanRoute: ScanRouteWithChildren,
+  SchoolSetupRoute: SchoolSetupRoute,
   SeedRoute: SeedRoute,
   SessionRoute: SessionRoute,
   TargetsRoute: TargetsRoute,
@@ -1336,6 +1377,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminOpsRoute: AdminOpsRoute,
   ExamResultsAttemptIdRoute: ExamResultsAttemptIdRoute,
   QuizQuizIdRoute: QuizQuizIdRoute,
+  SchoolDashboardRoute: SchoolDashboardRoute,
   SubjectsSubjectIdRoute: SubjectsSubjectIdRouteWithChildren,
   SubjectsIndexRoute: SubjectsIndexRoute,
   SubjectsMathChapterIdRoute: SubjectsMathChapterIdRoute,

@@ -22,6 +22,8 @@ const STUDENTS_SUB = SCHOOL_SUBCOLLECTIONS.STUDENTS;
 
 const CODE_CHARS = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
 
+export const SCHOOL_WELCOME_STORAGE_KEY = "aura_school_welcome.v1";
+
 export function generateSchoolCode(): string {
   const suffix = Array.from({ length: 6 }, () =>
     CODE_CHARS[Math.floor(Math.random() * CODE_CHARS.length)],
@@ -50,8 +52,8 @@ async function uniqueSchoolCode(): Promise<string> {
 }
 
 export async function createSchool(
-  data: Omit<School, "schoolId" | "schoolCode" | "createdAt" | "totalStudents" | "status">,
-): Promise<string> {
+  data: Omit<School, "schoolId" | "schoolCode" | "createdAt">,
+): Promise<{ schoolId: string; schoolCode: string }> {
   const schoolRef = doc(collection(db, SCHOOLS));
   const schoolCode = await uniqueSchoolCode();
 
@@ -59,13 +61,13 @@ export async function createSchool(
     schoolId: schoolRef.id,
     schoolCode,
     createdAt: new Date().toISOString(),
-    totalStudents: 0,
-    status: "active",
     ...data,
+    totalStudents: data.totalStudents ?? 0,
+    status: data.status ?? "pending",
   };
 
   await setDoc(schoolRef, school);
-  return schoolRef.id;
+  return { schoolId: schoolRef.id, schoolCode };
 }
 
 export async function getSchoolByCode(code: string): Promise<School | null> {

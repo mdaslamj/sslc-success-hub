@@ -275,6 +275,7 @@ const PUBLIC_PATHS = new Set([
   "/seed",
   "/privacy",
   "/join-group",
+  "/school-setup",
 ]);
 
 const GUEST_KEY = "aura.guest.v1";
@@ -282,7 +283,11 @@ const GUEST_ONBOARDING_KEY = "aura.guest.onboarding.v1";
 const SPLASH_SEEN_KEY = "aura.splash.seen.v1";
 
 function isPublicPath(pathname: string): boolean {
-  return PUBLIC_PATHS.has(pathname) || pathname.startsWith("/parent/share/");
+  return (
+    PUBLIC_PATHS.has(pathname) ||
+    pathname.startsWith("/parent/share/") ||
+    pathname.startsWith("/school/")
+  );
 }
 
 function Splash({ label = "Preparing your study space" }: { label?: string }) {
@@ -342,7 +347,7 @@ function OnboardingGate({ children }: { children: React.ReactNode }) {
         }
         return;
       }
-      if (pathname === "/onboarding") return;
+      if (pathname === "/onboarding" || pathname.startsWith("/school/")) return;
       navigate({ to: "/onboarding" });
       return;
     }
