@@ -446,8 +446,8 @@ export interface FileRoutesByFullPath {
   '/quiz/$quizId': typeof QuizQuizIdRoute
   '/scan/$scanId': typeof ScanScanIdRoute
   '/school/dashboard': typeof SchoolDashboardRoute
-  '/school/import-marks': typeof SchoolImportMarksRoute
   '/school/enter-marks': typeof SchoolEnterMarksRoute
+  '/school/import-marks': typeof SchoolImportMarksRoute
   '/school/roster': typeof SchoolRosterRoute
   '/subjects/$subjectId': typeof SubjectsSubjectIdRouteWithChildren
   '/subjects/': typeof SubjectsIndexRoute
@@ -511,8 +511,8 @@ export interface FileRoutesByTo {
   '/quiz/$quizId': typeof QuizQuizIdRoute
   '/scan/$scanId': typeof ScanScanIdRoute
   '/school/dashboard': typeof SchoolDashboardRoute
-  '/school/import-marks': typeof SchoolImportMarksRoute
   '/school/enter-marks': typeof SchoolEnterMarksRoute
+  '/school/import-marks': typeof SchoolImportMarksRoute
   '/school/roster': typeof SchoolRosterRoute
   '/subjects/$subjectId': typeof SubjectsSubjectIdRouteWithChildren
   '/subjects': typeof SubjectsIndexRoute
@@ -577,8 +577,8 @@ export interface FileRoutesById {
   '/quiz/$quizId': typeof QuizQuizIdRoute
   '/scan/$scanId': typeof ScanScanIdRoute
   '/school/dashboard': typeof SchoolDashboardRoute
-  '/school/import-marks': typeof SchoolImportMarksRoute
   '/school/enter-marks': typeof SchoolEnterMarksRoute
+  '/school/import-marks': typeof SchoolImportMarksRoute
   '/school/roster': typeof SchoolRosterRoute
   '/subjects/$subjectId': typeof SubjectsSubjectIdRouteWithChildren
   '/subjects/': typeof SubjectsIndexRoute
@@ -644,8 +644,8 @@ export interface FileRouteTypes {
     | '/quiz/$quizId'
     | '/scan/$scanId'
     | '/school/dashboard'
-    | '/school/import-marks'
     | '/school/enter-marks'
+    | '/school/import-marks'
     | '/school/roster'
     | '/subjects/$subjectId'
     | '/subjects/'
@@ -709,8 +709,8 @@ export interface FileRouteTypes {
     | '/quiz/$quizId'
     | '/scan/$scanId'
     | '/school/dashboard'
-    | '/school/import-marks'
     | '/school/enter-marks'
+    | '/school/import-marks'
     | '/school/roster'
     | '/subjects/$subjectId'
     | '/subjects'
@@ -774,8 +774,8 @@ export interface FileRouteTypes {
     | '/quiz/$quizId'
     | '/scan/$scanId'
     | '/school/dashboard'
-    | '/school/import-marks'
     | '/school/enter-marks'
+    | '/school/import-marks'
     | '/school/roster'
     | '/subjects/$subjectId'
     | '/subjects/'
@@ -834,8 +834,8 @@ export interface RootRouteChildren {
   ExamResultsAttemptIdRoute: typeof ExamResultsAttemptIdRoute
   QuizQuizIdRoute: typeof QuizQuizIdRoute
   SchoolDashboardRoute: typeof SchoolDashboardRoute
-  SchoolImportMarksRoute: typeof SchoolImportMarksRoute
   SchoolEnterMarksRoute: typeof SchoolEnterMarksRoute
+  SchoolImportMarksRoute: typeof SchoolImportMarksRoute
   SchoolRosterRoute: typeof SchoolRosterRoute
   SubjectsSubjectIdRoute: typeof SubjectsSubjectIdRouteWithChildren
   SubjectsIndexRoute: typeof SubjectsIndexRoute
@@ -1459,8 +1459,8 @@ const rootRouteChildren: RootRouteChildren = {
   ExamResultsAttemptIdRoute: ExamResultsAttemptIdRoute,
   QuizQuizIdRoute: QuizQuizIdRoute,
   SchoolDashboardRoute: SchoolDashboardRoute,
-  SchoolImportMarksRoute: SchoolImportMarksRoute,
   SchoolEnterMarksRoute: SchoolEnterMarksRoute,
+  SchoolImportMarksRoute: SchoolImportMarksRoute,
   SchoolRosterRoute: SchoolRosterRoute,
   SubjectsSubjectIdRoute: SubjectsSubjectIdRouteWithChildren,
   SubjectsIndexRoute: SubjectsIndexRoute,
@@ -1469,13 +1469,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}

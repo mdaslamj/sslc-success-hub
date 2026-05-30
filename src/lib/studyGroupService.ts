@@ -16,7 +16,11 @@ export interface StudyGroup {
   groupId: string;
   createdBy: string;
   members: string[];
-  memberEmails: string[];
+  /**
+   * @deprecated PII — no longer persisted. Field kept optional only so older
+   * documents still type-check when read. New writes never include emails.
+   */
+  memberEmails?: string[];
   subscriptionId?: string;
   plan: "group_599";
   status: "active" | "inactive" | "pending";
@@ -29,11 +33,13 @@ export async function createStudyGroup(
   adminEmail: string,
 ): Promise<string> {
   const groupId = `group_${adminUserId}_${Date.now()}`;
+  // SECURITY: do not store member emails on the group doc — any signed-in
+  // user with the groupId could otherwise read other members' PII.
+  void adminEmail;
   const group: StudyGroup = {
     groupId,
     createdBy: adminUserId,
     members: [adminUserId],
-    memberEmails: [adminEmail],
     plan: "group_599",
     status: "pending",
     createdAt: new Date().toISOString(),
@@ -66,6 +72,7 @@ export async function joinStudyGroup(
   userId: string,
   userEmail: string,
 ): Promise<{ success: boolean; error?: string }> {
+  void userEmail;
   const snap = await getDoc(doc(db, "study_groups", groupId));
 
   if (!snap.exists()) {
@@ -94,7 +101,6 @@ export async function joinStudyGroup(
 
   await updateDoc(doc(db, "study_groups", groupId), {
     members: arrayUnion(userId),
-    memberEmails: arrayUnion(userEmail),
   });
 
   await setDoc(
@@ -111,6 +117,7 @@ export async function leaveStudyGroup(
   userId: string,
   userEmail: string,
 ): Promise<{ success: boolean; error?: string }> {
+  void userEmail;
   const snap = await getDoc(doc(db, "study_groups", groupId));
   if (!snap.exists()) {
     return { success: false, error: "Group not found" };
@@ -130,7 +137,6 @@ export async function leaveStudyGroup(
 
   await updateDoc(doc(db, "study_groups", groupId), {
     members: arrayRemove(userId),
-    memberEmails: arrayRemove(userEmail),
   });
 
   await setDoc(
