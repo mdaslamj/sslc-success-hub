@@ -43,6 +43,7 @@ import { useDisplayName } from "@/hooks/use-display-name";
 import { AuraDevResetAction } from "@/components/dev/AuraDevResetAction";
 import { GroupPlanCard } from "@/components/settings/GroupPlanCard";
 import { ProfileConstellationSection } from "@/components/profile/ProfileConstellationSection";
+import { ShareWithParentCard } from "@/components/parent/ShareWithParentCard";
 import type { PreferredLanguage } from "@/integrations/firebase/types";
 import { requestNotificationPermission } from "@/lib/notifications";
 import { subjects } from "@/lib/mock-data";
@@ -96,8 +97,9 @@ function ProfilePage() {
             <TabsTrigger value="settings">Settings</TabsTrigger>
             <TabsTrigger value="progress">Progress</TabsTrigger>
           </TabsList>
-          <TabsContent value="profile" className="mt-4">
+          <TabsContent value="profile" className="mt-4 space-y-4">
             <ProfileCard profile={profile} onSaved={refreshProfile} />
+            <ShareWithParentCard />
           </TabsContent>
           <TabsContent value="settings" className="mt-4">
             <SettingsCard />

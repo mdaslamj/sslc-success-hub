@@ -8,7 +8,6 @@ import {
   Copy,
   Check,
   RefreshCw,
-  Share2,
   Loader2,
 } from "lucide-react";
 import { toast } from "sonner";
@@ -25,10 +24,7 @@ import {
   useStudentInviteCodes,
 } from "@/hooks/use-parent-dashboard";
 import { useParentSummaryView } from "@/hooks/useParentSummaryView";
-import { useAuth } from "@/contexts/auth-context";
-import { useAuraEngines } from "@/hooks/useAuraEngines";
-import { buildParentSummary } from "@/lib/parentSummaryService";
-import { buildShareUrl, saveParentShare } from "@/lib/parentShareService";
+import { ShareWithParentCard } from "@/components/parent/ShareWithParentCard";
 import type { ParentAlertDoc, ParentAlertSeverity } from "@/integrations/firebase/types";
 
 export const Route = createFileRoute("/parent")({
@@ -194,7 +190,10 @@ function ParentPage() {
 
           <TabsContent value="connect" className="mt-4 space-y-4">
             <ParentConnectPanel onLinked={() => setTab("overview")} />
-            <ShareProgressPanel />
+            <ShareWithParentCard
+              title="Share progress link"
+              description="Create a calm summary link for parents — no raw scores or anxiety metrics included."
+            />
             <StudentInvitePanel />
             {d.linkedStudents.length > 0 && (
               <section className="rounded-3xl bg-card p-5 shadow-soft">
@@ -228,70 +227,6 @@ function ParentPage() {
         <div className="h-24" />
       </div>
     </DashboardLayout>
-  );
-}
-
-function ShareProgressPanel() {
-  const { user } = useAuth();
-  const engines = useAuraEngines();
-  const [shareUrl, setShareUrl] = useState<string | null>(null);
-  const [busy, setBusy] = useState(false);
-  const [copied, setCopied] = useState(false);
-
-  const createShareLink = async () => {
-    if (!user || !engines.profile) return;
-    setBusy(true);
-    try {
-      const summary = buildParentSummary(engines.profile, engines);
-      const saved = await saveParentShare(user.uid, summary);
-      const url = buildShareUrl(saved.token);
-      setShareUrl(url);
-      toast.success("Share link created — valid for 30 days");
-    } catch (err) {
-      console.error(err);
-      toast.error("Could not create share link");
-    } finally {
-      setBusy(false);
-    }
-  };
-
-  const copy = async () => {
-    if (!shareUrl) return;
-    try {
-      await navigator.clipboard.writeText(shareUrl);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 1500);
-    } catch {
-      toast.error("Could not copy link");
-    }
-  };
-
-  return (
-    <section className="rounded-3xl bg-card p-5 shadow-soft">
-      <h3 className="flex items-center gap-1.5 font-display text-sm font-semibold uppercase tracking-wider text-muted-foreground">
-        <Share2 className="h-3.5 w-3.5" /> Share progress link
-      </h3>
-      <p className="mt-2 text-sm text-muted-foreground">
-        Create a calm summary link for parents — no raw scores or anxiety metrics included.
-      </p>
-      {shareUrl ? (
-        <div className="mt-3 space-y-2">
-          <Input readOnly value={shareUrl} className="rounded-2xl text-xs" />
-          <Button onClick={() => void copy()} variant="outline" className="h-9 w-full rounded-2xl text-xs">
-            {copied ? <Check className="mr-1 h-3.5 w-3.5" /> : <Copy className="mr-1 h-3.5 w-3.5" />}
-            {copied ? "Copied" : "Copy link"}
-          </Button>
-        </div>
-      ) : (
-        <Button
-          onClick={() => void createShareLink()}
-          disabled={busy || !user}
-          className="press mt-3 h-10 w-full rounded-2xl text-sm"
-        >
-          {busy ? "Creating…" : "Create share link"}
-        </Button>
-      )}
-    </section>
   );
 }
 

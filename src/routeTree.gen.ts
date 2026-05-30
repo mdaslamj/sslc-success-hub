@@ -25,6 +25,7 @@ import { Route as PredictionsRouteImport } from './routes/predictions'
 import { Route as PracticeRouteImport } from './routes/practice'
 import { Route as PlannerRouteImport } from './routes/planner'
 import { Route as PlanRevealRouteImport } from './routes/plan-reveal'
+import { Route as ParentViewRouteImport } from './routes/parent-view'
 import { Route as ParentRouteImport } from './routes/parent'
 import { Route as OnboardingRouteImport } from './routes/onboarding'
 import { Route as MockTestRouteImport } from './routes/mock-test'
@@ -144,6 +145,11 @@ const PlannerRoute = PlannerRouteImport.update({
 const PlanRevealRoute = PlanRevealRouteImport.update({
   id: '/plan-reveal',
   path: '/plan-reveal',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ParentViewRoute = ParentViewRouteImport.update({
+  id: '/parent-view',
+  path: '/parent-view',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ParentRoute = ParentRouteImport.update({
@@ -373,6 +379,7 @@ export interface FileRoutesByFullPath {
   '/mock-test': typeof MockTestRouteWithChildren
   '/onboarding': typeof OnboardingRoute
   '/parent': typeof ParentRouteWithChildren
+  '/parent-view': typeof ParentViewRoute
   '/plan-reveal': typeof PlanRevealRoute
   '/planner': typeof PlannerRoute
   '/practice': typeof PracticeRoute
@@ -431,6 +438,7 @@ export interface FileRoutesByTo {
   '/mock-test': typeof MockTestRouteWithChildren
   '/onboarding': typeof OnboardingRoute
   '/parent': typeof ParentRouteWithChildren
+  '/parent-view': typeof ParentViewRoute
   '/plan-reveal': typeof PlanRevealRoute
   '/planner': typeof PlannerRoute
   '/practice': typeof PracticeRoute
@@ -490,6 +498,7 @@ export interface FileRoutesById {
   '/mock-test': typeof MockTestRouteWithChildren
   '/onboarding': typeof OnboardingRoute
   '/parent': typeof ParentRouteWithChildren
+  '/parent-view': typeof ParentViewRoute
   '/plan-reveal': typeof PlanRevealRoute
   '/planner': typeof PlannerRoute
   '/practice': typeof PracticeRoute
@@ -550,6 +559,7 @@ export interface FileRouteTypes {
     | '/mock-test'
     | '/onboarding'
     | '/parent'
+    | '/parent-view'
     | '/plan-reveal'
     | '/planner'
     | '/practice'
@@ -608,6 +618,7 @@ export interface FileRouteTypes {
     | '/mock-test'
     | '/onboarding'
     | '/parent'
+    | '/parent-view'
     | '/plan-reveal'
     | '/planner'
     | '/practice'
@@ -666,6 +677,7 @@ export interface FileRouteTypes {
     | '/mock-test'
     | '/onboarding'
     | '/parent'
+    | '/parent-view'
     | '/plan-reveal'
     | '/planner'
     | '/practice'
@@ -725,6 +737,7 @@ export interface RootRouteChildren {
   MockTestRoute: typeof MockTestRouteWithChildren
   OnboardingRoute: typeof OnboardingRoute
   ParentRoute: typeof ParentRouteWithChildren
+  ParentViewRoute: typeof ParentViewRoute
   PlanRevealRoute: typeof PlanRevealRoute
   PlannerRoute: typeof PlannerRoute
   PracticeRoute: typeof PracticeRoute
@@ -863,6 +876,13 @@ declare module '@tanstack/react-router' {
       path: '/plan-reveal'
       fullPath: '/plan-reveal'
       preLoaderRoute: typeof PlanRevealRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/parent-view': {
+      id: '/parent-view'
+      path: '/parent-view'
+      fullPath: '/parent-view'
+      preLoaderRoute: typeof ParentViewRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/parent': {
@@ -1294,6 +1314,7 @@ const rootRouteChildren: RootRouteChildren = {
   MockTestRoute: MockTestRouteWithChildren,
   OnboardingRoute: OnboardingRoute,
   ParentRoute: ParentRouteWithChildren,
+  ParentViewRoute: ParentViewRoute,
   PlanRevealRoute: PlanRevealRoute,
   PlannerRoute: PlannerRoute,
   PracticeRoute: PracticeRoute,

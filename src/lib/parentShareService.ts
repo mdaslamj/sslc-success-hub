@@ -1,4 +1,4 @@
-import { doc, getDoc, setDoc } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs, query, setDoc, where } from "firebase/firestore";
 import { db } from "@/integrations/firebase/config";
 import type { ParentShareDoc, ParentSummary } from "@/types/parentView";
 
@@ -35,6 +35,32 @@ export async function saveParentShare(
 export function buildShareUrl(token: string): string {
   const base = typeof window !== "undefined" ? window.location.origin : "";
   return `${base}/parent/share/${token}`;
+}
+
+/** Public parent view — share via WhatsApp without login. */
+export function buildParentViewUrl(studentId: string): string {
+  const base = typeof window !== "undefined" ? window.location.origin : "";
+  return `${base}/parent-view?id=${encodeURIComponent(studentId)}`;
+}
+
+export async function loadLatestParentShareForStudent(
+  studentId: string,
+): Promise<ParentShareDoc | null> {
+  try {
+    const snap = await getDocs(
+      query(collection(db, COLLECTION), where("studentId", "==", studentId)),
+    );
+    const now = Date.now();
+    let latest: ParentShareDoc | null = null;
+    for (const docSnap of snap.docs) {
+      const data = docSnap.data() as ParentShareDoc;
+      if (new Date(data.expiresAt).getTime() < now) continue;
+      if (!latest || data.createdAt > latest.createdAt) latest = data;
+    }
+    return latest;
+  } catch {
+    return null;
+  }
 }
 
 export async function loadParentShare(token: string): Promise<ParentShareDoc | null> {

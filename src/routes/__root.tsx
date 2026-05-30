@@ -271,6 +271,7 @@ const PUBLIC_PATHS = new Set([
   "/forgot-password",
   "/onboarding",
   "/plan-reveal",
+  "/parent-view",
   "/seed",
   "/privacy",
   "/join-group",
