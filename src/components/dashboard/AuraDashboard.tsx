@@ -9,6 +9,8 @@ import { BurnoutIndicator } from "@/components/shared/BurnoutIndicator";
 import { RevisionSchedule } from "@/components/shared/RevisionSchedule";
 import { useState } from "react";
 import { useDisplayName } from "@/hooks/use-display-name";
+import { DashboardFirstSessionPrompt } from "@/components/empty-states/NewStudentPrompts";
+import { hasStudyActivity } from "@/lib/profileActivity";
 import { numericFontStyle } from "@/lib/design-tokens";
 
 const SUBJECT_LABEL: Record<string, string> = {
@@ -116,6 +118,12 @@ export function AuraDashboard({
       </header>
 
       <BurnoutIndicator burnout={burnout} />
+
+      {!hasStudyActivity(profile) ? (
+        <div className="px-4 pb-2">
+          <DashboardFirstSessionPrompt />
+        </div>
+      ) : null}
 
       <AuraErrorBoundary sectionName="Hero Command Center">
         <HeroCommandCenter

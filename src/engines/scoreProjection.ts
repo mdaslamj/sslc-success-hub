@@ -6,7 +6,7 @@ import type {
   SubjectProjection,
 } from "@/types/aura-engine-contracts";
 
-import seedProfile from "@/data/StudentLearningProfile.json";
+import fixtureProfile from "@/data/StudentLearningProfile.json";
 import mathBlueprintFile from "@/data/blueprint.math.json";
 import scienceBlueprintFile from "@/data/blueprint.science.json";
 import socialBlueprintFile from "@/data/blueprint.social.json";
@@ -166,13 +166,19 @@ export function loadSeedBlueprint(): Record<Subject, Record<string, BlueprintEnt
   );
 }
 
-export function loadSeedProfile(): StudentLearningProfile {
-  return seedProfile as unknown as StudentLearningProfile;
+/** Arjun fixture profile — for unit tests only, not used for new student accounts. */
+export function loadFixtureProfile(): StudentLearningProfile {
+  return fixtureProfile as unknown as StudentLearningProfile;
 }
 
-/** Run projection using seed profile + canonical blueprint JSON files. */
+/** @deprecated Use loadFixtureProfile() in tests or createEmptyStudentProfile() in app code. */
+export function loadSeedProfile(): StudentLearningProfile {
+  return loadFixtureProfile();
+}
+
+/** Run projection using fixture profile + canonical blueprint JSON files. */
 export function runScoreProjectionFromSeed(): ScoreProjectionResult {
-  const profile = loadSeedProfile();
+  const profile = loadFixtureProfile();
   const blueprint = loadSeedBlueprint();
   return scoreProjectionEngine(profile.chapterMastery, blueprint);
 }

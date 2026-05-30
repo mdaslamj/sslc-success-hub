@@ -28,6 +28,8 @@ import {
   addRankedTaskToTodayPlan,
   hasTaskWithTitle,
 } from "@/lib/today-plan-store";
+import { WarRoomSetTargetsPrompt } from "@/components/empty-states/NewStudentPrompts";
+import { hasStudyActivity, hasSubjectTargets } from "@/lib/profileActivity";
 import { cn } from "@/lib/utils";
 
 type WarRoomSubject = {
@@ -372,6 +374,10 @@ export function AuraWarRoom() {
         Loading exam intelligence…
       </div>
     );
+  }
+
+  if (!hasSubjectTargets(profile) && !hasStudyActivity(profile)) {
+    return <WarRoomSetTargetsPrompt className="mx-auto w-full max-w-7xl" />;
   }
 
   return (

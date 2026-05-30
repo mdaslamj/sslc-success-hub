@@ -1,6 +1,6 @@
 import { useCallback, useState } from "react";
 import { useAuraEngines } from "@/hooks/useAuraEngines";
-import { loadSeedProfile } from "@/hooks/useStudentProfile";
+import { createEmptyStudentProfile } from "@/lib/emptyStudentProfile";
 import {
   evaluatePaper,
   PaperEvaluationError,
@@ -57,7 +57,7 @@ export function useEvaluation(): UseEvaluationReturn {
         return;
       }
 
-      const activeProfile = profile ?? loadSeedProfile();
+      const activeProfile = profile ?? createEmptyStudentProfile();
 
       try {
         setStatus("extracting");

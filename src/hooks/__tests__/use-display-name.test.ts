@@ -4,7 +4,8 @@ import {
   migrateDemoProfileName,
   resolveDisplayName,
 } from "@/lib/student-display-name";
-import { toProfileStorage, loadSeedProfile } from "@/hooks/useStudentProfile";
+import { toProfileStorage } from "@/hooks/useStudentProfile";
+import { createEmptyStudentProfile } from "@/lib/emptyStudentProfile";
 
 assert.equal(isDemoDisplayName("Arjun Kumar"), true);
 assert.equal(isDemoDisplayName("Priya"), false);
@@ -28,8 +29,8 @@ assert.equal(resolveDisplayName({}), "Student");
 const migrated = migrateDemoProfileName(
   toProfileStorage(
     {
-      ...loadSeedProfile(),
-      student: { ...loadSeedProfile().student, name: "Arjun Kumar" },
+      ...createEmptyStudentProfile(),
+      student: { ...createEmptyStudentProfile().student, name: "Arjun Kumar" },
     },
     {},
   ),

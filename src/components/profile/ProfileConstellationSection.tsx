@@ -3,6 +3,8 @@ import { useNavigate } from "@tanstack/react-router";
 import AuraConstellation from "@/components/AuraConstellation";
 import { buildConstellationView } from "@/core/academic-state/constellationView";
 import { canonicalSubjectRouteId } from "@/lib/chapter-routes";
+import { ConstellationEmptyMessage } from "@/components/empty-states/NewStudentPrompts";
+import { hasStudyActivity } from "@/lib/profileActivity";
 import { useAuraEngines } from "@/hooks/useAuraEngines";
 
 export function ProfileConstellationSection() {
@@ -16,6 +18,7 @@ export function ProfileConstellationSection() {
 
   const momentumScore = Math.round(momentum?.score ?? 0);
   const burnoutScore = Math.round(burnout?.score ?? 0);
+  const showEmptyOverlay = !hasStudyActivity(profile);
 
   if (isLoading) {
     return (
@@ -29,7 +32,8 @@ export function ProfileConstellationSection() {
   }
 
   return (
-    <div className="rounded-2xl border border-[rgba(255,255,255,0.06)] bg-[#08080E] p-4 sm:p-5">
+    <div className="relative rounded-2xl border border-[rgba(255,255,255,0.06)] bg-[#08080E] p-4 sm:p-5">
+      {showEmptyOverlay ? <ConstellationEmptyMessage /> : null}
       <AuraConstellation
         subjects={subjects}
         chapters={chapters}

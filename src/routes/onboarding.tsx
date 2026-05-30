@@ -3,8 +3,14 @@ import { useEffect, useState } from "react";
 import { useAuth } from "@/contexts/auth-context";
 import { patchUserProfile } from "@/integrations/firebase/services/users";
 import { syncStudentDisplayName } from "@/lib/student-display-name";
-import { saveMemoryTracking } from "@/integrations/firebase/services/memory-tracking";
-import { saveBoardReadiness } from "@/integrations/firebase/services/board-readiness";
+import { applyOnboardingToProfile } from "@/lib/emptyStudentProfile";
+import {
+  loadInitialProfileStorage,
+  readStoredProfile,
+  stripProfileStorage,
+  toProfileStorage,
+  writeStoredProfile,
+} from "@/hooks/useStudentProfile";
 import {
   ConversationalOnboarding,
   type OnboardingMappedState,
@@ -71,6 +77,7 @@ function OnboardingFlow() {
     if (!user && isGuest()) {
       setSaving(true);
       try {
+        loadInitialProfileStorage();
         const weeklySchedule = buildWeeklyScheduleFromOnboarding(
           data.unavailableDays ?? [],
           data.capacity,
@@ -96,6 +103,7 @@ function OnboardingFlow() {
     }
     if (!user) {
       try {
+        loadInitialProfileStorage();
         const weeklySchedule = buildWeeklyScheduleFromOnboarding(
           data.unavailableDays ?? [],
           data.capacity,
@@ -111,6 +119,7 @@ function OnboardingFlow() {
     }
     setSaving(true);
     try {
+      loadInitialProfileStorage();
       const weeklySchedule = buildWeeklyScheduleFromOnboarding(
         data.unavailableDays ?? [],
         data.capacity,
@@ -176,48 +185,17 @@ function OnboardingFlow() {
 }
 
 /**
- * Best-effort baseline seeding so adaptive engines have a starting point
- * right after onboarding. Each call is independent and any failure is
- * swallowed so it never blocks navigation.
+ * Apply onboarding choices to the academic profile — targets and schedule only,
+ * never pre-filled mastery or fake readiness scores.
  */
-async function seedAdaptiveBaselines(uid: string, s: State): Promise<void> {
-  const now = Date.now();
-  await Promise.allSettled(
-    s.weak.map((subjectId) =>
-      saveMemoryTracking({
-        id: `seed_${subjectId}`,
-        userId: uid,
-        chapterId: `seed_${subjectId}`,
-        subjectId,
-        lastPracticed: now,
-        confidenceDecay: 0,
-        nextInterval: 1,
-        marksAtRisk: 0,
-        confidenceScore: 50,
-        retentionScore: 50,
-        retentionBand: "reminder",
-        createdAt: now,
-        updatedAt: now,
-      }),
-    ),
-  );
-  const base = Math.max(40, Math.min(85, s.target - 15));
-  await saveBoardReadiness({
-    userId: uid,
-    readinessScore: base,
-    band: base >= 75 ? "ready" : base >= 60 ? "reminder" : "remediation",
-    contributingFactors: {
-      memory: 50,
-      reasoning: 50,
-      continuity: 50,
-      weaknesses: s.weak.length ? 40 : 60,
-      recentPerformance: 50,
-    },
-    predictionDate: now,
-    recommendations: [
-      { kind: "revision_reminder", label: "Start your first daily session" },
-    ],
-    createdAt: now,
-    updatedAt: now,
+async function seedAdaptiveBaselines(_uid: string, s: State): Promise<void> {
+  const stored = readStoredProfile() ?? loadInitialProfileStorage();
+  const { profile, masteryReadings } = stripProfileStorage(stored);
+  const nextProfile = applyOnboardingToProfile(profile, {
+    name: s.name,
+    targetScore: s.target,
+    weakSubjects: s.weak,
+    examDate: s.examDate,
   });
+  writeStoredProfile(toProfileStorage(nextProfile, masteryReadings));
 }

@@ -1,6 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { DashboardLayout } from "@/components/dashboard-layout";
+import { PlannerOnboardingPrompt } from "@/components/empty-states/NewStudentPrompts";
+import { useAuth } from "@/contexts/auth-context";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
@@ -251,7 +253,20 @@ function replanIncompleteTasksSync(currentTasks: Task[], maxTasks: number): Task
   return [...done, ...fresh];
 }
 
+const GUEST_ONBOARDING_KEY = "aura.guest.onboarding.v1";
+
+function hasCompletedOnboarding(
+  authProfile: { onboardingCompletedAt?: number } | null | undefined,
+): boolean {
+  if (authProfile?.onboardingCompletedAt) return true;
+  if (typeof localStorage !== "undefined" && localStorage.getItem(GUEST_ONBOARDING_KEY)) {
+    return true;
+  }
+  return false;
+}
+
 function PlannerPage() {
+  const { profile: authProfile } = useAuth();
   const { logSession } = useAnalytics();
   const { profile, updateMastery, appendSession, updateProfile, burnout } = useAuraEngines();
   const [tasks, setTasks] = useState<Task[]>(seedTasks);
@@ -807,6 +822,16 @@ function PlannerPage() {
   const { snapshot: executionSnapshot } = useAcademicExecution({
     tasks: plannerTaskSnapshots,
   });
+
+  if (!hasCompletedOnboarding(authProfile)) {
+    return (
+      <DashboardLayout title="Study Planner">
+        <div className="mx-auto w-full max-w-7xl">
+          <PlannerOnboardingPrompt />
+        </div>
+      </DashboardLayout>
+    );
+  }
 
   return (
     <DashboardLayout title="Study Planner">

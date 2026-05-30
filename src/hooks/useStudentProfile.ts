@@ -10,7 +10,7 @@ import type {
 import { appendSessionToProfile, type NewSessionInput } from "@/engines/sessionLogger";
 import { queueOfflineWrite } from "@/lib/offlineQueue";
 
-import seedProfile from "@/data/StudentLearningProfile.json";
+import { createEmptyStudentProfile } from "@/lib/emptyStudentProfile";
 import {
   DISPLAY_NAME_CHANGED_EVENT,
   migrateDemoProfileName,
@@ -22,7 +22,7 @@ import {
 export const PROFILE_STORAGE_KEY = "aura_profile";
 export const PROFILE_VERSION_KEY = "aura_profile_version";
 export const PROFILE_UPDATED_AT_KEY = "aura_profile_updated_at";
-export const PROFILE_SCHEMA_VERSION = "2.0";
+export const PROFILE_SCHEMA_VERSION = "3.0";
 export const ACADEMIC_PROFILES_COLLECTION = "academic_profiles";
 
 type MasteryReadingsMap = Record<string, number[]>;
@@ -75,7 +75,7 @@ export function toProfileStorage(
 }
 
 export function loadSeedProfile(): StudentLearningProfile {
-  return seedProfile as unknown as StudentLearningProfile;
+  return createEmptyStudentProfile();
 }
 
 function getStorage(): Storage | null {
@@ -193,7 +193,7 @@ export function loadInitialProfileStorage(): AuraProfileStorage {
     return migrated;
   }
 
-  const seed = loadSeedProfile();
+  const seed = createEmptyStudentProfile();
   const resolvedName = resolveDisplayName({ guestName: readGuestOnboardingName() });
   const fresh = toProfileStorage(
     {

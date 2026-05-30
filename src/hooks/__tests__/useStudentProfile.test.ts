@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 
-import seedProfile from "@/data/StudentLearningProfile.json";
+import fixtureProfile from "@/data/StudentLearningProfile.json";
 import {
   PROFILE_STORAGE_KEY,
   PROFILE_SCHEMA_VERSION,
@@ -9,7 +9,6 @@ import {
   applyUpdateMastery,
   deriveTrendFromReadings,
   loadInitialProfileStorage,
-  loadSeedProfile,
   readStoredProfile,
   toProfileStorage,
   writeStoredProfile,
@@ -62,13 +61,13 @@ function withMockLocalStorage<T>(run: (storage: MemoryStorage) => T): T {
   }
 }
 
-function testLoadFallsBackToSeedWhenEmpty(): void {
+function testLoadFallsBackToEmptyProfileWhenEmpty(): void {
   withMockLocalStorage((storage) => {
     storage.clear();
     const loaded = loadInitialProfileStorage();
-    const seed = loadSeedProfile();
 
-    assert.equal(loaded.student.id, seed.student.id);
+    assert.equal(loaded.sessionHistory.length, 0);
+    assert.equal(Object.keys(loaded.chapterMastery.math).length, 0);
     assert.ok(storage.getItem(PROFILE_STORAGE_KEY));
     assert.equal(storage.getItem(PROFILE_VERSION_KEY), PROFILE_SCHEMA_VERSION);
   });
@@ -79,7 +78,7 @@ function testPersistAndReloadFromLocalStorage(): void {
     storage.clear();
 
     const updated = applyUpdateMastery(
-      toProfileStorage(loadSeedProfile(), {}),
+      toProfileStorage(fixtureProfile as StudentLearningProfile, {}),
       "science",
       "electricity",
       52,
@@ -96,7 +95,7 @@ function testPersistAndReloadFromLocalStorage(): void {
 }
 
 function testUpdateMasteryTrendFromPreviousReadings(): void {
-  const base = toProfileStorage(loadSeedProfile(), {
+  const base = toProfileStorage(fixtureProfile as StudentLearningProfile, {
     "science:electricity": [40, 42, 44],
   });
 
@@ -109,7 +108,7 @@ function testAppendSessionPersistsHistory(): void {
   withMockLocalStorage((storage) => {
     storage.clear();
 
-    const base = toProfileStorage(loadSeedProfile(), {});
+    const base = toProfileStorage(fixtureProfile as StudentLearningProfile, {});
     const appended = applyAppendSession(base, {
       date: "2025-05-28",
       subject: "math",
@@ -139,19 +138,19 @@ function testDeriveTrendStableDecliningImproving(): void {
   assert.equal(deriveTrendFromReadings([40, 42, 44], 50), "improving");
 }
 
-function testSeedProfileShape(): void {
-  const profile = seedProfile as unknown as StudentLearningProfile;
+function testFixtureProfileShape(): void {
+  const profile = fixtureProfile as unknown as StudentLearningProfile;
   assert.ok(profile.chapterMastery.science.electricity);
   assert.ok(profile.sessionHistory.length > 0);
 }
 
 export function runUseStudentProfileTests(): void {
-  testLoadFallsBackToSeedWhenEmpty();
+  testLoadFallsBackToEmptyProfileWhenEmpty();
   testPersistAndReloadFromLocalStorage();
   testUpdateMasteryTrendFromPreviousReadings();
   testAppendSessionPersistsHistory();
   testDeriveTrendStableDecliningImproving();
-  testSeedProfileShape();
+  testFixtureProfileShape();
   console.log("useStudentProfile tests passed");
 }
 

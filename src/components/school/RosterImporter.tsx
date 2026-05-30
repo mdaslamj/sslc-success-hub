@@ -156,9 +156,9 @@ export async function matchRosterToStudents(
 export { downloadRosterTemplate };
 
 const SAMPLE_ROWS = [
-  { roll: "001", name: "Arjun Kumar" },
-  { roll: "002", name: "Priya Sharma" },
-  { roll: "003", name: "Mohammed Aslam" },
+  { roll: "001", name: "Student One" },
+  { roll: "002", name: "Student Two" },
+  { roll: "003", name: "Student Three" },
 ];
 
 type RosterUploadProps = {

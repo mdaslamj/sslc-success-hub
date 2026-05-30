@@ -1,11 +1,14 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
-import { Plus, Timer, TrendingUp } from "lucide-react";
+import { TrendingUp, Timer } from "lucide-react";
 import { DashboardLayout } from "@/components/dashboard-layout";
-import { Button } from "@/components/ui/button";
-import { useAnalytics } from "@/hooks/use-analytics";
+import {
+  AnalyticsInsufficientDataPrompt,
+} from "@/components/empty-states/NewStudentPrompts";
 import { AcademicAnalyticsSection } from "@/components/analytics/AcademicAnalyticsSection";
 import { numericFontStyle } from "@/lib/design-tokens";
+import { sessionCount } from "@/lib/profileActivity";
+import { useAnalytics } from "@/hooks/use-analytics";
+import { useAuraEngines } from "@/hooks/useAuraEngines";
 
 export const Route = createFileRoute("/analytics")({
   head: () => ({
@@ -23,19 +26,9 @@ export const Route = createFileRoute("/analytics")({
 
 function AnalyticsPage() {
   const a = useAnalytics();
-  const [busy, setBusy] = useState(false);
-
-  function addDemoFocusSession() {
-    setBusy(true);
-    const now = Date.now();
-    a.logSession({
-      kind: "focus",
-      startedAt: now - 25 * 60_000,
-      endedAt: now,
-      durationMinutes: 25,
-    });
-    setBusy(false);
-  }
+  const { profile } = useAuraEngines();
+  const sessions = sessionCount(profile);
+  const showCharts = sessions >= 3;
 
   return (
     <DashboardLayout title="Analytics">
@@ -52,18 +45,9 @@ function AnalyticsPage() {
               Read-only projection from profile, session history, and Aura engines.
             </p>
           </div>
-          <Button
-            size="sm"
-            variant="outline"
-            className="rounded-full"
-            onClick={addDemoFocusSession}
-            disabled={busy}
-          >
-            <Plus className="mr-1.5 h-3.5 w-3.5" /> Log 25-min focus
-          </Button>
         </header>
 
-        <AcademicAnalyticsSection />
+        {showCharts ? <AcademicAnalyticsSection /> : <AnalyticsInsufficientDataPrompt />}
 
         <section className="rounded-2xl border border-border/60 bg-card p-6 shadow-card">
           <h3 className="font-display text-lg font-semibold">Focus session log</h3>
@@ -72,7 +56,7 @@ function AnalyticsPage() {
           </p>
           {a.recentSessions.length === 0 ? (
             <div className="mt-6 rounded-xl border border-dashed border-border/60 p-8 text-center text-sm text-muted-foreground">
-              No focus sessions yet. Use the focus timer or log a session above.
+              No focus sessions yet. Use the focus timer on the planner to log focus time.
             </div>
           ) : (
             <ul className="mt-4 divide-y divide-border/60">
