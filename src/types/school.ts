@@ -47,6 +47,7 @@ export interface SchoolStudent {
   subjectSharing: SubjectSharingPrefs;
   consentGiven: boolean;
   consentAt?: string;
+  consentVersion?: string;
   parentConsentGiven: boolean;
 }
 

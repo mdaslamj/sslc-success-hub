@@ -136,11 +136,14 @@ function defaultSubjectSharing(): SubjectSharingPrefs {
     science: true,
     math: true,
     social: true,
-    english: false,
-    kannada: false,
-    hindi: false,
+    english: true,
+    kannada: true,
+    hindi: true,
   };
 }
+
+export { defaultSubjectSharing };
+export const SCHOOL_CONSENT_VERSION = "1.0";
 
 async function uniqueSchoolCode(): Promise<string> {
   for (let attempt = 0; attempt < 12; attempt += 1) {
@@ -253,6 +256,7 @@ export async function joinSchoolByCode(
     subjectSharing: defaultSubjectSharing(),
     consentGiven: true,
     consentAt: now,
+    consentVersion: SCHOOL_CONSENT_VERSION,
     parentConsentGiven: false,
   };
 
@@ -284,6 +288,15 @@ export async function getStudentSchoolMembership(
   const snap = await getDoc(doc(db, SCHOOL_STUDENTS, schoolId, STUDENTS_SUB, studentUid));
   if (!snap.exists()) return null;
   return snap.data() as SchoolStudent;
+}
+
+export async function updateStudentSubjectSharing(
+  studentUid: string,
+  schoolId: string,
+  subjectSharing: SubjectSharingPrefs,
+): Promise<void> {
+  const studentRef = doc(db, SCHOOL_STUDENTS, schoolId, STUDENTS_SUB, studentUid);
+  await updateDoc(studentRef, { subjectSharing });
 }
 
 export async function getSchoolBySharedLoginUid(uid: string): Promise<School | null> {

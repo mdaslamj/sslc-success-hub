@@ -1,4 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
+import { SchoolJoinConsent } from "@/components/school/SchoolJoinConsent";
+import { resolveSchoolByCode } from "@/lib/schoolService";
+import type { School } from "@/types/school";
 
 const SUBJECTS = [
   { id: "science", emoji: "🧪", label: "Science" },
@@ -175,6 +178,9 @@ export function ConversationalOnboarding({ defaultName, saving, onComplete }: Pr
   const [selectedDays, setSelectedDays] = useState<string[]>([]);
   const [transitioning, setTransitioning] = useState(false);
   const [schoolCodeDraft, setSchoolCodeDraft] = useState("");
+  const [pendingSchool, setPendingSchool] = useState<School | null>(null);
+  const [schoolLookupError, setSchoolLookupError] = useState<string | null>(null);
+  const [schoolLookupLoading, setSchoolLookupLoading] = useState(false);
 
   const progress = Math.min(questionIndex + (showInput ? 0 : 1), 7);
 
@@ -283,14 +289,40 @@ export function ConversationalOnboarding({ defaultName, saving, onComplete }: Pr
     }, 1200);
   };
 
-  const handleSchoolConnect = () => {
-    if (transitioning) return;
+  const handleSchoolConnect = async () => {
+    if (transitioning || schoolLookupLoading) return;
     const code = schoolCodeDraft.trim().toUpperCase();
     if (code.length < 3) return;
-    const next = { ...answers, schoolCode: code };
-    setAnswers(next);
-    appendMessage("student", code);
-    finishWithSchoolAnswers(next, 6);
+    setSchoolLookupLoading(true);
+    setSchoolLookupError(null);
+    try {
+      const found = await resolveSchoolByCode(code);
+      if (!found) {
+        setSchoolLookupError("School code not found. Check with your teacher or skip for now.");
+        return;
+      }
+      const next = { ...answers, schoolCode: found.schoolCode };
+      setAnswers(next);
+      appendMessage("student", found.schoolCode);
+      setPendingSchool(found);
+    } catch {
+      setSchoolLookupError("Could not look up that code. Please try again.");
+    } finally {
+      setSchoolLookupLoading(false);
+    }
+  };
+
+  const handleSchoolConsentConfirm = () => {
+    if (transitioning || !pendingSchool) return;
+    finishWithSchoolAnswers(
+      { ...answers, schoolCode: pendingSchool.schoolCode },
+      6,
+    );
+  };
+
+  const handleSchoolConsentCancel = () => {
+    setPendingSchool(null);
+    setSchoolLookupError(null);
   };
 
   const handleSchoolSkip = () => {
@@ -403,12 +435,16 @@ export function ConversationalOnboarding({ defaultName, saving, onComplete }: Pr
           </div>
         );
       case 6:
+        if (pendingSchool) return null;
         return (
           <div className="space-y-3 fade-in">
             <input
               type="text"
               value={schoolCodeDraft}
-              onChange={(e) => setSchoolCodeDraft(e.target.value.toUpperCase())}
+              onChange={(e) => {
+                setSchoolCodeDraft(e.target.value.toUpperCase());
+                setSchoolLookupError(null);
+              }}
               maxLength={16}
               placeholder="KAR-BGM"
               className="w-full rounded-xl border px-4 py-3 text-sm uppercase tracking-wider text-white outline-none"
@@ -418,7 +454,12 @@ export function ConversationalOnboarding({ defaultName, saving, onComplete }: Pr
                 fontFamily: "'JetBrains Mono', monospace",
               }}
             />
-            <AnswerButton onClick={handleSchoolConnect}>Connect to school</AnswerButton>
+            {schoolLookupError ? (
+              <p className="text-center text-xs text-red-400">{schoolLookupError}</p>
+            ) : null}
+            <AnswerButton onClick={() => void handleSchoolConnect()}>
+              {schoolLookupLoading ? "Looking up…" : "Connect to school"}
+            </AnswerButton>
             <button
               type="button"
               onClick={handleSchoolSkip}
@@ -516,6 +557,17 @@ export function ConversationalOnboarding({ defaultName, saving, onComplete }: Pr
           ))}
 
           {inputBlock}
+
+          {pendingSchool ? (
+            <div className="fade-in pt-2">
+              <SchoolJoinConsent
+                schoolName={pendingSchool.name}
+                variant="dark"
+                onConfirm={handleSchoolConsentConfirm}
+                onCancel={handleSchoolConsentCancel}
+              />
+            </div>
+          ) : null}
 
           {saving && (
             <p className="fade-in text-center text-sm text-white/60">

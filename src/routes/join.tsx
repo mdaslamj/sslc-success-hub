@@ -5,6 +5,7 @@ import { toast } from "sonner";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { SchoolJoinConsent } from "@/components/school/SchoolJoinConsent";
 import { useAuth } from "@/contexts/auth-context";
 import {
   joinSchoolByCode,
@@ -21,6 +22,7 @@ const searchSchema = z.object({
 type Screen =
   | "entry"
   | "found"
+  | "consent"
   | "auth"
   | "success"
   | "already_joined";
@@ -58,6 +60,7 @@ function JoinSchoolPage() {
   const [joining, setJoining] = useState(false);
   const [lookupLoading, setLookupLoading] = useState(Boolean(initialCode));
 
+  /** Called only after explicit Level 2 consent — invokes joinSchoolByCode(). */
   const performJoin = useCallback(
     async (targetSchool: School, joinCode: string) => {
       if (!user) {
@@ -145,14 +148,27 @@ function JoinSchoolPage() {
     try {
       const pending = JSON.parse(pendingRaw) as { code?: string; schoolId?: string };
       if (pending.schoolId === school.schoolId || pending.code) {
-        void performJoin(school, pending.code ?? school.schoolCode);
+        setScreen("consent");
       }
     } catch {
       sessionStorage.removeItem(PENDING_SCHOOL_JOIN_KEY);
     }
-  }, [authLoading, user, school, profile?.schoolId, performJoin]);
+  }, [authLoading, user, school, profile?.schoolId]);
 
   const loginRedirect = `/join?school=${encodeURIComponent(school?.schoolCode ?? codeInput)}`;
+
+  const handleProceedToConsent = () => {
+    if (!school) return;
+    if (!user) {
+      sessionStorage.setItem(
+        PENDING_SCHOOL_JOIN_KEY,
+        JSON.stringify({ code: school.schoolCode, schoolId: school.schoolId }),
+      );
+      setScreen("auth");
+      return;
+    }
+    setScreen("consent");
+  };
 
   return (
     <div
@@ -196,12 +212,24 @@ function JoinSchoolPage() {
         {screen === "found" && school ? (
           <SchoolFoundScreen
             school={school}
-            joining={joining}
-            onJoin={() => void performJoin(school, school.schoolCode)}
+            onContinue={handleProceedToConsent}
             onBack={() => {
               setSchool(null);
               setScreen("entry");
               setLookupError(null);
+            }}
+          />
+        ) : null}
+
+        {screen === "consent" && school ? (
+          <SchoolJoinConsent
+            schoolName={school.name}
+            joining={joining}
+            variant="dark"
+            onConfirm={() => void performJoin(school, school.schoolCode)}
+            onCancel={() => {
+              sessionStorage.removeItem(PENDING_SCHOOL_JOIN_KEY);
+              setScreen("found");
             }}
           />
         ) : null}
@@ -302,13 +330,11 @@ function CodeEntryScreen({
 
 function SchoolFoundScreen({
   school,
-  joining,
-  onJoin,
+  onContinue,
   onBack,
 }: {
   school: School;
-  joining: boolean;
-  onJoin: () => void;
+  onContinue: () => void;
   onBack: () => void;
 }) {
   const typeLabel = school.schoolType ? SCHOOL_TYPE_LABELS[school.schoolType] : null;
@@ -329,44 +355,23 @@ function SchoolFoundScreen({
         ) : null}
       </div>
 
-      <div className="rounded-2xl border border-white/10 bg-[#14141F] p-5 text-sm text-white/80">
-        <p className="font-medium text-white">
-          By joining {school.name}, your subject teachers can see:
-        </p>
-        <ul className="mt-3 space-y-2">
-          <li className="flex gap-2 text-green-400/90">✓ Your weak chapters per subject</li>
-          <li className="flex gap-2 text-green-400/90">✓ Your gap types (conceptual/procedural)</li>
-        </ul>
-        <p className="mt-4 font-medium text-white">Your teachers cannot see:</p>
-        <ul className="mt-3 space-y-2">
-          <li className="flex gap-2 text-white/55">✗ Your study session times</li>
-          <li className="flex gap-2 text-white/55">✗ Your personal notes</li>
-          <li className="flex gap-2 text-white/55">✗ Your full performance history</li>
-        </ul>
-      </div>
+      <p className="text-center text-sm text-white/70">
+        Next, review what your teachers can and cannot see before you join.
+      </p>
 
       <div className="flex flex-col gap-3">
         <Button
           type="button"
-          disabled={joining}
           className="w-full rounded-xl bg-[#8B5CF6] py-6 text-base font-semibold text-white hover:bg-[#7C3AED]"
-          onClick={onJoin}
+          onClick={onContinue}
         >
-          {joining ? (
-            <>
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              Joining…
-            </>
-          ) : (
-            `Join ${school.name}`
-          )}
+          Continue
         </Button>
         <Button
           type="button"
           variant="outline"
           className="w-full rounded-xl border-white/10 bg-transparent text-white hover:bg-white/5"
           onClick={onBack}
-          disabled={joining}
         >
           Not my school
         </Button>
