@@ -42,9 +42,11 @@ export interface EvaluationResult {
 }
 
 function geminiApiKey(): string {
+  // SECURITY: Only read the server-side GEMINI_API_KEY. Never fall back to a
+  // VITE_-prefixed variable — Vite inlines those into the public client
+  // bundle, which would leak the key to every visitor.
   const key =
     (typeof process !== "undefined" ? process.env.GEMINI_API_KEY : undefined)?.trim() ||
-    (typeof process !== "undefined" ? process.env.VITE_GEMINI_API_KEY : undefined)?.trim() ||
     "";
   if (!key) {
     throw new Error("GEMINI_API_KEY is not configured for OCR");
