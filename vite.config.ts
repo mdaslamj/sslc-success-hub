@@ -4,14 +4,14 @@
 //     componentTagger (dev-only), VITE_* env injection, @ path alias, React/TanStack dedupe,
 //     error logger plugins, and sandbox detection (port/host/strictPort).
 // You can pass additional config via defineConfig({ vite: { ... } }) if needed.
-import { readFileSync, writeFileSync } from "node:fs";
+import { copyFileSync, existsSync, readFileSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { defineConfig } from "@lovable.dev/vite-tanstack-config";
 import type { Plugin } from "vite";
 import { VitePWA } from "vite-plugin-pwa";
 
 function firebaseMessagingAssets(): Plugin {
-  const writeAssets = (env: Record<string, string>) => {
+  const writeSwConfig = (env: Record<string, string>, destDir: string) => {
     const apiKey = env.VITE_FIREBASE_API_KEY;
     const authDomain = env.VITE_FIREBASE_AUTH_DOMAIN;
     const projectId = env.VITE_FIREBASE_PROJECT_ID;
@@ -21,9 +21,8 @@ function firebaseMessagingAssets(): Plugin {
 
     if (!apiKey || !messagingSenderId || !appId) return;
 
-    const publicDir = resolve(process.cwd(), "public");
     writeFileSync(
-      resolve(publicDir, "firebase-sw-config.js"),
+      resolve(destDir, "firebase-sw-config.js"),
       `// Auto-generated from VITE_FIREBASE_* env vars — do not edit.
 self.FIREBASE_API_KEY = ${JSON.stringify(apiKey)};
 self.FIREBASE_AUTH_DOMAIN = ${JSON.stringify(authDomain ?? "")};
@@ -35,7 +34,7 @@ self.FIREBASE_APP_ID = ${JSON.stringify(appId)};
       "utf8",
     );
 
-    const manifestPath = resolve(publicDir, "manifest.json");
+    const manifestPath = resolve(process.cwd(), "public/manifest.json");
     try {
       const manifest = JSON.parse(readFileSync(manifestPath, "utf8")) as Record<string, unknown>;
       manifest.gcm_sender_id = messagingSenderId;
@@ -45,10 +44,32 @@ self.FIREBASE_APP_ID = ${JSON.stringify(appId)};
     }
   };
 
+  const envFromProcess = (): Record<string, string> => {
+    const env: Record<string, string> = {};
+    for (const [key, value] of Object.entries(process.env)) {
+      if (key.startsWith("VITE_") && value) env[key] = value;
+    }
+    return env;
+  };
+
+  const syncSwConfigToClient = () => {
+    const publicConfig = resolve(process.cwd(), "public/firebase-sw-config.js");
+    const clientDir = resolve(process.cwd(), "dist/client");
+    if (!existsSync(publicConfig) || !existsSync(clientDir)) return;
+    copyFileSync(publicConfig, resolve(clientDir, "firebase-sw-config.js"));
+  };
+
   return {
     name: "firebase-messaging-assets",
     configResolved(config) {
-      writeAssets(config.env as Record<string, string>);
+      writeSwConfig(config.env as Record<string, string>, resolve(process.cwd(), "public"));
+    },
+    buildStart() {
+      writeSwConfig(envFromProcess(), resolve(process.cwd(), "public"));
+    },
+    closeBundle() {
+      writeSwConfig(envFromProcess(), resolve(process.cwd(), "public"));
+      syncSwConfigToClient();
     },
   };
 }
@@ -64,7 +85,7 @@ export default defineConfig({
       firebaseMessagingAssets(),
       VitePWA({
         registerType: "autoUpdate",
-        includeAssets: ["favicon.ico", "icon-192.png", "icon-512.png", "apple-touch-icon.png"],
+        includeAssets: ["icon-192.png", "icon-512.png", "apple-touch-icon.png"],
         manifest: false,
         injectRegister: null,
         workbox: {

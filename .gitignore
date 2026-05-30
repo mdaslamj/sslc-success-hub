@@ -40,8 +40,9 @@ dist-ssr
 # Firebase service account credentials
 serviceAccount.json
 
-# Auto-generated FCM service worker config (from VITE_FIREBASE_* at build/dev start)
-public/firebase-sw-config.js
+# Auto-generated FCM service worker config — publishable Firebase web keys;
+# overwritten from VITE_FIREBASE_* at build when env vars are present.
+# (Do not gitignore — Lovable deploy must serve this for firebase-messaging-sw.js.)
 serviceAccount.json.json
 *.json.json
 
