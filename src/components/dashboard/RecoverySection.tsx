@@ -1,5 +1,6 @@
 import type { RecoveryEngineOutput } from "@/types/aura-engine-contracts";
 import type { AdaptiveTheme } from "@/hooks/useAdaptiveTheme";
+import { numericFontStyle } from "@/lib/design-tokens";
 
 const SUBJECT_LABEL: Record<string, string> = {
   math: "Math",
@@ -32,7 +33,9 @@ export function RecoverySection({ recovery, theme, layoutDensity }: RecoverySect
         <span className="text-[10px] font-semibold uppercase tracking-wider text-slate-500">
           Mark Rescue
         </span>
-        <span className="text-xs text-red-400">{(recovery?.totalAtRisk ?? 0).toFixed(1)} at risk</span>
+        <span className="text-xs text-red-400 tabular-nums" style={numericFontStyle}>
+          {(recovery?.totalAtRisk ?? 0).toFixed(1)} at risk
+        </span>
       </div>
       <div className="space-y-2">
         {topItems.slice(0, itemLimit).map((item) => (
@@ -62,8 +65,12 @@ export function RecoverySection({ recovery, theme, layoutDensity }: RecoverySect
               </span>
             </div>
             <div className="mt-2 flex justify-between text-[11px] text-slate-400">
-              <span>{item.currentMastery ?? 0}% mastery</span>
-              <span>+{(item.recoverableMarks ?? 0).toFixed(1)} recoverable</span>
+              <span className="tabular-nums" style={numericFontStyle}>
+                {item.currentMastery ?? 0}% mastery
+              </span>
+              <span className="tabular-nums" style={numericFontStyle}>
+                +{(item.recoverableMarks ?? 0).toFixed(1)} recoverable
+              </span>
             </div>
           </div>
         ))}

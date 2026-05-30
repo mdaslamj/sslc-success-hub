@@ -9,6 +9,7 @@ import { BurnoutIndicator } from "@/components/shared/BurnoutIndicator";
 import { RevisionSchedule } from "@/components/shared/RevisionSchedule";
 import { useState } from "react";
 import { useDisplayName } from "@/hooks/use-display-name";
+import { numericFontStyle } from "@/lib/design-tokens";
 
 const SUBJECT_LABEL: Record<string, string> = {
   math: "Math",
@@ -104,7 +105,12 @@ export function AuraDashboard({
           </span>
         </div>
         <div className="flex items-center gap-4 text-xs text-slate-400">
-          <span>{profile.student?.daysToExam ?? 0} days to exam</span>
+          <span>
+            <span className="tabular-nums" style={numericFontStyle}>
+              {profile.student?.daysToExam ?? 0}
+            </span>{" "}
+            days to exam
+          </span>
           <span className="font-medium text-slate-200">{displayName}</span>
         </div>
       </header>
@@ -214,15 +220,20 @@ export function AuraDashboard({
                       {task.name}
                     </div>
                     <div className="text-[10px] text-slate-500">
-                      {SUBJECT_LABEL[task.subject] ?? task.subject} · {task.minutes} min ·{" "}
+                      {SUBJECT_LABEL[task.subject] ?? task.subject} ·{" "}
+                      <span className="tabular-nums" style={numericFontStyle}>
+                        {task.minutes} min
+                      </span>
+                      {" · "}
                       {task.urgency}
                     </div>
                     <div className="truncate text-[11px] text-slate-400">{task.reason}</div>
                   </div>
                   <span
-                    className={`shrink-0 rounded-full bg-emerald-500/15 px-2 py-0.5 text-[10px] font-bold text-emerald-300 ${
+                    className={`shrink-0 rounded-full bg-emerald-500/15 px-2 py-0.5 text-[10px] font-bold text-emerald-300 tabular-nums ${
                       bouncing[task.id] ? "aura-bounce-once" : ""
                     }`}
+                    style={numericFontStyle}
                   >
                     +{task.minutes} XP
                   </span>

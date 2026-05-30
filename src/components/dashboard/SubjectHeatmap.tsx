@@ -6,6 +6,7 @@ import type {
   Subject,
 } from "@/types/aura-engine-contracts";
 import type { AdaptiveTheme } from "@/hooks/useAdaptiveTheme";
+import { numericFontStyle } from "@/lib/design-tokens";
 
 const SUBJECT_LABEL: Record<string, string> = {
   math: "Math",
@@ -74,7 +75,7 @@ export function SubjectHeatmap({
                 <div className="mb-1 flex items-center justify-between text-xs">
                   <span style={{ color: row.color }}>{row.label}</span>
                   <span className="flex items-center gap-2 text-slate-400">
-                    <span>
+                    <span className="tabular-nums" style={numericFontStyle}>
                       {row.predicted.toFixed(1)}/{row.max} marks
                     </span>
                     {drillDownEnabled ? (
@@ -103,7 +104,9 @@ export function SubjectHeatmap({
                     >
                       <span className="truncate capitalize">{chapterId.replace(/_/g, " ")}</span>
                       {layoutDensity === "advanced" ? (
-                        <span className="shrink-0 text-slate-300">{entry.mastery}%</span>
+                        <span className="shrink-0 text-slate-300 tabular-nums" style={numericFontStyle}>
+                          {entry.mastery}%
+                        </span>
                       ) : null}
                     </div>
                   ))}
@@ -114,7 +117,12 @@ export function SubjectHeatmap({
         })}
       </div>
       <div className="mt-4 text-xs text-slate-400">
-        Analytics health: {analytics?.overallHealthScore ?? 0}/100 · {theme.tone ?? ""}
+        Analytics health:{" "}
+        <span className="tabular-nums" style={numericFontStyle}>
+          {analytics?.overallHealthScore ?? 0}/100
+        </span>
+        {" · "}
+        {theme.tone ?? ""}
       </div>
     </div>
   );

@@ -1,4 +1,5 @@
 import type { RankPredictionOutput } from "@/types/aura-engine-contracts";
+import { numericFontStyle } from "@/lib/design-tokens";
 
 type RankBadgeProps = {
   rank?: RankPredictionOutput | null;
@@ -35,7 +36,14 @@ export function RankBadge({ rank, archetype }: RankBadgeProps) {
       >
         {(rank.gapToTopTen ?? 0) === 0
           ? "You are in the top 10%"
-          : `${rank.gapToTopTen} marks to top 10%`}
+          : (
+              <>
+                <span className="tabular-nums" style={numericFontStyle}>
+                  {rank.gapToTopTen}
+                </span>{" "}
+                marks to top 10%
+              </>
+            )}
       </div>
     </div>
   );

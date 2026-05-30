@@ -34,3 +34,8 @@ export const STATUS_COLORS = {
   stable: "#4ADE80",
   strong: "#C084FC",
 } as const;
+
+/** Use for scores, percentages, counts, durations, and other numeric UI text. */
+export const FONT_NUMERIC = "'JetBrains Mono', monospace" as const;
+
+export const numericFontStyle = { fontFamily: FONT_NUMERIC } as const;

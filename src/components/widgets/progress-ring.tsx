@@ -1,3 +1,5 @@
+import { numericFontStyle } from "@/lib/design-tokens";
+
 export function ProgressRing({
   value,
   size = 120,
@@ -41,7 +43,9 @@ export function ProgressRing({
         />
       </svg>
       <div className="absolute inset-0 flex flex-col items-center justify-center">
-        <div className="font-display text-2xl font-bold text-foreground">{label ?? `${value}%`}</div>
+        <div className="text-2xl font-bold tabular-nums text-foreground" style={numericFontStyle}>
+          {label ?? `${value}%`}
+        </div>
         {sublabel && <div className="text-[10px] uppercase tracking-wider text-muted-foreground">{sublabel}</div>}
       </div>
     </div>

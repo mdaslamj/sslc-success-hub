@@ -2,6 +2,7 @@ import type { MomentumOutput } from "@/types/aura-engine-contracts";
 import type { AdaptiveTheme } from "@/hooks/useAdaptiveTheme";
 import { AdaptiveMessage } from "@/components/shared/AdaptiveMessage";
 import { useEffect, useRef, useState } from "react";
+import { numericFontStyle } from "@/lib/design-tokens";
 
 type LayoutDensity = AdaptiveTheme["layoutDensity"];
 
@@ -99,15 +100,17 @@ export function MomentumMeter({
       <div className="flex items-end justify-between">
         <div>
           <div
-            className="text-3xl font-black"
-            style={{ color: theme.primary, fontFamily: "Syne, sans-serif" }}
+            className="text-3xl font-black tabular-nums"
+            style={{ color: theme.primary, ...numericFontStyle }}
           >
             <AnimatedScore value={score} />
           </div>
           <div className="text-xs text-slate-400">{badge}</div>
         </div>
         <div className="text-right">
-          <div className="text-xl font-bold text-orange-400">{streak}d</div>
+          <div className="text-xl font-bold text-orange-400 tabular-nums" style={numericFontStyle}>
+            {streak}d
+          </div>
           <div className="text-[10px] uppercase tracking-wide text-slate-500">streak</div>
           <div className="mt-1 text-xs capitalize text-slate-300">{trend}</div>
         </div>

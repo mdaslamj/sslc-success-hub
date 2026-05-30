@@ -9,6 +9,7 @@ import type { AdaptiveTheme } from "@/hooks/useAdaptiveTheme";
 import { MomentumMeter } from "@/components/shared/MomentumMeter";
 import { RankBadge } from "@/components/shared/RankBadge";
 import { useEffect, useRef, useState } from "react";
+import { numericFontStyle } from "@/lib/design-tokens";
 
 function useCountUp(target: number, duration = 1000) {
   const [value, setValue] = useState(0);
@@ -114,7 +115,7 @@ function ScoreOrb({
           fill="#e2e8f0"
           fontSize="18"
           fontWeight="700"
-          fontFamily="Syne, sans-serif"
+          fontFamily="'JetBrains Mono', monospace"
         >
           {Math.round(animatedValue)}%
         </text>
@@ -159,7 +160,9 @@ function MissionCard({
       <div className="mt-2 flex flex-wrap gap-2 text-[11px]">
         <span style={{ color: URGENCY_COLOR[urgency] ?? accent }}>{urgency.toUpperCase()}</span>
         <span className="text-slate-400">{gain}</span>
-        <span className="text-slate-500">{minutes} min</span>
+        <span className="text-slate-500" style={numericFontStyle}>
+          {minutes} min
+        </span>
       </div>
       <p className="mt-2 line-clamp-2 text-xs leading-relaxed text-slate-400">{rationale}</p>
     </div>
@@ -217,7 +220,7 @@ export function HeroCommandCenter({
             <div key={row.subject}>
               <div className="mb-0.5 flex justify-between text-[10px] text-slate-400">
                 <span>{row.label}</span>
-                <span>{Math.round(row.percentage)}%</span>
+                <span style={numericFontStyle}>{Math.round(row.percentage)}%</span>
               </div>
               <div className="h-1.5 overflow-hidden rounded-full bg-[#050c1c]">
                 <div
@@ -240,7 +243,7 @@ export function HeroCommandCenter({
             Today&apos;s Critical Mission
           </span>
           {layoutDensity === "advanced" ? (
-            <span className="text-[10px] text-slate-400">
+            <span className="text-[10px] text-slate-400" style={numericFontStyle}>
               {Math.round((nextAction?.confidence ?? 0) * 100)}% confidence
             </span>
           ) : null}
@@ -269,15 +272,17 @@ export function HeroCommandCenter({
           <div className="flex items-end justify-between">
             <div>
               <div
-                className="aura-archetype-transition text-3xl font-black"
-                style={{ color: theme.primary, fontFamily: "Syne, sans-serif" }}
+                className="aura-archetype-transition text-3xl font-black tabular-nums"
+                style={{ color: theme.primary, ...numericFontStyle }}
               >
                 <MomentumScore value={momentum?.score ?? 0} />
               </div>
               <div className="text-xs text-slate-400">{momentum?.badge ?? ""}</div>
             </div>
             <div className="text-right">
-              <div className="text-xl font-bold text-orange-400">{momentum?.streak ?? 0}d</div>
+              <div className="text-xl font-bold text-orange-400 tabular-nums" style={numericFontStyle}>
+                {momentum?.streak ?? 0}d
+              </div>
               <div className="text-[10px] uppercase tracking-wide text-slate-500">streak</div>
               <div className="mt-1 text-xs capitalize text-slate-300">{momentum?.trend ?? "stable"}</div>
             </div>

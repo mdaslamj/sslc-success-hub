@@ -5,6 +5,7 @@ import type {
 } from "@/types/aura-engine-contracts";
 import type { AdaptiveTheme } from "@/hooks/useAdaptiveTheme";
 import { useEffect, useRef, useState } from "react";
+import { numericFontStyle } from "@/lib/design-tokens";
 
 function useCountUp(target: number, duration = 1000) {
   const [value, setValue] = useState(0);
@@ -64,22 +65,29 @@ export function TargetSection({
       <div className="mb-3 flex items-end justify-between">
         <div>
           <div
-            className="text-2xl font-black text-slate-100"
-            style={{ fontFamily: "Syne, sans-serif" }}
+            className="text-2xl font-black text-slate-100 tabular-nums"
+            style={numericFontStyle}
           >
             <CountNumber value={projection?.percentage ?? 0} suffix="%" />
           </div>
           <div className="text-xs text-slate-400">current prediction</div>
         </div>
         <div className="text-right">
-          <div className="aura-archetype-transition text-lg font-bold" style={{ color: theme.accent }}>
+          <div
+            className="aura-archetype-transition text-lg font-bold tabular-nums"
+            style={{ color: theme.accent, ...numericFontStyle }}
+          >
             <CountNumber value={target?.targetScore ?? 0} suffix="%" />
           </div>
           <div className="text-xs text-slate-400">target</div>
         </div>
       </div>
       <div className="mb-3 text-xs text-slate-400">
-        Gap {(target?.gapPercentage ?? 0).toFixed(1)}% · {(target?.estimatedHours ?? 0).toFixed(1)}h path
+        Gap{" "}
+        <span style={numericFontStyle}>{(target?.gapPercentage ?? 0).toFixed(1)}%</span>
+        {" · "}
+        <span style={numericFontStyle}>{(target?.estimatedHours ?? 0).toFixed(1)}h</span>
+        {" path"}
         {target?.reachableBy ? ` · by ${target.reachableBy}` : ""}
       </div>
 
@@ -91,7 +99,9 @@ export function TargetSection({
               className="flex items-center justify-between rounded-lg bg-[#050c1c] px-2 py-1.5 text-[11px]"
             >
               <span className="truncate text-slate-200">{chapter.name ?? chapter.chapter}</span>
-              <span className="shrink-0 text-slate-400">ROI {(chapter.roi ?? 0).toFixed(2)}</span>
+              <span className="shrink-0 text-slate-400 tabular-nums" style={numericFontStyle}>
+                ROI {(chapter.roi ?? 0).toFixed(2)}
+              </span>
             </div>
           ))}
         </div>

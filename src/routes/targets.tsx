@@ -15,6 +15,7 @@ import {
   Check,
 } from "lucide-react";
 import { getSubjectStatus } from "@/lib/taskPriorityEngine";
+import { numericFontStyle } from "@/lib/design-tokens";
 import { Slider } from "@/components/ui/slider";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -241,7 +242,9 @@ function TargetsPage() {
                 <Trophy className="h-3.5 w-3.5" /> Overall Target
               </div>
               <div className="mt-3 flex items-end gap-3">
-                <div className="font-display text-5xl font-bold">{overallTarget}%</div>
+                <div className="text-5xl font-bold tabular-nums" style={numericFontStyle}>
+                  {overallTarget}%
+                </div>
                 <div className="pb-2 text-sm text-white/70">Grade {gradeFor(overallTarget)}</div>
               </div>
               <div className="mt-5">
@@ -253,16 +256,20 @@ function TargetsPage() {
                   onValueChange={(value) => applyOverallToAll(value[0])}
                 />
                 <div className="mt-2 flex justify-between text-[11px] text-white/60">
-                  <span>50%</span>
-                  <span>Current avg target: {avgTarget}%</span>
-                  <span>100%</span>
+                  <span className="tabular-nums" style={numericFontStyle}>50%</span>
+                  <span className="tabular-nums" style={numericFontStyle}>
+                    Current avg target: {avgTarget}%
+                  </span>
+                  <span className="tabular-nums" style={numericFontStyle}>100%</span>
                 </div>
               </div>
               <p className="mt-4 text-sm text-white/80">
                 {overallGap > 0 ? (
                   <>
                     You need{" "}
-                    <span className="font-semibold text-brand-glow">+{overallGap.toFixed(1)} pts</span>{" "}
+                    <span className="font-semibold text-brand-glow tabular-nums" style={numericFontStyle}>
+                      +{overallGap.toFixed(1)} pts
+                    </span>{" "}
                     on average to hit this target.
                   </>
                 ) : (
@@ -287,7 +294,14 @@ function TargetsPage() {
                     : "Aggressive target"}
               </div>
               <p className="mt-1 text-xs text-muted-foreground">
-                Predicted {avgPredicted}% · Target {overallTarget}%
+                Predicted{" "}
+                <span className="tabular-nums" style={numericFontStyle}>
+                  {avgPredicted}%
+                </span>
+                {" · Target "}
+                <span className="tabular-nums" style={numericFontStyle}>
+                  {overallTarget}%
+                </span>
               </p>
             </div>
           </div>
@@ -302,14 +316,18 @@ function TargetsPage() {
                 <div className="text-[11px] uppercase tracking-widest text-muted-foreground">
                   Predicted
                 </div>
-                <div className="mt-1 font-display text-3xl font-bold">{avgPredicted}%</div>
+                <div className="mt-1 text-3xl font-bold tabular-nums" style={numericFontStyle}>
+                  {avgPredicted}%
+                </div>
                 <Badge variant="secondary" className="mt-1">
                   Grade {gradeFor(avgPredicted)}
                 </Badge>
               </div>
               <div className="rounded-2xl gradient-ocean p-3 text-center text-white">
                 <div className="text-[11px] uppercase tracking-widest text-white/80">Target</div>
-                <div className="mt-1 font-display text-3xl font-bold">{overallTarget}%</div>
+                <div className="mt-1 text-3xl font-bold tabular-nums" style={numericFontStyle}>
+                  {overallTarget}%
+                </div>
                 <Badge className="mt-1 bg-white/20 text-white hover:bg-white/20 border-0">
                   Grade {gradeFor(overallTarget)}
                 </Badge>
@@ -318,7 +336,9 @@ function TargetsPage() {
             <div className="mt-4 space-y-1.5">
               <div className="flex justify-between text-xs text-muted-foreground">
                 <span>Progress to target</span>
-                <span>{Math.min(100, Math.round((avgPredicted / overallTarget) * 100))}%</span>
+                <span className="tabular-nums" style={numericFontStyle}>
+                  {Math.min(100, Math.round((avgPredicted / overallTarget) * 100))}%
+                </span>
               </div>
               <Progress value={Math.min(100, (avgPredicted / overallTarget) * 100)} />
             </div>
@@ -336,7 +356,7 @@ function TargetsPage() {
                 Predicted score, mastery and your target side-by-side per subject.
               </p>
             </div>
-            <Badge variant="outline" className="rounded-full">
+            <Badge variant="outline" className="rounded-full tabular-nums" style={numericFontStyle}>
               Avg gap: {avgTarget - avgPredicted} pts
             </Badge>
           </div>
@@ -429,7 +449,14 @@ function TargetsPage() {
                       <div>
                         <div className="font-display font-semibold">{subject.name}</div>
                         <div className="text-xs text-muted-foreground">
-                          Predicted {subject.predicted}% · Mastery {subject.mastery}%
+                          Predicted{" "}
+                          <span className="tabular-nums" style={numericFontStyle}>
+                            {subject.predicted}%
+                          </span>
+                          {" · Mastery "}
+                          <span className="tabular-nums" style={numericFontStyle}>
+                            {subject.mastery}%
+                          </span>
                         </div>
                       </div>
                     </div>
@@ -447,7 +474,10 @@ function TargetsPage() {
                       <div className="text-[10px] uppercase tracking-widest text-muted-foreground">
                         Target
                       </div>
-                      <div className="font-display text-lg font-bold" style={{ color: subject.color }}>
+                      <div
+                        className="text-lg font-bold tabular-nums"
+                        style={{ color: subject.color, ...numericFontStyle }}
+                      >
                         {subject.target}%
                       </div>
                     </div>
@@ -456,9 +486,10 @@ function TargetsPage() {
                         Gap
                       </div>
                       <div
-                        className={`font-display text-lg font-bold ${
+                        className={`text-lg font-bold tabular-nums ${
                           subjectGap > 0 ? "text-warning" : "text-success"
                         }`}
+                        style={numericFontStyle}
                       >
                         {subjectGap > 0 ? `+${subjectGap}` : subjectGap}
                       </div>
@@ -467,7 +498,9 @@ function TargetsPage() {
                       <div className="text-[10px] uppercase tracking-widest text-muted-foreground">
                         Probability
                       </div>
-                      <div className="font-display text-lg font-bold gradient-text">{prob}%</div>
+                      <div className="text-lg font-bold gradient-text tabular-nums" style={numericFontStyle}>
+                        {prob}%
+                      </div>
                     </div>
                   </div>
 
@@ -480,9 +513,11 @@ function TargetsPage() {
                       onValueChange={(value) => handleTargetChange(subject.id, value[0])}
                     />
                     <div className="mt-2 flex justify-between text-[11px] text-muted-foreground">
-                      <span>50%</span>
-                      <span>Predicted: {subject.predicted}%</span>
-                      <span>100%</span>
+                      <span className="tabular-nums" style={numericFontStyle}>50%</span>
+                      <span className="tabular-nums" style={numericFontStyle}>
+                        Predicted: {subject.predicted}%
+                      </span>
+                      <span className="tabular-nums" style={numericFontStyle}>100%</span>
                     </div>
                   </div>
 

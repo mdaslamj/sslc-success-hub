@@ -5,6 +5,7 @@ import { DashboardLayout } from "@/components/dashboard-layout";
 import { Button } from "@/components/ui/button";
 import { useAnalytics } from "@/hooks/use-analytics";
 import { AcademicAnalyticsSection } from "@/components/analytics/AcademicAnalyticsSection";
+import { numericFontStyle } from "@/lib/design-tokens";
 
 export const Route = createFileRoute("/analytics")({
   head: () => ({
@@ -86,7 +87,9 @@ function AnalyticsPage() {
                       </div>
                     </div>
                   </div>
-                  <div className="font-semibold tabular-nums">{s.durationMinutes}m</div>
+                  <div className="font-semibold tabular-nums" style={numericFontStyle}>
+                    {s.durationMinutes}m
+                  </div>
                 </li>
               ))}
             </ul>

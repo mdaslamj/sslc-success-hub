@@ -1,4 +1,5 @@
 import { memo } from "react";
+import { numericFontStyle } from "@/lib/design-tokens";
 import {
   Area,
   AreaChart,
@@ -24,7 +25,7 @@ function StatTile({ label, value, hint, accent = "text-foreground" }) {
       <p className="text-[10px] font-bold uppercase tracking-[0.08em] text-muted-foreground">
         {label}
       </p>
-      <p className={`mt-1 font-display text-2xl font-bold tabular-nums ${accent}`}>
+      <p className={`mt-1 text-2xl font-bold tabular-nums ${accent}`} style={numericFontStyle}>
         {value}
       </p>
       {hint && <p className="mt-1 text-xs text-muted-foreground">{hint}</p>}
@@ -131,7 +132,7 @@ function AuraAnalytics({ view }) {
                 Minutes from profile session history · last 14 days
               </p>
             </div>
-            <p className="text-right text-sm font-semibold tabular-nums text-brand">
+            <p className="text-right text-sm font-semibold tabular-nums text-brand" style={numericFontStyle}>
               {weekMinutes}m
             </p>
           </div>
@@ -178,7 +179,9 @@ function AuraAnalytics({ view }) {
             >
               <div className="flex items-center justify-between gap-2">
                 <span className="font-medium">{row.subject}</span>
-                <span className="text-xs tabular-nums text-muted-foreground">+{row.gap} gap</span>
+                <span className="text-xs tabular-nums text-muted-foreground" style={numericFontStyle}>
+                  +{row.gap} gap
+                </span>
               </div>
               <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-muted">
                 <div
@@ -190,7 +193,10 @@ function AuraAnalytics({ view }) {
                 />
               </div>
               <p className="mt-2 text-[11px] text-muted-foreground">
-                {row.recovered} pts recovered
+                <span className="tabular-nums" style={numericFontStyle}>
+                  {row.recovered}
+                </span>{" "}
+                pts recovered
               </p>
             </div>
           ))}
@@ -240,7 +246,18 @@ function AuraAnalytics({ view }) {
                 >
                   <span className="font-medium">{row.week}</span>
                   <span className="text-muted-foreground">
-                    {row.sessions} sessions · {row.marksRecovered}m est. · +{row.probGain} prob
+                    <span className="tabular-nums" style={numericFontStyle}>
+                      {row.sessions}
+                    </span>{" "}
+                    sessions ·{" "}
+                    <span className="tabular-nums" style={numericFontStyle}>
+                      {row.marksRecovered}
+                    </span>
+                    m est. · +
+                    <span className="tabular-nums" style={numericFontStyle}>
+                      {row.probGain}
+                    </span>{" "}
+                    prob
                   </span>
                   <span className="text-muted-foreground">Best: {row.bestSubject}</span>
                 </li>
@@ -271,7 +288,7 @@ function AuraAnalytics({ view }) {
                   />
                   <span className="truncate font-medium">{subject.name}</span>
                 </div>
-                <span className="shrink-0 text-xs tabular-nums text-muted-foreground">
+                <span className="shrink-0 text-xs tabular-nums text-muted-foreground" style={numericFontStyle}>
                   P(hit) {subject.probability}%
                 </span>
               </div>
@@ -292,8 +309,12 @@ function AuraAnalytics({ view }) {
                 />
               </div>
               <div className="mt-2 flex justify-between text-[11px] text-muted-foreground">
-                <span>Mastery {subject.mastery}%</span>
-                <span>Predicted {subject.predicted}% · Target {subject.target}%</span>
+                <span className="tabular-nums" style={numericFontStyle}>
+                  Mastery {subject.mastery}%
+                </span>
+                <span className="tabular-nums" style={numericFontStyle}>
+                  Predicted {subject.predicted}% · Target {subject.target}%
+                </span>
               </div>
             </div>
           ))}
@@ -307,7 +328,10 @@ function AuraAnalytics({ view }) {
               Learning dimensions
             </h3>
             <p className="text-xs text-muted-foreground">
-              Behavioral analytics from session history · health {view.overallHealth}%
+              Behavioral analytics from session history · health{" "}
+              <span className="tabular-nums" style={numericFontStyle}>
+                {view.overallHealth}%
+              </span>
             </p>
           </div>
         </div>
@@ -319,7 +343,9 @@ function AuraAnalytics({ view }) {
             >
               <div className="flex items-center justify-between gap-2">
                 <span className="text-sm font-medium">{dim.label}</span>
-                <span className="text-sm font-semibold tabular-nums">{dim.score}</span>
+                <span className="text-sm font-semibold tabular-nums" style={numericFontStyle}>
+                  {dim.score}
+                </span>
               </div>
               <div className="relative mt-2 h-1.5 overflow-hidden rounded-full bg-muted">
                 <div
