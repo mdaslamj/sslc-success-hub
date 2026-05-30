@@ -4,12 +4,18 @@
  */
 const ALPHABET = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"; // 32 chars
 
-export function generateInviteCode(): string {
+function secureRandomFromAlphabet(alphabet: string, length: number): string {
+  const arr = new Uint32Array(length);
+  crypto.getRandomValues(arr);
   let out = "";
-  for (let i = 0; i < 8; i++) {
-    out += ALPHABET[Math.floor(Math.random() * ALPHABET.length)];
+  for (let i = 0; i < length; i++) {
+    out += alphabet[arr[i] % alphabet.length];
   }
   return out;
+}
+
+export function generateInviteCode(): string {
+  return secureRandomFromAlphabet(ALPHABET, 8);
 }
 
 export function normalizeInviteCode(raw: string): string {

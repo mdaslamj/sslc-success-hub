@@ -72,21 +72,27 @@ export type CreateSchoolInput = Omit<
 };
 
 export function generateSchoolCode(): string {
-  const suffix = Array.from({ length: 6 }, () =>
-    CODE_CHARS[Math.floor(Math.random() * CODE_CHARS.length)],
-  ).join("");
+  const arr = new Uint32Array(6);
+  crypto.getRandomValues(arr);
+  let suffix = "";
+  for (let i = 0; i < 6; i++) suffix += CODE_CHARS[arr[i] % CODE_CHARS.length];
   return `KAR-${suffix}`;
 }
 
 export function generateTempPassword(): string {
+  // SECURITY: temp password is a real Firebase Auth credential — must use a
+  // CSPRNG, not Math.random().
   const upper = "ABCDEFGHJKLMNPQRSTUVWXYZ";
   const lower = "abcdefghjkmnpqrstuvwxyz";
   const nums = "23456789";
-  return (
-    Array.from({ length: 2 }, () => upper[Math.floor(Math.random() * upper.length)]).join("") +
-    Array.from({ length: 2 }, () => nums[Math.floor(Math.random() * nums.length)]).join("") +
-    Array.from({ length: 4 }, () => lower[Math.floor(Math.random() * lower.length)]).join("")
-  );
+  const pick = (alphabet: string, n: number): string => {
+    const arr = new Uint32Array(n);
+    crypto.getRandomValues(arr);
+    let out = "";
+    for (let i = 0; i < n; i++) out += alphabet[arr[i] % alphabet.length];
+    return out;
+  };
+  return pick(upper, 2) + pick(nums, 2) + pick(lower, 4);
 }
 
 function schoolEmailForCode(schoolCode: string): string {

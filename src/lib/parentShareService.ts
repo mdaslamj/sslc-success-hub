@@ -6,10 +6,15 @@ const COLLECTION = "parent_shares";
 const SHARE_TTL_MS = 30 * 86_400_000;
 
 function randomToken(): string {
+  // SECURITY: tokens grant unauthenticated access to a student's parent
+  // summary, so they must be unpredictable. Use the Web Crypto CSPRNG
+  // (available in browsers, Node 18+, and Cloudflare Workers).
   const alphabet = "abcdefghijklmnopqrstuvwxyz0123456789";
+  const arr = new Uint32Array(12);
+  crypto.getRandomValues(arr);
   let token = "";
   for (let i = 0; i < 12; i++) {
-    token += alphabet[Math.floor(Math.random() * alphabet.length)];
+    token += alphabet[arr[i] % alphabet.length];
   }
   return token;
 }
