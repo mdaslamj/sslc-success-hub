@@ -121,6 +121,16 @@ export function countRecentOverrides(
   }).length;
 }
 
+/** All-time push count for a chapter (used for escalating push friction). */
+export function countChapterPushOverrides(
+  history: PlannerOverrideEntry[] | undefined,
+  chapterId: string,
+): number {
+  return (history ?? []).filter(
+    (entry) => entry.chapterId === chapterId && entry.type === "push",
+  ).length;
+}
+
 export function appendOverrideEntry(
   profile: StudentLearningProfile,
   entry: Omit<PlannerOverrideEntry, "date"> & { date?: string },

@@ -40,7 +40,7 @@ import { rankChaptersForToday, rankChaptersForTodaySync, type RankedPlannerTask 
 import {
   appendOverrideEntry,
   consumeDeferredTasks,
-  countRecentOverrides,
+  countChapterPushOverrides,
   deferTaskSnapshot,
   findSwapReplacement,
   getAvoidanceCoachMessage,
@@ -54,16 +54,7 @@ import {
   TaskOverrideBar,
   type CustomTaskInput,
 } from "@/components/planner/TaskOverrideBar";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
+import { useCriticalChapterGuard } from "@/components/planner/CriticalChapterGuard";
 import { buildPlannerChapterPool } from "@/lib/planner-chapter-pool";
 import { toast } from "sonner";
 import { RevisionPlannerCard, type RevisionPick } from "@/components/revision-planner-card";
@@ -116,11 +107,6 @@ type Task = RankedPlannerTask & {
   link?: string;
   carriedForward?: boolean;
 };
-
-type OverrideGuard =
-  | { kind: "swap"; task: Task; marksAtRisk: number; title: string }
-  | { kind: "push"; task: Task; title: string; pushCount: number }
-  | null;
 
 const STORAGE = "vidyapath.planner.v1";
 
@@ -277,7 +263,8 @@ function PlannerPage() {
   const [highlightId, setHighlightId] = useState<number | null>(null);
   const [expandedTaskId, setExpandedTaskId] = useState<number | null>(null);
   const [customFormTaskId, setCustomFormTaskId] = useState<number | null>(null);
-  const [overrideGuard, setOverrideGuard] = useState<OverrideGuard>(null);
+  const { showCriticalGuard, showHardBlock, dialog: criticalGuardDialog } =
+    useCriticalChapterGuard();
   const deferredAppliedRef = useRef(false);
   const [causalityChain, setCausalityChain] = useState<CausalityChain | null>(null);
   const [isOnline, setIsOnline] = useState(
@@ -545,28 +532,50 @@ function PlannerPage() {
     toast.success("Moved to tomorrow", { description: task.title });
   }
 
-  function requestSwap(task: Task) {
+  async function requestSwap(task: Task) {
     if (task.done || todayPlan.isUnavailable) return;
     const { critical, marksAtRisk, title } = getChapterCriticalInfo(task, plannerSubjects);
     if (critical) {
-      setOverrideGuard({ kind: "swap", task, marksAtRisk, title });
-      return;
+      const confirmed = await showCriticalGuard({
+        chapterName: title,
+        marksAtRisk,
+        action: "swap",
+      });
+      if (!confirmed) return;
     }
     executeSwap(task);
   }
 
-  function requestPush(task: Task) {
+  async function requestPush(task: Task) {
     if (task.done || todayPlan.isUnavailable) return;
-    const pushCount = countRecentOverrides(profile.overrideHistory, task.chapter.id, "push");
-    if (pushCount >= 3) {
-      setOverrideGuard({
-        kind: "push",
-        task,
-        title: task.chapter.title ?? task.title,
-        pushCount,
+    const pushCount = countChapterPushOverrides(profile.overrideHistory, task.chapter.id);
+    const { critical, marksAtRisk, title } = getChapterCriticalInfo(task, plannerSubjects);
+
+    if (pushCount >= 2) {
+      const outcome = await showHardBlock({
+        chapterName: title,
+        pushCount: pushCount + 1,
+        marksAtRisk,
       });
+      if (outcome === "study") {
+        setExpandedTaskId(task.id);
+      }
       return;
     }
+
+    if (critical && pushCount >= 1) {
+      const confirmed = await showCriticalGuard({
+        chapterName: title,
+        marksAtRisk,
+        action: "push",
+        pushCount,
+      });
+      if (!confirmed) {
+        setExpandedTaskId(task.id);
+        return;
+      }
+    }
+
     executePush(task);
   }
 
@@ -1024,8 +1033,8 @@ function PlannerPage() {
                           <TaskOverrideBar
                             disabled={t.done}
                             showCustomForm={customFormTaskId === t.id}
-                            onSwap={() => requestSwap(t)}
-                            onPush={() => requestPush(t)}
+                            onSwap={() => void requestSwap(t)}
+                            onPush={() => void requestPush(t)}
                             onToggleCustomForm={() =>
                               setCustomFormTaskId((current) => (current === t.id ? null : t.id))
                             }
@@ -1191,66 +1200,7 @@ function PlannerPage() {
         </div>
       </div>
 
-      <AlertDialog
-        open={overrideGuard !== null}
-        onOpenChange={(open) => {
-          if (!open) setOverrideGuard(null);
-        }}
-      >
-        <AlertDialogContent>
-          {overrideGuard?.kind === "swap" && (
-            <>
-              <AlertDialogHeader>
-                <AlertDialogTitle>Swap critical chapter?</AlertDialogTitle>
-                <AlertDialogDescription>
-                  {overrideGuard.title} is Critical — swapping it increases your marks at risk
-                  by {overrideGuard.marksAtRisk}. Continue?
-                </AlertDialogDescription>
-              </AlertDialogHeader>
-              <AlertDialogFooter>
-                <AlertDialogCancel>Keep it</AlertDialogCancel>
-                <AlertDialogAction
-                  onClick={() => {
-                    executeSwap(overrideGuard.task);
-                    setOverrideGuard(null);
-                  }}
-                >
-                  Swap anyway
-                </AlertDialogAction>
-              </AlertDialogFooter>
-            </>
-          )}
-          {overrideGuard?.kind === "push" && (
-            <>
-              <AlertDialogHeader>
-                <AlertDialogTitle>Push again?</AlertDialogTitle>
-                <AlertDialogDescription>
-                  You have pushed {overrideGuard.title} {overrideGuard.pushCount} times. Avoiding
-                  it is costing marks. Study it today?
-                </AlertDialogDescription>
-              </AlertDialogHeader>
-              <AlertDialogFooter>
-                <AlertDialogAction
-                  onClick={() => {
-                    setOverrideGuard(null);
-                    setExpandedTaskId(overrideGuard.task.id);
-                  }}
-                >
-                  Study now
-                </AlertDialogAction>
-                <AlertDialogCancel
-                  onClick={() => {
-                    executePush(overrideGuard.task);
-                    setOverrideGuard(null);
-                  }}
-                >
-                  Push anyway
-                </AlertDialogCancel>
-              </AlertDialogFooter>
-            </>
-          )}
-        </AlertDialogContent>
-      </AlertDialog>
+      {criticalGuardDialog}
     </DashboardLayout>
   );
 }
