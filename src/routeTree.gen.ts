@@ -51,6 +51,7 @@ import { Route as AchievementsRouteImport } from './routes/achievements'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as SubjectsIndexRouteImport } from './routes/subjects.index'
 import { Route as SubjectsSubjectIdRouteImport } from './routes/subjects.$subjectId'
+import { Route as SchoolRosterRouteImport } from './routes/school/roster'
 import { Route as SchoolDashboardRouteImport } from './routes/school/dashboard'
 import { Route as ScanScanIdRouteImport } from './routes/scan.$scanId'
 import { Route as QuizQuizIdRouteImport } from './routes/quiz.$quizId'
@@ -280,6 +281,11 @@ const SubjectsSubjectIdRoute = SubjectsSubjectIdRouteImport.update({
   path: '/subjects/$subjectId',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SchoolRosterRoute = SchoolRosterRouteImport.update({
+  id: '/school/roster',
+  path: '/school/roster',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SchoolDashboardRoute = SchoolDashboardRouteImport.update({
   id: '/school/dashboard',
   path: '/school/dashboard',
@@ -428,6 +434,7 @@ export interface FileRoutesByFullPath {
   '/quiz/$quizId': typeof QuizQuizIdRoute
   '/scan/$scanId': typeof ScanScanIdRoute
   '/school/dashboard': typeof SchoolDashboardRoute
+  '/school/roster': typeof SchoolRosterRoute
   '/subjects/$subjectId': typeof SubjectsSubjectIdRouteWithChildren
   '/subjects/': typeof SubjectsIndexRoute
   '/parent/share/$token': typeof ParentShareTokenRoute
@@ -490,6 +497,7 @@ export interface FileRoutesByTo {
   '/quiz/$quizId': typeof QuizQuizIdRoute
   '/scan/$scanId': typeof ScanScanIdRoute
   '/school/dashboard': typeof SchoolDashboardRoute
+  '/school/roster': typeof SchoolRosterRoute
   '/subjects/$subjectId': typeof SubjectsSubjectIdRouteWithChildren
   '/subjects': typeof SubjectsIndexRoute
   '/parent/share/$token': typeof ParentShareTokenRoute
@@ -553,6 +561,7 @@ export interface FileRoutesById {
   '/quiz/$quizId': typeof QuizQuizIdRoute
   '/scan/$scanId': typeof ScanScanIdRoute
   '/school/dashboard': typeof SchoolDashboardRoute
+  '/school/roster': typeof SchoolRosterRoute
   '/subjects/$subjectId': typeof SubjectsSubjectIdRouteWithChildren
   '/subjects/': typeof SubjectsIndexRoute
   '/parent/share/$token': typeof ParentShareTokenRoute
@@ -617,6 +626,7 @@ export interface FileRouteTypes {
     | '/quiz/$quizId'
     | '/scan/$scanId'
     | '/school/dashboard'
+    | '/school/roster'
     | '/subjects/$subjectId'
     | '/subjects/'
     | '/parent/share/$token'
@@ -679,6 +689,7 @@ export interface FileRouteTypes {
     | '/quiz/$quizId'
     | '/scan/$scanId'
     | '/school/dashboard'
+    | '/school/roster'
     | '/subjects/$subjectId'
     | '/subjects'
     | '/parent/share/$token'
@@ -741,6 +752,7 @@ export interface FileRouteTypes {
     | '/quiz/$quizId'
     | '/scan/$scanId'
     | '/school/dashboard'
+    | '/school/roster'
     | '/subjects/$subjectId'
     | '/subjects/'
     | '/parent/share/$token'
@@ -798,6 +810,7 @@ export interface RootRouteChildren {
   ExamResultsAttemptIdRoute: typeof ExamResultsAttemptIdRoute
   QuizQuizIdRoute: typeof QuizQuizIdRoute
   SchoolDashboardRoute: typeof SchoolDashboardRoute
+  SchoolRosterRoute: typeof SchoolRosterRoute
   SubjectsSubjectIdRoute: typeof SubjectsSubjectIdRouteWithChildren
   SubjectsIndexRoute: typeof SubjectsIndexRoute
   SubjectsMathChapterIdRoute: typeof SubjectsMathChapterIdRoute
@@ -1097,6 +1110,13 @@ declare module '@tanstack/react-router' {
       path: '/subjects/$subjectId'
       fullPath: '/subjects/$subjectId'
       preLoaderRoute: typeof SubjectsSubjectIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/school/roster': {
+      id: '/school/roster'
+      path: '/school/roster'
+      fullPath: '/school/roster'
+      preLoaderRoute: typeof SchoolRosterRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/school/dashboard': {
@@ -1399,6 +1419,7 @@ const rootRouteChildren: RootRouteChildren = {
   ExamResultsAttemptIdRoute: ExamResultsAttemptIdRoute,
   QuizQuizIdRoute: QuizQuizIdRoute,
   SchoolDashboardRoute: SchoolDashboardRoute,
+  SchoolRosterRoute: SchoolRosterRoute,
   SubjectsSubjectIdRoute: SubjectsSubjectIdRouteWithChildren,
   SubjectsIndexRoute: SubjectsIndexRoute,
   SubjectsMathChapterIdRoute: SubjectsMathChapterIdRoute,

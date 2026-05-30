@@ -13,6 +13,7 @@ import {
   setDoc,
   updateDoc,
   where,
+  writeBatch,
 } from "firebase/firestore";
 import { patchUserProfile } from "@/integrations/firebase/services/users";
 import {
@@ -23,12 +24,14 @@ import {
 } from "@/integrations/firebase/config";
 import type {
   School,
+  SchoolRosterEntry,
   SchoolStudent,
   SubjectSharingPrefs,
 } from "@/types/school";
 
 const SCHOOLS = COLLECTIONS.SCHOOLS;
 const SCHOOL_STUDENTS = COLLECTIONS.SCHOOL_STUDENTS;
+const SCHOOL_ROSTER = COLLECTIONS.SCHOOL_ROSTER;
 const STUDENTS_SUB = SCHOOL_SUBCOLLECTIONS.STUDENTS;
 const USER_PROFILES = COLLECTIONS.USER_PROFILES;
 
@@ -363,4 +366,50 @@ export async function isSchoolAccount(uid: string, schoolId: string): Promise<bo
   if (!snap.exists()) return false;
   const school = snap.data() as School;
   return school.sharedLoginUid === uid;
+}
+
+export type RosterSaveMatch = {
+  rollNumber: string;
+  studentName: string;
+  auraUid: string | null;
+  confirmed: boolean;
+};
+
+export async function saveRoster(
+  schoolId: string,
+  matches: RosterSaveMatch[],
+): Promise<number> {
+  const confirmedMatches = matches.filter((m) => m.confirmed && m.auraUid);
+  if (confirmedMatches.length === 0) return 0;
+
+  const batch = writeBatch(db);
+  const now = new Date().toISOString();
+
+  for (const match of confirmedMatches) {
+    const entry: SchoolRosterEntry = {
+      rollNumber: match.rollNumber,
+      studentName: match.studentName,
+      auraUid: match.auraUid!,
+      confirmedAt: now,
+    };
+    batch.set(
+      doc(db, SCHOOL_ROSTER, schoolId, STUDENTS_SUB, match.rollNumber),
+      entry,
+    );
+  }
+
+  await batch.commit();
+  return confirmedMatches.length;
+}
+
+export async function getSchoolRosterEntries(schoolId: string): Promise<SchoolRosterEntry[]> {
+  const snap = await getDocs(collection(db, SCHOOL_ROSTER, schoolId, STUDENTS_SUB));
+  return snap.docs.map((d) => d.data() as SchoolRosterEntry);
+}
+
+export async function hasSchoolRoster(schoolId: string): Promise<boolean> {
+  const snap = await getDocs(
+    query(collection(db, SCHOOL_ROSTER, schoolId, STUDENTS_SUB), limit(1)),
+  );
+  return !snap.empty;
 }

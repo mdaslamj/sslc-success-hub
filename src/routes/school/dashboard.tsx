@@ -1,10 +1,10 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { GraduationCap, Loader2, Lock } from "lucide-react";
+import { GraduationCap, Loader2, Lock, Upload } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/auth-context";
-import { getSchoolForUser, SCHOOL_WELCOME_STORAGE_KEY } from "@/lib/schoolService";
+import { getSchoolForUser, hasSchoolRoster, SCHOOL_WELCOME_STORAGE_KEY } from "@/lib/schoolService";
 import type { School } from "@/types/school";
 import { cn } from "@/lib/utils";
 
@@ -21,6 +21,7 @@ function SchoolDashboardPage() {
   const [school, setSchool] = useState<School | null>(null);
   const [loadingSchool, setLoadingSchool] = useState(true);
   const [welcomeCode, setWelcomeCode] = useState<string | null>(null);
+  const [rosterImported, setRosterImported] = useState<boolean | null>(null);
   const [tokenRole, setTokenRole] = useState<string | null>(null);
   const [tokenSchoolId, setTokenSchoolId] = useState<string | null>(null);
 
@@ -80,7 +81,13 @@ function SchoolDashboardPage() {
       setLoadingSchool(true);
       try {
         const data = await getSchoolForUser(user.uid, tokenSchoolId);
-        if (active) setSchool(data);
+        if (active) {
+          setSchool(data);
+          if (data) {
+            const imported = await hasSchoolRoster(data.schoolId);
+            if (active) setRosterImported(imported);
+          }
+        }
       } catch (err) {
         console.error(err);
         if (active) toast.error("Could not load your school.");
@@ -163,6 +170,26 @@ function SchoolDashboardPage() {
               </div>
             ) : null}
 
+            {rosterImported === false ? (
+              <section
+                className="rounded-2xl border border-amber-500/35 p-5"
+                style={{ background: "rgba(245,158,11,0.08)" }}
+              >
+                <p className="text-sm font-medium text-amber-100">
+                  Import your class roster to match students for mark entry
+                </p>
+                <Button
+                  asChild
+                  className="mt-4 w-full rounded-xl bg-[#8B5CF6] text-white hover:bg-[#7C3AED]"
+                >
+                  <Link to="/school/roster">
+                    <Upload className="mr-2 h-4 w-4" />
+                    Import roster
+                  </Link>
+                </Button>
+              </section>
+            ) : null}
+
             <section className="rounded-2xl border border-white/10 bg-[#14141F] p-5">
               <h2 className="text-sm font-semibold text-white">Next steps</h2>
               <ol className="mt-3 space-y-3 text-sm text-white/75">
@@ -182,9 +209,17 @@ function SchoolDashboardPage() {
             </section>
 
             <section className="space-y-3">
+              <Link
+                to="/school/roster"
+                className="flex items-center justify-between rounded-xl border border-white/10 bg-[#14141F] px-4 py-3 transition-colors hover:border-[#8B5CF6]/40"
+              >
+                <span className="text-sm text-white/90">Class roster import</span>
+                <span className="text-xs text-[#C4B5FD]">
+                  {rosterImported ? "Manage" : "Import →"}
+                </span>
+              </Link>
               <ComingSoonCard title="Marks entry" />
               <ComingSoonCard title="Class analytics" />
-              <ComingSoonCard title="Roster import" />
             </section>
 
             {!school ? (
