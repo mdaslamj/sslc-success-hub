@@ -80,7 +80,7 @@ const FIREBASE_JWKS = createRemoteJWKSet(
   ),
 );
 
-async function verifyFirebaseIdToken(idToken: string): Promise<string> {
+export async function verifyFirebaseIdToken(idToken: string): Promise<string> {
   const projectId = process.env.FIREBASE_PROJECT_ID;
   if (!projectId) {
     throw new Error(
