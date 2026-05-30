@@ -27,11 +27,14 @@ import type {
   SchoolRosterEntry,
   SchoolStudent,
   SubjectSharingPrefs,
+  UnitTest,
 } from "@/types/school";
 
 const SCHOOLS = COLLECTIONS.SCHOOLS;
 const SCHOOL_STUDENTS = COLLECTIONS.SCHOOL_STUDENTS;
 const SCHOOL_ROSTER = COLLECTIONS.SCHOOL_ROSTER;
+const UNIT_TESTS = COLLECTIONS.UNIT_TESTS;
+const TESTS_SUB = SCHOOL_SUBCOLLECTIONS.TESTS;
 const STUDENTS_SUB = SCHOOL_SUBCOLLECTIONS.STUDENTS;
 const USER_PROFILES = COLLECTIONS.USER_PROFILES;
 
@@ -412,4 +415,56 @@ export async function hasSchoolRoster(schoolId: string): Promise<boolean> {
     query(collection(db, SCHOOL_ROSTER, schoolId, STUDENTS_SUB), limit(1)),
   );
   return !snap.empty;
+}
+
+export function normalizeRollNumber(rollNumber: string): string {
+  return rollNumber.trim();
+}
+
+/** Build roll-number → roster entry map (handles leading-zero variants). */
+export function buildRosterLookupMap(
+  entries: SchoolRosterEntry[],
+): Map<string, SchoolRosterEntry> {
+  const map = new Map<string, SchoolRosterEntry>();
+  for (const entry of entries) {
+    const key = normalizeRollNumber(entry.rollNumber);
+    map.set(key, entry);
+    const stripped = key.replace(/^0+/, "");
+    if (stripped && stripped !== key) {
+      map.set(stripped, entry);
+    }
+    if (/^\d+$/.test(key)) {
+      map.set(key.padStart(3, "0"), entry);
+    }
+  }
+  return map;
+}
+
+export async function getSchoolRosterEntry(
+  schoolId: string,
+  rollNumber: string,
+): Promise<SchoolRosterEntry | null> {
+  const key = normalizeRollNumber(rollNumber);
+  const snap = await getDoc(doc(db, SCHOOL_ROSTER, schoolId, STUDENTS_SUB, key));
+  if (snap.exists()) return snap.data() as SchoolRosterEntry;
+
+  const stripped = key.replace(/^0+/, "");
+  if (stripped && stripped !== key) {
+    const alt = await getDoc(doc(db, SCHOOL_ROSTER, schoolId, STUDENTS_SUB, stripped));
+    if (alt.exists()) return alt.data() as SchoolRosterEntry;
+  }
+
+  if (/^\d+$/.test(key)) {
+    const padded = key.padStart(3, "0");
+    if (padded !== key) {
+      const alt = await getDoc(doc(db, SCHOOL_ROSTER, schoolId, STUDENTS_SUB, padded));
+      if (alt.exists()) return alt.data() as SchoolRosterEntry;
+    }
+  }
+
+  return null;
+}
+
+export async function saveUnitTest(schoolId: string, test: UnitTest): Promise<void> {
+  await setDoc(doc(db, UNIT_TESTS, schoolId, TESTS_SUB, test.testId), test);
 }

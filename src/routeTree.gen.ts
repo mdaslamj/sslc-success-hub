@@ -52,6 +52,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as SubjectsIndexRouteImport } from './routes/subjects.index'
 import { Route as SubjectsSubjectIdRouteImport } from './routes/subjects.$subjectId'
 import { Route as SchoolRosterRouteImport } from './routes/school/roster'
+import { Route as SchoolImportMarksRouteImport } from './routes/school/import-marks'
 import { Route as SchoolDashboardRouteImport } from './routes/school/dashboard'
 import { Route as ScanScanIdRouteImport } from './routes/scan.$scanId'
 import { Route as QuizQuizIdRouteImport } from './routes/quiz.$quizId'
@@ -286,6 +287,11 @@ const SchoolRosterRoute = SchoolRosterRouteImport.update({
   path: '/school/roster',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SchoolImportMarksRoute = SchoolImportMarksRouteImport.update({
+  id: '/school/import-marks',
+  path: '/school/import-marks',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SchoolDashboardRoute = SchoolDashboardRouteImport.update({
   id: '/school/dashboard',
   path: '/school/dashboard',
@@ -434,6 +440,7 @@ export interface FileRoutesByFullPath {
   '/quiz/$quizId': typeof QuizQuizIdRoute
   '/scan/$scanId': typeof ScanScanIdRoute
   '/school/dashboard': typeof SchoolDashboardRoute
+  '/school/import-marks': typeof SchoolImportMarksRoute
   '/school/roster': typeof SchoolRosterRoute
   '/subjects/$subjectId': typeof SubjectsSubjectIdRouteWithChildren
   '/subjects/': typeof SubjectsIndexRoute
@@ -497,6 +504,7 @@ export interface FileRoutesByTo {
   '/quiz/$quizId': typeof QuizQuizIdRoute
   '/scan/$scanId': typeof ScanScanIdRoute
   '/school/dashboard': typeof SchoolDashboardRoute
+  '/school/import-marks': typeof SchoolImportMarksRoute
   '/school/roster': typeof SchoolRosterRoute
   '/subjects/$subjectId': typeof SubjectsSubjectIdRouteWithChildren
   '/subjects': typeof SubjectsIndexRoute
@@ -561,6 +569,7 @@ export interface FileRoutesById {
   '/quiz/$quizId': typeof QuizQuizIdRoute
   '/scan/$scanId': typeof ScanScanIdRoute
   '/school/dashboard': typeof SchoolDashboardRoute
+  '/school/import-marks': typeof SchoolImportMarksRoute
   '/school/roster': typeof SchoolRosterRoute
   '/subjects/$subjectId': typeof SubjectsSubjectIdRouteWithChildren
   '/subjects/': typeof SubjectsIndexRoute
@@ -626,6 +635,7 @@ export interface FileRouteTypes {
     | '/quiz/$quizId'
     | '/scan/$scanId'
     | '/school/dashboard'
+    | '/school/import-marks'
     | '/school/roster'
     | '/subjects/$subjectId'
     | '/subjects/'
@@ -689,6 +699,7 @@ export interface FileRouteTypes {
     | '/quiz/$quizId'
     | '/scan/$scanId'
     | '/school/dashboard'
+    | '/school/import-marks'
     | '/school/roster'
     | '/subjects/$subjectId'
     | '/subjects'
@@ -752,6 +763,7 @@ export interface FileRouteTypes {
     | '/quiz/$quizId'
     | '/scan/$scanId'
     | '/school/dashboard'
+    | '/school/import-marks'
     | '/school/roster'
     | '/subjects/$subjectId'
     | '/subjects/'
@@ -810,6 +822,7 @@ export interface RootRouteChildren {
   ExamResultsAttemptIdRoute: typeof ExamResultsAttemptIdRoute
   QuizQuizIdRoute: typeof QuizQuizIdRoute
   SchoolDashboardRoute: typeof SchoolDashboardRoute
+  SchoolImportMarksRoute: typeof SchoolImportMarksRoute
   SchoolRosterRoute: typeof SchoolRosterRoute
   SubjectsSubjectIdRoute: typeof SubjectsSubjectIdRouteWithChildren
   SubjectsIndexRoute: typeof SubjectsIndexRoute
@@ -1119,6 +1132,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SchoolRosterRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/school/import-marks': {
+      id: '/school/import-marks'
+      path: '/school/import-marks'
+      fullPath: '/school/import-marks'
+      preLoaderRoute: typeof SchoolImportMarksRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/school/dashboard': {
       id: '/school/dashboard'
       path: '/school/dashboard'
@@ -1419,6 +1439,7 @@ const rootRouteChildren: RootRouteChildren = {
   ExamResultsAttemptIdRoute: ExamResultsAttemptIdRoute,
   QuizQuizIdRoute: QuizQuizIdRoute,
   SchoolDashboardRoute: SchoolDashboardRoute,
+  SchoolImportMarksRoute: SchoolImportMarksRoute,
   SchoolRosterRoute: SchoolRosterRoute,
   SubjectsSubjectIdRoute: SubjectsSubjectIdRouteWithChildren,
   SubjectsIndexRoute: SubjectsIndexRoute,

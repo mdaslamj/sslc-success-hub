@@ -358,3 +358,30 @@ export async function runMarkSubmissionPipeline(
 
   return { result, updatedStorage };
 }
+
+export type BatchSubmissionProgress = {
+  current: number;
+  total: number;
+  studentUid: string;
+};
+
+/** Sequential batch processing with progress — used by school mark imports. */
+export async function processBatchSubmissions(
+  submissions: MarkSubmission[],
+  onProgress?: (progress: BatchSubmissionProgress) => void,
+): Promise<MarkProcessingResult[]> {
+  const results: MarkProcessingResult[] = [];
+
+  for (let i = 0; i < submissions.length; i++) {
+    const submission = submissions[i]!;
+    onProgress?.({
+      current: i + 1,
+      total: submissions.length,
+      studentUid: submission.studentUid,
+    });
+    const { result } = await runMarkSubmissionPipeline(submission);
+    results.push(result);
+  }
+
+  return results;
+}

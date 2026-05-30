@@ -218,7 +218,13 @@ function SchoolDashboardPage() {
                   {rosterImported ? "Manage" : "Import →"}
                 </span>
               </Link>
-              <ComingSoonCard title="Marks entry" />
+              <Link
+                to="/school/import-marks"
+                className="flex items-center justify-between rounded-xl border border-white/10 bg-[#14141F] px-4 py-3 transition-colors hover:border-[#8B5CF6]/40"
+              >
+                <span className="text-sm text-white/90">Import test marks (CSV)</span>
+                <span className="text-xs text-[#C4B5FD]">Import →</span>
+              </Link>
               <ComingSoonCard title="Class analytics" />
             </section>
 
