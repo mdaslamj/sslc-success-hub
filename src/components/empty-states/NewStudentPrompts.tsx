@@ -78,7 +78,7 @@ export function ConstellationEmptyMessage({ className }: PromptProps) {
   );
 }
 
-export function WarRoomSetTargetsPrompt({ className }: PromptProps) {
+export function ExamReadinessSetTargetsPrompt({ className }: PromptProps) {
   return (
     <div
       className={cn(

@@ -408,7 +408,7 @@ function PlannerPage() {
     });
   }, [hydrated, profile, updateProfile]);
 
-  // Live sync when War Room / Textbooks append via today-plan-store
+  // Live sync when Exam Readiness / Textbooks append via today-plan-store
   useEffect(() => {
     const handleExternalAdd = (event: Event) => {
       const incoming = (event as CustomEvent<PlannerStoreUpdatedDetail>).detail?.tasks;

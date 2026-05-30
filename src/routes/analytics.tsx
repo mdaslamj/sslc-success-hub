@@ -5,6 +5,7 @@ import {
   AnalyticsInsufficientDataPrompt,
 } from "@/components/empty-states/NewStudentPrompts";
 import { AcademicAnalyticsSection } from "@/components/analytics/AcademicAnalyticsSection";
+import { ExamReadiness } from "@/components/predictions/ExamReadiness";
 import { numericFontStyle } from "@/lib/design-tokens";
 import { sessionCount } from "@/lib/profileActivity";
 import { useAnalytics } from "@/hooks/use-analytics";
@@ -48,6 +49,10 @@ function AnalyticsPage() {
         </header>
 
         {showCharts ? <AcademicAnalyticsSection /> : <AnalyticsInsufficientDataPrompt />}
+
+        <section className="rounded-2xl border border-border/60 bg-[#08080E] p-4 sm:p-6">
+          <ExamReadiness embedded />
+        </section>
 
         <section className="rounded-2xl border border-border/60 bg-card p-6 shadow-card">
           <h3 className="font-display text-lg font-semibold">Focus session log</h3>

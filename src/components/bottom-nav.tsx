@@ -7,7 +7,6 @@ import {
   BarChart2,
   Menu,
   BookOpen,
-  Brain,
   Sparkles,
   GraduationCap,
   FlaskConical,
@@ -15,24 +14,32 @@ import {
   Users,
   Settings,
   UserCheck,
+  School,
+  FileSpreadsheet,
+  ClipboardList,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { MoreDrawer, type MoreDrawerItem } from "@/components/nav/MoreDrawer";
 import { hasUnreadMoreNavUpdates } from "@/lib/more-nav-updates";
-import { useAuthOptional } from "@/contexts/auth-context";
+import { useSchoolRole } from "@/hooks/useSchoolRole";
 
-const MORE_MATCH = (p: string) =>
+const MORE_MATCH_STUDENT = (p: string) =>
   p.startsWith("/subjects") ||
-  p.startsWith("/predictions") ||
   p.startsWith("/profile") ||
   p.startsWith("/exam-simulation") ||
   p.startsWith("/teacher") ||
   p.startsWith("/parent-view") ||
   p.startsWith("/exams") ||
   p.startsWith("/exam-results") ||
-  p.startsWith("/voice");
+  p.startsWith("/voice") ||
+  p.startsWith("/exam-readiness");
 
-const MAIN_TABS = [
+const MORE_MATCH_SCHOOL = (p: string) =>
+  p.startsWith("/school/") ||
+  p.startsWith("/teacher") ||
+  p.startsWith("/profile");
+
+const STUDENT_TABS = [
   { to: "/", label: "Home", icon: Home, match: (p: string) => p === "/" },
   {
     to: "/planner",
@@ -50,19 +57,57 @@ const MAIN_TABS = [
     to: "/analytics",
     label: "Progress",
     icon: BarChart2,
-    match: (p: string) => p.startsWith("/analytics"),
+    match: (p: string) => p.startsWith("/analytics") || p.startsWith("/exam-readiness"),
   },
 ] as const;
 
-function buildMoreItems(isSchool: boolean): MoreDrawerItem[] {
+const SCHOOL_TABS = [
+  {
+    to: "/school/dashboard",
+    label: "Dashboard",
+    icon: Home,
+    match: (p: string) => p === "/school/dashboard" || p === "/teacher",
+  },
+  {
+    to: "/school/roster",
+    label: "Classes",
+    icon: School,
+    match: (p: string) => p.startsWith("/school/roster"),
+  },
+  {
+    to: "/school/enter-marks",
+    label: "Enter Marks",
+    icon: ClipboardList,
+    match: (p: string) => p.startsWith("/school/enter-marks"),
+  },
+  {
+    to: "/school/import-marks",
+    label: "Reports",
+    icon: FileSpreadsheet,
+    match: (p: string) => p.startsWith("/school/import-marks"),
+  },
+] as const;
+
+function buildMoreItems(isSchool: boolean, isSchoolStudent: boolean): MoreDrawerItem[] {
+  if (isSchool) {
+    return [
+      { to: "/school/import-marks", label: "Import marks (CSV)", icon: FileSpreadsheet },
+      { to: "/profile", label: "Settings", icon: Settings },
+    ];
+  }
+
   return [
     { to: "/subjects", label: "Subjects", icon: BookOpen },
-    { to: "/predictions", label: "War Room", icon: Brain },
     { to: "/profile", label: "Constellation", icon: Sparkles },
     { to: "/exam-simulation", label: "Exam Simulation", icon: GraduationCap },
     { to: "/exams", label: "Mock Exams", icon: FlaskConical },
     { to: "/voice", label: "Coach", icon: Mic },
-    { to: "/school/dashboard", label: "School", icon: UserCheck, show: isSchool },
+    {
+      to: "/profile",
+      label: "My School",
+      icon: UserCheck,
+      show: isSchoolStudent,
+    },
     { to: "/parent-view", label: "Parent View", icon: Users },
     { to: "/profile", label: "Settings", icon: Settings },
   ];
@@ -70,18 +115,20 @@ function buildMoreItems(isSchool: boolean): MoreDrawerItem[] {
 
 /**
  * Native-feel bottom tab bar. Mobile-only (md+ shows the sidebar instead).
- * Sticky to viewport bottom with safe-area inset padding.
+ * School staff accounts get a dedicated 4-tab + More layout.
  */
 export function BottomNav() {
   const pathname = useRouterState({ select: (r) => r.location.pathname });
-  const auth = useAuthOptional();
+  const { isSchool, isSchoolStudent } = useSchoolRole();
   const [moreOpen, setMoreOpen] = useState(false);
   const [showMoreDot, setShowMoreDot] = useState(false);
 
-  const isSchool = auth?.profile?.role === "school";
-
-  const moreItems = useMemo(() => buildMoreItems(isSchool), [isSchool]);
-  const moreActive = MORE_MATCH(pathname);
+  const tabs = isSchool ? SCHOOL_TABS : STUDENT_TABS;
+  const moreItems = useMemo(
+    () => buildMoreItems(isSchool, isSchoolStudent),
+    [isSchool, isSchoolStudent],
+  );
+  const moreActive = isSchool ? MORE_MATCH_SCHOOL(pathname) : MORE_MATCH_STUDENT(pathname);
 
   useEffect(() => {
     setMoreOpen(false);
@@ -106,7 +153,7 @@ export function BottomNav() {
         style={{ paddingBottom: "max(env(safe-area-inset-bottom), 0.5rem)" }}
       >
         <ul className="mx-auto grid max-w-lg grid-cols-5 px-1 pt-1.5">
-          {MAIN_TABS.map((t) => {
+          {tabs.map((t) => {
             const active = t.match(pathname);
             const Icon = t.icon;
             return (

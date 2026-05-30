@@ -40,6 +40,7 @@ import { Route as FocusRouteImport } from './routes/focus'
 import { Route as ExamsRouteImport } from './routes/exams'
 import { Route as ExamSimulationRouteImport } from './routes/exam-simulation'
 import { Route as ExamHallRouteImport } from './routes/exam-hall'
+import { Route as ExamReadinessRouteImport } from './routes/exam-readiness'
 import { Route as EvaluateRouteImport } from './routes/evaluate'
 import { Route as DailyPracticeRouteImport } from './routes/daily-practice'
 import { Route as ChapterTestRouteImport } from './routes/chapter-test'
@@ -228,6 +229,11 @@ const ExamHallRoute = ExamHallRouteImport.update({
   path: '/exam-hall',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ExamReadinessRoute = ExamReadinessRouteImport.update({
+  id: '/exam-readiness',
+  path: '/exam-readiness',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const EvaluateRoute = EvaluateRouteImport.update({
   id: '/evaluate',
   path: '/evaluate',
@@ -404,6 +410,7 @@ export interface FileRoutesByFullPath {
   '/daily-practice': typeof DailyPracticeRoute
   '/evaluate': typeof EvaluateRouteWithChildren
   '/exam-hall': typeof ExamHallRouteWithChildren
+  '/exam-readiness': typeof ExamReadinessRoute
   '/exam-simulation': typeof ExamSimulationRoute
   '/exams': typeof ExamsRouteWithChildren
   '/focus': typeof FocusRoute
@@ -469,6 +476,7 @@ export interface FileRoutesByTo {
   '/daily-practice': typeof DailyPracticeRoute
   '/evaluate': typeof EvaluateRouteWithChildren
   '/exam-hall': typeof ExamHallRouteWithChildren
+  '/exam-readiness': typeof ExamReadinessRoute
   '/exam-simulation': typeof ExamSimulationRoute
   '/exams': typeof ExamsRouteWithChildren
   '/focus': typeof FocusRoute
@@ -535,6 +543,7 @@ export interface FileRoutesById {
   '/daily-practice': typeof DailyPracticeRoute
   '/evaluate': typeof EvaluateRouteWithChildren
   '/exam-hall': typeof ExamHallRouteWithChildren
+  '/exam-readiness': typeof ExamReadinessRoute
   '/exam-simulation': typeof ExamSimulationRoute
   '/exams': typeof ExamsRouteWithChildren
   '/focus': typeof FocusRoute
@@ -602,6 +611,7 @@ export interface FileRouteTypes {
     | '/daily-practice'
     | '/evaluate'
     | '/exam-hall'
+    | '/exam-readiness'
     | '/exam-simulation'
     | '/exams'
     | '/focus'
@@ -667,6 +677,7 @@ export interface FileRouteTypes {
     | '/daily-practice'
     | '/evaluate'
     | '/exam-hall'
+    | '/exam-readiness'
     | '/exam-simulation'
     | '/exams'
     | '/focus'
@@ -732,6 +743,7 @@ export interface FileRouteTypes {
     | '/daily-practice'
     | '/evaluate'
     | '/exam-hall'
+    | '/exam-readiness'
     | '/exam-simulation'
     | '/exams'
     | '/focus'
@@ -798,6 +810,7 @@ export interface RootRouteChildren {
   DailyPracticeRoute: typeof DailyPracticeRoute
   EvaluateRoute: typeof EvaluateRouteWithChildren
   ExamHallRoute: typeof ExamHallRouteWithChildren
+  ExamReadinessRoute: typeof ExamReadinessRoute
   ExamSimulationRoute: typeof ExamSimulationRoute
   ExamsRoute: typeof ExamsRouteWithChildren
   FocusRoute: typeof FocusRoute
@@ -1059,6 +1072,13 @@ declare module '@tanstack/react-router' {
       path: '/exam-hall'
       fullPath: '/exam-hall'
       preLoaderRoute: typeof ExamHallRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/exam-readiness': {
+      id: '/exam-readiness'
+      path: '/exam-readiness'
+      fullPath: '/exam-readiness'
+      preLoaderRoute: typeof ExamReadinessRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/evaluate': {
@@ -1423,6 +1443,7 @@ const rootRouteChildren: RootRouteChildren = {
   DailyPracticeRoute: DailyPracticeRoute,
   EvaluateRoute: EvaluateRouteWithChildren,
   ExamHallRoute: ExamHallRouteWithChildren,
+  ExamReadinessRoute: ExamReadinessRoute,
   ExamSimulationRoute: ExamSimulationRoute,
   ExamsRoute: ExamsRouteWithChildren,
   FocusRoute: FocusRoute,

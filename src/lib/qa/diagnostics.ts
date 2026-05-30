@@ -85,6 +85,7 @@ export const KNOWN_ROUTES = new Set<string>([
   "/exam-results",
   "/answer-uploads",
   "/analytics",
+  "/exam-readiness",
   "/predictions",
   "/achievements",
   "/admin/import",

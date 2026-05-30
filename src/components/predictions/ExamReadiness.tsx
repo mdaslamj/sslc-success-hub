@@ -28,7 +28,7 @@ import {
   addRankedTaskToTodayPlan,
   hasTaskWithTitle,
 } from "@/lib/today-plan-store";
-import { WarRoomSetTargetsPrompt } from "@/components/empty-states/NewStudentPrompts";
+import { ExamReadinessSetTargetsPrompt } from "@/components/empty-states/NewStudentPrompts";
 import { hasStudyActivity, hasSubjectTargets } from "@/lib/profileActivity";
 import { cn } from "@/lib/utils";
 
@@ -178,7 +178,7 @@ function subjectSessionsToday(
   ).length;
 }
 
-export function AuraWarRoom() {
+export function ExamReadiness({ embedded = false }: { embedded?: boolean }) {
   const { profile, projection, momentum, analytics, isLoading } = useAuraEngines();
   const [tab, setTab] = useState<TabId>("ladder");
   const [expandedId, setExpandedId] = useState<string | null>(null);
@@ -368,50 +368,70 @@ export function AuraWarRoom() {
   if (isLoading) {
     return (
       <div
-        className="mx-auto flex min-h-[480px] w-full max-w-7xl items-center justify-center rounded-2xl border border-[rgba(255,255,255,0.06)] bg-[#08080E] text-sm text-[rgba(240,240,248,0.70)]"
+        className={
+          embedded
+            ? "flex min-h-[240px] items-center justify-center rounded-2xl border border-[rgba(255,255,255,0.06)] bg-[#08080E] text-sm text-[rgba(240,240,248,0.70)]"
+            : "mx-auto flex min-h-[480px] w-full max-w-7xl items-center justify-center rounded-2xl border border-[rgba(255,255,255,0.06)] bg-[#08080E] text-sm text-[rgba(240,240,248,0.70)]"
+        }
         aria-busy="true"
       >
-        Loading exam intelligence…
+        Loading exam readiness…
       </div>
     );
   }
 
   if (!hasSubjectTargets(profile) && !hasStudyActivity(profile)) {
-    return <WarRoomSetTargetsPrompt className="mx-auto w-full max-w-7xl" />;
+    return <ExamReadinessSetTargetsPrompt className={embedded ? undefined : "mx-auto w-full max-w-7xl"} />;
   }
 
   return (
-    <div className="mx-auto w-full max-w-7xl space-y-6 bg-[#08080E] text-[#F0F0F8]">
-      {/* Header */}
-      <header className="flex flex-wrap items-start justify-between gap-4">
-        <div className="min-w-0 space-y-2">
-          <div className="flex flex-wrap items-center gap-2">
-            <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-[rgba(240,240,248,0.70)]">
-              AI Prediction
-            </span>
-            <span className="rounded-full border border-[rgba(248,113,113,0.35)] bg-[rgba(248,113,113,0.12)] px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-[#F87171]">
-              War Room
-            </span>
+    <div
+      className={
+        embedded
+          ? "space-y-6 text-[#F0F0F8]"
+          : "mx-auto w-full max-w-7xl space-y-6 bg-[#08080E] text-[#F0F0F8]"
+      }
+    >
+      {!embedded ? (
+        <header className="flex flex-wrap items-start justify-between gap-4">
+          <div className="min-w-0 space-y-2">
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-[rgba(240,240,248,0.70)]">
+                Exam Readiness
+              </span>
+            </div>
+            <h1
+              className="text-3xl font-extrabold tracking-tight sm:text-4xl"
+              style={{ fontFamily: "Syne, sans-serif", fontWeight: 800 }}
+            >
+              Targets, gaps & probability
+            </h1>
           </div>
-          <h1
-            className="text-3xl font-extrabold tracking-tight sm:text-4xl"
-            style={{ fontFamily: "Syne, sans-serif", fontWeight: 800 }}
+          <div className="rounded-xl border border-[rgba(255,255,255,0.06)] bg-[#14141F] px-4 py-3 text-center">
+            <div
+              className="text-2xl font-semibold leading-none text-[#8B5CF6]"
+              style={{ fontFamily: "JetBrains Mono, monospace" }}
+            >
+              {daysLeft}
+            </div>
+            <div className="mt-1 text-[9px] font-bold uppercase tracking-[0.14em] text-[rgba(240,240,248,0.70)]">
+              Days left
+            </div>
+          </div>
+        </header>
+      ) : (
+        <header className="space-y-1">
+          <h2
+            className="text-xl font-bold tracking-tight text-[#F0F0F8]"
+            style={{ fontFamily: "Syne, sans-serif" }}
           >
-            Exam Intelligence
-          </h1>
-        </div>
-        <div className="rounded-xl border border-[rgba(255,255,255,0.06)] bg-[#14141F] px-4 py-3 text-center">
-          <div
-            className="text-2xl font-semibold leading-none text-[#8B5CF6]"
-            style={{ fontFamily: "JetBrains Mono, monospace" }}
-          >
-            {daysLeft}
-          </div>
-          <div className="mt-1 text-[9px] font-bold uppercase tracking-[0.14em] text-[rgba(240,240,248,0.70)]">
-            Days left
-          </div>
-        </div>
-      </header>
+            Exam Readiness
+          </h2>
+          <p className="text-sm text-[rgba(240,240,248,0.65)]">
+            Targets, gaps, and probability movement across SSLC subjects
+          </p>
+        </header>
+      )}
 
       {/* Hero card */}
       <section className="rounded-2xl border border-[rgba(248,113,113,0.15)] bg-[#14141F] p-5 sm:p-6">

@@ -3,7 +3,6 @@ import {
   LayoutDashboard,
   BookOpen,
   Target,
-  Brain,
   CalendarClock,
   LineChart,
   Timer,
@@ -14,14 +13,18 @@ import {
   Library,
   BookMarked,
   LogOut,
-  LogIn,
   PenSquare,
   User as UserIcon,
+  School,
+  ClipboardList,
+  FileSpreadsheet,
+  UserCheck,
 } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/auth-context";
 import { useDisplayName } from "@/hooks/use-display-name";
+import { useSchoolRole } from "@/hooks/useSchoolRole";
 import {
   Sidebar,
   SidebarContent,
@@ -39,7 +42,6 @@ const main = [
   { title: "Dashboard", url: "/", icon: LayoutDashboard },
   { title: "Subjects", url: "/subjects", icon: BookOpen },
   { title: "Targets", url: "/targets", icon: Target },
-  { title: "AI Prediction", url: "/predictions", icon: Brain },
 ];
 
 const study = [
@@ -48,20 +50,31 @@ const study = [
   { title: "Textbooks", url: "/textbooks", icon: BookMarked },
   { title: "Resources", url: "/resources", icon: Library },
   { title: "My Answers", url: "/answer-uploads", icon: PenSquare },
-  { title: "Analytics", url: "/analytics", icon: LineChart },
+  { title: "Progress", url: "/analytics", icon: LineChart },
   { title: "Focus Timer", url: "/focus", icon: Timer },
   { title: "Quizzes", url: "/quizzes", icon: HelpCircle },
   { title: "Achievements", url: "/achievements", icon: Trophy },
 ];
 
+const schoolMain = [
+  { title: "Dashboard", url: "/school/dashboard", icon: LayoutDashboard },
+  { title: "Classes", url: "/school/roster", icon: School },
+  { title: "Enter Marks", url: "/school/enter-marks", icon: ClipboardList },
+  { title: "Reports", url: "/school/import-marks", icon: FileSpreadsheet },
+];
+
 export function AppSidebar() {
   const pathname = useRouterState({ select: (r) => r.location.pathname });
-  const isActive = (p: string) => pathname === p;
+  const { isSchool, isSchoolStudent } = useSchoolRole();
+  const isActive = (p: string) => pathname === p || pathname.startsWith(`${p}/`);
+
+  const overviewItems = isSchool ? schoolMain : main;
+  const overviewLabel = isSchool ? "School" : "Overview";
 
   return (
     <Sidebar collapsible="icon" className="border-r-0">
       <SidebarHeader className="border-b border-sidebar-border/50 px-4 py-5">
-        <Link to="/" className="flex items-center gap-3">
+        <Link to={isSchool ? "/school/dashboard" : "/"} className="flex items-center gap-3">
           <div className="relative flex h-10 w-10 items-center justify-center rounded-xl gradient-brand shadow-glow">
             <GraduationCap className="h-5 w-5 text-sidebar-primary-foreground" />
             <span className="absolute -bottom-1 -right-1 h-3 w-3 rounded-full bg-success ring-2 ring-sidebar" />
@@ -79,10 +92,10 @@ export function AppSidebar() {
 
       <SidebarContent className="px-2 py-3">
         <SidebarGroup>
-          <SidebarGroupLabel className="text-sidebar-foreground/50">Overview</SidebarGroupLabel>
+          <SidebarGroupLabel className="text-sidebar-foreground/50">{overviewLabel}</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {main.map((item) => (
+              {overviewItems.map((item) => (
                 <SidebarMenuItem key={item.url}>
                   <SidebarMenuButton asChild isActive={isActive(item.url)} tooltip={item.title}>
                     <Link to={item.url}>
@@ -96,23 +109,35 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
 
-        <SidebarGroup>
-          <SidebarGroupLabel className="text-sidebar-foreground/50">Study</SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {study.map((item) => (
-                <SidebarMenuItem key={item.url}>
-                  <SidebarMenuButton asChild isActive={isActive(item.url)} tooltip={item.title}>
-                    <Link to={item.url}>
-                      <item.icon className="h-4 w-4" />
-                      <span>{item.title}</span>
-                    </Link>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
+        {!isSchool ? (
+          <SidebarGroup>
+            <SidebarGroupLabel className="text-sidebar-foreground/50">Study</SidebarGroupLabel>
+            <SidebarGroupContent>
+              <SidebarMenu>
+                {study.map((item) => (
+                  <SidebarMenuItem key={item.url}>
+                    <SidebarMenuButton asChild isActive={isActive(item.url)} tooltip={item.title}>
+                      <Link to={item.url}>
+                        <item.icon className="h-4 w-4" />
+                        <span>{item.title}</span>
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                ))}
+                {isSchoolStudent ? (
+                  <SidebarMenuItem>
+                    <SidebarMenuButton asChild isActive={isActive("/profile")} tooltip="My School">
+                      <Link to="/profile">
+                        <UserCheck className="h-4 w-4" />
+                        <span>My School</span>
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                ) : null}
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
+        ) : null}
       </SidebarContent>
 
       <SidebarFooter className="border-t border-sidebar-border/50 p-3">
@@ -126,13 +151,18 @@ function SidebarFooterUser() {
   const navigate = useNavigate();
   const { user, profile, signOut } = useAuth();
   const { displayName } = useDisplayName();
+  const { isSchool } = useSchoolRole();
 
   if (!user) {
     return null;
   }
 
   const name = displayName;
-  const sub = profile ? `Class ${profile.classLevel} · Target ${profile.targetScore}%` : user.email;
+  const sub = isSchool
+    ? (profile?.schoolName ?? profile?.schoolCode ?? user.email)
+    : profile
+      ? `Class ${profile.classLevel} · Target ${profile.targetScore}%`
+      : user.email;
 
   return (
     <div className="group-data-[collapsible=icon]:hidden rounded-xl p-3 bg-sidebar-accent/40">

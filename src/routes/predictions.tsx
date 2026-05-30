@@ -1,25 +1,7 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { DashboardLayout } from "@/components/dashboard-layout";
-import { AuraWarRoom } from "@/components/predictions/AuraWarRoom";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/predictions")({
-  head: () => ({
-    meta: [
-      { title: "Aura — AI Prediction" },
-      {
-        name: "description",
-        content:
-          "Exam Intelligence War Room — chapter recovery ladder, marks at risk, and probability movement across SSLC subjects.",
-      },
-    ],
-  }),
-  component: PredictionsPage,
+  beforeLoad: () => {
+    throw redirect({ to: "/exam-readiness" });
+  },
 });
-
-function PredictionsPage() {
-  return (
-    <DashboardLayout title="AI Prediction">
-      <AuraWarRoom />
-    </DashboardLayout>
-  );
-}
