@@ -81,7 +81,7 @@ function OnboardingFlow() {
         );
         syncStudentDisplayName(data.name || "Student");
         toast.success("Your plan is ready 🌱");
-        navigate({ to: "/" });
+        navigate({ to: "/plan-reveal" });
       } finally {
         setSaving(false);
       }
@@ -130,7 +130,7 @@ function OnboardingFlow() {
       await refreshProfile();
       syncStudentDisplayName(data.name || profile?.studentName || "Student");
       toast.success("Your plan is ready 🌱");
-      navigate({ to: "/" });
+      navigate({ to: "/plan-reveal" });
     } catch (err) {
       console.error(err);
       toast.error("Couldn't save. Try again.");

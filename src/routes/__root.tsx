@@ -270,6 +270,7 @@ const PUBLIC_PATHS = new Set([
   "/login",
   "/forgot-password",
   "/onboarding",
+  "/plan-reveal",
   "/seed",
   "/privacy",
   "/join-group",
@@ -335,7 +336,6 @@ function OnboardingGate({ children }: { children: React.ReactNode }) {
     if (user) {
       if (!profile) return;
       if (profile.onboardingCompletedAt) {
-        // Returning authenticated user landing on auth pages → dashboard.
         if (pathname === "/login" || pathname === "/onboarding") {
           navigate({ to: "/" });
         }

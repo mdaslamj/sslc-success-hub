@@ -24,6 +24,7 @@ import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as PredictionsRouteImport } from './routes/predictions'
 import { Route as PracticeRouteImport } from './routes/practice'
 import { Route as PlannerRouteImport } from './routes/planner'
+import { Route as PlanRevealRouteImport } from './routes/plan-reveal'
 import { Route as ParentRouteImport } from './routes/parent'
 import { Route as OnboardingRouteImport } from './routes/onboarding'
 import { Route as MockTestRouteImport } from './routes/mock-test'
@@ -138,6 +139,11 @@ const PracticeRoute = PracticeRouteImport.update({
 const PlannerRoute = PlannerRouteImport.update({
   id: '/planner',
   path: '/planner',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PlanRevealRoute = PlanRevealRouteImport.update({
+  id: '/plan-reveal',
+  path: '/plan-reveal',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ParentRoute = ParentRouteImport.update({
@@ -367,6 +373,7 @@ export interface FileRoutesByFullPath {
   '/mock-test': typeof MockTestRouteWithChildren
   '/onboarding': typeof OnboardingRoute
   '/parent': typeof ParentRouteWithChildren
+  '/plan-reveal': typeof PlanRevealRoute
   '/planner': typeof PlannerRoute
   '/practice': typeof PracticeRoute
   '/predictions': typeof PredictionsRoute
@@ -424,6 +431,7 @@ export interface FileRoutesByTo {
   '/mock-test': typeof MockTestRouteWithChildren
   '/onboarding': typeof OnboardingRoute
   '/parent': typeof ParentRouteWithChildren
+  '/plan-reveal': typeof PlanRevealRoute
   '/planner': typeof PlannerRoute
   '/practice': typeof PracticeRoute
   '/predictions': typeof PredictionsRoute
@@ -482,6 +490,7 @@ export interface FileRoutesById {
   '/mock-test': typeof MockTestRouteWithChildren
   '/onboarding': typeof OnboardingRoute
   '/parent': typeof ParentRouteWithChildren
+  '/plan-reveal': typeof PlanRevealRoute
   '/planner': typeof PlannerRoute
   '/practice': typeof PracticeRoute
   '/predictions': typeof PredictionsRoute
@@ -541,6 +550,7 @@ export interface FileRouteTypes {
     | '/mock-test'
     | '/onboarding'
     | '/parent'
+    | '/plan-reveal'
     | '/planner'
     | '/practice'
     | '/predictions'
@@ -598,6 +608,7 @@ export interface FileRouteTypes {
     | '/mock-test'
     | '/onboarding'
     | '/parent'
+    | '/plan-reveal'
     | '/planner'
     | '/practice'
     | '/predictions'
@@ -655,6 +666,7 @@ export interface FileRouteTypes {
     | '/mock-test'
     | '/onboarding'
     | '/parent'
+    | '/plan-reveal'
     | '/planner'
     | '/practice'
     | '/predictions'
@@ -713,6 +725,7 @@ export interface RootRouteChildren {
   MockTestRoute: typeof MockTestRouteWithChildren
   OnboardingRoute: typeof OnboardingRoute
   ParentRoute: typeof ParentRouteWithChildren
+  PlanRevealRoute: typeof PlanRevealRoute
   PlannerRoute: typeof PlannerRoute
   PracticeRoute: typeof PracticeRoute
   PredictionsRoute: typeof PredictionsRoute
@@ -843,6 +856,13 @@ declare module '@tanstack/react-router' {
       path: '/planner'
       fullPath: '/planner'
       preLoaderRoute: typeof PlannerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/plan-reveal': {
+      id: '/plan-reveal'
+      path: '/plan-reveal'
+      fullPath: '/plan-reveal'
+      preLoaderRoute: typeof PlanRevealRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/parent': {
@@ -1274,6 +1294,7 @@ const rootRouteChildren: RootRouteChildren = {
   MockTestRoute: MockTestRouteWithChildren,
   OnboardingRoute: OnboardingRoute,
   ParentRoute: ParentRouteWithChildren,
+  PlanRevealRoute: PlanRevealRoute,
   PlannerRoute: PlannerRoute,
   PracticeRoute: PracticeRoute,
   PredictionsRoute: PredictionsRoute,
@@ -1301,3 +1322,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}

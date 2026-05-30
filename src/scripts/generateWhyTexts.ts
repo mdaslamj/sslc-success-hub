@@ -32,7 +32,7 @@ config({ override: true });
 
 const COLLECTION = "why_texts";
 const DELAY_MS = 13_000; // free tier: 5 req/min for gemini-2.5-flash
-const GEMINI_MODEL = "gemini-2.5-flash";
+const GEMINI_MODEL = "gemini-2.0-flash";
 const MAX_RETRIES = 4;
 
 const WHY_TEXT_SUBJECT_IDS = new Set(["science", "math", "social"]);
