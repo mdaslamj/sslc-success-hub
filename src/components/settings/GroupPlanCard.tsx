@@ -176,7 +176,7 @@ export function GroupPlanCard() {
             />
           ) : null}
 
-          {group.memberEmails.length > 0 ? (
+          {group.memberEmails && group.memberEmails.length > 0 ? (
             <div className="rounded-xl bg-secondary/30 px-3 py-2">
               <p className="text-[11px] font-medium uppercase tracking-wide text-muted-foreground">
                 Members
