@@ -129,6 +129,20 @@ export const COLLECTIONS = {
   CLASS_INVITES: "classInvites",
   /** Pre-computed planner WHY strings — doc id `{chapterId}_{level}`. */
   WHY_TEXTS: "why_texts",
+  // School Intelligence — multi-tenant school data model
+  SCHOOLS: "schools",
+  SCHOOL_TEACHERS: "school_teachers",
+  SCHOOL_STUDENTS: "school_students",
+  SCHOOL_ROSTER: "school_roster",
+  UNIT_TESTS: "unit_tests",
+  UNIT_TEST_RESULTS: "unit_test_results",
+} as const;
+
+export const SCHOOL_SUBCOLLECTIONS = {
+  TEACHERS: "teachers",
+  STUDENTS: "students",
+  TESTS: "tests",
+  RESULTS: "results",
 } as const;
 
 // Weakness Diagnosis & Adaptive Remediation Engine
