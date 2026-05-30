@@ -80,6 +80,8 @@ export interface UnitTest {
   source: UnitTestSource;
 }
 
+export type MarkGapType = "conceptual" | "procedural" | "expression" | "none";
+
 export interface UnitTestResult {
   studentId: string;
   schoolId: string;
@@ -89,6 +91,18 @@ export interface UnitTestResult {
   questionMarks: Record<string, number>;
   submittedAt: string;
   masteryUpdateApplied: boolean;
+}
+
+/** Enriched result doc written by the marks → mastery pipeline. */
+export interface ProcessedUnitTestResult extends UnitTestResult {
+  chapterId: string;
+  subjectId: string;
+  scorePercent: number;
+  gapType: MarkGapType;
+  previousMastery: number;
+  newMastery: number;
+  delta: number;
+  source: UnitTestSource;
 }
 
 export type ChapterGapTrend = "up" | "down" | "flat";
