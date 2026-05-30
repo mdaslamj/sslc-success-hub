@@ -85,6 +85,7 @@ export function defaultUserProfile(input: {
   photoURL?: string | null;
 }): UserProfileDoc {
   const now = Date.now();
+  const isSchoolAccount = input.email.endsWith("@aura.school");
   return {
     uid: input.uid,
     displayName: input.displayName || input.email.split("@")[0] || "Student",
@@ -96,7 +97,7 @@ export function defaultUserProfile(input: {
     preferredLanguage: "en",
     weakSubjects: [],
     studyGoals: [],
-    role: "student",
+    role: isSchoolAccount ? "school" : "student",
     createdAt: now,
     updatedAt: now,
   };

@@ -2,8 +2,6 @@ export type SchoolStatus = "active" | "inactive" | "pending";
 
 export type SchoolType = "government" | "private_aided" | "private_unaided";
 
-export type SchoolTeacherStatus = "active" | "pending";
-
 export interface School {
   schoolId: string;
   name: string;
@@ -12,25 +10,23 @@ export interface School {
   taluk: string;
   city?: string;
   schoolType?: SchoolType;
+  /** Registration contact — not a separate login role. */
   principalName?: string;
   principalPhone?: string;
+  /** Principal contact email for Aura outreach — not a login. */
   adminEmail: string;
+  /** Same uid as sharedLoginUid — the one shared school account. */
   adminUid: string;
+  /** Shared login for all staff — e.g. kar-xxxxxx@aura.school */
+  schoolEmail?: string;
+  sharedLoginUid?: string;
+  credentialsShownAt?: string;
+  schoolAccountActivatedAt?: string;
   /** Join code, e.g. KAR-XXXXXX */
   schoolCode: string;
   totalStudents: number;
   createdAt: string;
   status: SchoolStatus;
-}
-
-export interface SchoolTeacher {
-  uid: string;
-  email: string;
-  name: string;
-  subjects: string[];
-  joinedAt: string;
-  invitedBy: string;
-  status: SchoolTeacherStatus;
 }
 
 export interface SubjectSharingPrefs {

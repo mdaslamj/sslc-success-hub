@@ -131,7 +131,6 @@ export const COLLECTIONS = {
   WHY_TEXTS: "why_texts",
   // School Intelligence — multi-tenant school data model
   SCHOOLS: "schools",
-  SCHOOL_TEACHERS: "school_teachers",
   SCHOOL_STUDENTS: "school_students",
   SCHOOL_ROSTER: "school_roster",
   UNIT_TESTS: "unit_tests",
@@ -139,7 +138,6 @@ export const COLLECTIONS = {
 } as const;
 
 export const SCHOOL_SUBCOLLECTIONS = {
-  TEACHERS: "teachers",
   STUDENTS: "students",
   TESTS: "tests",
   RESULTS: "results",

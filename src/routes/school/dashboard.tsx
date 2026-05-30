@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/auth-context";
-import { getSchoolByAdmin, SCHOOL_WELCOME_STORAGE_KEY } from "@/lib/schoolService";
+import { getSchoolForUser, SCHOOL_WELCOME_STORAGE_KEY } from "@/lib/schoolService";
 import type { School } from "@/types/school";
 import { cn } from "@/lib/utils";
 
@@ -17,10 +17,29 @@ export const Route = createFileRoute("/school/dashboard")({
 
 function SchoolDashboardPage() {
   const navigate = useNavigate();
-  const { user, loading: authLoading } = useAuth();
+  const { user, profile, loading: authLoading } = useAuth();
   const [school, setSchool] = useState<School | null>(null);
   const [loadingSchool, setLoadingSchool] = useState(true);
   const [welcomeCode, setWelcomeCode] = useState<string | null>(null);
+  const [tokenRole, setTokenRole] = useState<string | null>(null);
+  const [tokenSchoolId, setTokenSchoolId] = useState<string | null>(null);
+
+  const isSchool =
+    tokenRole === "school" || profile?.role === "school";
+
+  useEffect(() => {
+    if (!user) {
+      setTokenRole(null);
+      setTokenSchoolId(null);
+      return;
+    }
+    void user.getIdTokenResult().then((result) => {
+      setTokenRole(typeof result.claims.role === "string" ? result.claims.role : null);
+      setTokenSchoolId(
+        typeof result.claims.schoolId === "string" ? result.claims.schoolId : null,
+      );
+    });
+  }, [user]);
 
   useEffect(() => {
     if (authLoading) return;
@@ -29,11 +48,15 @@ function SchoolDashboardPage() {
         to: "/login",
         search: { redirect: "/school/dashboard" },
       });
+      return;
     }
-  }, [authLoading, user, navigate]);
+    if (!isSchool) {
+      void navigate({ to: "/" });
+    }
+  }, [authLoading, user, isSchool, navigate]);
 
   useEffect(() => {
-    if (!user) return;
+    if (!user || !isSchool) return;
 
     try {
       const raw = sessionStorage.getItem(SCHOOL_WELCOME_STORAGE_KEY);
@@ -41,8 +64,8 @@ function SchoolDashboardPage() {
         const parsed = JSON.parse(raw) as { code?: string; schoolName?: string };
         if (parsed.code) {
           setWelcomeCode(parsed.code);
-          toast.success("School registered!", {
-            description: `Your school code is ${parsed.code}. Share this with students to join. We will review your registration within 24 hours.`,
+          toast.success("Welcome!", {
+            description: `School code ${parsed.code}. Share this with students to join.`,
             duration: 8000,
           });
         }
@@ -56,7 +79,7 @@ function SchoolDashboardPage() {
     void (async () => {
       setLoadingSchool(true);
       try {
-        const data = await getSchoolByAdmin(user.uid);
+        const data = await getSchoolForUser(user.uid, tokenSchoolId);
         if (active) setSchool(data);
       } catch (err) {
         console.error(err);
@@ -69,9 +92,9 @@ function SchoolDashboardPage() {
     return () => {
       active = false;
     };
-  }, [user]);
+  }, [user, isSchool, tokenSchoolId]);
 
-  if (authLoading || !user) {
+  if (authLoading || !user || !isSchool) {
     return (
       <div
         className="flex min-h-[100dvh] items-center justify-center"
@@ -149,7 +172,7 @@ function SchoolDashboardPage() {
                 </li>
                 <li className="flex gap-2">
                   <span className="font-mono text-[#8B5CF6]">2.</span>
-                  Add your subject teachers
+                  Share the school login with subject teachers
                 </li>
                 <li className="flex gap-2">
                   <span className="font-mono text-[#8B5CF6]">3.</span>
@@ -159,9 +182,9 @@ function SchoolDashboardPage() {
             </section>
 
             <section className="space-y-3">
-              <ComingSoonCard title="Teacher management" />
               <ComingSoonCard title="Marks entry" />
               <ComingSoonCard title="Class analytics" />
+              <ComingSoonCard title="Roster import" />
             </section>
 
             {!school ? (

@@ -1135,7 +1135,7 @@ export type UserProfileDoc = {
   /** ISO date (YYYY-MM-DD) of the board exam — drives countdown + AI urgency. */
   examTargetDate?: string;
   /** Account role — gates teacher/parent/admin routes. */
-  role: "student" | "parent" | "teacher" | "admin";
+  role: "student" | "parent" | "teacher" | "school" | "admin";
   /** Reserved for future parent/teacher linkage. */
   linkedAccounts?: { parents?: string[]; teachers?: string[] };
   /**

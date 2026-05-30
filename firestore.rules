@@ -28,20 +28,10 @@ service cloud.firestore {
       return isSignedIn() && request.auth.uid == uid;
     }
 
-    function isSchoolAdmin(schoolId) {
+    function isSchoolAccountOf(schoolId) {
       return isSignedIn()
-        && exists(/databases/$(database)/documents/schools/$(schoolId))
-        && get(/databases/$(database)/documents/schools/$(schoolId)).data.adminUid == request.auth.uid;
-    }
-
-    function isSchoolTeacherOf(schoolId) {
-      return isSignedIn()
-        && request.auth.token.role == 'teacher'
+        && request.auth.token.role == 'school'
         && request.auth.token.schoolId == schoolId;
-    }
-
-    function isSchoolTeacherOrAdmin(schoolId) {
-      return isSchoolAdmin(schoolId) || isSchoolTeacherOf(schoolId);
     }
 
     // Public syllabus content — read by anyone, write by admins only.
@@ -809,8 +799,8 @@ service cloud.firestore {
     // Pre-computed class-level analytics — school-scoped; written by Cloud Functions.
     match /class_analytics/{docId} {
       allow read: if isSignedIn()
-        && request.auth.token.role == 'teacher'
-        && resource.data.schoolId == request.auth.token.schoolId;
+        && request.auth.token.role == 'school'
+        && docId.matches(request.auth.token.schoolId + '.*');
       allow write: if isAdmin();
     }
 
@@ -819,42 +809,40 @@ service cloud.firestore {
     // -----------------------------------------------------------------------
 
     match /schools/{schoolId} {
-      allow read: if isSchoolAdmin(schoolId);
+      allow read: if isSchoolAccountOf(schoolId);
       allow create: if isSignedIn()
+        && request.resource.data.sharedLoginUid == request.auth.uid
         && request.resource.data.adminUid == request.auth.uid
         && request.resource.data.schoolId == schoolId;
-      allow update, delete: if isSchoolAdmin(schoolId);
-    }
-
-    match /school_teachers/{schoolId}/teachers/{teacherUid} {
-      allow read: if isSchoolAdmin(schoolId)
-        || (isSignedIn() && teacherUid == request.auth.uid);
-      allow write: if isSchoolAdmin(schoolId);
+      allow update: if isSchoolAccountOf(schoolId);
+      allow delete: if isAdmin();
     }
 
     match /school_students/{schoolId}/students/{studentUid} {
-      allow read: if isSchoolTeacherOrAdmin(schoolId)
+      allow read: if isSignedIn() && (
+        studentUid == request.auth.uid
+        || isSchoolAccountOf(schoolId)
+      );
+      allow create, update: if isSchoolAccountOf(schoolId)
         || (isSignedIn() && studentUid == request.auth.uid);
-      allow create, update: if isSchoolAdmin(schoolId)
-        || (isSignedIn() && studentUid == request.auth.uid);
-      allow delete: if isSchoolAdmin(schoolId);
+      allow delete: if isSchoolAccountOf(schoolId);
     }
 
     match /school_roster/{schoolId}/students/{rollNumber} {
-      allow read, write: if isSchoolTeacherOrAdmin(schoolId);
+      allow read, write: if isSchoolAccountOf(schoolId);
     }
 
     match /unit_tests/{schoolId}/tests/{testId} {
-      allow read, write: if isSchoolTeacherOrAdmin(schoolId);
+      allow read, write: if isSchoolAccountOf(schoolId);
     }
 
     match /unit_test_results/{testId}/results/{studentId} {
       allow read: if isSignedIn()
         && (
           studentId == request.auth.uid
-          || isSchoolTeacherOrAdmin(resource.data.schoolId)
+          || isSchoolAccountOf(resource.data.schoolId)
         );
-      allow create, update, delete: if isSchoolTeacherOrAdmin(request.resource.data.schoolId);
+      allow create, update, delete: if isSchoolAccountOf(request.resource.data.schoolId);
     }
 
     // Parent share links — public read for token URLs; student creates own share.

@@ -1,13 +1,22 @@
+import { deleteApp, initializeApp } from "firebase/app";
+import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
 import {
   collection,
   doc,
   getDoc,
   getDocs,
+  getFirestore,
   query,
   setDoc,
+  updateDoc,
   where,
 } from "firebase/firestore";
-import { db, COLLECTIONS, SCHOOL_SUBCOLLECTIONS } from "@/integrations/firebase/config";
+import {
+  COLLECTIONS,
+  db,
+  firebaseConfig,
+  SCHOOL_SUBCOLLECTIONS,
+} from "@/integrations/firebase/config";
 import type {
   School,
   SchoolStudent,
@@ -15,20 +24,100 @@ import type {
 } from "@/types/school";
 
 const SCHOOLS = COLLECTIONS.SCHOOLS;
-const SCHOOL_TEACHERS = COLLECTIONS.SCHOOL_TEACHERS;
 const SCHOOL_STUDENTS = COLLECTIONS.SCHOOL_STUDENTS;
-const TEACHERS_SUB = SCHOOL_SUBCOLLECTIONS.TEACHERS;
 const STUDENTS_SUB = SCHOOL_SUBCOLLECTIONS.STUDENTS;
+const USER_PROFILES = COLLECTIONS.USER_PROFILES;
 
 const CODE_CHARS = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
 
 export const SCHOOL_WELCOME_STORAGE_KEY = "aura_school_welcome.v1";
+
+export type CreateSchoolResult = {
+  schoolId: string;
+  schoolCode: string;
+  schoolEmail: string;
+  tempPassword: string;
+};
+
+export type CreateSchoolInput = Omit<
+  School,
+  | "schoolId"
+  | "schoolCode"
+  | "createdAt"
+  | "schoolEmail"
+  | "credentialsShownAt"
+  | "adminUid"
+  | "adminEmail"
+  | "sharedLoginUid"
+> & {
+  /** Principal contact email — not a login; Aura staff use this for outreach. */
+  contactEmail: string;
+};
 
 export function generateSchoolCode(): string {
   const suffix = Array.from({ length: 6 }, () =>
     CODE_CHARS[Math.floor(Math.random() * CODE_CHARS.length)],
   ).join("");
   return `KAR-${suffix}`;
+}
+
+export function generateTempPassword(): string {
+  const upper = "ABCDEFGHJKLMNPQRSTUVWXYZ";
+  const lower = "abcdefghjkmnpqrstuvwxyz";
+  const nums = "23456789";
+  return (
+    Array.from({ length: 2 }, () => upper[Math.floor(Math.random() * upper.length)]).join("") +
+    Array.from({ length: 2 }, () => nums[Math.floor(Math.random() * nums.length)]).join("") +
+    Array.from({ length: 4 }, () => lower[Math.floor(Math.random() * lower.length)]).join("")
+  );
+}
+
+function schoolEmailForCode(schoolCode: string): string {
+  return `${schoolCode.toLowerCase()}@aura.school`;
+}
+
+async function provisionSharedSchoolAccount(
+  school: School,
+  tempPassword: string,
+): Promise<string> {
+  const appName = `AuraSchoolProvision-${Date.now()}`;
+  const secondaryApp = initializeApp(firebaseConfig, appName);
+  try {
+    const secondaryAuth = getAuth(secondaryApp);
+    const secondaryDb = getFirestore(secondaryApp);
+    const credential = await createUserWithEmailAndPassword(
+      secondaryAuth,
+      school.schoolEmail!,
+      tempPassword,
+    );
+    const uid = credential.user.uid;
+    const now = Date.now();
+
+    await setDoc(doc(secondaryDb, SCHOOLS, school.schoolId), {
+      ...school,
+      adminUid: uid,
+      sharedLoginUid: uid,
+    });
+
+    await setDoc(doc(secondaryDb, USER_PROFILES, uid), {
+      uid,
+      email: school.schoolEmail,
+      displayName: school.name,
+      studentName: "",
+      classLevel: "10",
+      targetScore: 90,
+      preferredLanguage: "en",
+      weakSubjects: [],
+      studyGoals: [],
+      role: "school",
+      createdAt: now,
+      updatedAt: now,
+    });
+
+    return uid;
+  } finally {
+    await deleteApp(secondaryApp);
+  }
 }
 
 function defaultSubjectSharing(): SubjectSharingPrefs {
@@ -51,23 +140,46 @@ async function uniqueSchoolCode(): Promise<string> {
   return `${generateSchoolCode()}-${Date.now().toString(36).slice(-3).toUpperCase()}`;
 }
 
-export async function createSchool(
-  data: Omit<School, "schoolId" | "schoolCode" | "createdAt">,
-): Promise<{ schoolId: string; schoolCode: string }> {
-  const schoolRef = doc(collection(db, SCHOOLS));
+export async function createSchool(data: CreateSchoolInput): Promise<CreateSchoolResult> {
+  const schoolId = doc(collection(db, SCHOOLS)).id;
   const schoolCode = await uniqueSchoolCode();
+  const schoolEmail = schoolEmailForCode(schoolCode);
+  const tempPassword = generateTempPassword();
 
   const school: School = {
-    schoolId: schoolRef.id,
+    schoolId,
     schoolCode,
+    schoolEmail,
+    adminEmail: data.contactEmail,
     createdAt: new Date().toISOString(),
+    credentialsShownAt: new Date().toISOString(),
     ...data,
+    adminUid: "",
     totalStudents: data.totalStudents ?? 0,
     status: data.status ?? "pending",
   };
 
-  await setDoc(schoolRef, school);
-  return { schoolId: schoolRef.id, schoolCode };
+  const sharedLoginUid = await provisionSharedSchoolAccount(school, tempPassword);
+  school.adminUid = sharedLoginUid;
+  school.sharedLoginUid = sharedLoginUid;
+
+  return { schoolId, schoolCode, schoolEmail, tempPassword };
+}
+
+/** Called after first shared school login — refreshes activation timestamp. */
+export async function activateSchoolAccount(schoolId: string, uid: string): Promise<void> {
+  const schoolRef = doc(db, SCHOOLS, schoolId);
+  const snap = await getDoc(schoolRef);
+  if (!snap.exists()) {
+    throw new Error("School not found");
+  }
+  const school = snap.data() as School;
+  if (school.sharedLoginUid !== uid) {
+    throw new Error("Not the shared school account for this school.");
+  }
+  await updateDoc(schoolRef, {
+    schoolAccountActivatedAt: new Date().toISOString(),
+  });
 }
 
 export async function getSchoolByCode(code: string): Promise<School | null> {
@@ -78,8 +190,8 @@ export async function getSchoolByCode(code: string): Promise<School | null> {
   return snap.docs[0].data() as School;
 }
 
-export async function getSchoolByAdmin(adminUid: string): Promise<School | null> {
-  const q = query(collection(db, SCHOOLS), where("adminUid", "==", adminUid));
+export async function getSchoolBySharedLoginUid(uid: string): Promise<School | null> {
+  const q = query(collection(db, SCHOOLS), where("sharedLoginUid", "==", uid));
   const snap = await getDocs(q);
   if (snap.empty) return null;
   return snap.docs[0].data() as School;
@@ -89,6 +201,18 @@ export async function getSchoolById(schoolId: string): Promise<School | null> {
   const snap = await getDoc(doc(db, SCHOOLS, schoolId));
   if (!snap.exists()) return null;
   return snap.data() as School;
+}
+
+/** Resolve the school for the signed-in shared account. */
+export async function getSchoolForUser(
+  uid: string,
+  tokenSchoolId?: string | null,
+): Promise<School | null> {
+  if (tokenSchoolId) {
+    const byId = await getSchoolById(tokenSchoolId);
+    if (byId?.sharedLoginUid === uid) return byId;
+  }
+  return getSchoolBySharedLoginUid(uid);
 }
 
 export async function linkStudentToSchool(
@@ -125,9 +249,9 @@ export async function getSchoolStudents(schoolId: string): Promise<SchoolStudent
   return snap.docs.map((d) => d.data() as SchoolStudent);
 }
 
-export async function isSchoolTeacher(uid: string, schoolId: string): Promise<boolean> {
-  const snap = await getDoc(doc(db, SCHOOL_TEACHERS, schoolId, TEACHERS_SUB, uid));
+export async function isSchoolAccount(uid: string, schoolId: string): Promise<boolean> {
+  const snap = await getDoc(doc(db, SCHOOLS, schoolId));
   if (!snap.exists()) return false;
-  const data = snap.data();
-  return data.status === "active";
+  const school = snap.data() as School;
+  return school.sharedLoginUid === uid;
 }

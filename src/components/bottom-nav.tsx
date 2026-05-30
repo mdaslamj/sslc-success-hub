@@ -54,7 +54,7 @@ const MAIN_TABS = [
   },
 ] as const;
 
-function buildMoreItems(isTeacher: boolean): MoreDrawerItem[] {
+function buildMoreItems(isSchool: boolean): MoreDrawerItem[] {
   return [
     { to: "/subjects", label: "Subjects", icon: BookOpen },
     { to: "/predictions", label: "War Room", icon: Brain },
@@ -62,7 +62,7 @@ function buildMoreItems(isTeacher: boolean): MoreDrawerItem[] {
     { to: "/exam-simulation", label: "Exam Simulation", icon: GraduationCap },
     { to: "/exams", label: "Mock Exams", icon: FlaskConical },
     { to: "/voice", label: "Coach", icon: Mic },
-    { to: "/teacher", label: "Teacher", icon: UserCheck, show: isTeacher },
+    { to: "/school/dashboard", label: "School", icon: UserCheck, show: isSchool },
     { to: "/parent-view", label: "Parent View", icon: Users },
     { to: "/profile", label: "Settings", icon: Settings },
   ];
@@ -78,10 +78,9 @@ export function BottomNav() {
   const [moreOpen, setMoreOpen] = useState(false);
   const [showMoreDot, setShowMoreDot] = useState(false);
 
-  const isTeacher =
-    auth?.profile?.role === "teacher" || auth?.profile?.role === "admin";
+  const isSchool = auth?.profile?.role === "school";
 
-  const moreItems = useMemo(() => buildMoreItems(isTeacher), [isTeacher]);
+  const moreItems = useMemo(() => buildMoreItems(isSchool), [isSchool]);
   const moreActive = MORE_MATCH(pathname);
 
   useEffect(() => {

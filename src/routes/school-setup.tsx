@@ -1,5 +1,5 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { GraduationCap, Loader2 } from "lucide-react";
+import { Copy, GraduationCap, Loader2, MessageCircle } from "lucide-react";
 import { useCallback, useMemo, useState, type FormEvent, type ReactNode } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
@@ -12,9 +12,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useAuth } from "@/contexts/auth-context";
-import { auth } from "@/integrations/firebase/config";
-import { createSchool, SCHOOL_WELCOME_STORAGE_KEY } from "@/lib/schoolService";
+import {
+  createSchool,
+  type CreateSchoolResult,
+  SCHOOL_WELCOME_STORAGE_KEY,
+} from "@/lib/schoolService";
 import type { SchoolType } from "@/types/school";
 import { cn } from "@/lib/utils";
 
@@ -83,7 +85,6 @@ type FormState = {
   principalEmail: string;
   principalPhone: string;
   studentCount: string;
-  adminPassword: string;
 };
 
 const INITIAL: FormState = {
@@ -97,21 +98,18 @@ const INITIAL: FormState = {
   principalEmail: "",
   principalPhone: "",
   studentCount: "",
-  adminPassword: "",
 };
 
 function SchoolSetupPage() {
   const navigate = useNavigate();
-  const { user, loading: authLoading, signUpWithEmail, signInWithGoogle } = useAuth();
   const [section, setSection] = useState(0);
   const [form, setForm] = useState<FormState>(INITIAL);
   const [submitting, setSubmitting] = useState(false);
+  const [credentials, setCredentials] = useState<CreateSchoolResult | null>(null);
 
   const patch = useCallback((updates: Partial<FormState>) => {
     setForm((prev) => ({ ...prev, ...updates }));
   }, []);
-
-  const adminEmail = user?.email ?? form.principalEmail.trim();
 
   const sectionValid = useMemo(() => {
     switch (section) {
@@ -130,38 +128,23 @@ function SchoolSetupPage() {
           form.principalPhone.trim().length >= 10 &&
           Number(form.studentCount) > 0
         );
-      case 3:
-        if (user) return true;
-        return form.adminPassword.length >= 6;
       default:
         return false;
     }
-  }, [section, form, user]);
+  }, [section, form]);
 
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
     if (!sectionValid || submitting) return;
 
-    if (section < 3) {
+    if (section < 2) {
       setSection((s) => s + 1);
       return;
     }
 
     setSubmitting(true);
     try {
-      let uid = user?.uid;
-      let email = adminEmail;
-
-      if (!uid) {
-        email = form.principalEmail.trim();
-        await signUpWithEmail(email, form.adminPassword, form.principalName.trim());
-        uid = auth.currentUser?.uid;
-        if (!uid) {
-          throw new Error("Account created but session not ready. Please sign in and try again.");
-        }
-      }
-
-      const { schoolCode } = await createSchool({
+      const result = await createSchool({
         name: form.schoolName.trim(),
         dise_code: form.diseCode.trim(),
         district: form.district,
@@ -170,22 +153,17 @@ function SchoolSetupPage() {
         schoolType: form.schoolType as SchoolType,
         principalName: form.principalName.trim(),
         principalPhone: form.principalPhone.trim(),
-        adminEmail: email,
-        adminUid: uid,
+        contactEmail: form.principalEmail.trim(),
         totalStudents: Number(form.studentCount),
         status: "pending",
       });
 
       sessionStorage.setItem(
         WELCOME_STORAGE_KEY,
-        JSON.stringify({ code: schoolCode, schoolName: form.schoolName.trim() }),
+        JSON.stringify({ code: result.schoolCode, schoolName: form.schoolName.trim() }),
       );
 
-      toast.success("School registered!", {
-        description: `Your school code is ${schoolCode}. We will review within 24 hours.`,
-      });
-
-      void navigate({ to: "/school/dashboard" });
+      setCredentials(result);
     } catch (err) {
       console.error(err);
       toast.error(err instanceof Error ? err.message : "Registration failed. Please try again.");
@@ -193,6 +171,20 @@ function SchoolSetupPage() {
       setSubmitting(false);
     }
   };
+
+  if (credentials) {
+    return (
+      <SchoolCredentialsSuccess
+        credentials={credentials}
+        onGoToDashboard={() =>
+          void navigate({
+            to: "/login",
+            search: { redirect: "/school/dashboard" },
+          })
+        }
+      />
+    );
+  }
 
   return (
     <div
@@ -220,7 +212,7 @@ function SchoolSetupPage() {
         </header>
 
         <div className="mb-6 flex justify-center gap-2">
-          {[0, 1, 2, 3].map((i) => (
+          {[0, 1, 2].map((i) => (
             <span
               key={i}
               className={cn(
@@ -332,7 +324,11 @@ function SchoolSetupPage() {
                   className="rounded-xl border-white/10 bg-[#14141F] text-white"
                 />
               </Field>
-              <Field label="Principal email" id="principalEmail" hint="Becomes your admin account">
+              <Field
+                label="Principal email"
+                id="principalEmail"
+                hint="For Aura outreach only — your school login is created separately"
+              >
                 <Input
                   id="principalEmail"
                   type="email"
@@ -364,63 +360,6 @@ function SchoolSetupPage() {
             </section>
           )}
 
-          {section === 3 && (
-            <section className="space-y-4 fade-in">
-              <h2 className="text-sm font-semibold text-white">Admin account</h2>
-              {authLoading ? (
-                <p className="text-sm text-white/60">Checking sign-in status…</p>
-              ) : user ? (
-                <div
-                  className="rounded-xl border border-white/10 bg-[#14141F] px-4 py-3 text-sm text-white/80"
-                >
-                  <p>Signed in as</p>
-                  <p className="mt-1 font-medium text-white">{user.email}</p>
-                  <p className="mt-2 text-xs text-white/55">You will be the school admin</p>
-                </div>
-              ) : (
-                <>
-                  <p className="text-sm text-white/70">Create your admin account</p>
-                  <Field label="Email" id="adminEmail">
-                    <Input
-                      id="adminEmail"
-                      type="email"
-                      value={form.principalEmail}
-                      readOnly
-                      className="rounded-xl border-white/10 bg-[#14141F] text-white/70"
-                    />
-                  </Field>
-                  <Field label="Password" id="adminPassword">
-                    <Input
-                      id="adminPassword"
-                      type="password"
-                      minLength={6}
-                      value={form.adminPassword}
-                      onChange={(e) => patch({ adminPassword: e.target.value })}
-                      className="rounded-xl border-white/10 bg-[#14141F] text-white"
-                      placeholder="At least 6 characters"
-                    />
-                  </Field>
-                  <Button
-                    type="button"
-                    variant="outline"
-                    className="w-full rounded-xl border-white/10 bg-transparent text-white hover:bg-white/5"
-                    onClick={async () => {
-                      try {
-                        await signInWithGoogle();
-                        toast.success("Signed in with Google");
-                      } catch {
-                        toast.error("Google sign-in failed. Please try again.");
-                      }
-                    }}
-                  >
-                    <GoogleIcon className="mr-2 h-4 w-4" />
-                    Sign in with Google
-                  </Button>
-                </>
-              )}
-            </section>
-          )}
-
           <div className="flex gap-3 pt-2">
             {section > 0 ? (
               <Button
@@ -446,7 +385,7 @@ function SchoolSetupPage() {
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                   Registering…
                 </>
-              ) : section < 3 ? (
+              ) : section < 2 ? (
                 "Continue →"
               ) : (
                 "Register school →"
@@ -454,6 +393,149 @@ function SchoolSetupPage() {
             </Button>
           </div>
         </form>
+      </div>
+
+      <style>{`
+        .fade-in { animation: fadeIn 0.35s ease-out; }
+        @keyframes fadeIn {
+          from { opacity: 0; transform: translateY(8px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+      `}</style>
+    </div>
+  );
+}
+
+function SchoolCredentialsSuccess({
+  credentials,
+  onGoToDashboard,
+}: {
+  credentials: CreateSchoolResult;
+  onGoToDashboard: () => void;
+}) {
+  const credentialText = [
+    `School code: ${credentials.schoolCode}`,
+    `Login email: ${credentials.schoolEmail}`,
+    `Password: ${credentials.tempPassword}`,
+  ].join("\n");
+
+  const copyCredentials = async () => {
+    try {
+      await navigator.clipboard.writeText(credentialText);
+      toast.success("Credentials copied to clipboard");
+    } catch {
+      toast.error("Could not copy — please copy manually");
+    }
+  };
+
+  const shareWhatsApp = () => {
+    const message = [
+      "Aura school account credentials:",
+      "",
+      credentialText,
+      "",
+      "Save these — they will not be shown again. Share with your subject teachers.",
+    ].join("\n");
+    window.open(`https://wa.me/?text=${encodeURIComponent(message)}`, "_blank", "noopener,noreferrer");
+  };
+
+  return (
+    <div
+      className="min-h-[100dvh] px-4 py-8"
+      style={{
+        background: "#08080E",
+        fontFamily: "'Plus Jakarta Sans', sans-serif",
+        paddingBottom: "max(env(safe-area-inset-bottom), 2rem)",
+      }}
+    >
+      <div className="mx-auto max-w-lg space-y-6 fade-in">
+        <header className="text-center">
+          <div
+            className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl"
+            style={{ background: "rgba(139,92,246,0.2)" }}
+          >
+            <GraduationCap className="h-6 w-6 text-[#8B5CF6]" />
+          </div>
+          <h1 className="mt-4 text-2xl font-bold text-white">Your school account is ready</h1>
+          <p className="mt-2 text-sm text-white/70">
+            We will review your registration within 24 hours.
+          </p>
+        </header>
+
+        <div
+          className="rounded-2xl border border-amber-400/40 p-5"
+          style={{ background: "rgba(254,243,199,0.12)" }}
+        >
+          <p className="text-xs font-semibold uppercase tracking-wider text-amber-200/80">
+            Show once only — save now
+          </p>
+          <dl className="mt-4 space-y-3 text-sm">
+            <div>
+              <dt className="text-white/55">School code</dt>
+              <dd
+                className="mt-0.5 font-bold tracking-widest text-white"
+                style={{ fontFamily: "'JetBrains Mono', monospace" }}
+              >
+                {credentials.schoolCode}
+              </dd>
+            </div>
+            <div>
+              <dt className="text-white/55">Login email</dt>
+              <dd
+                className="mt-0.5 font-medium text-white"
+                style={{ fontFamily: "'JetBrains Mono', monospace" }}
+              >
+                {credentials.schoolEmail}
+              </dd>
+            </div>
+            <div>
+              <dt className="text-white/55">Password</dt>
+              <dd
+                className="mt-0.5 font-medium text-white"
+                style={{ fontFamily: "'JetBrains Mono', monospace" }}
+              >
+                {credentials.tempPassword}
+              </dd>
+            </div>
+          </dl>
+          <p className="mt-4 text-xs text-white/70">
+            Save these credentials — they will not be shown again. Share with your subject
+            teachers.
+          </p>
+        </div>
+
+        <div className="flex gap-3">
+          <Button
+            type="button"
+            variant="outline"
+            className="flex-1 rounded-xl border-white/10 bg-transparent text-white hover:bg-white/5"
+            onClick={() => void copyCredentials()}
+          >
+            <Copy className="mr-2 h-4 w-4" />
+            Copy credentials
+          </Button>
+          <Button
+            type="button"
+            variant="outline"
+            className="flex-1 rounded-xl border-white/10 bg-transparent text-white hover:bg-white/5"
+            onClick={shareWhatsApp}
+          >
+            <MessageCircle className="mr-2 h-4 w-4" />
+            WhatsApp share
+          </Button>
+        </div>
+
+        <p className="rounded-xl border border-amber-500/30 bg-amber-500/10 px-4 py-3 text-xs text-amber-200">
+          Change this password after first login in Account Settings.
+        </p>
+
+        <Button
+          type="button"
+          className="w-full rounded-xl bg-[#8B5CF6] py-6 text-base font-semibold text-white hover:bg-[#7C3AED]"
+          onClick={onGoToDashboard}
+        >
+          Sign in with school account
+        </Button>
       </div>
 
       <style>{`
@@ -486,17 +568,6 @@ function Field({
       {children}
       {hint ? <p className="text-[11px] text-white/55">{hint}</p> : null}
     </div>
-  );
-}
-
-function GoogleIcon({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 24 24" className={className} aria-hidden="true">
-      <path
-        fill="#EA4335"
-        d="M12 10.2v3.9h5.5c-.24 1.4-1.66 4.1-5.5 4.1-3.31 0-6-2.74-6-6.1S8.69 6 12 6c1.88 0 3.14.8 3.86 1.48l2.63-2.53C16.93 3.43 14.7 2.5 12 2.5 6.76 2.5 2.5 6.76 2.5 12s4.26 9.5 9.5 9.5c5.48 0 9.1-3.85 9.1-9.27 0-.62-.07-1.1-.16-1.53H12z"
-      />
-    </svg>
   );
 }
 
