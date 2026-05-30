@@ -8,6 +8,7 @@ import { createServerFn } from "@tanstack/react-start";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { z } from "zod";
 import { runSemanticReasoning } from "@/lib/semantic-reasoning/semantic-reasoning.functions";
+import { verifyFirebaseIdToken } from "@/lib/semantic-reasoning/semantic-reasoning.functions";
 import type { MarkSchemeQuestion } from "@/types/markScheme";
 
 const OCR_MODEL = "gemini-2.0-flash";
@@ -104,6 +105,12 @@ const OcrServerInput = z.object({
 export const extractTextFromImageServer = createServerFn({ method: "POST" })
   .inputValidator((input) => OcrServerInput.parse(input))
   .handler(async ({ data }): Promise<{ ok: true; text: string } | { ok: false; error: string }> => {
+    try {
+      await verifyFirebaseIdToken(data.idToken);
+    } catch (err) {
+      console.error("[ocr] token verification failed", err);
+      return { ok: false, error: "Unauthorized" };
+    }
     try {
       const text = await extractTextFromImage(data.base64Image, data.mimeType ?? "image/jpeg");
       return { ok: true, text };
